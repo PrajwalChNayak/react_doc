@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+            animation: {
+              "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <title>Hooks | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .highlight-line {
+        background-color: rgba(80, 80, 80, 0.2);
+        display: block;
+      }
+
+      .animation-delay-2 {
+        animation-delay: 2s;
+      }
+
+      .animation-delay-4 {
+        animation-delay: 4s;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .toc-link.active {
+        color: #4f46e5;
+        font-weight: 600;
+        border-left: 3px solid #4f46e5;
+        background-color: rgba(79, 70, 229, 0.05);
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+
+    <main class="flex-1 container mx-auto px-4 py-8 max-w-7xl">
+      <!-- Hero Section with Enhanced Animation -->
+      <div
+        class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-2xl rounded-xl p-12 mb-12 border border-blue-100 relative overflow-hidden max-w-6xl mx-auto"
+      >
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"
+        ></div>
+        <div
+          class="absolute top-0 right-24 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2"
+        ></div>
+        <div
+          class="absolute -bottom-8 left-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4"
+        ></div>
+
+        <!-- Decorative elements -->
+        <div
+          class="absolute top-10 right-10 text-3xl text-blue-300 opacity-30 rotate-12"
+        >
+          { }
+        </div>
+        <div
+          class="absolute bottom-10 left-10 text-4xl text-purple-300 opacity-20 -rotate-6"
+        >
+          ⚛️
+        </div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-blue-100"
+          >
+            <i
+              class="fa-solid fa-code-branch text-5xl text-purple-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-purple-200">
+              <div
+                class="text-xs uppercase tracking-widest text-purple-600 font-semibold"
+              >
+                React Essentials
+              </div>
+              <div class="text-gray-700 font-medium">State & Lifecycle</div>
+            </div>
+          </div>
+          <h1 class="text-4xl font-bold text-blue-900 mb-4">
+            Understanding React Hooks
+          </h1>
+          <p class="text-lg text-gray-700 max-w-3xl">
+            Hooks are a revolutionary addition to React that allow you to use
+            state and other React features without writing a class. Learn how
+            hooks simplify your components and make code reuse easier.
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="container max-w-6xl mx-auto">
+        <!-- Main Content Area -->
+        <div class="space-y-12">
+          <!-- What are Hooks and why they exist -->
+          <section
+            id="understanding-hooks"
+            class="bg-white rounded-xl p-8 shadow-xl border border-blue-100 hover:shadow-2xl transition-shadow duration-300"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-question-circle text-purple-600 text-xl"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-blue-900">
+                What are Hooks and Why They Exist
+              </h2>
+            </div>
+
+            <p class="mb-4 text-gray-700">
+              Hooks are functions that let you "hook into" React state and
+              lifecycle features from function components. They were introduced
+              in React 16.8 as a way to use React features without writing
+              classes.
+            </p>
+
+            <div
+              class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-6 shadow-md"
+            >
+              <h3 class="text-lg font-semibold text-blue-800 mb-2">
+                Why Hooks Were Created
+              </h3>
+              <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                <li>
+                  <strong>Reuse stateful logic</strong> between components
+                  without complex patterns like render props or higher-order
+                  components
+                </li>
+                <li>
+                  <strong>Split complex components</strong> into smaller
+                  functions based on related pieces, rather than forcing a split
+                  based on lifecycle methods
+                </li>
+                <li>
+                  <strong>Use React features without classes</strong>, avoiding
+                  the confusion of <code>this</code> binding, understanding
+                  JavaScript classes, and making components more friendly to
+                  optimization
+                </li>
+                <li>
+                  <strong>Simplify complex components</strong> that become
+                  unwieldy with lifecycle methods that contain unrelated logic
+                </li>
+              </ul>
+            </div>
+
+            <div class="code-block rounded-lg overflow-hidden mb-6 shadow-lg">
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span>Before Hooks (Class Component)</span>
+                <div class="flex space-x-1">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+              </div>
+              <pre><code class="language-jsx">class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+    this.handleClick = this.handleClick.bind(this);
+  }
+  
+  handleClick() {
+    this.setState({ count: this.state.count + 1 });
+  }
+  
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;p&gt;You clicked {this.state.count} times&lt;/p&gt;
+        &lt;button onClick={this.handleClick}&gt;Click me&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}</code></pre>
+            </div>
+
+            <div class="code-block rounded-lg overflow-hidden mb-6 shadow-lg">
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span>After Hooks (Function Component)</span>
+                <div class="flex space-x-1">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+              </div>
+              <pre><code class="language-jsx">function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;You clicked {count} times&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Click me
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <p class="text-gray-700">
+              As you can see, Hooks make your code cleaner and more concise. No
+              more complex class syntax, binding, or <code>this</code> keyword
+              confusion.
+            </p>
+          </section>
+
+          <!-- Rules of Hooks -->
+          <section
+            id="rules-of-hooks"
+            class="bg-white rounded-xl p-8 shadow-xl border border-blue-100 hover:shadow-2xl transition-shadow duration-300"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-red-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-blue-900">Rules of Hooks</h2>
+            </div>
+
+            <p class="mb-4 text-gray-700">
+              Hooks come with two essential rules that you must follow for them
+              to work correctly:
+            </p>
+
+            <div
+              class="bg-red-50 rounded-lg p-6 mb-6 border-l-4 border-red-400"
+            >
+              <h3 class="text-lg font-semibold text-red-800 mb-2">
+                1. Only Call Hooks at the Top Level
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Don't call Hooks inside loops, conditions, or nested functions.
+                React relies on the order in which Hooks are called to associate
+                hook state with the component.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-white p-4 rounded-lg border border-red-200">
+                  <div class="text-red-600 font-medium mb-2">
+                    ❌ Don't do this:
+                  </div>
+                  <pre><code class="text-sm language-jsx">function Counter() {
+  // Conditionally using hooks is bad!
+  if (condition) {
+    const [count, setCount] = useState(0);
+  }
+  // ...
+}</code></pre>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg border border-green-200">
+                  <div class="text-green-600 font-medium mb-2">
+                    ✅ Do this instead:
+                  </div>
+                  <pre><code class="text-sm language-jsx">function Counter() {
+  const [count, setCount] = useState(0);
+  
+  // Use the state conditionally
+  if (condition) {
+    // Do something with count
+  }
+  // ...
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-red-50 rounded-lg p-6 mb-6 border-l-4 border-red-400"
+            >
+              <h3 class="text-lg font-semibold text-red-800 mb-2">
+                2. Only Call Hooks from React Functions
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Call Hooks only from React function components or from custom
+                Hooks. Don't call them from regular JavaScript functions or
+                class components.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-lg border border-green-200">
+                  <div class="text-green-600 font-medium mb-2">
+                    ✅ Places where hooks work:
+                  </div>
+                  <ul class="list-disc pl-6 text-sm text-gray-700">
+                    <li>React function components</li>
+                    <li>Custom Hooks (functions starting with "use")</li>
+                  </ul>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg border border-red-200">
+                  <div class="text-red-600 font-medium mb-2">
+                    ❌ Places where hooks don't work:
+                  </div>
+                  <ul class="list-disc pl-6 text-sm text-gray-700">
+                    <li>Class components</li>
+                    <li>Regular JavaScript functions</li>
+                    <li>Event handlers (outside component body)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg p-6 mb-4 shadow-md"
+            >
+              <div class="flex items-center mb-2">
+                <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                <h3 class="text-lg font-semibold text-yellow-800">
+                  Tip: Use ESLint Plugin
+                </h3>
+              </div>
+              <p class="text-gray-700">
+                The
+                <a
+                  href="https://www.npmjs.com/package/eslint-plugin-react-hooks"
+                  class="text-blue-600 hover:underline"
+                  >eslint-plugin-react-hooks</a
+                >
+                package is officially provided by the React team and helps
+                enforce these rules automatically in your code.
+              </p>
+            </div>
+          </section>
+
+          <!-- Built-in vs Custom Hooks -->
+          <section
+            id="hooks-types"
+            class="bg-white rounded-xl p-8 shadow-xl border border-blue-100 hover:shadow-2xl transition-shadow duration-300"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-green-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-tools text-green-600 text-xl"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-blue-900">
+                Built-in vs Custom Hooks
+              </h2>
+            </div>
+
+            <p class="mb-6 text-gray-700">
+              React provides several built-in Hooks that cover common use cases.
+              You can also create your own custom Hooks to extract and reuse
+              stateful logic across components.
+            </p>
+
+            <h3 class="text-xl font-bold text-blue-800 mb-4">
+              Common Built-in Hooks
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <!-- useState -->
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-5"
+              >
+                <div class="flex items-center mb-2">
+                  <span
+                    class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2"
+                    >State</span
+                  >
+                  <h4 class="text-lg font-semibold">useState</h4>
+                </div>
+                <p class="text-gray-700 text-sm mb-2">
+                  Adds state to your function component. Returns a stateful
+                  value and a function to update it.
+                </p>
+                <pre
+                  class="bg-gray-50 p-2 rounded text-xs"
+                ><code class="language-jsx">const [state, setState] = useState(initialState);</code></pre>
+              </div>
+
+              <!-- useEffect -->
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-5"
+              >
+                <div class="flex items-center mb-2">
+                  <span
+                    class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2"
+                    >Lifecycle</span
+                  >
+                  <h4 class="text-lg font-semibold">useEffect</h4>
+                </div>
+                <p class="text-gray-700 text-sm mb-2">
+                  Performs side effects in function components, similar to
+                  componentDidMount, componentDidUpdate, and
+                  componentWillUnmount.
+                </p>
+                <pre
+                  class="bg-gray-50 p-2 rounded text-xs"
+                ><code class="language-jsx">useEffect(() => {
+  // Effect code
+  return () => {
+    // Cleanup code
+  };
+}, [dependencies]);</code></pre>
+              </div>
+
+              <!-- useContext -->
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-5"
+              >
+                <div class="flex items-center mb-2">
+                  <span
+                    class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2"
+                    >Context</span
+                  >
+                  <h4 class="text-lg font-semibold">useContext</h4>
+                </div>
+                <p class="text-gray-700 text-sm mb-2">
+                  Accepts a context object and returns the current context
+                  value, enabling the use of React Context without nesting.
+                </p>
+                <pre
+                  class="bg-gray-50 p-2 rounded text-xs"
+                ><code class="language-jsx">const value = useContext(MyContext);</code></pre>
+              </div>
+
+              <!-- useReducer -->
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-5"
+              >
+                <div class="flex items-center mb-2">
+                  <span
+                    class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2"
+                    >State</span
+                  >
+                  <h4 class="text-lg font-semibold">useReducer</h4>
+                </div>
+                <p class="text-gray-700 text-sm mb-2">
+                  An alternative to useState for more complex state logic,
+                  especially when state transitions depend on previous state.
+                </p>
+                <pre
+                  class="bg-gray-50 p-2 rounded text-xs"
+                ><code class="language-jsx">const [state, dispatch] = useReducer(
+  reducer, initialState
+);</code></pre>
+              </div>
+            </div>
+
+            <!-- More Hooks -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-3"
+              >
+                <h4 class="text-md font-semibold mb-1">useCallback</h4>
+                <p class="text-gray-700 text-xs">
+                  Returns a memoized callback function that only changes if
+                  dependencies change.
+                </p>
+              </div>
+
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-3"
+              >
+                <h4 class="text-md font-semibold mb-1">useMemo</h4>
+                <p class="text-gray-700 text-xs">
+                  Returns a memoized value that only recomputes when
+                  dependencies change.
+                </p>
+              </div>
+
+              <div
+                class="bg-white rounded-lg border border-blue-200 shadow-sm p-3"
+              >
+                <h4 class="text-md font-semibold mb-1">useRef</h4>
+                <p class="text-gray-700 text-xs">
+                  Returns a mutable ref object that persists for the lifetime of
+                  the component.
+                </p>
+              </div>
+            </div>
+
+            <!-- Custom Hooks -->
+            <h3 class="text-xl font-bold text-blue-800 mb-4">Custom Hooks</h3>
+
+            <p class="mb-4 text-gray-700">
+              Custom Hooks let you extract component logic into reusable
+              functions. A custom Hook is a JavaScript function whose name
+              starts with "use" and that may call other Hooks.
+            </p>
+
+            <div class="code-block rounded-lg overflow-hidden mb-6 shadow-lg">
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span>Example Custom Hook</span>
+                <div class="flex space-x-1">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+              </div>
+              <pre><code class="language-jsx">// Custom Hook for form handling
+function useFormInput(initialValue) {
+  const [value, setValue] = useState(initialValue);
+  
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+  
+  return {
+    value,
+    onChange: handleChange
+  };
+}
+
+// Using the custom Hook in a component
+function SignupForm() {
+  const name = useFormInput('');
+  const email = useFormInput('');
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert(`Name: ${name.value}, Email: ${email.value}`);
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input 
+        type="text" 
+        placeholder="Name" 
+        {...name} 
+      /&gt;
+      &lt;input 
+        type="email" 
+        placeholder="Email" 
+        {...email} 
+      /&gt;
+      &lt;button type="submit"&gt;Sign Up&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+
+            <div
+              class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 shadow-md"
+            >
+              <div class="flex items-center mb-2">
+                <i class="fas fa-lightbulb text-blue-600 mr-2"></i>
+                <h3 class="text-lg font-semibold text-blue-800">
+                  Benefits of Custom Hooks
+                </h3>
+              </div>
+              <ul class="list-disc pl-6 space-y-1 text-gray-700">
+                <li>
+                  <strong>Code reuse</strong> - Extract logic that can be shared
+                  between components
+                </li>
+                <li>
+                  <strong>Cleaner components</strong> - Separate concerns and
+                  keep component code focused
+                </li>
+                <li>
+                  <strong>Testability</strong> - Custom hooks can be tested
+                  independently
+                </li>
+                <li>
+                  <strong>Composition</strong> - Custom hooks can call other
+                  hooks, creating powerful compositions
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Essential Hooks In Depth -->
+          <section
+            id="essential-hooks"
+            class="bg-white rounded-xl p-8 shadow-xl border border-blue-100 hover:shadow-2xl transition-shadow duration-300"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-star text-blue-600 text-xl"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-blue-900">
+                Essential Hooks Quick Reference
+              </h2>
+            </div>
+
+            <p class="mb-6 text-gray-700">
+              A concise guide to React's most important hooks and how to use
+              them effectively.
+            </p>
+
+            <!-- Hook cards in a grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <!-- useState card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-blue-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-blue-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-database text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-blue-800">useState</h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Adds state to function components
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">const [state, setState] = useState(initialValue);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-blue-800 block text-sm mb-1"
+                      >Key features:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>
+                        Functional updates:
+                        <code>setState(prev => prev + 1)</code>
+                      </li>
+                      <li>
+                        Object updates:
+                        <code>setState({...prev, key: value})</code>
+                      </li>
+                      <li>
+                        Lazy init: <code>useState(() => expensiveCalc())</code>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- useEffect card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-purple-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-purple-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-purple-100 text-purple-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-sync-alt text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-purple-800">useEffect</h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Performs side effects in components
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">useEffect(() => {
+  // Side effect code
+  return () => { /* cleanup */ };
+}, [dependencies]);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-purple-800 block text-sm mb-1"
+                      >Dependency patterns:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>Empty array <code>[]</code>: Run once on mount</li>
+                      <li>No array: Run on every render</li>
+                      <li>
+                        With deps <code>[a, b]</code>: Run when deps change
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- useContext card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-green-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-green-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-green-100 text-green-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-project-diagram text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-green-800">useContext</h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Consumes context values without nesting
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">// Create context
+const ThemeContext = createContext('light');
+
+// Provider in parent
+<ThemeContext.Provider value={theme}>
+  <App />
+</ThemeContext.Provider>
+
+// Consumer in any child
+const theme = useContext(ThemeContext);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-green-800 block text-sm mb-1"
+                      >Best practices:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>Create custom context hooks</li>
+                      <li>Use specific contexts for different concerns</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- useReducer card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-indigo-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-indigo-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-indigo-100 text-indigo-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-sitemap text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-indigo-800">
+                      useReducer
+                    </h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Manages complex state logic
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">const [state, dispatch] = useReducer(
+  (state, action) => {
+    switch (action.type) {
+      case 'INCREMENT': return state + 1;
+      default: return state;
+    }
+  }, 
+  0 // initial state
+);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-indigo-800 block text-sm mb-1"
+                      >When to use:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>Complex state with multiple sub-values</li>
+                      <li>When state depends on previous state</li>
+                      <li>For more predictable state transitions</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- useMemo card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-amber-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-amber-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-amber-100 text-amber-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-bolt text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-amber-800">useMemo</h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Memoizes expensive calculations
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">const memoizedValue = useMemo(() => {
+  return computeExpensiveValue(a, b);
+}, [a, b]);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-amber-800 block text-sm mb-1"
+                      >Use cases:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>Expensive calculations</li>
+                      <li>
+                        Preserving referential equality for objects/arrays
+                      </li>
+                      <li>Preventing unnecessary re-renders</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- useCallback card -->
+              <div
+                class="bg-white rounded-xl shadow-md border border-cyan-100 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div class="p-5 border-b border-cyan-100">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="bg-cyan-100 text-cyan-800 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-code text-sm"></i>
+                    </span>
+                    <h3 class="text-lg font-bold text-cyan-800">useCallback</h3>
+                  </div>
+                  <p class="text-gray-700 text-sm">
+                    Memoizes callback functions
+                  </p>
+                </div>
+                <div class="p-5">
+                  <pre
+                    class="bg-gray-50 rounded-md p-3 text-xs"
+                  ><code class="language-jsx">const memoizedCallback = useCallback(
+  () => {
+    doSomething(a, b);
+  },
+  [a, b]
+);</code></pre>
+                  <div class="mt-3">
+                    <strong class="text-cyan-800 block text-sm mb-1"
+                      >Best for:</strong
+                    >
+                    <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+                      <li>Functions passed to optimized child components</li>
+                      <li>Used with React.memo() for performance</li>
+                      <li>Preventing unnecessary effect triggers</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Common patterns -->
+            <div
+              class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-lg font-bold text-blue-800 mb-3">
+                Common Hook Patterns
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <strong class="text-blue-700 text-sm">Data Fetching</strong>
+                  <pre
+                    class="bg-white rounded-md p-3 text-xs mt-1"
+                  ><code class="language-jsx">useEffect(() => {
+  let isMounted = true;
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await api.get();
+      if (isMounted) setData(data);
+    } catch (err) {
+      if (isMounted) setError(err);
+    } finally {
+      if (isMounted) setLoading(false);
+    }
+  };
+  fetchData();
+  return () => { isMounted = false };
+}, []);</code></pre>
+                </div>
+                <div>
+                  <strong class="text-blue-700 text-sm">Custom Hooks</strong>
+                  <pre
+                    class="bg-white rounded-md p-3 text-xs mt-1"
+                  ><code class="language-jsx">function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tips section -->
+            <div
+              class="bg-white p-5 rounded-xl border border-blue-200 shadow-sm"
+            >
+              <h3 class="text-lg font-bold text-blue-800 mb-2">
+                Hook Tips & Gotchas
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    <li>Only call hooks at the top level of your components</li>
+                    <li>
+                      Don't call hooks inside loops, conditions, or nested
+                      functions
+                    </li>
+                    <li>
+                      Custom hooks should start with "use" (e.g., useFormInput)
+                    </li>
+                    <li>
+                      The dependency array is crucial for useEffect, useMemo,
+                      and useCallback
+                    </li>
+                    <li>
+                      Always include all values referenced inside the hook from
+                      your component scope
+                    </li>
+                    <li>
+                      Use the exhaustive-deps ESLint rule to catch dependency
+                      issues
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    <li>Missing dependencies can cause stale closures</li>
+                    <li>
+                      Object and array dependencies cause re-renders unless
+                      memoized
+                    </li>
+                    <li>
+                      setState is asynchronous; don't rely on state updates
+                      immediately
+                    </li>
+                    <li>
+                      Multiple state updates in the same event handler are
+                      batched
+                    </li>
+                    <li>
+                      Always return cleanup functions in useEffect when working
+                      with subscriptions
+                    </li>
+                    <li>
+                      Use the functional update form for state that depends on
+                      previous state
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hook Patterns & Best Practices Section -->
+            <div class="mb-8">
+              <div class="flex items-center mb-4">
+                <div class="bg-gradient-to-r from-purple-400 to-indigo-500 p-3 rounded-lg mr-4">
+                  <i class="fas fa-lightbulb text-white text-xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">
+                  Hook Patterns & Best Practices
+                </h2>
+              </div>
+
+              <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-6">
+                <p class="text-gray-700">
+                  Master these essential patterns to write cleaner, more maintainable React code. Perfect for beginners and experienced developers alike!
+                </p>
+              </div>
+
+              <!-- Dependency Array Visual Guide -->
+              <div class="bg-white p-5 rounded-xl border-l-4 border-blue-500 shadow-sm mb-6 hover:shadow-md transition-shadow duration-300">
+                <div class="flex items-center mb-3">
+                  <span class="bg-blue-100 p-2 rounded-full mr-3">
+                    <i class="fas fa-sync-alt text-blue-600"></i>
+                  </span>
+                  <h3 class="text-lg font-bold text-blue-800">
+                    Dependency Arrays Simplified
+                  </h3>
+                </div>
+
+                <p class="text-gray-700 mb-4">
+                  The dependency array controls when your effects run. Think of it like telling React "only run this effect when these values change":
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div class="bg-blue-50 p-3 rounded-md border border-blue-100">
+                    <div class="text-center mb-2 text-blue-800 font-semibold">Empty Array []</div>
+                    <div class="bg-white p-2 rounded text-xs text-center">
+                      <code>useEffect(() => { ... }, [])</code>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">Runs once after mount</p>
+                  </div>
+                  
+                  <div class="bg-purple-50 p-3 rounded-md border border-purple-100">
+                    <div class="text-center mb-2 text-purple-800 font-semibold">No Array</div>
+                    <div class="bg-white p-2 rounded text-xs text-center">
+                      <code>useEffect(() => { ... })</code>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">Runs after every render</p>
+                  </div>
+                  
+                  <div class="bg-indigo-50 p-3 rounded-md border border-indigo-100">
+                    <div class="text-center mb-2 text-indigo-800 font-semibold">With Dependencies</div>
+                    <div class="bg-white p-2 rounded text-xs text-center">
+                      <code>useEffect(() => { ... }, [count, name])</code>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">Runs when dependencies change</p>
+                  </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-md mb-4">
+                  <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-code mr-2"></i>Example:
+                  </h4>
+                  <pre><code class="language-jsx">function ProfilePage({ userId }) {
+  // This effect runs when userId changes
+  useEffect(() => {
+    document.title = `Viewing ${userId}'s profile`;
+    
+    // Cleanup runs before next effect or unmount
+    return () => {
+      document.title = 'React App';
+    };
+  }, [userId]);  // 👈 Only dependent on userId
+  
+  return <div>Profile content...</div>;
+}</code></pre>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-md border-l-4 border-amber-400">
+                  <h4 class="font-semibold text-amber-700 mb-1 flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Common Beginner Mistakes:
+                  </h4>
+                  <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    <li>
+                      <span class="font-medium">Empty dependency array</span> when the effect uses props or state
+                    </li>
+                    <li>
+                      <span class="font-medium">Missing dependencies</span> leading to stale closures and bugs
+                    </li>
+                    <li>
+                      <span class="font-medium">Object/array dependencies</span> causing infinite re-render loops
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Cleanup Functions Made Simple -->
+              <div class="bg-white p-5 rounded-xl border-l-4 border-green-500 shadow-sm mb-6 hover:shadow-md transition-shadow duration-300">
+                <div class="flex items-center mb-3">
+                  <span class="bg-green-100 p-2 rounded-full mr-3">
+                    <i class="fas fa-broom text-green-600"></i>
+                  </span>
+                  <h3 class="text-lg font-bold text-green-800">
+                    Cleanup Functions Made Simple
+                  </h3>
+                </div>
+
+                <p class="text-gray-700 mb-4">
+                  Cleanup functions prevent memory leaks by removing event listeners, subscriptions, or timers when your component unmounts:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                  <div class="bg-red-50 p-4 rounded-md">
+                    <h4 class="font-semibold text-red-800 mb-2 flex items-center">
+                      <i class="fas fa-times-circle mr-2"></i>Without Cleanup (Bad)
+                    </h4>
+                    <pre><code class="language-jsx">useEffect(() => {
+  // 🚨 This creates a new listener each render
+  // but never removes old ones!
+  window.addEventListener('resize', handleResize);
+}, []);</code></pre>
+                    <p class="text-xs italic text-red-700 mt-2">Memory leak: listeners accumulate</p>
+                  </div>
+                  
+                  <div class="bg-green-50 p-4 rounded-md">
+                    <h4 class="font-semibold text-green-800 mb-2 flex items-center">
+                      <i class="fas fa-check-circle mr-2"></i>With Cleanup (Good)
+                    </h4>
+                    <pre><code class="language-jsx">useEffect(() => {
+  // ✅ Add listener
+  window.addEventListener('resize', handleResize);
+  
+  // ✅ Clean up by removing listener
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);</code></pre>
+                  </div>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-md border border-green-100">
+                  <h4 class="font-semibold text-green-800 mb-2">When do you need cleanup?</h4>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <div class="bg-white p-2 rounded shadow-sm text-center">
+                      <i class="fas fa-mouse-pointer text-green-700 mb-1"></i>
+                      <p class="text-xs">Event Listeners</p>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow-sm text-center">
+                      <i class="fas fa-plug text-green-700 mb-1"></i>
+                      <p class="text-xs">Subscriptions</p>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow-sm text-center">
+                      <i class="fas fa-clock text-green-700 mb-1"></i>
+                      <p class="text-xs">Timers</p>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow-sm text-center">
+                      <i class="fas fa-network-wired text-green-700 mb-1"></i>
+                      <p class="text-xs">Connections</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Hooks Simplified -->
+              <div class="bg-white p-5 rounded-xl border-l-4 border-purple-500 shadow-sm mb-6 hover:shadow-md transition-shadow duration-300">
+                <div class="flex items-center mb-3">
+                  <span class="bg-purple-100 p-2 rounded-full mr-3">
+                    <i class="fas fa-puzzle-piece text-purple-600"></i>
+                  </span>
+                  <h3 class="text-lg font-bold text-purple-800">
+                    Custom Hooks: Code Superpowers
+                  </h3>
+                </div>
+
+                <p class="text-gray-700 mb-4">
+                  Custom hooks let you extract and reuse logic across components, keeping your code DRY and focused:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <div class="bg-purple-50 p-3 rounded-md">
+                      <h4 class="font-semibold text-purple-800 mb-2 flex items-center">
+                        <i class="fas fa-magic mr-2"></i>Creating a Custom Hook
+                      </h4>
+                      <pre><code class="language-jsx">// 1. Name starts with "use"
+function useWindowSize() {
+  // 2. Use other hooks inside
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // 3. Return values
+  return size;
+}</code></pre>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div class="bg-indigo-50 p-3 rounded-md">
+                      <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                        <i class="fas fa-plug mr-2"></i>Using Your Custom Hook
+                      </h4>
+                      <pre><code class="language-jsx">function ResponsiveLayout() {
+  // Just use it like any built-in hook!
+  const { width, height } = useWindowSize();
+  
+  return (
+    <div>
+      {width < 768 ? (
+        <MobileLayout />
+      ) : (
+        <DesktopLayout />
+      )}
+      <div>Window size: {width} x {height}</div>
+    </div>
+  );
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-white border border-purple-200 p-3 rounded-md mt-3">
+                      <h5 class="text-purple-800 text-sm font-semibold mb-2">Custom Hook Naming Tips:</h5>
+                      <ul class="list-disc pl-4 text-xs text-gray-700 space-y-1">
+                        <li>Always start with "use" (React's convention)</li>
+                        <li>Name should describe what it does: <code>useForm</code>, <code>useFetch</code></li>
+                        <li>Be specific: <code>useLocalStorage</code> vs <code>useStorage</code></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hook Composition Visual Guide -->
+              <div class="bg-white p-5 rounded-xl border-l-4 border-indigo-500 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="flex items-center mb-3">
+                  <span class="bg-indigo-100 p-2 rounded-full mr-3">
+                    <i class="fas fa-layer-group text-indigo-600"></i>
+                  </span>
+                  <h3 class="text-lg font-bold text-indigo-800">
+                    Hook Composition: Building with Blocks
+                  </h3>
+                </div>
+
+                <p class="text-gray-700 mb-4">
+                  Like LEGO blocks, hooks can be combined in different ways to build complex functionality from simple pieces:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div class="bg-blue-50 p-3 rounded-md border border-blue-100 flex flex-col h-full">
+                    <div class="text-center text-blue-800 font-semibold mb-2">Sequential</div>
+                    <div class="flex-grow flex items-center justify-center">
+                      <div class="bg-blue-200 rounded-lg p-2 w-20 h-12 mb-1 flex items-center justify-center shadow-md">
+                        <i class="fas fa-code text-blue-700"></i>
+                        <span class="ml-1 text-xs font-bold">Hook A</span>
+                      </div>
+                      <i class="fas fa-arrow-right mx-2 text-blue-500"></i>
+                      <div class="bg-blue-300 rounded-lg p-2 w-20 h-12 mb-1 flex items-center justify-center shadow-md">
+                        <i class="fas fa-code-branch text-blue-800"></i>
+                        <span class="ml-1 text-xs font-bold">Hook B</span>
+                      </div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">One hook uses another hook's output</p>
+                  </div>
+                  
+                  <div class="bg-purple-50 p-3 rounded-md border border-purple-100 flex flex-col h-full">
+                    <div class="text-center text-purple-800 font-semibold mb-2">Conditional</div>
+                    <div class="flex-grow flex items-center justify-center">
+                      <div class="bg-purple-200 rounded-lg p-2 w-20 h-12 mb-1 flex items-center justify-center shadow-md">
+                        <i class="fas fa-question text-purple-700"></i>
+                        <span class="ml-1 text-xs font-bold">if( )</span>
+                      </div>
+                      <i class="fas fa-arrow-right mx-2 text-purple-500"></i>
+                      <div class="bg-purple-300 rounded-lg p-2 w-20 h-12 mb-1 flex items-center justify-center shadow-md">
+                        <i class="fas fa-code text-purple-800"></i>
+                        <span class="ml-1 text-xs font-bold">Hook</span>
+                      </div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">Using hooks based on conditions</p>
+                  </div>
+                  
+                  <div class="bg-indigo-50 p-3 rounded-md border border-indigo-100 flex flex-col h-full">
+                    <div class="text-center text-indigo-800 font-semibold mb-2">Parallel</div>
+                    <div class="flex-grow flex flex-col items-center justify-center">
+                      <div class="flex gap-2 mb-2">
+                        <div class="bg-indigo-200 rounded-lg p-2 w-16 h-8 flex items-center justify-center shadow-md">
+                          <i class="fas fa-code text-indigo-700"></i>
+                          <span class="ml-1 text-xs font-bold">Hook A</span>
+                        </div>
+                        <div class="bg-indigo-200 rounded-lg p-2 w-16 h-8 flex items-center justify-center shadow-md">
+                          <i class="fas fa-code text-indigo-700"></i>
+                          <span class="ml-1 text-xs font-bold">Hook B</span>
+                        </div>
+                      </div>
+                      <i class="fas fa-arrow-down my-1 text-indigo-500"></i>
+                      <div class="bg-indigo-300 rounded-lg p-2 w-20 h-8 flex items-center justify-center shadow-md">
+                        <i class="fas fa-magic text-indigo-800"></i>
+                        <span class="ml-1 text-xs font-bold">Result</span>
+                      </div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 text-center">Multiple hooks used together</p>
+                  </div>
+                </div>
+
+                <!-- Real world example -->
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-md mb-4">
+                  <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                    <i class="fas fa-code mr-2"></i>Real-world Example: useProductSearch
+                  </h4>
+                  <pre><code class="language-jsx">// A practical hook that combines multiple hooks
+function useProductSearch(query, category) {
+  // Uses useState internally  
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // Uses useMemo to construct the search URL
+  const searchUrl = useMemo(() => {
+    return `/api/products?q=${query}${category ? `&category=${category}` : ''}`;
+  }, [query, category]);
+  
+  // Uses useCallback to memoize the search function
+  const search = useCallback(async () => {
+    if (!query) return;
+    
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await fetch(searchUrl);
+      const data = await response.json();
+      setResults(data);
+    } catch (err) {
+      setError(err.message);
+      setResults([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchUrl]);
+  
+  // Uses useEffect to trigger the search
+  useEffect(() => {
+    search();
+  }, [search]);
+  
+  return { results, isLoading, error, refresh: search };
+}
+
+// Usage in a component
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('');
+  const { results, isLoading, error } = useProductSearch(query, category);
+  
+  // The component stays clean and focused
+  return (
+    <div>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="books">Books</option>
+      </select>
+      
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
+      <ProductList products={results} />
+    </div>
+  );
+}</code></pre>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-md">
+                  <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-lightbulb mr-2"></i>Key Takeaways:
+                  </h4>
+                  <ul class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
+                    <li class="flex items-start">
+                      <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                      <span class="text-sm text-gray-700">Start with small, focused hooks</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                      <span class="text-sm text-gray-700">Combine them to build complex features</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                      <span class="text-sm text-gray-700">Keep component code clean with custom hooks</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                      <span class="text-sm text-gray-700">Share logic across components</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../../assets/js/components-loader.js"></script>
+    <script>
+      // Initialize syntax highlighting
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+        });
+
+        // Scroll progress indicator
+        const scrollIndicator = document.getElementById("scrollIndicator");
+        const updateScrollProgress = () => {
+          const winScroll =
+            document.body.scrollTop || document.documentElement.scrollTop;
+          const height =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          scrollIndicator.style.width = scrolled + "%";
+        };
+
+        window.addEventListener("scroll", updateScrollProgress);
+      });
+    </script>
+  </body>
+</html>

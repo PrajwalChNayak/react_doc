@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'spin-slow': 'spin 3s linear infinite',
+            }
+          }
+        }
+      }
+    </script>
+    <title>Context API | React Documentation</title>
+  </head>
+  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+    <main class="flex-1 container mx-auto px-4 py-10">
+      <h2 class="text-2xl font-semibold mb-4">Context API</h2>
+      <p class="text-lg text-gray-700 mb-4">Understand how to use the Context API for global state management in React.</p>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">What is Context API?</h3>
+        <p class="text-gray-700">The Context API is a React structure that enables you to exchange unique details and assists in solving prop-drilling from all levels of your application.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">When to Use Context API?</h3>
+        <p class="text-gray-700">Context API is used when some data needs to be accessible by many components at different nesting levels. It's great for global state management.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">How to Use Context API?</h3>
+        <p class="text-gray-700">To use the Context API, you need to create a context using <code class="text-blue-500">React.createContext()</code>, provide the context to your component tree, and consume the context in any component that needs it.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">Creating a Context</h3>
+        <p class="text-gray-700">You can create a context in React by using the <code class="text-blue-500">React.createContext()</code> method. This method returns a context object, which you can use to provide and consume values.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">Providing Context</h3>
+        <p class="text-gray-700">To make a context available to all components in your app, wrap your component tree with the context provider. This is done using the <code class="text-blue-500">Context.Provider</code> component.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">Consuming Context</h3>
+        <p class="text-gray-700">There are two ways to consume context in React: using the <code class="text-blue-500">Context.Consumer</code> component or the <code class="text-blue-500">useContext</code> hook. The hook is the preferred way in functional components.</p>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-2">Example</h3>
+        <p class="text-gray-700">Here's a simple example of how the Context API works:</p>
+        <pre class="bg-gray-100 p-4 rounded-lg">
+          <code class="text-gray-800">
+{`// Create a Context
+const MyContext = React.createContext();
+
+// Create a provider component
+function MyProvider({ children }) {
+  const [value, setValue] = React.useState("some value");
+
+  return (
+    <MyContext.Provider value={{ value, setValue }}>
+      {children}
+    </MyContext.Provider>
+  );
+}
+
+// Consuming the context in a component
+function MyComponent() {
+  const { value, setValue } = React.useContext(MyContext);
+
+  return (
+    <div>
+      <p>The context value is: {value}</p>
+      <button onClick={() => setValue("a new value")}>
+        Change Context Value
+      </button>
+    </div>
+  );
+}`}
+          </code>
+        </pre>
+      </section>
+    </main>
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../assets/js/components-loader.js"></script>
+  </body>
+</html>

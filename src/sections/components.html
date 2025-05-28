@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+            animation: {
+              'spin-slow': 'spin 3s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'blob': 'blob 7s infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'bounce-slow': 'bounce 3s infinite',
+              'fade-in': 'fadeIn 0.5s ease-out',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' }
+              },
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' }
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <title>Components | React Documentation</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+      
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+      
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: 'Fira Code', monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+      
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      
+      .highlight-line {
+        background-color: rgba(80, 80, 80, 0.2);
+        display: block;
+      }
+      
+      .animation-delay-2 {
+        animation-delay: 2s;
+      }
+      
+      .animation-delay-4 {
+        animation-delay: 4s;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      
+      .toc-link.active {
+        color: #4f46e5;
+        font-weight: 600;
+        border-left: 3px solid #4f46e5;
+        background-color: rgba(79, 70, 229, 0.05);
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+      
+      /* TOC animation and styling */
+      #toc {
+        animation: slidein 0.5s ease-out forwards;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      
+      @keyframes slidein {
+        0% {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+      /* Active TOC link animation */
+      .toc-link.active {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.1);
+        }
+        70% {
+          box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <!-- Floating TOC for desktop
+      <div class="hidden xl:block fixed right-8 top-24 w-64 bg-white/90 backdrop-blur-md p-4 rounded-lg border border-blue-200 shadow-xl max-h-[80vh] overflow-y-auto animate-fade-in transition-all transform translate-x-0 opacity-100 z-50" id="toc">
+        <h4 class="font-bold text-blue-800 mb-3 pb-2 border-b border-blue-100 flex items-center">
+          <i class="fa-solid fa-list-ul text-blue-600 mr-2"></i>
+          On This Page
+        </h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#jsx-fundamentals" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">JSX Fundamentals</a></li>
+          <li><a href="#functional-components" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Functional Components</a></li>
+          <li><a href="#rendering-elements" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Rendering Elements</a></li>
+          <li><a href="#component-types" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Component Types</a></li>
+          <li><a href="#props" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Props & PropTypes</a></li>
+          <li><a href="#children-prop" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Children Prop</a></li>
+          <li><a href="#component-composition" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Component Composition</a></li>
+          <li><a href="#naming-conventions" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Naming Conventions</a></li>
+          <li><a href="#creation-guide" class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r">Creation Guide</a></li>
+        </ul>
+      </div> -->
+      <!-- Hero Section with Enhanced Animation -->
+      <div class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-8 border border-blue-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 right-24 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2"></div>
+        <div class="absolute -bottom-8 left-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4"></div>
+        <div class="absolute bottom-10 left-40 w-32 h-32 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2"></div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute top-10 right-10 text-3xl text-blue-300 opacity-30 rotate-12">&lt;/&gt;</div>
+        <div class="absolute bottom-10 left-10 text-4xl text-purple-300 opacity-20 -rotate-6">{}</div>
+        
+        <div class="relative z-10">
+          <div class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-blue-100">
+            <i class="fa-solid fa-cubes text-5xl text-purple-600 animate-float"></i>
+            <div class="ml-4 pl-4 border-l border-purple-200">
+              <div class="text-xs uppercase tracking-widest text-purple-600 font-semibold">React Essentials</div>
+              <div class="text-gray-700 font-medium">Building Blocks</div>
+            </div>
+          </div>
+          
+          <h2 class="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-800 via-indigo-700 to-purple-800 drop-shadow-sm leading-tight">
+            Components in React
+            <span class="text-lg align-top bg-purple-100 text-purple-800 px-2 py-1 rounded ml-2 font-normal">Core Concept</span>
+          </h2>
+          
+          <p class="text-xl text-gray-700 mb-6 leading-relaxed max-w-2xl font-light">
+            Components are the reusable building blocks that power React applications. This comprehensive guide covers everything you need to know about creating and using React components — from basic JSX syntax to advanced composition patterns.
+          </p>
+          
+          <!-- Stats/Quick Facts -->
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center">
+              <i class="fa-solid fa-code text-blue-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Written with JSX</span>
+            </div>
+            <div class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center">
+              <i class="fa-solid fa-recycle text-green-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Highly Reusable</span>
+            </div>
+            <div class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center">
+              <i class="fa-solid fa-arrows-to-circle text-purple-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Props & State</span>
+            </div>
+            <div class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center">
+              <i class="fa-solid fa-sitemap text-amber-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Composable Architecture</span>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Quick Reference Index - Enhanced -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-6 shadow-lg border border-purple-200 relative z-10 animate-fade-in">
+          <div class="flex items-center mb-5">
+            <div class="p-2 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-compass text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-purple-800 text-xl">Quick Reference Guide</h3>
+              <p class="text-gray-600 text-sm">Navigate to the section you're interested in</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="#jsx-fundamentals" class="bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 p-3 rounded-lg shadow-sm border border-purple-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
+                <i class="fa-solid fa-code text-purple-600"></i>
+              </div>
+              <span class="text-purple-800 font-medium">JSX Fundamentals</span>
+            </a>
+            <a href="#functional-components" class="bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-3 rounded-lg shadow-sm border border-green-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
+                <i class="fa-solid fa-function text-green-600"></i>
+              </div>
+              <span class="text-green-800 font-medium">Functional Components</span>
+            </a>
+            <a href="#rendering-elements" class="bg-gradient-to-r from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 p-3 rounded-lg shadow-sm border border-red-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-red-200 transition-colors">
+                <i class="fa-solid fa-display text-red-600"></i>
+              </div>
+              <span class="text-red-800 font-medium">Rendering Elements</span>
+            </a>
+            <a href="#component-types" class="bg-gradient-to-r from-amber-50 to-yellow-50 hover:from-amber-100 hover:to-yellow-100 p-3 rounded-lg shadow-sm border border-amber-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-amber-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-amber-200 transition-colors">
+                <i class="fa-solid fa-code-branch text-amber-600"></i>
+              </div>
+              <span class="text-amber-800 font-medium">Component Types</span>
+            </a>
+            <a href="#props" class="bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 p-3 rounded-lg shadow-sm border border-blue-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors">
+                <i class="fa-solid fa-arrow-right-to-bracket text-blue-600"></i>
+              </div>
+              <span class="text-blue-800 font-medium">Props & PropTypes</span>
+            </a>
+            <a href="#children-prop" class="bg-gradient-to-r from-pink-50 to-rose-50 hover:from-pink-100 hover:to-rose-100 p-3 rounded-lg shadow-sm border border-pink-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-pink-200 transition-colors">
+                <i class="fa-solid fa-child text-pink-600"></i>
+              </div>
+              <span class="text-pink-800 font-medium">Children Prop</span>
+            </a>
+            <a href="#component-composition" class="bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 p-3 rounded-lg shadow-sm border border-purple-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
+                <i class="fa-solid fa-object-group text-purple-600"></i>
+              </div>
+              <span class="text-purple-800 font-medium">Component Composition</span>
+            </a>
+            <a href="#naming-conventions" class="bg-gradient-to-r from-teal-50 to-emerald-50 hover:from-teal-100 hover:to-emerald-100 p-3 rounded-lg shadow-sm border border-teal-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-teal-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-teal-200 transition-colors">
+                <i class="fa-solid fa-signature text-teal-600"></i>
+              </div>
+              <span class="text-teal-800 font-medium">Naming Conventions</span>
+            </a>
+            <a href="#creation-guide" class="bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 p-3 rounded-lg shadow-sm border border-orange-100 transition-all hover:shadow-md flex items-center group">
+              <div class="bg-orange-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-orange-200 transition-colors">
+                <i class="fa-solid fa-list-check text-orange-600"></i>
+              </div>
+              <span class="text-orange-800 font-medium">Creation Guide</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- What are Components - Enhanced with Visual Elements -->
+        <section class="mb-10">
+          <div class="flex items-center mb-4 group">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-700 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mr-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-puzzle-piece text-white text-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-blue-800 group-hover:text-blue-700 transition-colors">What are Components?</h3>
+          </div>
+          <div class="bg-gradient-to-r from-white to-blue-50 rounded-xl shadow-lg p-8 border border-blue-100">
+            <p class="text-gray-700 mb-6 leading-relaxed text-lg">
+              Components are reusable, self-contained pieces of code that return React elements describing what should appear on the screen. They're like JavaScript functions that accept inputs (called "props") and return React elements that describe what should appear in the UI.
+            </p>
+            
+            <!-- Visual explanation of components with diagram -->
+            <div class="bg-white/80 backdrop-blur-sm p-4 rounded-lg mb-6 border border-blue-100 flex justify-center">
+              <div class="flex flex-wrap items-center justify-center max-w-3xl gap-3">
+                <div class="text-center">
+                  <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 shadow-sm mb-2">
+                    <i class="fa-solid fa-cube text-blue-600 text-3xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-blue-800">Component</span>
+                </div>
+                <i class="fa-solid fa-plus text-gray-400"></i>
+                <div class="text-center">
+                  <div class="bg-purple-50 p-3 rounded-lg border border-purple-200 shadow-sm mb-2">
+                    <i class="fa-solid fa-arrow-right-to-bracket text-purple-600 text-3xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-purple-800">Props</span>
+                </div>
+                <i class="fa-solid fa-equals text-gray-400"></i>
+                <div class="text-center">
+                  <div class="bg-green-50 p-3 rounded-lg border border-green-200 shadow-sm mb-2">
+                    <i class="fa-solid fa-code text-green-600 text-3xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-green-800">JSX Elements</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-6">
+              <div class="flex-1">
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                  Components let you split the UI into independent, reusable pieces, and think about each piece in isolation. They can be as small as a button or as large as an entire page.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg mb-4 shadow-sm">
+                  <p class="font-medium text-blue-700 mb-2">Key Component Characteristics:</p>
+                  <ul class="space-y-2 text-gray-700 pl-1">
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center bg-blue-100 rounded-full h-6 w-6 text-blue-700 font-bold mr-2 text-xs">✓</span>
+                      <span>Reusable across your application</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center bg-blue-100 rounded-full h-6 w-6 text-blue-700 font-bold mr-2 text-xs">✓</span>
+                      <span>Accept inputs called props</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center bg-blue-100 rounded-full h-6 w-6 text-blue-700 font-bold mr-2 text-xs">✓</span>
+                      <span>Return React elements (JSX)</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center bg-blue-100 rounded-full h-6 w-6 text-blue-700 font-bold mr-2 text-xs">✓</span>
+                      <span>Can maintain their own internal state</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center bg-blue-100 rounded-full h-6 w-6 text-blue-700 font-bold mr-2 text-xs">✓</span>
+                      <span>Can be composed together to build complex UIs</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex-1 bg-white p-0 rounded-lg shadow-md border border-blue-100 overflow-hidden">
+                <div class="code-header flex items-center justify-between px-4 py-2">
+                  <div class="flex items-center">
+                    <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+                    <span class="text-sm font-mono">Button.jsx</span>
+                  </div>
+                  <div class="flex space-x-1">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                  </div>
+                </div>
+                <div class="code-block">
+                  <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0">
+<code class="language-jsx">function Button({ text, onClick, color = "blue" }) {
+  return (
+    &lt;button
+      onClick={onClick}
+      className={`bg-${color}-500 text-white 
+      px-4 py-2 rounded hover:bg-${color}-600 
+      transition-colors`}
+    &gt;
+      {text}
+    &lt;/button&gt;
+  );
+}
+
+// Usage
+&lt;Button 
+  text="Click Me" 
+  onClick={() => alert('Hello!')} 
+  color="purple" 
+/&gt;</code>
+                  </pre>
+                </div>
+                
+                <div class="px-6 py-4 bg-gray-100 border-t border-gray-200">
+                  <div class="text-sm text-gray-600 mb-2">Try different button styles:</div>
+                  <div class="flex flex-wrap gap-2">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-sm">Default</button>
+                    <button class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors text-sm">Purple</button>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors text-sm">Green</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm">Red</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      
+      <!-- Component Documentation Section -->
+      <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+        <div class="flex items-center mb-8">
+          <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-lg mr-4">
+            <i class="fa-solid fa-th text-white text-xl"></i>
+          </div>
+          <h3 class="text-3xl font-bold text-blue-800">Popular React Components</h3>
+        </div>
+        
+        <!-- Component Quick Index -->
+        <div class="mb-8 bg-blue-50 p-4 rounded-lg border border-blue-100">
+          <div class="flex items-center mb-3">
+            <i class="fa-solid fa-list-ul text-blue-600 mr-2"></i>
+            <h4 class="font-medium text-blue-800">Quick Component Index</h4>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a href="#button" class="px-3 py-1.5 bg-white shadow-sm rounded-md text-sm text-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center">
+              <i class="fa-solid fa-square-caret-right text-xs mr-1.5"></i>Button
+            </a>
+            <a href="#card" class="px-3 py-1.5 bg-white shadow-sm rounded-md text-sm text-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center">
+              <i class="fa-solid fa-square-caret-right text-xs mr-1.5"></i>Card
+            </a>
+            <a href="#nav" class="px-3 py-1.5 bg-white shadow-sm rounded-md text-sm text-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center">
+              <i class="fa-solid fa-square-caret-right text-xs mr-1.5"></i>Navigation
+            </a>
+            <a href="#form" class="px-3 py-1.5 bg-white shadow-sm rounded-md text-sm text-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center">
+              <i class="fa-solid fa-square-caret-right text-xs mr-1.5"></i>Form
+            </a>
+            <a href="#modal" class="px-3 py-1.5 bg-white shadow-sm rounded-md text-sm text-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center">
+              <i class="fa-solid fa-square-caret-right text-xs mr-1.5"></i>Modal
+            </a>
+          </div>
+        </div>
+        
+        <!-- Button Component - Enhanced -->
+        <div class="mb-12 pb-8 border-b border-gray-200">
+          <div id="button" class="scroll-mt-24 flex items-center mb-4 group">
+            <div class="p-2 bg-gradient-to-br from-purple-500 to-purple-700 rounded-lg shadow-lg mr-3 group-hover:scale-110 transition-all">
+              <i class="fa-solid fa-hand-pointer text-white text-lg"></i>
+            </div>
+            <h4 class="text-2xl font-bold text-purple-700 group-hover:text-purple-600 transition-colors">
+              Button Component
+            </h4>
+          </div>
+          
+          <div class="bg-white p-6 border border-purple-100 rounded-lg shadow-sm">
+            <div class="mb-6">
+              <h5 class="text-xl font-bold mb-3 text-gray-800 flex items-center">
+                <i class="fa-solid fa-info-circle text-purple-500 mr-2"></i>
+                What is it?
+              </h5>
+              <p class="text-gray-700 text-lg leading-relaxed">
+                A clickable button that lets users take actions and make choices with a single tap. Buttons are one of the most common UI elements in React applications.
+              </p>
+            </div>
+            
+            <!-- Interactive Button Examples -->
+            <div class="mb-8 bg-purple-50 p-4 rounded-lg">
+              <h6 class="font-medium text-purple-800 mb-3">Button Variants</h6>
+              <div class="flex flex-wrap gap-3 mb-3">
+                <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">Primary</button>
+                <button class="bg-white text-purple-700 px-4 py-2 rounded border border-purple-300 hover:bg-purple-50 transition-colors">Secondary</button>
+                <button class="bg-transparent text-purple-600 px-4 py-2 rounded hover:underline transition-colors">Text</button>
+                <button class="bg-purple-600 text-white px-4 py-2 rounded opacity-50 cursor-not-allowed" disabled>Disabled</button>
+                <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors flex items-center">
+                  <i class="fa-solid fa-plus mr-2"></i> With Icon
+                </button>
+              </div>
+              <div class="text-sm text-purple-700 italic">
+                These are visual examples only - not interactive in documentation
+              </div>
+            </div>
+          
+            <div class="mb-8">
+              <h5 class="text-xl font-bold mb-3 text-gray-800 flex items-center">
+                <i class="fa-solid fa-sliders text-purple-500 mr-2"></i>
+                Common Props
+              </h5>
+              <div class="overflow-x-auto rounded-lg shadow-sm">
+                <table class="min-w-full bg-white border border-purple-100 text-lg">
+                  <thead class="bg-gradient-to-r from-purple-100 to-purple-50">
+                    <tr>
+                      <th class="py-3 px-6 border-b text-left text-purple-700">Prop Name</th>
+                      <th class="py-3 px-6 border-b text-left text-purple-700">What it Does</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="hover:bg-purple-50 transition-colors">
+                      <td class="py-3 px-6 border-b font-medium font-mono text-sm">children</td>
+                      <td class="py-3 px-6 border-b">The text or content inside the button</td>
+                    </tr>
+                    <tr class="hover:bg-purple-50 transition-colors">
+                      <td class="py-3 px-6 border-b font-medium font-mono text-sm">onClick</td>
+                      <td class="py-3 px-6 border-b">Function that runs when button is clicked</td>
+                    </tr>
+                    <tr class="hover:bg-purple-50 transition-colors">
+                      <td class="py-3 px-6 border-b font-medium font-mono text-sm">disabled</td>
+                    <td class="py-3 px-6 border-b">When true, makes the button unclickable</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h5 class="text-xl font-bold mb-3 text-gray-800">Example</h5>
+            <pre class="bg-gray-800 text-gray-100 p-4 rounded-md overflow-x-auto text-lg">
+<code>import React from 'react';
+
+function MyApp() {
+  return (
+    &lt;button 
+      onClick={() =&gt; alert('Clicked!')}
+      className="bg-blue-500 text-white p-2 rounded"
+    &gt;
+      Click Me
+    &lt;/button&gt;
+  );
+}</code>
+            </pre>
+          </div>
+        </div>
+        
+        <!-- Card Component -->
+        <div class="mb-12 pb-8 border-b border-gray-200" id="card">
+          <div class="flex items-center mb-6 group">
+            <div class="bg-gradient-to-br from-pink-500 to-rose-700 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mr-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-id-card text-white text-xl"></i>
+            </div>
+            <div>
+              <span class="text-xs uppercase tracking-wider text-rose-600 font-bold bg-rose-100 px-2 py-1 rounded">UI Component</span>
+              <h4 class="text-2xl font-bold text-rose-700">
+                Card Component
+              </h4>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-r from-white to-rose-50 rounded-xl p-6 shadow-lg mb-8 border border-rose-100">
+            <div class="flex flex-col md:flex-row gap-8 mb-8">
+              <div class="flex-1">
+                <div class="bg-white p-4 rounded-lg shadow-md border border-rose-100 mb-4">
+                  <div class="flex items-center mb-2">
+                    <div class="h-6 w-6 rounded-full bg-rose-500 flex items-center justify-center mr-2">
+                      <i class="fa-solid fa-info text-white text-xs"></i>
+                    </div>
+                    <h5 class="font-bold text-rose-800">What is a Card Component?</h5>
+                  </div>
+                  <p class="text-gray-700 text-lg ml-8 border-l-2 border-rose-200 pl-4">
+                    A container that groups related information, images, and actions together in a visually distinct, 
+                    structured format. Cards are versatile UI elements that provide a consistent way to display content.
+                  </p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border border-rose-100">
+                  <div class="flex items-center mb-3">
+                    <div class="h-6 w-6 rounded-full bg-rose-500 flex items-center justify-center mr-2">
+                      <i class="fa-solid fa-puzzle-piece text-white text-xs"></i>
+                    </div>
+                    <h5 class="font-bold text-rose-800">Common Use Cases</h5>
+                  </div>
+                  <ul class="space-y-2 ml-8 text-gray-700">
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-rose-500 mr-2"></i>
+                      Product listings in e-commerce sites
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-rose-500 mr-2"></i>
+                      Content previews in blogs or news sites
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-rose-500 mr-2"></i>
+                      User profiles or contact information
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-rose-500 mr-2"></i>
+                      Feature highlights on landing pages
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- Card Examples -->
+              <div class="flex-1">
+                <h5 class="font-bold text-xl mb-4 text-rose-700 flex items-center">
+                  <i class="fa-solid fa-eye mr-2"></i>
+                  Card Variants
+                </h5>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <!-- Product Card Example -->
+                  <div class="border rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Product" class="w-full h-32 object-cover" />
+                    <div class="p-4">
+                      <h3 class="text-lg font-bold">Running Shoes</h3>
+                      <p class="text-gray-600 text-sm mb-2">Ultra lightweight running shoes with cloud comfort.</p>
+                      <div class="flex justify-between items-center">
+                        <span class="font-bold text-rose-600">$95.00</span>
+                        <button class="bg-rose-500 hover:bg-rose-600 text-white text-sm px-3 py-1 rounded transition-colors">
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Profile Card Example -->
+                  <div class="border rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-12"></div>
+                    <div class="p-4 text-center relative">
+                      <div class="w-16 h-16 rounded-full border-4 border-white bg-gray-200 absolute -top-8 left-1/2 transform -translate-x-1/2 overflow-hidden">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-full object-cover" alt="Profile" />
+                      </div>
+                      <div class="mt-8">
+                        <h3 class="font-bold">Jane Smith</h3>
+                        <p class="text-gray-500 text-sm">UI/UX Designer</p>
+                        <div class="flex justify-center space-x-2 mt-3">
+                          <button class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-xs">Follow</button>
+                          <button class="bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded text-xs text-blue-700">Message</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-8">
+              <h5 class="font-bold text-xl mb-4 text-rose-700 flex items-center">
+                <i class="fa-solid fa-gears mr-2"></i>
+                Component API
+              </h5>
+              
+              <div class="bg-white rounded-lg shadow-md overflow-hidden border border-rose-100">
+                <div class="bg-rose-100 px-6 py-3 border-b border-rose-200">
+                  <h5 class="font-mono font-bold text-rose-800">
+                    &lt;Card&gt; Props
+                  </h5>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full bg-white text-sm">
+                    <thead>
+                      <tr class="bg-gray-50 border-b border-gray-200">
+                        <th class="py-3 px-6 text-left font-bold text-rose-800">Prop Name</th>
+                        <th class="py-3 px-6 text-left font-bold text-rose-800">Type</th>
+                        <th class="py-3 px-6 text-left font-bold text-rose-800">Default</th>
+                        <th class="py-3 px-6 text-left font-bold text-rose-800">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="hover:bg-rose-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">title</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">undefined</td>
+                        <td class="py-3 px-6 border-b">The heading text of the card</td>
+                      </tr>
+                      <tr class="hover:bg-rose-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">children</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">ReactNode</td>
+                        <td class="py-3 px-6 border-b font-mono">required</td>
+                        <td class="py-3 px-6 border-b">The main content inside the card</td>
+                      </tr>
+                      <tr class="hover:bg-rose-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">image</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">undefined</td>
+                        <td class="py-3 px-6 border-b">URL to an image to show at the top</td>
+                      </tr>
+                      <tr class="hover:bg-rose-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">elevation</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">number</td>
+                        <td class="py-3 px-6 border-b font-mono">1</td>
+                        <td class="py-3 px-6 border-b">Shadow intensity (1-5)</td>
+                      </tr>
+                      <tr class="hover:bg-rose-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">variant</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">'default'</td>
+                        <td class="py-3 px-6 border-b">Card style variant ('default', 'outlined', 'elevated')</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-rose-100 to-white p-5 rounded-xl mt-8 border border-rose-200">
+              <h5 class="font-bold text-xl mb-4 text-rose-700 flex items-center">
+                <i class="fa-solid fa-code mr-2"></i>
+                Implementation Example
+              </h5>
+              
+              <!-- Terminal-style code example -->
+              <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                <div class="bg-gray-800 px-4 py-2 flex items-center">
+                  <div class="flex space-x-2 mr-4">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <span class="text-gray-400 text-sm font-mono">ProductCard.jsx</span>
+                </div>
+                <div class="p-4 text-sm font-mono text-gray-100 overflow-x-auto">
+                  <div><span class="text-pink-400">import</span> <span class="text-blue-300">React</span> <span class="text-pink-400">from</span> <span class="text-green-300">'react'</span>;</div>
+                  <div class="mt-2"><span class="text-pink-400">function</span> <span class="text-yellow-300">ProductCard</span>() {</div>
+                  <div class="ml-4"><span class="text-pink-400">return</span> (</div>
+                  <div class="ml-8"><span class="text-blue-300">&lt;div</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"border rounded-lg p-4 shadow-md"</span><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;img</span></div>
+                  <div class="ml-16"><span class="text-green-300">src</span>=<span class="text-yellow-300">"product.jpg"</span></div>
+                  <div class="ml-16"><span class="text-green-300">alt</span>=<span class="text-yellow-300">"Product"</span></div>
+                  <div class="ml-16"><span class="text-green-300">className</span>=<span class="text-yellow-300">"w-full h-48 object-cover"</span></div>
+                  <div class="ml-12"><span class="text-blue-300">/&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;h3</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"text-xl font-bold mt-2"</span><span class="text-blue-300">&gt;</span>Product Name<span class="text-blue-300">&lt;/h3&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;p</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"text-gray-600"</span><span class="text-blue-300">&gt;</span>Product description goes here<span class="text-blue-300">&lt;/p&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;button</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"bg-blue-500 text-white mt-4 p-2 rounded"</span><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-16">Add to Cart</div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;/button&gt;</span></div>
+                  <div class="ml-8"><span class="text-blue-300">&lt;/div&gt;</span></div>
+                  <div class="ml-4">);</div>
+                  <div>}</div>
+                  <div class="mt-2"><span class="text-pink-400">export</span> <span class="text-pink-400">default</span> ProductCard;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Nav Menu Component -->
+        <div class="mb-12 pb-8" id="nav">
+          <div class="flex items-center mb-6 group">
+            <div class="bg-gradient-to-br from-blue-500 to-cyan-700 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mr-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-compass-drafting text-white text-xl"></i>
+            </div>
+            <div>
+              <span class="text-xs uppercase tracking-wider text-blue-600 font-bold bg-blue-100 px-2 py-1 rounded">UI Component</span>
+              <h4 class="text-2xl font-bold text-blue-700">
+                Navigation Menu Component
+              </h4>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-r from-white to-blue-50 rounded-xl p-6 shadow-lg mb-8 border border-blue-100">
+            <div class="flex flex-col lg:flex-row gap-8 mb-8">
+              <div class="flex-1">
+                <div class="bg-white p-4 rounded-lg shadow-md border border-blue-100 mb-4">
+                  <div class="flex items-center mb-2">
+                    <div class="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center mr-2">
+                      <i class="fa-solid fa-info text-white text-xs"></i>
+                    </div>
+                    <h5 class="font-bold text-blue-800">What is a Navigation Component?</h5>
+                  </div>
+                  <p class="text-gray-700 text-lg ml-8 border-l-2 border-blue-200 pl-4">
+                    A navigation bar that helps users move between different sections of your application.
+                    It's one of the most critical UI elements for creating an intuitive user experience.
+                  </p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border border-blue-100">
+                  <div class="flex items-center mb-3">
+                    <div class="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center mr-2">
+                      <i class="fa-solid fa-list text-white text-xs"></i>
+                    </div>
+                    <h5 class="font-bold text-blue-800">Navigation Best Practices</h5>
+                  </div>
+                  <ul class="space-y-2 ml-8 text-gray-700">
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-blue-500 mr-2"></i>
+                      Always highlight the current active page/section
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-blue-500 mr-2"></i>
+                      Keep navigation consistent across all pages
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-blue-500 mr-2"></i>
+                      Include responsive design for mobile devices
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-check text-blue-500 mr-2"></i>
+                      Use meaningful, concise labels for navigation items
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- Nav Examples -->
+              <div class="flex-1">
+                <h5 class="font-bold text-xl mb-4 text-blue-700 flex items-center">
+                  <i class="fa-solid fa-eye mr-2"></i>
+                  Navigation Variants
+                </h5>
+                
+                <div class="space-y-4">
+                  <!-- Horizontal Navigation Example -->
+                  <div class="bg-white rounded-lg shadow-md overflow-hidden p-2 border border-blue-100">
+                    <h6 class="text-sm font-semibold text-blue-800 mb-2 pl-2">Horizontal Navigation</h6>
+                    <div class="bg-blue-600 text-white p-3 rounded-lg flex justify-between items-center">
+                      <div class="font-bold">Logo</div>
+                      <div class="flex space-x-6">
+                        <a class="hover:underline underline font-medium">Home</a>
+                        <a class="hover:underline">Products</a>
+                        <a class="hover:underline">About</a>
+                        <a class="hover:underline">Contact</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Vertical Navigation Example -->
+                  <div class="bg-white rounded-lg shadow-md overflow-hidden p-2 border border-blue-100">
+                    <h6 class="text-sm font-semibold text-blue-800 mb-2 pl-2">Vertical Navigation</h6>
+                    <div class="bg-gray-800 text-white p-3 rounded-lg w-48">
+                      <div class="font-bold text-xl mb-4 px-4 text-blue-300">Dashboard</div>
+                      <div class="space-y-1">
+                        <a class="block py-2 px-4 bg-blue-700 rounded text-white">Home</a>
+                        <a class="block py-2 px-4 hover:bg-gray-700 rounded">Analytics</a>
+                        <a class="block py-2 px-4 hover:bg-gray-700 rounded">Settings</a>
+                        <a class="block py-2 px-4 hover:bg-gray-700 rounded">Profile</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Mobile Navigation Example -->
+                  <div class="bg-white rounded-lg shadow-md overflow-hidden p-2 border border-blue-100">
+                    <h6 class="text-sm font-semibold text-blue-800 mb-2 pl-2">Mobile Navigation</h6>
+                    <div class="bg-white p-3 rounded-lg border border-gray-200">
+                      <div class="flex justify-between items-center border-b pb-2">
+                        <div class="font-bold text-xl">Logo</div>
+                        <button class="text-gray-500">
+                          <i class="fa-solid fa-bars text-lg"></i>
+                        </button>
+                      </div>
+                      <div class="py-2">
+                        <div class="bg-gray-100 mt-2 p-2 rounded">Menu would expand here</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-8">
+              <h5 class="font-bold text-xl mb-4 text-blue-700 flex items-center">
+                <i class="fa-solid fa-gears mr-2"></i>
+                Component API
+              </h5>
+              
+              <div class="bg-white rounded-lg shadow-md overflow-hidden border border-blue-100">
+                <div class="bg-blue-100 px-6 py-3 border-b border-blue-200">
+                  <h5 class="font-mono font-bold text-blue-800">
+                    &lt;Navigation&gt; Props
+                  </h5>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full bg-white text-sm">
+                    <thead>
+                      <tr class="bg-gray-50 border-b border-gray-200">
+                        <th class="py-3 px-6 text-left font-bold text-blue-800">Prop Name</th>
+                        <th class="py-3 px-6 text-left font-bold text-blue-800">Type</th>
+                        <th class="py-3 px-6 text-left font-bold text-blue-800">Default</th>
+                        <th class="py-3 px-6 text-left font-bold text-blue-800">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">links</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">array</td>
+                        <td class="py-3 px-6 border-b font-mono">[]</td>
+                        <td class="py-3 px-6 border-b">Array of link objects with url and text</td>
+                      </tr>
+                      <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">logo</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">undefined</td>
+                        <td class="py-3 px-6 border-b">URL to your logo image</td>
+                      </tr>
+                      <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">activePath</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">'/'</td>
+                        <td class="py-3 px-6 border-b">Current path to highlight the active link</td>
+                      </tr>
+                      <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">orientation</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">'horizontal'</td>
+                        <td class="py-3 px-6 border-b">Layout orientation ('horizontal' or 'vertical')</td>
+                      </tr>
+                      <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="py-3 px-6 border-b font-mono font-medium">variant</td>
+                        <td class="py-3 px-6 border-b font-mono text-green-600">string</td>
+                        <td class="py-3 px-6 border-b font-mono">'default'</td>
+                        <td class="py-3 px-6 border-b">Navigation style ('default', 'minimal', 'contained')</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-blue-100 to-white p-5 rounded-xl mt-8 border border-blue-200">
+              <h5 class="font-bold text-xl mb-4 text-blue-700 flex items-center">
+                <i class="fa-solid fa-code mr-2"></i>
+                Implementation Example
+              </h5>
+              
+              <!-- Terminal-style code example -->
+              <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                <div class="bg-gray-800 px-4 py-2 flex items-center">
+                  <div class="flex space-x-2 mr-4">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <span class="text-gray-400 text-sm font-mono">NavBar.jsx</span>
+                </div>
+                <div class="p-4 text-sm font-mono text-gray-100 overflow-x-auto">
+                  <div><span class="text-pink-400">import</span> <span class="text-blue-300">React</span> <span class="text-pink-400">from</span> <span class="text-green-300">'react'</span>;</div>
+                  <div class="mt-2"><span class="text-pink-400">function</span> <span class="text-yellow-300">NavBar</span>() {</div>
+                  <div class="ml-4"><span class="text-blue-300">const</span> links = [</div>
+                  <div class="ml-8">{ text: <span class="text-green-300">'Home'</span>, url: <span class="text-green-300">'/'</span> },</div>
+                  <div class="ml-8">{ text: <span class="text-green-300">'Products'</span>, url: <span class="text-green-300">'/products'</span> },</div>
+                  <div class="ml-8">{ text: <span class="text-green-300">'About'</span>, url: <span class="text-green-300">'/about'</span> },</div>
+                  <div class="ml-8">{ text: <span class="text-green-300">'Contact'</span>, url: <span class="text-green-300">'/contact'</span> }</div>
+                  <div class="ml-4">];</div>
+                  <div class="mt-3 ml-4"><span class="text-pink-400">return</span> (</div>
+                  <div class="ml-8"><span class="text-blue-300">&lt;nav</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"bg-blue-600 text-white p-4"</span><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;div</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"flex justify-between items-center"</span><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-16"><span class="text-blue-300">&lt;div</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"font-bold text-xl"</span><span class="text-blue-300">&gt;</span>My Website<span class="text-blue-300">&lt;/div&gt;</span></div>
+                  <div class="ml-16"><span class="text-blue-300">&lt;div</span> <span class="text-green-300">className</span>=<span class="text-yellow-300">"flex space-x-4"</span><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-20">{links.<span class="text-yellow-300">map</span>(link <span class="text-pink-400">=&gt;</span> (</div>
+                  <div class="ml-24"><span class="text-blue-300">&lt;a</span> </div>
+                  <div class="ml-28"><span class="text-green-300">key</span>={link.url}</div>
+                  <div class="ml-28"><span class="text-green-300">href</span>={link.url}</div>
+                  <div class="ml-28"><span class="text-green-300">className</span>=<span class="text-yellow-300">"hover:underline"</span></div>
+                  <div class="ml-24"><span class="text-blue-300">&gt;</span></div>
+                  <div class="ml-28">{link.text}</div>
+                  <div class="ml-24"><span class="text-blue-300">&lt;/a&gt;</span></div>
+                  <div class="ml-20">))}</div>
+                  <div class="ml-16"><span class="text-blue-300">&lt;/div&gt;</span></div>
+                  <div class="ml-12"><span class="text-blue-300">&lt;/div&gt;</span></div>
+                  <div class="ml-8"><span class="text-blue-300">&lt;/nav&gt;</span></div>
+                  <div class="ml-4">);</div>
+                  <div>}</div>
+                  <div class="mt-2"><span class="text-pink-400">export</span> <span class="text-pink-400">default</span> NavBar;</div>
+                </div>
+              </div>
+              
+              <div class="bg-blue-50 border-l-4 border-blue-500 p-3 mt-4 rounded-r">
+                <div class="flex">
+                  <i class="fa-solid fa-lightbulb text-blue-500 mr-2 mt-1"></i>
+                  <p class="text-blue-800">
+                    <strong>Pro Tip:</strong> For a responsive mobile navigation menu, you'll want to add a toggle button and state to control the visibility of the menu on smaller screens.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quick Component Index -->
+        <div class="p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 mb-8 relative overflow-hidden">
+          <div class="absolute -bottom-6 right-0 text-6xl text-blue-100 opacity-50">
+            <i class="fa-solid fa-microchip"></i>
+          </div>
+          <div class="absolute top-0 left-10 text-4xl text-purple-100 opacity-40">
+            <i class="fa-solid fa-cubes"></i>
+          </div>
+          
+          <div class="relative z-10">
+            <div class="flex items-center justify-center mb-4">
+              <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fa-solid fa-layer-group text-blue-600"></i>
+              </div>
+              <h4 class="font-bold text-xl text-blue-800">Quick Component Index</h4>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+              <a href="#button" class="px-5 py-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-md text-white hover:shadow-lg transition flex items-center gap-1">
+                <i class="fa-solid fa-circle-dot text-xs"></i>
+                <span>Button</span>
+              </a>
+              <a href="#card" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-600 rounded-full shadow-md text-white hover:shadow-lg transition flex items-center gap-1">
+                <i class="fa-solid fa-circle-dot text-xs"></i>
+                <span>Card</span>
+              </a>
+              <a href="#nav" class="px-5 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full shadow-md text-white hover:shadow-lg transition flex items-center gap-1">
+                <i class="fa-solid fa-circle-dot text-xs"></i>
+                <span>Navigation</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- JSX Fundamentals -->
+      <div class="bg-gradient-to-r from-purple-50 to-indigo-50 shadow-xl rounded-xl p-8 mb-8 border border-purple-200 relative overflow-hidden" id="jsx-fundamentals">
+        <!-- Decorative elements -->
+        <div class="absolute top-4 right-8 text-4xl text-purple-300 opacity-20 rotate-12">&lt;/&gt;</div>
+        <div class="absolute bottom-6 left-10 text-5xl text-indigo-200 opacity-10">{ }</div>
+        
+        <div class="flex items-center mb-6 group relative z-10">
+          <div class="bg-gradient-to-br from-purple-500 to-indigo-700 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mr-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-code text-white text-xl"></i>
+          </div>
+          <div>
+            <span class="text-xs uppercase tracking-wider text-purple-600 font-bold bg-purple-100 px-2 py-1 rounded">Fundamental</span>
+            <h3 id="jsx" class="text-3xl font-bold text-purple-800 flex items-center gap-3">
+              Understanding JSX
+            </h3>
+          </div>
+        </div>
+        
+        <div class="relative z-10">
+          <div class="flex flex-col lg:flex-row gap-6 mb-8">
+            <div class="flex-1">
+              <p class="text-gray-700 mb-6 leading-relaxed text-lg">
+                JSX (JavaScript XML) is a syntax extension for JavaScript that looks similar to HTML but comes with the full power of JavaScript. It makes writing React components more intuitive and readable.
+              </p>
+              
+              <div class="bg-white p-4 rounded-lg shadow-md border border-purple-100 mb-4">
+                <div class="flex items-center mb-2">
+                  <div class="h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center mr-2">
+                    <i class="fa-solid fa-bolt-lightning text-white text-xs"></i>
+                  </div>
+                  <h4 class="font-bold text-purple-800">JSX in a nutshell</h4>
+                </div>
+                <p class="text-gray-700 ml-8 border-l-2 border-purple-200 pl-4">
+                  JSX looks like HTML, but it's actually a syntax extension for JavaScript that gets 
+                  transformed into React.createElement() calls under the hood.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex-1">
+              <!-- Terminal-style code example -->
+              <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg border border-gray-800">
+                <div class="bg-gray-800 px-4 py-2 flex items-center">
+                  <div class="flex space-x-2 mr-4">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <span class="text-gray-400 text-sm font-mono">App.jsx</span>
+                </div>
+                <div class="p-4 text-sm font-mono">
+                  <div class="text-blue-400">const</div>
+                  <div><span class="text-green-400">greeting</span> = <span class="text-purple-400">"Hello World"</span>;</div>
+                  <div class="text-gray-500 mb-2">// This is JSX</div>
+                  <div class="text-blue-400">const</div>
+                  <div><span class="text-green-400">element</span> = <span class="text-yellow-300">&lt;h1 className="title"&gt;</span>{greeting}<span class="text-yellow-300">&lt;/h1&gt;</span>;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-r from-purple-100 to-purple-50 p-6 rounded-lg shadow-md border border-purple-200 mb-8 animate-on-scroll">
+            <div class="flex items-center mb-4">
+              <div class="bg-purple-600 p-2 rounded-lg mr-4">
+                <i class="fa-solid fa-table-columns text-white"></i>
+              </div>
+              <h4 class="font-bold text-xl text-purple-800">JSX vs HTML: Key Differences</h4>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white p-5 rounded-lg shadow-md border border-purple-100 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-3">
+                  <span class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-purple-700">1</span>
+                  <h5 class="font-bold text-purple-800">HTML Attributes Become camelCase</h5>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                    <p class="text-red-500 font-bold mb-2 flex items-center">
+                      <i class="fa-solid fa-html5 mr-1"></i> HTML:
+                    </p>
+                    <code class="block bg-white p-2 rounded border border-red-100 mb-1">onclick="handleClick()"</code>
+                    <code class="block bg-white p-2 rounded border border-red-100 mb-1">class="button-primary"</code>
+                    <code class="block bg-white p-2 rounded border border-red-100">tabindex="1"</code>
+                  </div>
+                  <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                    <p class="text-green-500 font-bold mb-2 flex items-center">
+                      <i class="fa-brands fa-react mr-1"></i> JSX:
+                    </p>
+                    <code class="block bg-white p-2 rounded border border-green-100 mb-1">onClick={handleClick}</code>
+                    <code class="block bg-white p-2 rounded border border-green-100 mb-1">className="button-primary"</code>
+                    <code class="block bg-white p-2 rounded border border-green-100">tabIndex={1}</code>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white p-5 rounded-lg shadow-md border border-purple-100 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-3">
+                  <span class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-purple-700">2</span>
+                  <h5 class="font-bold text-purple-800">Expressions in Curly Braces</h5>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg text-sm font-mono text-gray-100">
+                  <div class="mb-2 border-b border-gray-700 pb-2">
+                    <span class="text-gray-400">// Embedding JavaScript expressions</span>
+                    <div class="text-blue-300">const</div>
+                    <div><span class="text-green-300">name</span> = <span class="text-yellow-300">'John'</span>;</div>
+                    <div><span class="text-blue-300">const</span> <span class="text-green-300">element</span> = <span>&lt;h1&gt;</span>Hello, {<span class="text-green-300">name</span>}!<span>&lt;/h1&gt;</span>;</div>
+                  </div>
+                  <div class="mb-2 border-b border-gray-700 pb-2">
+                    <span class="text-gray-400">// Using JavaScript inside attributes</span>
+                    <div>&lt;img src={<span class="text-green-300">user</span>.<span class="text-yellow-300">avatarUrl</span>} alt={<span class="text-green-300">user</span>.<span class="text-yellow-300">name</span>} /&gt;</div>
+                  </div>
+                  <div>
+                    <span class="text-gray-400">// Conditional rendering</span>
+                    <div>&lt;div&gt;{<span class="text-green-300">isLoggedIn</span> ? <span class="text-yellow-300">'Welcome back!'</span> : <span class="text-yellow-300">'Please sign in'</span>}&lt;/div&gt;</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white p-5 rounded-lg shadow-md border border-purple-100 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-3">
+                  <span class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-purple-700">3</span>
+                  <h5 class="font-bold text-purple-800">Self-closing Tags Need a Slash</h5>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                    <p class="text-red-500 font-bold mb-2 flex items-center">
+                      <i class="fa-solid fa-html5 mr-1"></i> HTML:
+                    </p>
+                    <code class="block bg-white p-2 rounded border border-red-100 mb-2">&lt;input type="text"&gt;</code>
+                    <code class="block bg-white p-2 rounded border border-red-100">&lt;img src="logo.png"&gt;</code>
+                  </div>
+                  <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                    <p class="text-green-500 font-bold mb-2 flex items-center">
+                      <i class="fa-brands fa-react mr-1"></i> JSX:
+                    </p>
+                    <code class="block bg-white p-2 rounded border border-green-100 mb-2">&lt;input type="text" /&gt;</code>
+                    <code class="block bg-white p-2 rounded border border-green-100">&lt;img src="logo.png" /&gt;</code>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white p-5 rounded-lg shadow-md border border-purple-100 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-3">
+                  <span class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-purple-700">4</span>
+                  <h5 class="font-bold text-purple-800">Must Return a Single Root Element</h5>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg text-sm font-mono text-white">
+                  <div class="mb-3 pb-3 border-b border-gray-700">
+                    <p class="text-green-400 mb-1">// Valid JSX with div wrapper:</p>
+                    <div>&lt;div&gt;</div>
+                    <div class="pl-4">&lt;h1&gt;Title&lt;/h1&gt;</div>
+                    <div class="pl-4">&lt;p&gt;Paragraph&lt;/p&gt;</div>
+                    <div>&lt;/div&gt;</div>
+                  </div>
+                  <div>
+                    <p class="text-green-400 mb-1">// Using React Fragments:</p>
+                    <div>&lt;&gt;</div>
+                    <div class="pl-4">&lt;h1&gt;Title&lt;/h1&gt;</div>
+                    <div class="pl-4">&lt;p&gt;Paragraph&lt;/p&gt;</div>
+                    <div>&lt;/&gt;</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-indigo-600 p-6 rounded-xl shadow-lg mb-6 text-white relative overflow-hidden animate-on-scroll">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-50"></div>
+            <div class="absolute bottom-0 left-20 w-20 h-20 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
+            
+            <div class="relative z-10">
+              <h4 class="text-xl font-bold mb-4 flex items-center text-indigo-100">
+                <i class="fa-solid fa-lightbulb text-yellow-300 mr-3 text-2xl"></i>
+                Behind the Scenes: How JSX Works
+              </h4>
+              
+              <div class="bg-indigo-900/50 backdrop-blur-sm p-4 rounded-lg mb-4">
+                <p class="text-indigo-100 mb-3">JSX is transpiled to regular JavaScript by tools like Babel. When you write:</p>
+                <div class="bg-gray-900 p-3 rounded text-sm mb-3 font-mono text-white">
+                  <code>const element = &lt;h1&gt;Hello, world!&lt;/h1&gt;;</code>
+                </div>
+                <p class="text-indigo-100 mb-3">It compiles to:</p>
+                <div class="bg-gray-900 p-3 rounded text-sm font-mono text-white">
+                  <code>const element = React.createElement(</code>
+                  <code class="block ml-4 text-yellow-300">'h1',</code>
+                  <code class="block ml-4">null,</code>
+                  <code class="block ml-4 text-green-300">'Hello, world!'</code>
+                  <code>);</code>
+                </div>
+              </div>
+              
+              <div class="flex items-center bg-indigo-900/30 p-3 rounded-lg text-indigo-100">
+                <i class="fa-solid fa-circle-info text-xl mr-3"></i>
+                <p class="text-sm">This is why you need to import React in files that use JSX (for React versions before 17). React 17+ no longer requires this import thanks to the new JSX Transform.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- JSX Playground Interactive Widget -->
+          <div class="bg-white p-5 rounded-lg shadow-lg border border-purple-100 animate-on-scroll">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-bold text-xl text-purple-800 flex items-center">
+                <i class="fa-solid fa-gamepad text-purple-500 mr-2"></i>
+                JSX Playground
+              </h4>
+              <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Interactive</span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div>
+                <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                  <div class="flex items-center mb-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 mr-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500 mr-1"></div>
+                    <span class="text-xs text-gray-500 ml-2 font-mono">JSX Input</span>
+                  </div>
+                  <div class="bg-white border border-gray-200 p-3 rounded font-mono text-sm">
+                    <p>// Try to visualize how this JSX would look</p>
+                    <pre class="text-blue-600">
+function Welcome() {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;Welcome User&lt;/h2&gt;
+      &lt;p&gt;Thanks for visiting!&lt;/p&gt;
+      &lt;button&gt;Get Started&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                  <div class="flex items-center mb-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 mr-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500 mr-1"></div>
+                    <span class="text-xs text-gray-500 ml-2 font-mono">Rendered Output</span>
+                  </div>
+                  <div class="bg-white border border-gray-200 p-3 rounded-lg">
+                    <div class="border border-gray-300 p-4 rounded-lg shadow-sm">
+                      <h2 class="text-xl font-bold mb-2">Welcome User</h2>
+                      <p class="text-gray-700 mb-3">Thanks for visiting!</p>
+                      <button class="bg-blue-500 text-white px-4 py-1 rounded">Get Started</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Functional Components -->
+      <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+        <h3 id="functional" class="text-3xl font-bold mb-6 text-blue-800 flex items-center gap-3">
+          <i class="fa-solid fa-function text-green-500"></i>
+          Functional Components
+        </h3>
+        <div class="pl-2 border-l-4 border-green-300 mb-4">
+          <p class="text-gray-700 mb-4 leading-relaxed">
+            Functional components are the modern way to write React components. They are JavaScript functions that accept props as an argument and return React elements (JSX).
+          </p>
+          
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <h4 class="text-xl font-medium mb-4 text-green-700">Creating Your First Functional Component</h4>
+            
+            <div class="grid grid-cols-1 gap-4">
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-medium text-green-700 mb-2">Basic Syntax</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>import React from 'react';
+
+function Greeting() {
+  return &lt;h1&gt;Hello, World!&lt;/h1&gt;;
+}
+
+export default Greeting;</code></pre>
+                </div>
+              </div>
+              
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-medium text-green-700 mb-2">With Props</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>import React from 'react';
+
+function Greeting(props) {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+}
+
+export default Greeting;</code></pre>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Usage: <code>&lt;Greeting name="John" /&gt;</code></p>
+              </div>
+              
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-medium text-green-700 mb-2">With Destructured Props</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>import React from 'react';
+
+function Greeting({ name, title = 'Mr./Ms.' }) {
+  return &lt;h1&gt;Hello, {title} {name}!&lt;/h1&gt;;
+}
+
+export default Greeting;</code></pre>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Usage: <code>&lt;Greeting name="Smith" title="Dr." /&gt;</code></p>
+              </div>
+              
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-medium text-green-700 mb-2">Arrow Function Syntax</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>import React from 'react';
+
+const Greeting = ({ name }) => {
+  return &lt;h1&gt;Hello, {name}!&lt;/h1&gt;;
+};
+
+// Shorthand syntax for simple components
+const ShortGreeting = ({ name }) => &lt;h1&gt;Hello, {name}!&lt;/h1&gt;;
+
+export default Greeting;</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r mt-4">
+              <p class="text-sm text-yellow-800">
+                <strong>Note:</strong> For React 17 and above, the <code>import React from 'react';</code> line is optional for files with JSX thanks to the new JSX Transform.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Rendering Elements -->
+      <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+        <h3 class="text-3xl font-bold mb-6 text-blue-800 flex items-center gap-3">
+          <i class="fa-solid fa-display text-red-500"></i>
+          Rendering Elements
+        </h3>
+        <div class="pl-2 border-l-4 border-red-300 mb-4">
+          <p class="text-gray-700 mb-4 leading-relaxed">
+            React elements are the smallest building blocks of React applications. An element describes what you want to see on the screen. Unlike browser DOM elements, React elements are plain objects and are cheap to create.
+          </p>
+          
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <h4 class="text-xl font-medium mb-4 text-red-700">The Rendering Process</h4>
+            
+            <div class="relative border-l-2 border-red-300 pl-6 pb-2">
+              <div class="absolute w-6 h-6 bg-red-100 rounded-full -left-3 flex items-center justify-center">
+                <span class="text-red-600 font-bold">1</span>
+              </div>
+              <h5 class="text-lg font-medium text-red-600 mb-2">Creating Elements</h5>
+              <p class="text-gray-700 mb-3">First, you create React elements using JSX or <code>React.createElement()</code></p>
+              <div class="bg-gray-100 p-3 rounded text-sm mb-4 overflow-x-auto">
+                <pre><code>const element = &lt;h1&gt;Hello, world&lt;/h1&gt;;</code></pre>
+              </div>
+            </div>
+
+            <div class="relative border-l-2 border-red-300 pl-6 pb-2 mt-4">
+              <div class="absolute w-6 h-6 bg-red-100 rounded-full -left-3 flex items-center justify-center">
+                <span class="text-red-600 font-bold">2</span>
+              </div>
+              <h5 class="text-lg font-medium text-red-600 mb-2">Passing to Root</h5>
+              <p class="text-gray-700 mb-3">You then pass these elements to <code>ReactDOM.render()</code> or <code>root.render()</code> with a container DOM element</p>
+              <div class="bg-gray-100 p-3 rounded text-sm mb-4 overflow-x-auto">
+                <pre><code>// React 18
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(element);
+
+// React 17 and earlier
+ReactDOM.render(element, document.getElementById('root'));</code></pre>
+              </div>
+            </div>
+
+            <div class="relative border-l-2 border-red-300 pl-6 pb-2 mt-4">
+              <div class="absolute w-6 h-6 bg-red-100 rounded-full -left-3 flex items-center justify-center">
+                <span class="text-red-600 font-bold">3</span>
+              </div>
+              <h5 class="text-lg font-medium text-red-600 mb-2">Virtual DOM Reconciliation</h5>
+              <p class="text-gray-700 mb-3">React creates a virtual DOM representation and compares it with the previous one</p>
+            </div>
+
+            <div class="relative border-l-2 border-red-300 pl-6 pb-2 mt-4">
+              <div class="absolute w-6 h-6 bg-red-100 rounded-full -left-3 flex items-center justify-center">
+                <span class="text-red-600 font-bold">4</span>
+              </div>
+              <h5 class="text-lg font-medium text-red-600 mb-2">DOM Updates</h5>
+              <p class="text-gray-700 mb-3">React efficiently updates only the necessary parts of the real DOM</p>
+            </div>
+          </div>
+          
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <h4 class="text-xl font-medium mb-4 text-red-700">Example: Clock Component</h4>
+            <p class="text-gray-700 mb-3">This example shows how React re-renders elements when state changes:</p>
+            
+            <div class="bg-gray-800 p-4 rounded text-white text-sm overflow-x-auto">
+              <pre><code>import React, { useState, useEffect } from 'react';
+
+function Clock() {
+  const [date, setDate] = useState(new Date());
+  
+  useEffect(() => {
+    const timerID = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+    
+    // Cleanup when component unmounts
+    return () => {
+      clearInterval(timerID);
+    };
+  }, []); // Empty dependency array means this runs once on mount
+  
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;Current Time&lt;/h2&gt;
+      &lt;p className="time"&gt;{date.toLocaleTimeString()}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Clock;</code></pre>
+            </div>
+            
+            <div class="mt-4 p-4 bg-red-50 rounded-lg">
+              <h5 class="font-medium text-red-700 mb-2">How It Works:</h5>
+              <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                <li>The <code>Clock</code> component initializes with current date in state</li>
+                <li>The <code>useEffect</code> hook sets up an interval that updates the date every second</li>
+                <li>Every time the state changes, React re-renders just the parts that need to change</li>
+                <li>React is smart enough to only update the text content of the time paragraph</li>
+                <li>When the component unmounts, the interval is cleared to prevent memory leaks</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="bg-red-100 p-4 rounded-lg mb-4">
+            <h4 class="text-lg font-medium mb-3 text-red-800 flex items-center">
+              <i class="fa-solid fa-circle-info mr-2"></i>
+              Important Concept: React Updates Are Immutable
+            </h4>
+            <p class="text-gray-700 mb-2">React elements are immutable. Once you create an element, you can't change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time.</p>
+            <p class="text-gray-700">To update the UI, you create a new element and pass it to <code>root.render()</code>, or you use state which triggers a re-render when it changes.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Functional vs Class Components -->
+      <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+        <h3 class="text-3xl font-bold mb-6 text-blue-800 flex items-center gap-3">
+          <i class="fa-solid fa-code-branch text-amber-500"></i>
+          Functional vs Class Components
+        </h3>
+        <div class="pl-2 border-l-4 border-amber-300 mb-4">
+          <p class="text-gray-700 mb-4 leading-relaxed">
+            React supports two types of components: functional and class components. While both can achieve similar results, functional components are now the recommended approach with the introduction of Hooks in React 16.8.
+          </p>
+          
+          <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+            <div class="bg-amber-50 p-3">
+              <h4 class="text-xl font-medium text-amber-700">Side-by-Side Comparison</h4>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+              <!-- Functional Component -->
+              <div class="p-4 border-r border-b border-amber-100">
+                <div class="flex items-center mb-3">
+                  <div class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded mr-2">Recommended</div>
+                  <h5 class="text-lg font-medium text-green-700">Functional Component</h5>
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm mb-4 overflow-x-auto">
+                  <pre><code>import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+              
+              <!-- Class Component -->
+              <div class="p-4 border-b border-amber-100">
+                <div class="flex items-center mb-3">
+                  <div class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded mr-2">Legacy</div>
+                  <h5 class="text-lg font-medium text-amber-700">Class Component</h5>
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm mb-4 overflow-x-auto">
+                  <pre><code>import React, { Component } from 'react';
+
+class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+  
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;p&gt;Count: {this.state.count}&lt;/p&gt;
+        &lt;button onClick={() => 
+          this.setState({ count: this.state.count + 1 })
+        }&gt;
+          Increment
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Pros and Cons -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+              <!-- Functional Pros/Cons -->
+              <div class="p-4 border-r border-amber-100">
+                <h5 class="font-medium text-gray-800 mb-2">Functional Component Benefits</h5>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <li>Simpler and more concise syntax</li>
+                  <li>Hooks provide powerful state and lifecycle features</li>
+                  <li>Easier to test and debug</li>
+                  <li>Better performance (potentially) with optimizations</li>
+                  <li>More aligned with modern JavaScript practices</li>
+                  <li>Encourages code reuse and composition</li>
+                </ul>
+              </div>
+              
+              <!-- Class Pros/Cons -->
+              <div class="p-4">
+                <h5 class="font-medium text-gray-800 mb-2">Class Component Benefits</h5>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <li>Familiar for developers from OOP backgrounds</li>
+                  <li>Full access to lifecycle methods</li>
+                  <li>Access to <code>this.props</code> and <code>this.state</code></li>
+                  <li>Required for error boundaries (as of React 17)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-lg">
+            <h4 class="text-lg font-medium mb-3 text-amber-800 flex items-center">
+              <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+              Modern React Best Practice
+            </h4>
+            <p class="text-gray-700">
+              The React team recommends using functional components and hooks for new code. Hooks were introduced specifically to bring all the capabilities of class components to functional components, while enabling better patterns for reusing stateful logic between components.
+            </p>
+            <div class="mt-3 bg-white p-3 rounded border border-amber-200 text-sm">
+              <code>
+                // Custom hook example - reusable state logic<br/>
+                function useCounter(initialValue = 0, step = 1) {<br/>
+                &nbsp;&nbsp;const [count, setCount] = useState(initialValue);<br/>
+                &nbsp;&nbsp;const increment = () => setCount(count + step);<br/>
+                &nbsp;&nbsp;const decrement = () => setCount(count - step);<br/>
+                &nbsp;&nbsp;return { count, increment, decrement };<br/>
+                }
+              </code>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Props and PropTypes -->
+        <section class="mb-10" id="props">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-arrow-right-to-bracket text-blue-500 mr-2"></i>
+              Props & PropTypes
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-blue-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Props (short for "properties") are how components receive data from their parent. They are the React equivalent of function arguments and enable components to be dynamic and reusable.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-blue-700">Understanding Props</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h5 class="font-medium text-blue-600 mb-2">Props Flow</h5>
+                  <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                    <ol class="list-decimal list-inside text-gray-700 space-y-2">
+                      <li>Parent component defines props as attributes</li>
+                      <li>Child component receives props as an object</li>
+                      <li>Props are read-only (immutable)</li>
+                      <li>Props flow downward (parent to child, never upward)</li>
+                    </ol>
+                  </div>
+                </div>
+                
+                <div>
+                  <h5 class="font-medium text-blue-600 mb-2">Key Prop Concepts</h5>
+                  <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                      <li>Props can be any valid JavaScript value</li>
+                      <li>Props are readonly - never modify them!</li>
+                      <li>Use state to manage changing values</li>
+                      <li>Props enable component reusability</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <h5 class="font-medium text-blue-600 mb-2">Basic Props Example</h5>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 mb-1">Parent Component</p>
+                    <div class="bg-gray-800 p-3 rounded text-white text-sm mb-2 overflow-x-auto">
+                      <pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;UserProfile 
+        name="Jane Doe"
+        role="Developer"
+        isAdmin={true}
+        hobbies={['coding', 'reading']}
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 mb-1">Child Component</p>
+                    <div class="bg-gray-800 p-3 rounded text-white text-sm mb-2 overflow-x-auto">
+                      <pre><code>function UserProfile(props) {
+  return (
+    &lt;div className="profile"&gt;
+      &lt;h2&gt;{props.name}&lt;/h2&gt;
+      &lt;p&gt;Role: {props.role}&lt;/p&gt;
+      {props.isAdmin && &lt;span&gt;Admin User&lt;/span&gt;}
+      &lt;ul&gt;
+        {props.hobbies.map(hobby =&gt; (
+          &lt;li key={hobby}&gt;{hobby}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <h5 class="font-medium text-blue-600 mb-2">Destructuring Props</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm mb-2 overflow-x-auto">
+                  <pre><code>// Instead of using props.name, props.role, etc.
+function UserProfile({ name, role, isAdmin, hobbies }) {
+  return (
+    &lt;div className="profile"&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;Role: {role}&lt;/p&gt;
+      {isAdmin && &lt;span&gt;Admin User&lt;/span&gt;}
+      &lt;ul&gt;
+        {hobbies.map(hobby =&gt; (
+          &lt;li key={hobby}&gt;{hobby}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+                <p class="text-sm text-gray-600">Destructuring props is cleaner and more concise, especially for components with many props.</p>
+              </div>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-blue-700">PropTypes</h4>
+              <p class="text-gray-700 mb-4">
+                PropTypes is a library that helps validate the props your components receive. It's a valuable tool for catching bugs early and documenting how components should be used.
+              </p>
+              
+              <div class="mb-6">
+                <h5 class="font-medium text-blue-600 mb-2">Using PropTypes</h5>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm mb-3 overflow-x-auto">
+                  <pre><code>import PropTypes from 'prop-types';
+
+function UserProfile({ name, role, isAdmin, hobbies }) {
+  return (
+    &lt;div className="profile"&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;Role: {role}&lt;/p&gt;
+      {isAdmin && &lt;span&gt;Admin User&lt;/span&gt;}
+      &lt;ul&gt;
+        {hobbies.map(hobby =&gt; (
+          &lt;li key={hobby}&gt;{hobby}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+UserProfile.propTypes = {
+  name: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
+  isAdmin: PropTypes.bool,
+  hobbies: PropTypes.arrayOf(PropTypes.string)
+};
+
+UserProfile.defaultProps = {
+  isAdmin: false,
+  hobbies: []
+};</code></pre>
+                </div>
+                <p class="text-sm text-gray-600">With React 17+, you can also use TypeScript for even better type checking.</p>
+              </div>
+              
+              <div class="mb-4">
+                <h5 class="font-medium text-blue-600 mb-2">Common PropTypes Validators</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full bg-white border border-gray-200 text-sm">
+                    <thead class="bg-blue-50">
+                      <tr>
+                        <th class="py-2 px-4 border-b text-left">Validator</th>
+                        <th class="py-2 px-4 border-b text-left">Description</th>
+                        <th class="py-2 px-4 border-b text-left">Example</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>string</code></td>
+                        <td class="py-2 px-4 border-b">String prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.string</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>number</code></td>
+                        <td class="py-2 px-4 border-b">Number prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.number</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>bool</code></td>
+                        <td class="py-2 px-4 border-b">Boolean prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.bool</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>array</code></td>
+                        <td class="py-2 px-4 border-b">Array prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.array</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>object</code></td>
+                        <td class="py-2 px-4 border-b">Object prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.object</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>func</code></td>
+                        <td class="py-2 px-4 border-b">Function prop</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.func</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>node</code></td>
+                        <td class="py-2 px-4 border-b">Anything renderable</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.node</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b"><code>element</code></td>
+                        <td class="py-2 px-4 border-b">React element</td>
+                        <td class="py-2 px-4 border-b"><code>PropTypes.element</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r">
+                <p class="text-sm text-yellow-800">
+                  <strong>Important:</strong> PropTypes are only checked in development mode. They're automatically stripped in production for performance reasons.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Children Prop -->
+        <section class="mb-10" id="children-prop">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-child text-pink-500 mr-2"></i>
+              Children Prop
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-pink-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              The <code>children</code> prop is a special prop that allows you to pass components or elements between the opening and closing tags of your component. It enables component composition and helps create more flexible, reusable components.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-pink-700">How Children Works</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-pink-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-pink-700 mb-2">Component with Children</h5>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function Card({ title, children }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2 className="card-title"&gt;{title}&lt;/h2&gt;
+      &lt;div className="card-content"&gt;
+        {children}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+                
+                <div class="bg-pink-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-pink-700 mb-2">Using the Component</h5>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function App() {
+  return (
+    &lt;Card title="Welcome"&gt;
+      &lt;p&gt;This is some content inside the card.&lt;/p&gt;
+      &lt;button&gt;Click Me&lt;/button&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <h5 class="font-medium text-pink-700 mb-2">How It Renders</h5>
+                <div class="bg-gray-100 p-4 rounded border border-gray-200">
+                  <div class="border border-gray-300 rounded p-4">
+                    <h2 class="font-bold mb-2">Welcome</h2>
+                    <div class="pl-2 border-l-2 border-pink-300">
+                      <p class="mb-2">This is some content inside the card.</p>
+                      <button class="bg-blue-500 text-white px-3 py-1 rounded">Click Me</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-pink-700">Advanced Children Usage</h4>
+              
+              <div class="mb-6">
+                <h5 class="font-medium text-pink-600 mb-2">Manipulating Children</h5>
+                <p class="text-gray-700 mb-3">You can manipulate children elements before rendering them:</p>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm mb-4 overflow-x-auto">
+                  <pre><code>import React from 'react';
+
+function List({ children }) {
+  // Add a class to each child or modify them in some way
+  const enhancedChildren = React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, { 
+      className: `${child.props.className || ''} list-item`,
+      key: index
+    });
+  });
+  
+  return &lt;ul className="custom-list"&gt;{enhancedChildren}&lt;/ul&gt;;
+}
+
+// Usage
+function App() {
+  return (
+    &lt;List&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+      &lt;li&gt;Item 3&lt;/li&gt;
+    &lt;/List&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <h5 class="font-medium text-pink-600 mb-2">Function as Children (Render Props)</h5>
+                <p class="text-gray-700 mb-3">Sometimes called the "render prop" pattern, this advanced technique passes a function as children:</p>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>function Toggle({ children }) {
+  const [isOn, setIsOn] = useState(false);
+  
+  return children({
+    isOn,
+    toggle: () => setIsOn(!isOn)
+  });
+}
+
+// Usage
+function App() {
+  return (
+    &lt;Toggle&gt;
+      {({ isOn, toggle }) => (
+        &lt;div&gt;
+          &lt;button onClick={toggle}&gt;
+            Turn {isOn ? 'Off' : 'On'}
+          &lt;/button&gt;
+          &lt;p&gt;The state is: {isOn ? 'ON' : 'OFF'}&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/Toggle&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-pink-100 p-4 rounded-lg">
+              <h4 class="text-lg font-medium mb-3 text-pink-800 flex items-center">
+                <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+                Benefits of the Children Prop
+              </h4>
+              <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li><strong>Component composition</strong> - Build more complex components from simpler ones</li>
+                <li><strong>Flexibility</strong> - Create more versatile components that can render different content</li>
+                <li><strong>Separation of concerns</strong> - Keep layout and content separate</li>
+                <li><strong>Content injection</strong> - Let parent components decide what to render inside children</li>
+                <li><strong>Reusability</strong> - Create wrapper components that can be used with various content</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Component Composition -->
+        <section class="mb-10" id="component-composition">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-object-group text-purple-500 mr-2"></i>
+              Component Composition
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-purple-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Component composition is the practice of building complex components by combining smaller, more focused components. It follows the Unix philosophy: "Do one thing and do it well." This approach creates more maintainable, testable, and reusable code.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-purple-700">Basic Component Composition</h4>
+              
+              <p class="text-gray-700 mb-4">Here's an example of building a complex UI using component composition:</p>
+              
+              <div class="bg-gray-800 p-3 rounded text-white text-sm mb-6 overflow-x-auto">
+                <pre><code>function ProfilePage({ user }) {
+  return (
+    &lt;Page&gt;
+      &lt;Header&gt;
+        &lt;Avatar src={user.avatarUrl} size="large" /&gt;
+        &lt;UserName&gt;{user.name}&lt;/UserName&gt;
+      &lt;/Header&gt;
+      
+      &lt;Tabs&gt;
+        &lt;Tab label="Posts"&gt;
+          &lt;PostList posts={user.posts} /&gt;
+        &lt;/Tab&gt;
+        &lt;Tab label="Photos"&gt;
+          &lt;PhotoGrid photos={user.photos} /&gt;
+        &lt;/Tab&gt;
+        &lt;Tab label="About"&gt;
+          &lt;UserBio bio={user.bio} /&gt;
+        &lt;/Tab&gt;
+      &lt;/Tabs&gt;
+    &lt;/Page&gt;
+  );
+}</code></pre>
+              </div>
+              
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <h5 class="font-medium text-purple-700 mb-2">Key Benefits</h5>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                  <li><strong>Readability</strong>: The code reads like HTML and clearly shows the component hierarchy</li>
+                  <li><strong>Reusability</strong>: Each component can be reused in other parts of the application</li>
+                  <li><strong>Testability</strong>: Smaller components are easier to test in isolation</li>
+                  <li><strong>Separation of concerns</strong>: Each component has a single, well-defined responsibility</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-purple-700">Composition Patterns</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-purple-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-purple-700 mb-2">Containment</h5>
+                  <p class="text-gray-700 mb-2">Using the children prop to nest components:</p>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function Card({ title, children }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      {children}
+    &lt;/div&gt;
+  );
+}
+
+// Usage
+&lt;Card title="Welcome"&gt;
+  &lt;p&gt;Content here&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+                  </div>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-purple-700 mb-2">Specialization</h5>
+                  <p class="text-gray-700 mb-2">Creating specialized versions of generic components:</p>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function Button({ children, ...props }) {
+  return (
+    &lt;button className="button" {...props}&gt;
+      {children}
+    &lt;/button&gt;
+  );
+}
+
+function PrimaryButton(props) {
+  return &lt;Button className="button-primary" {...props} /&gt;;
+}
+
+function DangerButton(props) {
+  return &lt;Button className="button-danger" {...props} /&gt;;
+}</code></pre>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-purple-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-purple-700 mb-2">Props Forwarding</h5>
+                  <p class="text-gray-700 mb-2">Passing props to deeper components:</p>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function FancyInput({ className, ...props }) {
+  return (
+    &lt;div className={`input-wrapper ${className}`}&gt;
+      &lt;input className="fancy-input" {...props} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-purple-700 mb-2">Compound Components</h5>
+                  <p class="text-gray-700 mb-2">Related components that work together:</p>
+                  <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                    <pre><code>function Menu({ children }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  // Clone children with additional props
+  return &lt;div className="menu"&gt;{children}&lt;/div&gt;;
+}
+
+Menu.Item = function MenuItem({ children, ...props }) {
+  return (
+    &lt;div className="menu-item" {...props}&gt;
+      {children}
+    &lt;/div&gt;
+  );
+};
+
+// Usage
+&lt;Menu&gt;
+  &lt;Menu.Item&gt;Home&lt;/Menu.Item&gt;
+  &lt;Menu.Item&gt;About&lt;/Menu.Item&gt;
+&lt;/Menu&gt;</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-purple-100 p-4 rounded-lg">
+              <h4 class="text-lg font-medium mb-3 text-purple-800 flex items-center">
+                <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+                Composition vs Inheritance
+              </h4>
+              <p class="text-gray-700 mb-3">
+                React strongly favors composition over inheritance for building component hierarchies. Almost anything you'd want to achieve with inheritance can be done more cleanly with composition.
+              </p>
+              <div class="bg-white p-3 rounded border border-purple-200">
+                <p class="font-medium text-purple-700 mb-2">From React Documentation:</p>
+                <blockquote class="text-gray-700 italic border-l-4 border-purple-300 pl-4">
+                  "Props and composition give you all the flexibility you need to customize a component's look and behavior in an explicit and safe way. Remember that components may accept arbitrary props, including primitive values, React elements, or functions."
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Component Naming Conventions -->
+        <section class="mb-10" id="naming-conventions">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-signature text-teal-500 mr-2"></i>
+              Component Naming Conventions
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-teal-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Good naming conventions for your components make your code more readable, maintainable, and professional. Consistent naming also helps team collaboration and makes your codebase easier to navigate.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-teal-700">Best Practices for Component Names</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-teal-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-teal-700 mb-2 flex items-center">
+                    <i class="fa-solid fa-check text-green-500 mr-2"></i>Do
+                  </h5>
+                  <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Use <strong>PascalCase</strong> for component names (<code>UserProfile</code>)</li>
+                    <li>Use descriptive, clear names (<code>ProductList</code>)</li>
+                    <li>Use nouns or noun phrases for components (<code>Button</code>, <code>ShoppingCart</code>)</li>
+                    <li>Add context prefixes for related components (<code>UserProfile</code>, <code>UserSettings</code>)</li>
+                    <li>Name HOCs with "with" prefix (<code>withAuth</code>, <code>withTheme</code>)</li>
+                    <li>Name custom hooks with "use" prefix (<code>useFormInput</code>)</li>
+                  </ul>
+                </div>
+                
+                <div class="bg-red-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-red-700 mb-2 flex items-center">
+                    <i class="fa-solid fa-xmark text-red-500 mr-2"></i>Don't
+                  </h5>
+                  <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Use lowercase for component names (<code>button</code>)</li>
+                    <li>Use generic names (<code>Component1</code>, <code>Page</code>)</li>
+                    <li>Use abbreviations that aren't universally understood</li>
+                    <li>Use names that conflict with HTML elements (<code>Div</code>, <code>Span</code>)</li>
+                    <li>Use extremely long names (<code>UserDataDisplayComponentWithFormattedText</code>)</li>
+                    <li>Add "Component" suffix (<code>ButtonComponent</code>)</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="mt-6 bg-teal-50 p-4 rounded-lg">
+                <h5 class="font-medium text-teal-700 mb-2">Common Naming Patterns</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full bg-white border border-gray-200 text-sm">
+                    <thead class="bg-teal-50">
+                      <tr>
+                        <th class="py-2 px-4 border-b text-left">Pattern</th>
+                        <th class="py-2 px-4 border-b text-left">Description</th>
+                        <th class="py-2 px-4 border-b text-left">Examples</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="py-2 px-4 border-b">UI Components</td>
+                        <td class="py-2 px-4 border-b">Basic UI elements that are highly reusable</td>
+                        <td class="py-2 px-4 border-b"><code>Button</code>, <code>Card</code>, <code>Avatar</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b">Container Components</td>
+                        <td class="py-2 px-4 border-b">Components that fetch data or manage state</td>
+                        <td class="py-2 px-4 border-b"><code>UserListContainer</code>, <code>ProductDetailsContainer</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b">Page Components</td>
+                        <td class="py-2 px-4 border-b">Components that represent entire pages</td>
+                        <td class="py-2 px-4 border-b"><code>HomePage</code>, <code>UserProfilePage</code>, <code>AboutPage</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b">Feature Components</td>
+                        <td class="py-2 px-4 border-b">Components tied to a specific feature</td>
+                        <td class="py-2 px-4 border-b"><code>ShoppingCart</code>, <code>SearchResults</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-4 border-b">Layout Components</td>
+                        <td class="py-2 px-4 border-b">Components for page structure</td>
+                        <td class="py-2 px-4 border-b"><code>Header</code>, <code>Footer</code>, <code>Sidebar</code>, <code>Layout</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-teal-700">File Naming and Structure</h4>
+              
+              <div class="mb-4">
+                <h5 class="font-medium text-teal-600 mb-2">File Naming Conventions</h5>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                  <li>Match file names to component names: <code>Button.js</code> for <code>Button</code> component</li>
+                  <li>Use <code>.jsx</code> extension for better IDE support: <code>Button.jsx</code></li>
+                  <li>Use <code>index.js</code> or <code>index.jsx</code> for the main component in a directory</li>
+                </ul>
+              </div>
+              
+              <div class="mb-4">
+                <h5 class="font-medium text-teal-600 mb-2">Common Directory Structures</h5>
+                <pre class="bg-gray-100 p-3 rounded overflow-x-auto text-sm"><code>src/
+├── components/
+│   ├── common/           # Reusable across many features
+│   │   ├── Button/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Button.test.js
+│   │   │   └── index.js
+│   │   └── Card/
+│   │       ├── Card.jsx
+│   │       └── index.js
+│   ├── layout/           # Layout-specific components
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   └── Sidebar.jsx
+│   └── features/         # Feature-specific components
+│       ├── UserProfile/
+│       └── ShoppingCart/
+├── pages/                # Page components
+│   ├── HomePage.jsx
+│   └── ProfilePage.jsx</code></pre>
+              </div>
+            </div>
+            
+            <div class="bg-teal-100 p-4 rounded-lg">
+              <h4 class="text-lg font-medium mb-3 text-teal-800 flex items-center">
+                <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+                Naming Tips for Beginners
+              </h4>
+              <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li><strong>Be specific</strong>: Name components based on what they do, not how they look</li>
+                <li><strong>Be consistent</strong>: Use the same naming pattern throughout your project</li>
+                <li><strong>Think about searching</strong>: Name components so they're easy to find in your codebase</li>
+                <li><strong>Consider component hierarchy</strong>: Name related components to show their relationship</li>
+                <li><strong>Evolve names as components evolve</strong>: Don't hesitate to rename a component if its purpose changes</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Component Creation Guide -->
+        <section class="mb-10" id="creation-guide">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-list-check text-orange-500 mr-2"></i>
+              Component Creation Guide
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-orange-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Creating well-structured, reusable components is an essential skill for React developers. This step-by-step guide will help you create components that are easy to use, maintain, and test.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-6 text-orange-700">Component Creation Checklist</h4>
+              
+              <div class="space-y-6">
+                <!-- Step 1 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">1</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Plan Your Component's Responsibility</h4>
+                    <p class="text-gray-600 mb-3">Define a clear, single responsibility for your component. Ask yourself:</p>
+                    <ul class="list-disc list-inside text-gray-700 pl-4 space-y-1">
+                      <li>What will this component display?</li>
+                      <li>What functionality will it handle?</li>
+                      <li>What data will it need?</li>
+                      <li>Will it manage its own state?</li>
+                      <li>Could it be broken down into smaller components?</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">2</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Create the Basic Component Structure</h4>
+                    <p class="text-gray-600 mb-2">Start with the simplest version of your component:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React from 'react';
+
+function ProductCard() {
+  return (
+    &lt;div className="product-card"&gt;
+      &lt;h3&gt;Product Name&lt;/h3&gt;
+      &lt;p&gt;$19.99&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductCard;</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">3</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Define Props</h4>
+                    <p class="text-gray-600 mb-2">Make your component dynamic with props:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React from 'react';
+
+function ProductCard({ name, price, imageUrl }) {
+  return (
+    &lt;div className="product-card"&gt;
+      {imageUrl && &lt;img src={imageUrl} alt={name} /&gt;}
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p&gt;${price.toFixed(2)}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductCard;</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">4</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Add State (If Needed)</h4>
+                    <p class="text-gray-600 mb-2">Add state for interactive components:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React, { useState } from 'react';
+
+function ProductCard({ name, price, imageUrl }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    &lt;div className="product-card"&gt;
+      {imageUrl && &lt;img src={imageUrl} alt={name} /&gt;}
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p&gt;${price.toFixed(2)}&lt;/p&gt;
+      
+      &lt;button onClick={() =&gt; setIsExpanded(!isExpanded)}&gt;
+        {isExpanded ? 'Show Less' : 'Show More'}
+      &lt;/button&gt;
+      
+      {isExpanded && (
+        &lt;div className="details"&gt;
+          &lt;p&gt;Additional product details here...&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">5</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Add Event Handlers and Props</h4>
+                    <p class="text-gray-600 mb-2">Make the component interactive:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React, { useState } from 'react';
+
+function ProductCard({ name, price, imageUrl, onAddToCart }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    &lt;div className="product-card"&gt;
+      {imageUrl && &lt;img src={imageUrl} alt={name} /&gt;}
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p&gt;${price.toFixed(2)}&lt;/p&gt;
+      
+      &lt;div className="buttons"&gt;
+        &lt;button onClick={() =&gt; setIsExpanded(!isExpanded)}&gt;
+          {isExpanded ? 'Show Less' : 'Show More'}
+        &lt;/button&gt;
+        
+        &lt;button 
+          onClick={() =&gt; onAddToCart({ name, price })}
+          className="add-to-cart"
+        &gt;
+          Add to Cart
+        &lt;/button&gt;
+      &lt;/div&gt;
+      
+      {isExpanded && (
+        &lt;div className="details"&gt;
+          &lt;p&gt;Additional product details here...&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">6</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Add PropTypes or TypeScript Types</h4>
+                    <p class="text-gray-600 mb-2">Document the expected props to catch bugs early:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+function ProductCard({ name, price, imageUrl, onAddToCart }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Component implementation...
+}
+
+ProductCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  imageUrl: PropTypes.string,
+  onAddToCart: PropTypes.func.isRequired
+};
+
+ProductCard.defaultProps = {
+  imageUrl: null
+};
+
+export default ProductCard;</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 7 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">7</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Extract Subcomponents if Needed</h4>
+                    <p class="text-gray-600 mb-2">Break down complex components into smaller ones:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>// ProductImage.jsx
+function ProductImage({ src, alt }) {
+  if (!src) return null;
+  return &lt;img src={src} alt={alt} className="product-image" /&gt;;
+}
+
+// ProductCard.jsx
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import ProductImage from './ProductImage';
+
+function ProductCard({ name, price, imageUrl, onAddToCart }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    &lt;div className="product-card"&gt;
+      &lt;ProductImage src={imageUrl} alt={name} /&gt;
+      {/* Rest of component... */}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 8 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">8</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Optimize the Component</h4>
+                    <p class="text-gray-600 mb-2">Use React.memo for performance if needed:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>import React, { useState, memo } from 'react';
+import PropTypes from 'prop-types';
+
+function ProductCard({ name, price, imageUrl, onAddToCart }) {
+  // Component implementation...
+}
+
+// PropTypes definition...
+
+export default memo(ProductCard);</code></pre>
+                  </div>
+                </div>
+                
+                <!-- Step 9 -->
+                <div class="flex items-start">
+                  <div class="h-8 w-8 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                    <span class="text-orange-600 font-bold">9</span>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium text-orange-700 mb-2">Write Tests</h4>
+                    <p class="text-gray-600 mb-2">Test your component for different scenarios:</p>
+                    <pre class="bg-gray-800 text-white p-3 rounded text-sm mb-2"><code>// ProductCard.test.jsx
+import { render, screen, fireEvent } from '@testing-library/react';
+import ProductCard from './ProductCard';
+
+test('renders product information correctly', () => {
+  const mockAddToCart = jest.fn();
+  render(
+    &lt;ProductCard 
+      name="Test Product" 
+      price={19.99} 
+      onAddToCart={mockAddToCart} 
+    /&gt;
+  );
+  
+  expect(screen.getByText('Test Product')).toBeInTheDocument();
+  expect(screen.getByText('$19.99')).toBeInTheDocument();
+});
+
+test('calls onAddToCart when button is clicked', () => {
+  const mockAddToCart = jest.fn();
+  render(
+    &lt;ProductCard 
+      name="Test Product" 
+      price={19.99} 
+      onAddToCart={mockAddToCart} 
+    /&gt;
+  );
+  
+  fireEvent.click(screen.getByText('Add to Cart'));
+  expect(mockAddToCart).toHaveBeenCalledWith({
+    name: 'Test Product',
+    price: 19.99
+  });
+});</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-orange-100 p-4 rounded-lg mb-6">
+              <h4 class="text-lg font-medium mb-3 text-orange-800 flex items-center">
+                <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+                Component Development Best Practices
+              </h4>
+              <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li><strong>Single Responsibility</strong>: Each component should do one thing well</li>
+                <li><strong>Keep Components Small</strong>: Aim for under 250 lines of code</li>
+                <li><strong>Lift State Up</strong>: Move shared state to the nearest common ancestor</li>
+                <li><strong>Use Composition</strong>: Favor composition over inheritance</li>
+                <li><strong>Write Pure Components</strong>: Avoid side effects in render functions</li>
+                <li><strong>Use Default Props</strong>: Provide sensible defaults when possible</li>
+                <li><strong>Document Your Components</strong>: Add comments for complex logic</li>
+                <li><strong>Don't Repeat Yourself</strong>: Extract reusable logic into custom hooks</li>
+              </ul>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg mt-6 shadow-sm">
+              <div class="flex items-center text-blue-700">
+                <i class="fa-solid fa-circle-info mr-2"></i>
+                <h5 class="font-medium">Final Component Example</h5>
+              </div>
+              <pre class="bg-gray-100 p-3 rounded overflow-x-auto text-sm mt-3"><code>import React, { useState, memo } from 'react';
+import PropTypes from 'prop-types';
+import './ProductCard.css';
+
+function ProductCard({ product, onAddToCart }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Handle click on the add to cart button
+  const handleAddToCart = () => {
+    onAddToCart(product.id);
+  };
+  
+  return (
+    &lt;div className="product-card"&gt;
+      {product.image && (
+        &lt;img 
+          src={product.image} 
+          alt={product.name} 
+          className="product-image" 
+        /&gt;
+      )}
+      
+      &lt;div className="product-info"&gt;
+        &lt;h3 className="product-title"&gt;{product.name}&lt;/h3&gt;
+        &lt;p className="product-price"&gt;${product.price.toFixed(2)}&lt;/p&gt;
+        
+        {isExpanded && (
+          &lt;p className="product-description"&gt;{product.description}&lt;/p&gt;
+        )}
+      &lt;/div&gt;
+      
+      &lt;div className="product-actions"&gt;
+        &lt;button 
+          onClick={() =&gt; setIsExpanded(!isExpanded)}
+          className="btn btn-secondary"
+        &gt;
+          {isExpanded ? 'Show Less' : 'Show More'}
+        &lt;/button&gt;
+        
+        &lt;button 
+          onClick={handleAddToCart}
+          className="btn btn-primary"
+          disabled={product.outOfStock}
+        &gt;
+          {product.outOfStock ? 'Out of Stock' : 'Add to Cart'}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    outOfStock: PropTypes.bool
+  }).isRequired,
+  onAddToCart: PropTypes.func.isRequired
+};
+
+export default memo(ProductCard);</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <div class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-l-4 border-blue-500">
+          <h4 class="text-xl font-bold mb-3 text-blue-800">Component Best Practices</h4>
+          <ul class="list-disc pl-6 space-y-3 text-lg">
+            <li>Keep components focused on <strong>one responsibility</strong></li>
+            <li>Use clear, descriptive names following PascalCase convention</li>
+            <li>Start component names with a <strong>capital letter</strong> (Button, Card)</li>
+            <li>Use functional components with hooks instead of class components</li>
+            <li>Document your components with PropTypes or TypeScript</li>
+            <li>Extract repeated code into separate, reusable components</li>
+            <li>Keep components under 250 lines of code when possible</li>
+            <li>Use composition to build complex UIs from simple components</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Load components-loader.js before other scripts -->
+     <script src="../../assets/js/components-loader.js"></script>
+  <!-- JavaScript for scroll progress indicator and TOC functionality -->
+  <script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Scroll progress indicator
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      
+      // Table of Contents
+      const toc = document.getElementById('toc');
+      
+      // Table of Contents links
+      const tocLinks = document.querySelectorAll('.toc-link');
+      
+      // Ensure TOC is visible with animation and positioned correctly
+      if (toc) {
+        // First hide it to prepare for animation
+        toc.style.opacity = "0";
+        toc.style.transform = "translateX(20px)";
+        
+        // Ensure proper z-index is applied
+        toc.style.zIndex = "50";
+        
+        // Show the TOC with animation after a small delay
+        setTimeout(() => {
+          toc.style.transition = "all 0.5s ease-out";
+          toc.style.opacity = "1";
+          toc.style.transform = "translateX(0)";
+          
+          // Add a subtle visual indication that it's interactive
+          toc.classList.add('hover:ring-2', 'hover:ring-blue-300', 'hover:ring-opacity-50');
+        }, 500);
+      }
+      
+      // Function to update scroll indicator and TOC active state
+      function updateScrollIndicator() {
+        // Calculate scroll position
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        
+        // Update scroll indicator width
+        if (scrollIndicator) {
+          scrollIndicator.style.width = scrolled + "%";
+        }
+        
+        // Update active TOC link
+        if (tocLinks) {
+          // Get all sections that have IDs (potential targets for the TOC)
+          const sections = document.querySelectorAll('h3[id], h4[id], div[id]');
+          let currentSectionId = '';
+          
+          // Find the current section in view
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            // Adjust the offset to highlight the link a bit before the section comes into full view
+            if (winScroll >= sectionTop - 150) {
+              currentSectionId = section.getAttribute('id');
+            }
+          });
+          
+          // Remove active class from all links
+          tocLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href && href.substring(1) === currentSectionId) {
+              link.classList.add('active');
+              
+              // Ensure the active link is visible within the scrollable TOC
+              const tocContainer = document.getElementById('toc');
+              if (tocContainer) {
+                const linkTop = link.offsetTop;
+                const containerScrollTop = tocContainer.scrollTop;
+                const containerHeight = tocContainer.offsetHeight;
+                
+                if (linkTop < containerScrollTop || linkTop > containerScrollTop + containerHeight) {
+                  tocContainer.scrollTo({
+                    top: linkTop - containerHeight / 2,
+                    behavior: 'smooth'
+                  });
+                }
+              }
+            }
+          });
+        }
+      }
+      
+      // Initialize code highlighting
+      if (window.hljs) {
+        document.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      }
+      
+      // Add scroll event listener
+      window.addEventListener('scroll', updateScrollIndicator);
+      
+      // Run once on load
+      updateScrollIndicator();
+      
+      // Add smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+      
+      // Add animation triggers for elements
+      const animateOnScroll = function() {
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        
+        elements.forEach(element => {
+          const elementPosition = element.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+          
+          if (elementPosition < windowHeight - 50) {
+            element.classList.add('animate-fade-in');
+          }
+        });
+      };
+      
+      // Run animation check on scroll
+      window.addEventListener('scroll', animateOnScroll);
+      
+      // Run once on page load
+      animateOnScroll();
+    });
+  </script>
+  </body>
+</html>

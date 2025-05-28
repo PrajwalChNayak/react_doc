@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+            animation: {
+              'spin-slow': 'spin 3s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'blob': 'blob 7s infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'bounce-slow': 'bounce 3s infinite',
+              'fade-in': 'fadeIn 0.5s ease-out',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' }
+              },
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' }
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        hljs.highlightAll();
+      });
+    </script>
+    <title>State And Event Handling | React Documentation</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+      
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+      
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: 'Fira Code', monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Feature card hover effects */
+      .feature-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(79, 70, 229, 0.1);
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
+        border-color: rgba(79, 70, 229, 0.3);
+      }
+
+      /* Decorative elements */
+      .blob-decoration {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        z-index: 0;
+        opacity: 0.5;
+      }
+      
+      /* Code animations */
+      .code-container {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+      
+      .code-container:hover {
+        transform: scale(1.01);
+      }
+
+      /* Section transitions */
+      .fade-in-section {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      /* Badges and tags */
+      .concept-badge {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+      }
+      
+      .pattern-background {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234f46e5' fill-opacity='0.03'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4
+      }
+      
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 font-sans min-h-screen flex flex-col pattern-background">
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Decorative blobs -->
+    <div class="fixed -top-20 -left-20 w-64 h-64 bg-blue-300 rounded-full opacity-10" style="filter: blur(60px); animation: blob 7s infinite;"></div>
+    <div class="fixed top-1/3 -right-32 w-96 h-96 bg-purple-300 rounded-full opacity-10" style="filter: blur(60px); animation: blob 7s infinite; animation-delay: 2s;"></div>
+    <div class="fixed bottom-0 left-1/4 w-80 h-80 bg-indigo-300 rounded-full opacity-10" style="filter: blur(60px); animation: blob 7s infinite; animation-delay: 4s;"></div>
+    
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+
+    <main class="container mx-auto px-4 py-8 flex-grow relative">
+      <!-- Introduction -->
+      <div class="max-w-4xl mx-auto">
+        <div class="relative mb-10" style="animation: fadeIn 0.8s ease-out forwards;">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-70" style="animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;"></div>
+          <div class="absolute -bottom-6 -left-6 w-20 h-20 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full opacity-60" style="animation: float 6s ease-in-out infinite;"></div>
+          <h1 class="text-5xl font-extrabold mb-3 relative z-10" style="background: linear-gradient(to right, #3b82f6, #4f46e5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">State and Event Handling</h1>
+          <p class="text-xl text-gray-600 relative z-10 font-light">Core concepts for managing data and interactions in React applications.</p>
+          <div class="flex gap-2 mt-3">
+            <span class="concept-badge bg-blue-100 text-blue-700">React Essentials</span>
+            <span class="concept-badge bg-purple-100 text-purple-700">UI Interactions</span>
+          </div>
+        </div>
+        
+        <!-- Quick Navigation -->
+        <div class="p-10 bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 rounded-xl border border-blue-100 mb-10 relative overflow-hidden shadow-xl" style="backdrop-filter: blur(10px); animation: fadeIn 0.8s ease-out forwards;">
+          <div class="absolute right-0 top-0 w-40 h-40 -mt-16 -mr-16 bg-blue-100 rounded-full opacity-50" style="animation: blob 7s infinite;"></div>
+          <div class="absolute left-1/2 bottom-0 w-24 h-24 -mb-8 bg-purple-100 rounded-full opacity-40" style="animation: blob 7s infinite; animation-delay: 2s;"></div>
+          
+          <h3 class="text-xl font-semibold text-blue-800 mb-3 flex items-center">
+            <i class="fas fa-compass text-indigo-500 mr-2"></i>
+            Quick Navigation
+          </h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 relative z-10">
+            <a href="#intro-to-state" class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group">
+              <div class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 group-hover:scale-110 transition-transform">
+                <i class="fas fa-cube"></i>
+              </div>
+              <div>
+                <span class="font-medium text-gray-800">Introduction to State</span>
+                <p class="text-xs text-gray-500 mt-1">Core state concepts in React</p>
+              </div>
+            </a>
+            
+            <a href="#event-handling" class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group">
+              <div class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 group-hover:scale-110 transition-transform">
+                <i class="fas fa-hand-pointer"></i>
+              </div>
+              <div>
+                <span class="font-medium text-gray-800">Event Handling</span>
+                <p class="text-xs text-gray-500 mt-1">Manage user interactions</p>
+              </div>
+            </a>
+            
+            <a href="#state-patterns" class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group">
+              <div class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 group-hover:scale-110 transition-transform">
+                <i class="fas fa-sitemap"></i>
+              </div>
+              <div>
+                <span class="font-medium text-gray-800">State Management Patterns</span>
+                <p class="text-xs text-gray-500 mt-1">Advanced state techniques</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Introduction to State -->
+        <section class="mb-12" id="intro-to-state">
+          <div class="flex items-center gap-3 mb-6" style="animation: fadeIn 0.8s ease-out forwards;">
+            <div class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 shadow-md shadow-blue-100">
+              <i class="fas fa-cube text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800" style="background: linear-gradient(to right, #3b82f6, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Introduction to State</h2>
+              <p class="text-gray-500 text-sm mt-1">Managing dynamic data in React components</p>
+            </div>
+          </div>
+
+          <!-- What is state -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-blue-500"><i class="fas fa-question-circle"></i></span>
+              What is State and Why We Need It
+            </h3>
+            <p class="text-gray-600 mb-3">State is local, mutable data that belongs to a component and determines its behavior and rendering. It represents the component's current condition or "memory" that can change over time, allowing React components to create dynamic, interactive user experiences.</p>
+            
+            <div class="bg-purple-50 p-4 rounded-lg mb-3">
+              <h4 class="font-medium text-purple-700 text-sm mb-2"><i class="fas fa-puzzle-piece mr-1"></i> Core Characteristics</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Component-specific</strong>: Each instance of a component has its own independent state</li>
+                <li><strong>Mutable</strong>: Can be updated using special state setter functions</li>
+                <li><strong>Preserved</strong>: Values persist between renders as long as the component stays mounted</li>
+                <li><strong>Triggers renders</strong>: When state changes, React re-renders the component</li>
+                <li><strong>Asynchronous</strong>: State updates may be batched for performance optimization</li>
+                <li><strong>Private</strong>: State is fully controlled by the owning component</li>
+                <li><strong>Transient</strong>: Lost when component unmounts (unless persisted elsewhere)</li>
+              </ul>
+            </div>
+            
+            <p class="text-gray-600 mb-3">React components need state to:</p>
+            <ul class="list-disc ml-6 text-gray-600 mb-3">
+              <li>Remember information between renders</li>
+              <li>Trigger re-renders when data changes</li>
+              <li>Reflect dynamic user interactions (clicks, form inputs, etc.)</li>
+              <li>Control UI elements that need to update dynamically</li>
+              <li>Store values that affect component rendering</li>
+              <li>Manage application flow and logic</li>
+              <li>Track asynchronous operations (loading states, API responses)</li>
+              <li>Implement component lifecycle behavior</li>
+            </ul>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mt-3">
+              <h4 class="font-medium text-blue-700 text-sm mb-2"><i class="fas fa-info-circle mr-1"></i> Why State Matters</h4>
+              <p class="text-sm text-gray-600">Without state, React components would be static and unable to respond to user interactions or data changes. State is what makes your UI interactive and dynamic. When state changes, React efficiently re-renders only the necessary parts of your UI through its reconciliation process. This makes React applications both responsive and performant.</p>
+              <p class="text-sm text-gray-600 mt-2">State serves as a bridge between user actions and visual updates, creating the foundation for React's declarative programming model where UI is a function of the current state.</p>
+            </div>
+
+            <div class="bg-gray-50 p-3 rounded-lg mt-3 relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-blue-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre>
+                <code class="language-jsx">
+                  function Counter() {
+  // State declaration with initial value of 0
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      {/* Event handler updates state, causing re-render */}
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Increment&lt;/button&gt;
+    &lt;/div&gt;
+  );
+               }               
+               </code></pre>
+            </div>
+          </div>
+
+          <!-- useState Hook Fundamentals -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-blue-500"><i class="fas fa-code"></i></span>
+              useState Hook Fundamentals
+            </h3>
+            <p class="text-gray-600 mb-3">The <code>useState</code> Hook is the primary way to add state to functional components in React, enabling components to have their own state without writing a class:</p>
+            
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-purple-700 text-sm mb-2"><i class="fas fa-puzzle-piece mr-1"></i> Core Concepts</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Declaration</strong>: <code>const [state, setState] = useState(initialValue);</code></li>
+                <li><strong>Array destructuring</strong>: Returns current state and a setter function</li>
+                <li><strong>Initial value</strong>: Can be any valid JavaScript value (number, string, boolean, array, object, null)</li>
+                <li><strong>Lazy initialization</strong>: Can accept a function: <code>useState(() => computeInitialState())</code> that runs only on first render</li>
+                <li><strong>State updates</strong>: Pass new value to setter (<code>setState(newValue)</code>) or function that computes new value (<code>setState(prev => computeNewValue(prev))</code>)</li>
+                <li><strong>Batched updates</strong>: Multiple state updates in same event handler are batched in React 18+</li>
+                <li><strong>Replacement, not mutation</strong>: States are replaced entirely, not merged or mutated</li>
+              </ul>
+            </div>
+            
+            <div class="bg-amber-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-amber-700 text-sm mb-2"><i class="fas fa-lightbulb mr-1"></i> Best Practices</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li>Use multiple <code>useState</code> calls for unrelated state values</li>
+                <li>Use a single <code>useState</code> object for closely related state values</li>
+                <li>Prefer functional updates (<code>setState(prev => ...)</code>) when updating based on previous state</li>
+                <li>Keep state minimal and compute derived values outside state</li>
+                <li>Avoid deep nesting when managing complex state structures</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-purple-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre>
+                <code class="language-jsx">
+                  function ProfileForm() {
+  // State with string initial value
+  const [name, setName] = useState('');
+  
+  // State with object initial value
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    age: null
+  });
+  
+  // State with lazy initialization
+  const [settings, setSettings] = useState(() => {
+    // This function runs only on initial render
+    const savedSettings = localStorage.getItem('settings');
+    return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+  });
+  
+  return (
+    <form>
+      <input 
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      {/* More form elements... */}
+    </form>
+  );
+}
+                 </code></pre>
+             </div>
+            
+            <div class="bg-amber-50 p-4 rounded-lg mt-4">
+              <h4 class="font-medium text-amber-700 text-sm mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> Important Rules</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li>Hooks can only be called at the top level (not inside conditions, loops, or nested functions)</li>
+                <li>Hooks can only be called from React function components or custom Hooks</li>
+                <li>State updates may be batched for performance, so they can be asynchronous</li>
+                <li>React preserves state between re-renders as long as the component is in the DOM</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- State vs Props -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-blue-500"><i class="fas fa-exchange-alt"></i></span>
+              State vs Props
+            </h3>
+            <p class="text-gray-600 mb-3">Understanding the differences between state and props is crucial for effective React development and data flow architecture:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-blue-50 p-4 rounded-lg hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 flex items-center"><i class="fas fa-database text-blue-500 mr-2 text-sm"></i> State</h4>
+                <ul class="list-disc ml-4 text-sm">
+                  <li>Managed internally by component</li>
+                  <li>Can be modified by component</li>
+                  <li>Causes re-render when updated</li>
+                  <li>Private to the component</li>
+                  <li>Initialized and updated within component</li>
+                  <li>Useful for data that changes over time</li>
+                  <li>Lost on component unmount unless persisted</li>
+                  <li>Can be passed down as props to children</li>
+                  <li>Managed with useState or useReducer hooks</li>
+                </ul>
+              </div>
+              <div class="bg-green-50 p-4 rounded-lg hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 flex items-center"><i class="fas fa-gift text-green-500 mr-2 text-sm"></i> Props</h4>
+                <ul class="list-disc ml-4 text-sm">
+                  <li>Passed from parent components</li>
+                  <li>Read-only (immutable)</li>
+                  <li>Updates come from parent</li>
+                  <li>Help create reusable components</li>
+                  <li>Enable parent-child communication</li>
+                  <li>Can include functions, objects, or primitives</li>
+                  <li>Available on first render</li>
+                  <li>Can have default values</li>
+                  <li>Can be destructured for cleaner syntax</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg mt-4">
+              <h4 class="font-medium text-indigo-700 text-sm mb-2 flex items-center">
+                <i class="fas fa-code-compare text-indigo-500 mr-2 text-sm"></i> Working Together
+              </h4>
+              <p class="text-sm text-gray-600">Props and state often work together. A parent component can maintain state and pass it down as props to children. When state updates in the parent, the props in the children update automatically, causing them to re-render. This unidirectional data flow is a fundamental React pattern:</p>
+              <ul class="list-disc ml-4 text-gray-600 text-sm mt-2">
+                <li><strong>State becoming props</strong>: A component's state can become another component's props</li>
+                <li><strong>Prop callbacks</strong>: Child components can receive functions as props to communicate back to parents</li>
+                <li><strong>Derived state</strong>: Sometimes props can influence a component's internal state</li>
+                <li><strong>State lifting</strong>: Moving state up the component tree for shared access</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg mt-3">
+              <pre><code class="language-jsx">function Parent() {
+  // State in the parent
+  const [count, setCount] = useState(0);
+  
+  return (
+    // Pass state as props to child
+    &lt;Child count={count} onIncrement={() =&gt; setCount(count + 1)} /&gt;
+  );
+}
+
+function Child({ count, onIncrement }) {
+  // Child receives props from parent
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={onIncrement}&gt;Increment&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- When to Use State -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-blue-500"><i class="fas fa-lightbulb"></i></span>
+              When to Use State
+            </h3>
+            <p class="text-gray-600 mb-3">Not all data needs to be stored in state. Making smart decisions about what should be state is crucial for writing efficient React applications:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-green-50 p-4 rounded-lg hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 text-green-700 text-sm">✅ Use State When</h4>
+                <ul class="list-disc ml-4 text-sm">
+                  <li>Data changes over time</li>
+                  <li>User interactions affect the data</li>
+                  <li>You need to preserve values between renders</li>
+                  <li>Data influences what gets rendered</li>
+                  <li>Data from asynchronous operations</li>
+                  <li>Form input values and validation status</li>
+                  <li>UI state like toggles, modals, and accordions</li>
+                  <li>Navigation and routing state</li>
+                  <li>Animation progress and status</li>
+                </ul>
+              </div>
+              <div class="bg-red-50 p-4 rounded-lg hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 text-red-700 text-sm">❌ Don't Use State For</h4>
+                <ul class="list-disc ml-4 text-sm">
+                  <li>Data that can be calculated from props or other state</li>
+                  <li>Data that doesn't affect rendering</li>
+                  <li>Duplicated data from props</li>
+                  <li>Constants that never change</li>
+                  <li>DOM elements (use refs instead)</li>
+                  <li>Cached/memoized values (use useMemo instead)</li>
+                  <li>Previous values just for comparison (use useRef)</li>
+                  <li>Direct copies of props without transformation</li>
+                  <li>Values only used during render (regular variables)</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mt-4">
+              <h4 class="font-medium text-blue-700 text-sm mb-2">
+                <i class="fas fa-code-branch text-blue-500 mr-1"></i> State Location Matters
+              </h4>
+              <p class="text-sm text-gray-600">Choose the right component to hold each piece of state. Place state as close as possible to components that use it, but high enough to share it when needed. This is known as "lifting state up".</p>
+              <ul class="list-disc ml-4 text-sm mt-2">
+                <li><strong>Local component state</strong>: For UI-specific state or data used only by one component</li>
+                <li><strong>Lifted state</strong>: For data shared by multiple components but not the entire app</li>
+                <li><strong>Global state</strong>: For data needed throughout your application (Context API, Redux, etc.)</li>
+                <li><strong>Server state</strong>: For data that represents server-side resources (React Query, SWR)</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg mt-3">
+              <pre><code class="language-jsx">function SearchableList() {
+  // Searchable list needs state for the search term
+  const [searchTerm, setSearchTerm] = useState('');
+  const [items] = useState(['Apple', 'Banana', 'Cherry', 'Date']);
+  
+  // Derived value - no need for state
+  const filteredItems = items.filter(item => 
+    item.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  return (
+    <div>
+      <input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+      />
+      <ul>
+        {filteredItems.map(item => <li key={item}>{item}</li>)}
+      </ul>
+    </div>
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- State Immutability Principles -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-blue-500"><i class="fas fa-shield-alt"></i></span>
+              State Immutability Principles
+            </h3>
+            <p class="text-gray-600 mb-3">React relies on immutability for efficient rendering and predictable behavior. Always treat state as immutable and create new objects/arrays instead of mutating existing ones:</p>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-indigo-700 text-sm mb-2"><i class="fas fa-book mr-1"></i> Why Immutability Matters</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Predictability</strong>: Immutability makes state changes more predictable and easier to trace</li>
+                <li><strong>Performance</strong>: React relies on reference changes to detect updates efficiently</li>
+                <li><strong>Pure components</strong>: Enables React's optimization with memo, PureComponent, etc.</li>
+                <li><strong>Time-travel debugging</strong>: Makes it possible to record and replay state changes</li>
+                <li><strong>Concurrency</strong>: Prevents issues with React's concurrent rendering features</li>
+                <li><strong>Undo/redo</strong>: Simplifies implementation of history features</li>
+              </ul>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                <h4 class="font-semibold text-red-700 text-sm mb-2">❌ Incorrect: Direct Mutation</h4>
+                <pre><code class="language-jsx">// Mutating objects directly won't work
+const handleClick = () => {
+  user.name = 'New Name';
+  setUser(user); // React won't detect change!
+};
+
+// Mutating arrays directly won't work
+const handleAdd = () => {
+  items.push('New Item');
+  setItems(items); // React won't detect change!
+};</code></pre>
+              </div>
+              <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                <h4 class="font-semibold text-green-700 text-sm mb-2">✅ Correct: Creating New References</h4>
+                <pre><code class="language-jsx">// Creating new object with spread
+const handleClick = () => {
+  setUser({ ...user, name: 'New Name' });
+};
+
+// Creating new array with spread
+const handleAdd = () => {
+  setItems([...items, 'New Item']);
+};</code></pre>
+              </div>
+            </div>
+            
+            <div class="bg-amber-50 p-4 rounded-lg mt-4">
+              <h4 class="font-medium text-amber-700 text-sm mb-2"><i class="fas fa-tools mr-1"></i> Immutability Helpers</h4>
+              <p class="text-sm text-gray-600 mb-2">Working with deeply nested state can be cumbersome with spread operators. Consider using immutability helper libraries:</p>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Immer</strong>: Lets you write mutable code that produces immutable results</li>
+                <li><strong>Immutable.js</strong>: Provides persistent immutable data structures</li>
+                <li><strong>useImmer hook</strong>: Combines useState with Immer for elegant state updates</li>
+              </ul>
+              <div class="bg-gray-50 p-3 rounded-lg mt-3">
+                <pre><code class="language-jsx">// Using Immer with useImmer hook
+import { useImmer } from 'use-immer';
+
+function TodoList() {
+  const [todos, updateTodos] = useImmer([
+    { id: 1, text: 'Learn React', done: false },
+    { id: 2, text: 'Build an app', done: false }
+  ]);
+  
+  const toggleTodo = (id) => {
+    updateTodos(draft => {
+      const todo = draft.find(t => t.id === id);
+      todo.done = !todo.done;
+    });
+  };
+  
+  // This is immutable despite looking like direct mutation
+  return null;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Event Handling -->
+        <section class="mb-12" id="event-handling">
+          <div class="flex items-center gap-3 mb-6" style="animation: fadeIn 0.8s ease-out forwards;">
+            <div class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 shadow-md shadow-green-100">
+              <i class="fas fa-hand-pointer text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800" style="background: linear-gradient(to right, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Event Handling</h2>
+              <p class="text-gray-500 text-sm mt-1">Responding to user interactions in React</p>
+            </div>
+          </div>
+
+          <!-- Handling Events -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-green-500"><i class="fas fa-mouse-pointer"></i></span>
+              Handling User Interactions
+            </h3>
+            <p class="text-gray-600 mb-3">React uses a declarative approach to handle events by attaching event handlers to JSX elements. Unlike traditional DOM events, React events are named using camelCase syntax and passed as functions rather than strings.</p>
+            
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-purple-700 text-sm mb-2"><i class="fas fa-puzzle-piece mr-1"></i> Key Concepts</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Declarative binding</strong>: Events are attached directly in JSX using props</li>
+                <li><strong>camelCase naming</strong>: Events use camelCase naming convention (onClick instead of onclick)</li>
+                <li><strong>Function references</strong>: Pass function references, not function calls</li>
+                <li><strong>Arrow functions</strong>: Often used for inline handlers or when passing arguments</li>
+                <li><strong>Method binding</strong>: Event handlers need correct 'this' context in class components</li>
+              </ul>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                <h4 class="font-semibold text-red-700 text-sm mb-2">❌ Incorrect</h4>
+                <pre><code class="language-jsx">// Don't call the function during render
+<button onClick={handleClick()}>Click</button>
+
+// Don't use string references like in HTML
+<button onClick="handleClick">Click</button></code></pre>
+              </div>
+              <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                <h4 class="font-semibold text-green-700 text-sm mb-2">✅ Correct</h4>
+                <pre><code class="language-jsx">// Pass function reference
+&lt;button onClick={handleClick}&gt;Click&lt;/button&gt;
+
+// Or use inline arrow function
+&lt;button onClick={() =&gt; handleClick(arg)}&gt;Click&lt;/button&gt;</code></pre>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-green-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre><code class="language-jsx">function Button() {
+  const handleClick = (event) => {
+    console.log('Button clicked!');
+    console.log('Event target:', event.target);
+    console.log('Event type:', event.type);
+  };
+
+  return (
+    <button onClick={handleClick}>Click me</button>
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Event Object and Synthetic Events -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-green-500"><i class="fas fa-cube"></i></span>
+              Event Object and Synthetic Events
+            </h3>
+            <p class="text-gray-600 mb-3">React wraps native browser events in cross-browser compatible SyntheticEvent objects, providing consistent behavior across different browsers.</p>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-blue-700 text-sm mb-2"><i class="fas fa-info-circle mr-1"></i> Key Properties</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>event.target</strong>: The DOM element that triggered the event</li>
+                <li><strong>event.currentTarget</strong>: The element the event handler is attached to</li>
+                <li><strong>event.preventDefault()</strong>: Prevents default browser behavior</li>
+                <li><strong>event.stopPropagation()</strong>: Stops event bubbling up the DOM</li>
+                <li><strong>event.type</strong>: The type of event (e.g., 'click', 'change')</li>
+                <li><strong>event.nativeEvent</strong>: Access to the underlying browser event</li>
+              </ul>
+            </div>
+            
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-purple-700 text-sm mb-2"><i class="fas fa-exclamation-circle mr-1"></i> Important Notes</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li>SyntheticEvents are pooled and reused for performance in React</li>
+                <li>Event properties are nullified after the event callback is invoked</li>
+                <li>To retain event properties asynchronously, use <code>event.persist()</code> or save specific properties</li>
+                <li>React normalizes events so they work consistently across browsers</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-blue-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre><code class="language-jsx">function InputExample() {
+  const handleChange = (event) => {
+    // Access synthetic event properties
+    console.log('Value:', event.target.value);
+    console.log('Input name:', event.target.name);
+    
+    // To use event in async operations
+    const value = event.target.value; // Store needed values
+    
+    setTimeout(() => {
+      // event.target might be null here!
+      console.log('Current value:', value);
+    }, 1000);
+  };
+  
+  return <input name="username" onChange={handleChange} />;
+}</code></pre>
+            </div>
+          </div>
+          
+          <!-- Event Types -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-green-500"><i class="fas fa-list"></i></span>
+              Common React Events
+            </h3>
+            <p class="text-gray-600 mb-3">React supports a wide range of events grouped into several categories:</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-mouse text-blue-500 mr-2"></i>
+                  Mouse Events
+                </h4>
+                <ul class="text-xs text-gray-600 ml-3 list-disc">
+                  <li>onClick</li>
+                  <li>onMouseEnter</li>
+                  <li>onMouseLeave</li>
+                  <li>onMouseDown</li>
+                  <li>onMouseUp</li>
+                  <li>onDoubleClick</li>
+                </ul>
+              </div>
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-keyboard text-purple-500 mr-2"></i>
+                  Keyboard Events
+                </h4>
+                <ul class="text-xs text-gray-600 ml-3 list-disc">
+                  <li>onKeyDown</li>
+                  <li>onKeyPress</li>
+                  <li>onKeyUp</li>
+                </ul>
+              </div>
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-all">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-file-alt text-green-500 mr-2"></i>
+                  Form Events
+                </h4>
+                <ul class="text-xs text-gray-600 ml-3 list-disc">
+                  <li>onChange</li>
+                  <li>onSubmit</li>
+                  <li>onFocus</li>
+                  <li>onBlur</li>
+                  <li>onInput</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg mt-4">
+              <h4 class="font-medium text-indigo-700 text-sm mb-2"><i class="fas fa-sitemap mr-1"></i> Event Delegation in React</h4>
+              <p class="text-sm text-gray-600">React implements event delegation automatically for performance. Instead of attaching event listeners to every node, React attaches a single event listener to the root of the document and handles events from a centralized system:</p>
+              <ul class="list-disc ml-4 text-gray-600 text-sm mt-2">
+                <li><strong>Performance optimization</strong>: React manages event listeners at the root level</li>
+                <li><strong>Automatic cleanup</strong>: No need to manually remove event listeners</li>
+                <li><strong>Dynamic elements</strong>: Events work automatically on dynamically created elements</li>
+                <li><strong>Synthetic event normalization</strong>: React normalizes events across browsers</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg mt-4 relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-indigo-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre>
+                <code class="language-jsx">function DelegationExample() {
+  const handleItemClick = (id, event) => {
+    console.log(`Item ${id} clicked`);
+    console.log('Event bubbled from:', event.target.tagName);
+    console.log('Event handled at:', event.currentTarget.tagName);
+  };
+  
+  return (
+    <ul onClick={(e) => handleItemClick('list', e)}>
+      {/* One click handler for all items through delegation */}
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </ul>
+  );
+}</code>
+</pre>
+            </div>
+          </div>
+
+          <!-- Preventing Default Behavior -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-green-500"><i class="fas fa-ban"></i></span>
+              Preventing Default Behavior
+            </h3>
+            <p class="text-gray-600 mb-3">Browser events often have default behaviors (form submissions reload the page, links navigate, etc.). React allows you to prevent these behaviors using <code>event.preventDefault()</code>.</p>
+            
+            <div class="bg-amber-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-amber-700 text-sm mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> Common Use Cases</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Form submissions</strong>: Prevent page reloads to handle form data with JavaScript</li>
+                <li><strong>Link clicks</strong>: Handle navigation in single-page applications</li>
+                <li><strong>Context menus</strong>: Create custom right-click menus</li>
+                <li><strong>Drag events</strong>: Implement custom drag and drop functionality</li>
+                <li><strong>Key events</strong>: Override default keyboard behaviors</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-amber-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre>
+                <code class="language-jsx">function PreventDefaultExample() {
+  // Prevent form submission page refresh
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted without page reload');
+  };
+  
+  // Prevent link navigation
+  const handleLinkClick = (e) => {
+    e.preventDefault();
+    console.log('Link click handled with custom logic');
+  };
+  
+  // Prevent right-click context menu
+  const handleRightClick = (e) => {
+    e.preventDefault();
+    console.log('Custom context menu could be shown here');
+  };
+  
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <button type="submit">Submit Form</button>
+      </form>
+      
+      <a href="https://example.com" onClick={handleLinkClick}>
+        Custom Link Handling
+      </a>
+      
+      <div onContextMenu={handleRightClick}>
+        Right-click me for custom menu
+      </div>
+    </>
+  );
+}</code></pre>
+            </div>
+          </div>
+        
+        <!-- State Management Patterns -->
+        <section class="mb-12" id="state-patterns">
+          <div class="flex items-center gap-3 mb-6" style="animation: fadeIn 0.8s ease-out forwards;">
+            <div class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 shadow-md shadow-purple-100">
+              <i class="fas fa-sitemap text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800" style="background: linear-gradient(to right, #8b5cf6, #6d28d9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">State Management Patterns</h2>
+              <p class="text-gray-500 text-sm mt-1">Advanced techniques for managing component state</p>
+            </div>
+          </div>
+
+          <!-- Lifting State Up -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-purple-500"><i class="fas fa-arrow-up"></i></span>
+              Lifting State Up
+            </h3>
+            <p class="text-gray-600 mb-3">When multiple components need to share and synchronize the same state, move that state to their closest common ancestor. This pattern is known as "lifting state up".</p>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-indigo-700 text-sm mb-2"><i class="fas fa-lightbulb mr-1"></i> Key Benefits</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Single source of truth</strong>: Maintains one authoritative state source</li>
+                <li><strong>Synchronized data</strong>: All child components work with the same data</li>
+                <li><strong>Simplified data flow</strong>: Parent passes state down, children trigger updates via callbacks</li>
+                <li><strong>Clearer ownership</strong>: Parent component clearly owns and controls the shared state</li>
+                <li><strong>Easier debugging</strong>: State changes are centralized and easier to track</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 bg-purple-100/30 w-24 h-24 rounded-full -mt-12 -mr-12"></div>
+              <pre><code class="language-jsx">function TemperatureInput({ scale, temperature, onTemperatureChange }) {
+  const scaleNames = {
+    c: 'Celsius',
+    f: 'Fahrenheit'
+  };
+  
+  return (
+    &lt;fieldset&gt;
+      &lt;legend&gt;Enter temperature in {scaleNames[scale]}:&lt;/legend&gt;
+      &lt;input
+        value={temperature}
+        onChange={(e) =&gt; onTemperatureChange(e.target.value)}
+      /&gt;
+    &lt;/fieldset&gt;
+  );
+}
+
+function BoilingVerdict({ celsius }) {
+  if (celsius &gt;= 100) {
+    return &lt;p&gt;The water would boil.&lt;/p&gt;;
+  }
+  return &lt;p&gt;The water would not boil.&lt;/p&gt;;
+}
+
+// Helper functions
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+  return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+function TemperatureCalculator() {
+  // State is lifted to the parent component
+  const [temperature, setTemperature] = useState('');
+  const [scale, setScale] = useState('c');
+  
+  // Calculated values based on shared state
+  const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+  const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+  return (
+    &lt;div&gt;
+      {/* Child A can update shared state */}
+      &lt;TemperatureInput
+        scale="c"
+        temperature={celsius}
+        onTemperatureChange={(t) =&gt; {
+          setTemperature(t);
+          setScale('c');
+        }}
+      /&gt;
+      
+      {/* Child B can also update the same shared state */}
+      &lt;TemperatureInput
+        scale="f"
+        temperature={fahrenheit}
+        onTemperatureChange={(t) =&gt; {
+          setTemperature(t);
+          setScale('f');
+        }}
+      /&gt;
+      
+      {/* Child C just consumes the shared state */}
+      &lt;BoilingVerdict celsius={parseFloat(celsius)} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- State Colocation -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-purple-500"><i class="fas fa-map-pin"></i></span>
+              State Colocation
+            </h3>
+            <p class="text-gray-600 mb-3">State colocation is the principle of keeping state as close as possible to where it's used. This is often the opposite of lifting state up - when state is only needed by a specific component, it should be kept within that component.</p>
+            
+            <div class="bg-green-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-green-700 text-sm mb-2"><i class="fas fa-check-circle mr-1"></i> Advantages</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Reduced prop drilling</strong>: Eliminates passing props through multiple intermediate components</li>
+                <li><strong>Improved performance</strong>: Fewer components re-render when state changes</li>
+                <li><strong>Better code organization</strong>: Components are more self-contained and modular</li>
+                <li><strong>Simpler mental model</strong>: Easier to understand which component owns what state</li>
+                <li><strong>Improved maintainability</strong>: Changes to one component's state don't affect others</li>
+              </ul>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                <h4 class="font-semibold text-red-700 text-sm mb-2">❌ Suboptimal: State Too High</h4>
+                <pre><code class="language-jsx">function ParentList() {
+  // State for all items plus expanded state
+  const [items, setItems] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
+  
+  return (
+    &lt;div&gt;
+      {items.map(item =&gt; (
+        &lt;ListItem 
+          key={item.id}
+          item={item}
+          isExpanded={item.id === expandedId}
+          onExpand={() =&gt; setExpandedId(item.id)}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+              <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                <h4 class="font-semibold text-green-700 text-sm mb-2">✅ Better: Colocated State</h4>
+                <pre><code class="language-jsx">function ParentList() {
+  // Only items list is needed at this level
+  const [items, setItems] = useState([]);
+  
+  return (
+    &lt;div&gt;
+      {items.map(item =&gt; (
+        &lt;ListItem key={item.id} item={item} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+function ListItem({ item }) {
+  // Expanded state is colocated here where used
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setIsExpanded(!isExpanded)}&gt;
+        {isExpanded ? 'Collapse' : 'Expand'}
+      &lt;/button&gt;
+      {isExpanded && &lt;div&gt;{item.details}&lt;/div&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controlled vs Uncontrolled -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-purple-500"><i class="fas fa-toggle-on"></i></span>
+              Controlled vs Uncontrolled Components
+            </h3>
+            <p class="text-gray-600 mb-3">React offers two approaches to managing form inputs and other interactive elements: controlled and uncontrolled components. Each has specific use cases and trade-offs.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-gamepad text-purple-600 mr-1"></i>
+                  Controlled Components
+                </h4>
+                <ul class="list-disc ml-4 text-xs text-gray-600 mb-3">
+                  <li><strong>Value source</strong>: React state</li>
+                  <li><strong>Updates via</strong>: onChange events</li>
+                  <li><strong>Data flow</strong>: Bidirectional</li>
+                  <li><strong>Validation</strong>: Real-time possible</li>
+                  <li><strong>Flexibility</strong>: High (can transform input)</li>
+                  <li><strong>Complexity</strong>: Higher</li>
+                </ul>
+              </div>
+              <div class="bg-indigo-50 p-4 rounded-lg">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-robot text-indigo-600 mr-1"></i>
+                  Uncontrolled Components
+                </h4>
+                <ul class="list-disc ml-4 text-xs text-gray-600 mb-3">
+                  <li><strong>Value source</strong>: DOM itself</li>
+                  <li><strong>Access via</strong>: refs</li>
+                  <li><strong>Data flow</strong>: Form to component</li>
+                  <li><strong>Validation</strong>: Usually at submission</li>
+                  <li><strong>Flexibility</strong>: Limited</li>
+                  <li><strong>Complexity</strong>: Lower</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-blue-700 text-sm mb-2"><i class="fas fa-lightbulb mr-1"></i> When to Use Each</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm font-medium text-gray-700 mb-1">Use Controlled When:</p>
+                  <ul class="list-disc ml-4 text-xs text-gray-600">
+                    <li>Immediate validation is needed</li>
+                    <li>Conditionally disabling submit button</li>
+                    <li>Enforcing input format</li>
+                    <li>Several inputs for one piece of data</li>
+                    <li>Dynamic inputs</li>
+                  </ul>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-700 mb-1">Use Uncontrolled When:</p>
+                  <ul class="list-disc ml-4 text-xs text-gray-600">
+                    <li>Simple forms with few fields</li>
+                    <li>Integrating with non-React code</li>
+                    <li>File inputs</li>
+                    <li>Performance is a concern</li>
+                    <li>Quick prototyping</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-gamepad text-purple-600 mr-1"></i>
+                  Controlled Example
+                </h4>
+                <pre><code class="language-jsx">function ControlledForm() {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState('');
+  
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    
+    // Real-time validation
+    if (newValue.length < 3) {
+      setError('Value must be at least 3 characters');
+    } else {
+      setError('');
+    }
+  };
+  
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={value}
+        onChange={handleChange}
+      /&gt;
+      {error && &lt;p className="text-red-500"&gt;{error}&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+              <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100">
+                <h4 class="font-semibold mb-2 text-sm flex items-center">
+                  <i class="fas fa-robot text-indigo-600 mr-1"></i>
+                  Uncontrolled Example
+                </h4>
+                <pre><code class="language-jsx">function UncontrolledForm() {
+  const inputRef = useRef();
+  const [error, setError] = useState('');
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const value = inputRef.current.value;
+    
+    // Validation at submission time
+    if (value.length < 3) {
+      setError('Value must be at least 3 characters');
+    } else {
+      setError('');
+      // Process the form...
+      console.log('Submitting:', value);
+    }
+  };
+  
+  // Return JSX for the form
+  return (
+    &lt;div&gt;
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input ref={inputRef} defaultValue="default" /&gt;
+        {error && &lt;p&gt;{error}&lt;/p&gt;}
+        &lt;button type="submit"&gt;Submit&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- State Updates and Batching -->
+          <div class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 code-container relative overflow-hidden">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="text-purple-500"><i class="fas fa-sync-alt"></i></span>
+              State Updates and Batching
+            </h3>
+            <p class="text-gray-600 mb-3">Understanding how React processes state updates is crucial for avoiding common pitfalls and optimizing performance.</p>
+            
+            <div class="bg-yellow-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-yellow-700 text-sm mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> State Update Characteristics</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li><strong>Asynchronous</strong>: State updates may not be applied immediately</li>
+                <li><strong>Batched</strong>: Multiple state updates in same event handler are grouped</li>
+                <li><strong>Queued</strong>: Updates happen in the order they were called</li>
+                <li><strong>Deferred</strong>: Actual DOM updates happen after all event handlers run</li>
+                <li><strong>Closures</strong>: Updates may reference stale state values in closures</li>
+              </ul>
+            </div>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mb-3">Functional Updates</h4>
+            <p class="text-gray-600 mb-3">Use functional updates when new state depends on previous state to avoid stale state references:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                <h4 class="font-semibold text-red-700 text-sm mb-2">❌ Incorrect</h4>
+                <pre><code class="language-jsx">// May cause issues with multiple updates
+setCount(count + 1);
+setCount(count + 1);
+
+// Both updates use the same initial state
+// So only one increment happens</code></pre>
+              </div>
+              <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                <h4 class="font-semibold text-green-700 text-sm mb-2">✅ Correct</h4>
+                <pre><code class="language-jsx">// Guaranteed to work with previous state
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+
+// Each update builds on the previous one
+// Count will increase by 2</code></pre>
+              </div>
+            </div>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mb-3">Automatic Batching</h4>
+            <p class="text-gray-600 mb-3">React batches multiple state updates within the same synchronous event handler to improve performance:</p>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+              <h4 class="font-medium text-indigo-700 text-sm mb-2"><i class="fas fa-info-circle mr-1"></i> Batching Behavior</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm mb-3">
+                <li><strong>React 18+</strong>: All state updates are automatically batched (native events, promises, timeouts, etc.)</li>
+                <li><strong>Prior to React 18</strong>: Only updates within React event handlers were batched</li>
+                <li><strong>Performance benefit</strong>: Prevents multiple re-renders for multiple state updates</li>
+                <li><strong>Mental model</strong>: Think of state updates as scheduled changes for the next render</li>
+              </ul>
+              <div class="bg-gray-50 p-3 rounded-lg">
+                <pre><code class="language-jsx">function UserProfile() {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState(0);
+  const [address, setAddress] = useState('');
+
+  function handleSubmit() {
+    // These all batch into a single render
+    setName(formData.name);
+    setAge(formData.age);
+    setAddress(formData.address);
+    
+    // React only performs ONE render with all updates
+  }
+  
+  // In React 18, even these are batched
+  async function handleFetch() {
+    const response = await fetchUserData();
+    
+    // These updates will be batched in React 18
+    setName(response.name);
+    setAge(response.age);
+    setAddress(response.address);
+  }
+}</code></pre>
+              </div>
+            </div>
+            
+            <div class="bg-amber-50 p-4 rounded-lg">
+              <h4 class="font-medium text-amber-700 text-sm mb-2"><i class="fas fa-lightbulb mr-1"></i> Best Practices</h4>
+              <ul class="list-disc ml-4 text-gray-600 text-sm">
+                <li>Use functional updates when next state depends on previous state</li>
+                <li>Group related state in objects to update multiple values at once</li>
+                <li>Use useReducer for complex state logic with multiple sub-values</li>
+                <li>Avoid setting state inside useEffect cleanup functions</li>
+                <li>Remember that state updates in React 18 are always batched by default</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-8 border border-blue-100 relative overflow-hidden">
+          <div class="absolute right-0 bottom-0 w-32 h-32 -mb-10 -mr-10 bg-indigo-100 rounded-full opacity-50" style="animation: blob 7s infinite;"></div>
+          <h3 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+            <i class="fas fa-lightbulb text-amber-500 mr-2"></i>
+            Key Takeaways
+          </h3>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 relative z-10">
+            <li class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
+              <div class="p-1 rounded-full bg-indigo-100 text-indigo-600 mt-1"><i class="fas fa-check"></i></div>
+              <span class="text-sm">State is for data that changes over time</span>
+            </li>
+            <li class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
+              <div class="p-1 rounded-full bg-indigo-100 text-indigo-600 mt-1"><i class="fas fa-check"></i></div>
+              <span class="text-sm">Always treat state as immutable</span>
+            </li>
+            <li class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
+              <div class="p-1 rounded-full bg-indigo-100 text-indigo-600 mt-1"><i class="fas fa-check"></i></div>
+              <span class="text-sm">Lift state up for shared data</span>
+            </li>
+            <li class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
+              <div class="p-1 rounded-full bg-indigo-100 text-indigo-600 mt-1"><i class="fas fa-check"></i></div>
+              <span class="text-sm">Use functional updates for state changes</span>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Further Resources -->
+        <div class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-8 border border-blue-100 relative overflow-hidden">
+          <div class="absolute left-0 bottom-0 w-32 h-32 -mb-10 -ml-10 bg-blue-100 rounded-full opacity-50" style="animation: blob 7s infinite; animation-delay: 3s;"></div>
+          <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <i class="fas fa-book text-blue-500 mr-2"></i>
+            Further Resources
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
+            <a href="#" class="bg-white/70 p-3 rounded-lg flex items-start gap-2 hover:shadow-md transition-all">
+              <div class="p-1.5 rounded-full bg-blue-100 text-blue-600 mt-1"><i class="fas fa-external-link-alt"></i></div>
+              <div>
+                <h4 class="font-medium text-gray-800">React Documentation</h4>
+                <p class="text-xs text-gray-500">Official guides on state and events</p>
+              </div>
+            </a>
+            <a href="#" class="bg-white/70 p-3 rounded-lg flex items-start gap-2 hover:shadow-md transition-all">
+              <div class="p-1.5 rounded-full bg-purple-100 text-purple-600 mt-1"><i class="fas fa-external-link-alt"></i></div>
+              <div>
+                <h4 class="font-medium text-gray-800">React Hooks API</h4>
+                <p class="text-xs text-gray-500">Learn about useState and useEffect</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="footer-placeholder"></div>   
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../../assets/js/components-loader.js"></script>
+    
+    <script>
+      // Function to update scroll indicator
+      function updateScrollIndicator() {
+        // Calculate scroll position
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        
+        // Update scroll indicator width
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        if (scrollIndicator) {
+          scrollIndicator.style.width = scrolled + "%";
+        }
+      }
+      
+      // Add scroll event listener
+      window.addEventListener('scroll', updateScrollIndicator);
+      
+      // Add class to elements for animation when they come into view
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize scroll indicator
+        updateScrollIndicator();
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+
+        // Add hover effect to code blocks
+        document.querySelectorAll('.code-container').forEach(container => {
+          container.addEventListener('mouseenter', function() {
+            this.classList.add('shadow-xl');
+          });
+          container.addEventListener('mouseleave', function() {
+            this.classList.remove('shadow-xl');
+          });
+        });
+      });
+    </script>
+
+
+      
+  </body>
+</html>

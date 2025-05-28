@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'spin-slow': 'spin 3s linear infinite',
+            }
+          }
+        }
+      }
+    </script>
+    <title>Getting Started | React Documentation</title>
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col">
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+        <h2 class="text-3xl font-bold mb-4 text-blue-800 flex items-center gap-2">
+          <i class="fa-solid fa-rocket text-blue-600"></i> Getting Started with React
+        </h2>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Learn how to set up a React project, understand the library's history and scope, and run your first React application.</p>
+      
+        <!-- What is React -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">What is React?</h3>
+          <div class="pl-2 border-l-4 border-blue-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React is a JavaScript library for building user interfaces, particularly single-page applications. It allows developers to create large web applications that can change data without reloading the page. The main focus of React is on developing components, which are reusable UI elements for your application.
+            </p>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React embraces the concept of unidirectional data flow and a virtual DOM, making it efficient and faster than traditional DOM manipulation. Its component-based architecture encourages the creation of reusable UI components that present data that changes over time.
+            </p>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-4">
+              <p class="font-medium text-blue-700">Key Features of React:</p>
+              <ul class="list-disc list-inside text-gray-700 pl-4 mt-2 space-y-1">
+                <li>Virtual DOM for efficient rendering</li>
+                <li>Component-based architecture</li>
+                <li>JSX syntax for HTML in JavaScript</li>
+                <li>One-way data binding</li>
+                <li>Focus on UI components</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why Use React? -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>
+              Why Use React?
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-yellow-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React has become one of the most popular front-end libraries for good reasons. It offers numerous benefits that make development faster, more efficient, and more maintainable.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <!-- Left column -->
+              <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Reusable Components</h4>
+                  <p class="text-gray-600">Build encapsulated components that manage their own state, then compose them to make complex UIs. Component-based architecture promotes reuse, testing, and separation of concerns.</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Developer Experience</h4>
+                  <p class="text-gray-600">React's declarative approach makes your code more predictable and easier to debug. The React ecosystem includes excellent developer tools and extensive documentation.</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Performance</h4>
+                  <p class="text-gray-600">React's Virtual DOM and efficient diffing algorithm minimize expensive DOM operations, delivering high performance even for complex UIs with frequently changing data.</p>
+                </div>
+              </div>
+              
+              <!-- Right column -->
+              <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Strong Community & Ecosystem</h4>
+                  <p class="text-gray-600">React has a vast ecosystem of libraries, tools, and extensions. It's backed by Meta (Facebook) and used by companies like Netflix, Airbnb, and Instagram.</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Seamless Transitions</h4>
+                  <p class="text-gray-600">React can be gradually adopted in existing projects or used to build entire applications from scratch. It works well with other libraries and frameworks.</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-400">
+                  <h4 class="font-medium text-lg mb-2 text-gray-800">Mobile Development</h4>
+                  <p class="text-gray-600">Learn once, write anywhere: React Native lets you use the same component principles to build native mobile apps for iOS and Android.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-5 rounded-lg border border-yellow-200">
+              <h4 class="font-bold text-amber-700 mb-3">Companies Using React</h4>
+              <div class="flex flex-wrap gap-4 justify-around items-center">
+                <div class="text-center">
+                  <div class="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm mx-auto">
+                    <i class="fa-brands fa-facebook text-blue-600 text-2xl"></i>
+                  </div>
+                  <p class="text-xs mt-1 font-medium">Meta</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm mx-auto">
+                    <i class="fa-brands fa-netflix text-red-600 text-2xl"></i>
+                  </div>
+                  <p class="text-xs mt-1 font-medium">Netflix</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm mx-auto">
+                    <i class="fa-brands fa-instagram text-pink-600 text-2xl"></i>
+                  </div>
+                  <p class="text-xs mt-1 font-medium">Instagram</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm mx-auto">
+                    <i class="fa-brands fa-airbnb text-red-500 text-2xl"></i>
+                  </div>
+                  <p class="text-xs mt-1 font-medium">Airbnb</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm mx-auto">
+                    <i class="fa-brands fa-dropbox text-blue-500 text-2xl"></i>
+                  </div>
+                  <p class="text-xs mt-1 font-medium">Dropbox</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Virtual DOM Concept -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-sitemap text-green-500 mr-2"></i>
+              Understanding Virtual DOM
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-green-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              One of React's most important features is the Virtual DOM (Document Object Model). This is a key concept that makes React applications fast and efficient, especially when handling frequent UI updates.
+            </p>
+            
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-green-700">How Virtual DOM Works</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <div class="bg-green-50 p-4 rounded-lg mb-4">
+                    <h5 class="font-medium text-green-700 mb-2">What is DOM?</h5>
+                    <p class="text-sm text-gray-700">The Document Object Model (DOM) is a programming interface for web documents. It represents the page so that programs can change the document structure, style, and content.</p>
+                  </div>
+                  
+                  <div class="bg-green-50 p-4 rounded-lg">
+                    <h5 class="font-medium text-green-700 mb-2">Problem with Direct DOM Manipulation</h5>
+                    <p class="text-sm text-gray-700">Directly manipulating the DOM is slow. When updating the DOM, browsers need to recalculate CSS, perform layout, and repaint, which can be inefficient for complex applications.</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="bg-green-50 p-4 rounded-lg mb-4">
+                    <h5 class="font-medium text-green-700 mb-2">Virtual DOM Solution</h5>
+                    <p class="text-sm text-gray-700">React creates a lightweight copy of the real DOM in memory (Virtual DOM). When state changes, React first updates this Virtual DOM rather than the browser's DOM directly.</p>
+                  </div>
+                  
+                  <div class="bg-green-50 p-4 rounded-lg">
+                    <h5 class="font-medium text-green-700 mb-2">Reconciliation Process</h5>
+                    <p class="text-sm text-gray-700">React compares the updated Virtual DOM with a pre-update snapshot, identifies the exact changes (diffing), and then updates only those specific parts in the real DOM.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-6">
+                <h5 class="font-medium text-green-700 mb-3">Virtual DOM Process:</h5>
+                <ol class="relative border-l border-gray-200 ml-3">
+                  <li class="mb-6 ml-6">
+                    <span class="absolute flex items-center justify-center w-6 h-6 bg-green-100 rounded-full -left-3 ring-4 ring-white">1</span>
+                    <h6 class="font-medium text-green-800">State Changes</h6>
+                    <p class="text-sm text-gray-600">When data changes in a React component</p>
+                  </li>
+                  <li class="mb-6 ml-6">
+                    <span class="absolute flex items-center justify-center w-6 h-6 bg-green-100 rounded-full -left-3 ring-4 ring-white">2</span>
+                    <h6 class="font-medium text-green-800">Virtual DOM Update</h6>
+                    <p class="text-sm text-gray-600">React creates a new Virtual DOM tree with the updated state</p>
+                  </li>
+                  <li class="mb-6 ml-6">
+                    <span class="absolute flex items-center justify-center w-6 h-6 bg-green-100 rounded-full -left-3 ring-4 ring-white">3</span>
+                    <h6 class="font-medium text-green-800">Diffing</h6>
+                    <p class="text-sm text-gray-600">React compares new Virtual DOM with previous version</p>
+                  </li>
+                  <li class="ml-6">
+                    <span class="absolute flex items-center justify-center w-6 h-6 bg-green-100 rounded-full -left-3 ring-4 ring-white">4</span>
+                    <h6 class="font-medium text-green-800">Batch Update</h6>
+                    <p class="text-sm text-gray-600">Only the identified differences are applied to the real DOM</p>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500">
+              <h5 class="font-medium text-lg mb-2 text-gray-800">Benefits of Virtual DOM:</h5>
+              <ul class="list-disc list-inside text-gray-600 space-y-2 pl-2">
+                <li>Improved performance for complex UIs</li>
+                <li>Simplified programming model for developers</li>
+                <li>Cross-platform compatibility</li>
+                <li>Reduced memory consumption</li>
+                <li>Better developer experience through predictable updates</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Comparing React with other frameworks -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-scale-balanced text-indigo-500 mr-2"></i>
+              Comparing React with Other Frameworks
+            </span>
+          </h3>
+          <div class="pl-2 border-l-4 border-indigo-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React is one of several popular JavaScript frameworks and libraries for building user interfaces. Understanding how React compares to other options can help you make the right choice for your project.
+            </p>
+            
+            <div class="overflow-x-auto mb-6">
+              <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead class="bg-indigo-100">
+                  <tr>
+                    <th class="py-3 px-4 text-left"></th>
+                    <th class="py-3 px-4 text-left">
+                      <div class="flex items-center">
+                        <i class="fa-brands fa-react text-blue-500 mr-2"></i>
+                        <span>React</span>
+                      </div>
+                    </th>
+                    <th class="py-3 px-4 text-left">
+                      <div class="flex items-center">
+                        <i class="fa-brands fa-angular text-red-500 mr-2"></i>
+                        <span>Angular</span>
+                      </div>
+                    </th>
+                    <th class="py-3 px-4 text-left">
+                      <div class="flex items-center">
+                        <i class="fa-brands fa-vuejs text-green-500 mr-2"></i>
+                        <span>Vue.js</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3 px-4 font-medium">Type</td>
+                    <td class="py-3 px-4">Library</td>
+                    <td class="py-3 px-4">Full Framework</td>
+                    <td class="py-3 px-4">Progressive Framework</td>
+                  </tr>
+                  <tr class="border-b bg-gray-50">
+                    <td class="py-3 px-4 font-medium">Learning Curve</td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <span class="mr-2">Moderate</span>
+                        <div class="w-16 bg-gray-200 rounded-full h-2">
+                          <div class="bg-blue-500 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <span class="mr-2">Steep</span>
+                        <div class="w-16 bg-gray-200 rounded-full h-2">
+                          <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <span class="mr-2">Gentle</span>
+                        <div class="w-16 bg-gray-200 rounded-full h-2">
+                          <div class="bg-blue-500 h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4 font-medium">Data Binding</td>
+                    <td class="py-3 px-4">One-way</td>
+                    <td class="py-3 px-4">Two-way</td>
+                    <td class="py-3 px-4">Both</td>
+                  </tr>
+                  <tr class="border-b bg-gray-50">
+                    <td class="py-3 px-4 font-medium">Size & Performance</td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center text-green-600">
+                        <i class="fa-solid fa-circle-check mr-1"></i>
+                        <span>Lightweight, fast</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center text-yellow-600">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                        <span>Larger, but optimized</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center text-green-600">
+                        <i class="fa-solid fa-circle-check mr-1"></i>
+                        <span>Very lightweight</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4 font-medium">Community & Ecosystem</td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-regular fa-star text-yellow-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-regular fa-star text-yellow-400"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-b bg-gray-50">
+                    <td class="py-3 px-4 font-medium">Best For</td>
+                    <td class="py-3 px-4">UI-focused applications, flexibility</td>
+                    <td class="py-3 px-4">Large enterprise applications</td>
+                    <td class="py-3 px-4">Small to medium applications, easy integration</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mb-4">
+              <h4 class="font-medium text-lg mb-2 text-indigo-800">How to Choose</h4>
+              <p class="text-gray-700 mb-2">The best framework depends on your project needs, team expertise, and specific requirements:</p>
+              <ul class="list-disc list-inside text-gray-600 space-y-1 pl-2">
+                <li><strong>Choose React</strong> when you want flexibility, a robust ecosystem, and focus on UI components</li>
+                <li><strong>Choose Angular</strong> for large enterprise applications with comprehensive built-in solutions</li>
+                <li><strong>Choose Vue</strong> for simpler projects, gradual adoption, or when you want a balance between React and Angular</li>
+              </ul>
+            </div>
+            
+            <div class="bg-white rounded-lg p-4 shadow-md">
+              <div class="flex items-center text-indigo-600 mb-2">
+                <i class="fa-solid fa-lightbulb mr-2"></i>
+                <h5 class="font-medium">Key Takeaway</h5>
+              </div>
+              <p class="text-gray-600">React is not a full framework - it's a library focused on UI components. This makes it lighter and more flexible, but you'll need to choose additional libraries for features like routing and state management. The modular approach lets you pick the best tools for your specific needs.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Prerequisites for Learning React -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-list-check text-indigo-500 mr-2"></i>
+              Prerequisites for Learning React
+            </span>
+          </h3>
+          
+          <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 shadow-lg border border-indigo-100">
+            <p class="text-gray-700 mb-4">
+              Before diving into React, you should be comfortable with these foundational technologies:
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <!-- HTML Card -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-indigo-100 transition-transform hover:scale-105">
+                <div class="bg-indigo-500 text-white p-3 flex items-center justify-between">
+                  <h4 class="text-lg font-semibold">HTML</h4>
+                  <i class="fa-brands fa-html5 text-xl"></i>
+                </div>
+                <div class="p-4">
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Basic tags and document structure</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Forms and input elements</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Semantic HTML elements</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- CSS Card -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-indigo-100 transition-transform hover:scale-105">
+                <div class="bg-blue-500 text-white p-3 flex items-center justify-between">
+                  <h4 class="text-lg font-semibold">CSS</h4>
+                  <i class="fa-brands fa-css3-alt text-xl"></i>
+                </div>
+                <div class="p-4">
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Selectors and properties</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Flexbox and Grid layouts</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Responsive design principles</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- JavaScript Card -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-indigo-100 transition-transform hover:scale-105">
+                <div class="bg-yellow-500 text-white p-3 flex items-center justify-between">
+                  <h4 class="text-lg font-semibold">JavaScript</h4>
+                  <i class="fa-brands fa-square-js text-xl"></i>
+                </div>
+                <div class="p-4">
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>ES6+ syntax (arrow functions, destructuring)</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Promises and async/await</span>
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+                      <span>Array methods (map, filter, reduce)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Key JS Concepts -->
+            <h4 class="text-xl font-medium mb-3 text-indigo-700">Essential JavaScript Concepts for React</h4>
+            
+            <!-- Expanded JS Prerequisites Section -->
+            <div class="bg-white/80 rounded-lg p-5 shadow-md mb-6">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- First Column -->
+                <div class="space-y-5">
+                  <!-- ES6+ Features Section -->
+                  <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-indigo-700 border-b border-indigo-200 pb-1 mb-3">ES6+ Features</h5>
+                    
+                    <!-- Arrow Functions -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-indigo-800 font-medium mb-2">
+                        <i class="fa-solid fa-arrow-right text-indigo-600 mr-2"></i> Arrow Functions
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Shorter syntax for writing functions and does not rebind the value of <code>this</code>.</p>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Traditional function:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>function add(a, b) {
+  return a + b;
+}</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Arrow function:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>const add = (a, b) => {
+  return a + b;
+};
+
+// Or shorter
+const add = (a, b) => a + b;</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Destructuring -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-indigo-800 font-medium mb-2">
+                        <i class="fa-solid fa-code-branch text-indigo-600 mr-2"></i> Destructuring
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Extract values from arrays or properties from objects into distinct variables.</p>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Array destructuring:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// React hooks use this pattern
+const [count, setCount] = useState(0);</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Object destructuring:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Common in props extraction
+const { name, age } = person;</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Spread/Rest Operators -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-indigo-800 font-medium mb-2">
+                        <i class="fa-solid fa-ellipsis text-indigo-600 mr-2"></i> Spread & Rest Operators
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Expand iterables into individual elements (spread) or collect multiple elements into a single array (rest).</p>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Spread operator:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Copy and extend objects
+const newState = { ...state, name: 'John' };
+
+// Combine arrays
+const combined = [...array1, ...array2];</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-1">Rest parameter:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Collect arguments
+function sum(...numbers) {
+  return numbers.reduce((a, b) => a + b);
+}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Template Literals -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-indigo-800 font-medium mb-2">
+                        <i class="fa-solid fa-quote-right text-indigo-600 mr-2"></i> Template Literals
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">String literals that can span multiple lines and embed expressions.</p>
+                      <div>
+                        <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// String interpolation
+const greeting = `Hello, ${name}!
+Welcome to our app.`;
+
+// Used in styled-components
+const Button = styled.button`
+  background: ${props => props.primary ? 'blue' : 'white'};
+`;</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Second Column -->
+                <div class="space-y-5">
+                  <!-- Advanced Concepts -->
+                  <div class="bg-purple-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-purple-700 border-b border-purple-200 pb-1 mb-3">Advanced Concepts</h5>
+                    
+                    <!-- Promises & Async/Await -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-purple-800 font-medium mb-2">
+                        <i class="fa-solid fa-clock text-purple-600 mr-2"></i> Promises & Async/Await
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Handle asynchronous operations elegantly.</p>
+                      <div>
+                        <p class="text-xs text-gray-600 mb-1">Promises:</p>
+                        <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto mb-2"><code>fetch('/api/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));</code></pre>
+                        
+                        <p class="text-xs text-gray-600 mb-1">Async/Await:</p>
+                        <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}</code></pre>
+                      </div>
+                    </div>
+                    
+                    <!-- Array Methods -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-purple-800 font-medium mb-2">
+                        <i class="fa-solid fa-list text-purple-600 mr-2"></i> Array Methods
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Essential array methods used heavily in React.</p>
+                      <div class="space-y-2">
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">map() - Transform each element:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Used to render lists in React
+{items.map(item => (
+  <ListItem key={item.id} value={item.name} />
+))}</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">filter() - Include elements that pass a test:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>const activeUsers = users.filter(
+  user => user.isActive
+);</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">reduce() - Accumulate values:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>const total = numbers.reduce(
+  (sum, num) => sum + num, 0
+);</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Conditional Rendering in JSX -->
+                    <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                      <h6 class="flex items-center text-purple-800 font-medium mb-2">
+                        <i class="fa-solid fa-code-branch text-purple-600 mr-2"></i> Conditional & Logical Operators
+                      </h6>
+                      <p class="text-sm text-gray-700 mb-2">Used extensively for conditional rendering in React.</p>
+                      <div class="space-y-2">
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">Ternary operator:</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>{isLoggedIn 
+  ? <UserProfile /> 
+  : <LoginButton />}</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">Logical AND (&&):</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>{messages.length > 0 && 
+  <MessageList messages={messages} />}</code></pre>
+                        </div>
+                        <div>
+                          <p class="text-xs text-gray-600 mb-0.5">Nullish coalescing (??):</p>
+                          <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>const username = user?.name ?? 'Guest';</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Immutability & State -->
+              <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mt-4">
+                <h5 class="font-semibold text-blue-700 mb-3">Understanding Immutability</h5>
+                <p class="text-sm text-gray-700 mb-3">
+                  React relies heavily on immutable data patterns. This means never directly modifying state objects, but instead creating new copies with changes:
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="bg-white rounded-lg p-3 shadow-sm">
+                    <h6 class="text-red-500 font-medium mb-1">❌ Incorrect (Mutable)</h6>
+                    <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Directly modifying state
+const handleClick = () => {
+  user.name = 'New Name';
+  user.age += 1;
+  setUser(user); // Wrong! Same reference
+};</code></pre>
+                  </div>
+                  
+                  <div class="bg-white rounded-lg p-3 shadow-sm">
+                    <h6 class="text-green-500 font-medium mb-1">✅ Correct (Immutable)</h6>
+                    <pre class="bg-gray-100 text-xs p-2 rounded overflow-x-auto"><code>// Creating new state object
+const handleClick = () => {
+  setUser({
+    ...user,
+    name: 'New Name',
+    age: user.age + 1
+  }); // Correct! New reference
+};</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- React JS Knowledge Checklist -->
+            <div class="bg-white rounded-lg p-5 shadow-md mb-5">
+              <h4 class="font-medium text-lg mb-3 text-indigo-700">JavaScript Knowledge Checklist for React</h4>
+              <p class="text-gray-700 mb-3">To feel comfortable with React, make sure you understand these JavaScript concepts:</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="space-y-2">
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">ES6 classes and inheritance</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Arrow functions & lexical <code>this</code></span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Object and array destructuring</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Array methods (map, filter, reduce)</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Spread and rest operators</span>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Template literals</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Promises and async/await</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Modules (import/export)</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Ternary and logical operators</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 bg-indigo-100 border border-indigo-300 rounded flex-shrink-0 mr-2"></div>
+                    <span class="text-gray-700">Closures and function scope</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Resources to Learn JS -->
+            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+              <h4 class="font-medium text-lg mb-2 text-indigo-700 flex items-center">
+                <i class="fa-solid fa-graduation-cap mr-2"></i>
+                Resources to Learn JavaScript
+              </h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+                <a href="https://javascript.info/" class="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow flex items-center gap-3 no-underline" target="_blank">
+                  <div class="bg-yellow-100 p-2 rounded-full">
+                    <i class="fa-solid fa-book text-yellow-600"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium text-gray-800">JavaScript.info</h6>
+                    <p class="text-xs text-gray-600">Modern JavaScript tutorial</p>
+                  </div>
+                </a>
+                
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" class="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow flex items-center gap-3 no-underline" target="_blank">
+                  <div class="bg-blue-100 p-2 rounded-full">
+                    <i class="fa-brands fa-firefox text-blue-600"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium text-gray-800">MDN Web Docs</h6>
+                    <p class="text-xs text-gray-600">Comprehensive reference</p>
+                  </div>
+                </a>
+                
+                <a href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" class="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow flex items-center gap-3 no-underline" target="_blank">
+                  <div class="bg-green-100 p-2 rounded-full">
+                    <i class="fa-brands fa-free-code-camp text-green-600"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium text-gray-800">freeCodeCamp</h6>
+                    <p class="text-xs text-gray-600">Interactive learning</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <!-- What You'll Learn Path -->
+            <h4 class="text-xl font-medium mb-3 mt-6 text-indigo-700">Your React Learning Path</h4>
+            <div class="relative">
+              <!-- Path Line -->
+              <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-gradient-to-b from-indigo-400 to-purple-500"></div>
+              
+              <!-- Path Steps -->
+              <div class="space-y-8 pl-12 relative">
+                <div class="relative">
+                  <div class="absolute -left-12 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white shadow-md">1</div>
+                  <h5 class="text-lg font-semibold text-indigo-700">React Fundamentals</h5>
+                  <p class="text-sm text-gray-600 mt-1">Components, JSX, Props, and State - The building blocks</p>
+                </div>
+                
+                <div class="relative">
+                  <div class="absolute -left-12 w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-md">2</div>
+                  <h5 class="text-lg font-semibold text-indigo-700">React Hooks</h5>
+                  <p class="text-sm text-gray-600 mt-1">useState, useEffect, useContext - Managing state and side effects</p>
+                </div>
+                
+                <div class="relative">
+                  <div class="absolute -left-12 w-8 h-8 bg-indigo-700 rounded-full flex items-center justify-center text-white shadow-md">3</div>
+                  <h5 class="text-lg font-semibold text-indigo-700">Routing & Forms</h5>
+                  <p class="text-sm text-gray-600 mt-1">Navigation between pages and handling user input</p>
+                </div>
+                
+                <div class="relative">
+                  <div class="absolute -left-12 w-8 h-8 bg-purple-700 rounded-full flex items-center justify-center text-white shadow-md">4</div>
+                  <h5 class="text-lg font-semibold text-indigo-700">State Management</h5>
+                  <p class="text-sm text-gray-600 mt-1">Context API, Redux, or other state management solutions</p>
+                </div>
+                
+                <div class="relative">
+                  <div class="absolute -left-12 w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center text-white shadow-md">5</div>
+                  <h5 class="text-lg font-semibold text-indigo-700">Advanced Topics</h5>
+                  <p class="text-sm text-gray-600 mt-1">Performance optimization, testing, and advanced patterns</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- History of React -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">History of React</h3>
+          <div class="pl-2 border-l-4 border-purple-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React was first created by Jordan Walke, a software engineer at Facebook, around 2011. It was initially used for Facebook's newsfeed. The first deployment of React was on Facebook's newsfeed in 2011, and later for Instagram's web app in 2012.
+            </p>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Facebook publicly released React as an open-source project at the JSConf US in May 2013. React Native, which enables native Android, iOS, and UWP development with React, was announced at Facebook's React.js Conference in February 2015 and open-sourced in March 2015.
+            </p>
+            <div class="mb-6 flex flex-col sm:flex-row gap-4">
+              <div class="bg-white shadow-md rounded-lg p-4 flex-1 border-t-4 border-blue-500">
+                <p class="font-medium mb-1">2011</p>
+                <p class="text-sm text-gray-600">Created at Facebook</p>
+              </div>
+              <div class="bg-white shadow-md rounded-lg p-4 flex-1 border-t-4 border-blue-500">
+                <p class="font-medium mb-1">2013</p>
+                <p class="text-sm text-gray-600">Released as open-source</p>
+              </div>
+              <div class="bg-white shadow-md rounded-lg p-4 flex-1 border-t-4 border-blue-500">
+                <p class="font-medium mb-1">2015</p>
+                <p class="text-sm text-gray-600">React Native released</p>
+              </div>
+              <div class="bg-white shadow-md rounded-lg p-4 flex-1 border-t-4 border-blue-500">
+                <p class="font-medium mb-1">2019</p>
+                <p class="text-sm text-gray-600">Hooks introduced</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Who Manages React -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">Who Manages React?</h3>
+          <div class="pl-2 border-l-4 border-green-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React is maintained by Meta (formerly Facebook) and a community of individual developers and companies. The React team at Meta leads the development of the core library, while the broader React community contributes to the ecosystem through plugins, tools, and libraries.
+            </p>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              While Meta employs the primary React development team, the project remains open-source, allowing contributions from developers worldwide. React's development is guided by a set of core principles, including component-based architecture, declarative programming, and the virtual DOM concept.
+            </p>
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-4">
+              <p class="font-medium text-green-700">React Management Structure:</p>
+              <ul class="list-disc list-inside text-gray-700 pl-4 mt-2 space-y-1">
+                <li>Meta React Core Team - Primary development and roadmap</li>
+                <li>Open-source contributors - Bug fixes and feature contributions</li>
+                <li>Community maintainers - Ecosystem packages and tools</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Scope of React -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">Scope of React</h3>
+          <div class="pl-2 border-l-4 border-amber-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              React's primary purpose is to build user interfaces - what users see and interact with in an application. Unlike full frameworks like Angular or Vue, React focuses solely on the view layer. This specialization is intentional, allowing React to excel at UI rendering while leaving other concerns to complementary libraries.
+            </p>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Because React is focused on UI components, it's often combined with other libraries to create complete applications. For example, React doesn't include built-in routing or state management, so developers typically use React Router and libraries like Redux or Zustand for these features.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div class="bg-white rounded-lg p-4 shadow-md border-l-4 border-amber-500">
+                <p class="font-medium text-amber-700 mb-2">What React Does:</p>
+                <ul class="list-disc list-inside text-gray-700 pl-2 space-y-1">
+                  <li>UI component rendering</li>
+                  <li>Virtual DOM handling</li>
+                  <li>Component lifecycle management</li>
+                  <li>JSX transpilation</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-4 shadow-md border-l-4 border-red-500">
+                <p class="font-medium text-red-700 mb-2">What React Doesn't Do:</p>
+                <ul class="list-disc list-inside text-gray-700 pl-2 space-y-1">
+                  <li>Routing (use React Router)</li>
+                  <li>Global state management (use Redux, Zustand)</li>
+                  <li>API calls (use Fetch, Axios)</li>
+                  <li>Form validation (use Formik, React Hook Form)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- React Concepts: Beginner to Advanced -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">React Concepts: Beginner to Advanced</h3>
+          
+          <div class="mb-6">
+            <h4 class="text-xl font-medium mb-2 text-purple-700">Beginner Concepts</h4>
+            <div class="bg-white rounded-lg p-5 shadow-md">
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <div class="bg-purple-100 p-1 rounded-md text-purple-700">
+                    <i class="fa-solid fa-cube"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Components</p>
+                    <p class="text-sm text-gray-600">Building blocks of React applications. Functional components are now preferred over class components.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-purple-100 p-1 rounded-md text-purple-700">
+                    <i class="fa-solid fa-code"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">JSX</p>
+                    <p class="text-sm text-gray-600">JavaScript syntax extension that looks similar to HTML but allows you to write HTML-like code in JavaScript.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-purple-100 p-1 rounded-md text-purple-700">
+                    <i class="fa-solid fa-box"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Props</p>
+                    <p class="text-sm text-gray-600">How data is passed from parent to child components, similar to HTML attributes.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-purple-100 p-1 rounded-md text-purple-700">
+                    <i class="fa-solid fa-database"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">State</p>
+                    <p class="text-sm text-gray-600">Data that changes over time in a component, managed with useState hook in functional components.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="text-xl font-medium mb-2 text-blue-700">Intermediate Concepts</h4>
+            <div class="bg-white rounded-lg p-5 shadow-md">
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <div class="bg-blue-100 p-1 rounded-md text-blue-700">
+                    <i class="fa-solid fa-life-ring"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Lifecycle & Effects</p>
+                    <p class="text-sm text-gray-600">Managing component lifecycles with useEffect hook for side effects like data fetching.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-blue-100 p-1 rounded-md text-blue-700">
+                    <i class="fa-solid fa-diagram-project"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Context API</p>
+                    <p class="text-sm text-gray-600">Sharing data across component trees without passing props down manually through each level.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-blue-100 p-1 rounded-md text-blue-700">
+                    <i class="fa-solid fa-code-branch"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">React Router</p>
+                    <p class="text-sm text-gray-600">Navigation and routing in single-page applications to render different components for different URLs.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-blue-100 p-1 rounded-md text-blue-700">
+                    <i class="fa-solid fa-list-check"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Forms & Controlled Components</p>
+                    <p class="text-sm text-gray-600">Managing form inputs and validation in React applications.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="text-xl font-medium mb-2 text-indigo-700">Advanced Concepts</h4>
+            <div class="bg-white rounded-lg p-5 shadow-md">
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <div class="bg-indigo-100 p-1 rounded-md text-indigo-700">
+                    <i class="fa-solid fa-gauge-high"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Performance Optimization</p>
+                    <p class="text-sm text-gray-600">Using React.memo, useMemo, useCallback hooks to optimize rendering performance.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-indigo-100 p-1 rounded-md text-indigo-700">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Custom Hooks</p>
+                    <p class="text-sm text-gray-600">Creating reusable stateful logic that can be shared between components.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-indigo-100 p-1 rounded-md text-indigo-700">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Render Props & HOCs</p>
+                    <p class="text-sm text-gray-600">Patterns for code reuse and component composition beyond simple component hierarchies.</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-indigo-100 p-1 rounded-md text-indigo-700">
+                    <i class="fa-solid fa-server"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Server Components</p>
+                    <p class="text-sm text-gray-600">React components that run on the server and can access server data directly (React 18+).</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <div class="bg-indigo-100 p-1 rounded-md text-indigo-700">
+                    <i class="fa-solid fa-bolt"></i>
+                  </div>
+                  <div>
+                    <p class="font-medium">Concurrent Mode & Suspense</p>
+                    <p class="text-sm text-gray-600">New features for improving UI responsiveness with asynchronous rendering.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Creating Your First React App -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-rocket text-yellow-500 mr-2"></i> 
+              Creating Your First React App
+            </span>
+          </h3>
+          
+          <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 shadow-lg border border-blue-100">
+            <div class="flex justify-center mb-4">
+              <div class="bg-blue-600 text-white px-5 py-3 rounded-full font-semibold flex items-center shadow-lg">
+                <i class="fa-brands fa-react mr-2 text-xl"></i>
+                Recommended for Beginners
+              </div>
+            </div>
+
+            <!-- Step Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-blue-100 flex flex-col">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-3">
+                  <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Step 1</h4>
+                    <div class="bg-white text-blue-600 h-6 w-6 rounded-full flex items-center justify-center font-bold">1</div>
+                  </div>
+                  <p class="text-xs text-blue-100">Install Node.js & npm</p>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                  <p class="text-sm text-gray-600 mb-2">Download and install from <a href="https://nodejs.org" class="text-blue-600 hover:underline">nodejs.org</a></p>
+                  <p class="text-xs text-gray-500">Node.js is the platform you need to run JavaScript on your computer</p>
+                  <div class="mt-auto pt-3 text-xs">
+                    <div class="flex items-center">
+                      <i class="fa-solid fa-terminal text-gray-400 mr-1"></i>
+                      <code class="bg-gray-100 px-1 py-0.5 rounded">node --version</code>
+                    </div>
+                    <p class="text-gray-500 mt-1">Verify it's working</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-blue-100 flex flex-col">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-3">
+                  <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Step 2</h4>
+                    <div class="bg-white text-indigo-600 h-6 w-6 rounded-full flex items-center justify-center font-bold">2</div>
+                  </div>
+                  <p class="text-xs text-blue-100">Create Project with Vite</p>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                  <p class="text-sm text-gray-600 mb-2">Run in your terminal:</p>
+                  <code class="bg-gray-100 p-2 rounded text-xs overflow-x-auto mb-2">npm create vite@latest my-first-react-app --template react</code>
+                  <p class="text-xs text-gray-500">This creates a new React project using Vite</p>
+                  <div class="mt-auto pt-3 text-xs">
+                    <p class="text-gray-500"><i class="fa-solid fa-bolt text-yellow-500 mr-1"></i> Vite is much faster than older tools like Create React App</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg overflow-hidden shadow-md border border-blue-100 flex flex-col">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3">
+                  <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Step 3</h4>
+                    <div class="bg-white text-purple-600 h-6 w-6 rounded-full flex items-center justify-center font-bold">3</div>
+                  </div>
+                  <p class="text-xs text-blue-100">Start Developing</p>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                  <div class="text-sm text-gray-600 mb-2">
+                    <code class="bg-gray-100 px-1 py-0.5 rounded block mb-1">cd my-first-react-app</code>
+                    <code class="bg-gray-100 px-1 py-0.5 rounded block mb-1">npm install</code>
+                    <code class="bg-gray-100 px-1 py-0.5 rounded">npm run dev</code>
+                  </div>
+                  <p class="text-xs text-gray-500">Open http://localhost:5173 in your browser</p>
+                  <div class="mt-auto pt-3 text-xs">
+                    <p class="text-gray-500"><i class="fa-solid fa-edit text-gray-400 mr-1"></i> Edit <code>src/App.jsx</code> to see live updates</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Project Structure -->
+            <div class="bg-white rounded-lg p-4 shadow-md border border-blue-100 mb-6">
+              <h4 class="text-lg font-medium mb-2 text-blue-700 flex items-center">
+                <i class="fa-solid fa-folder-tree mr-2 text-blue-500"></i>
+                What You'll Get
+              </h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="text-sm">
+                  <div class="text-gray-700 font-mono bg-gray-50 p-3 rounded-md">
+                    <div class="flex items-center">
+                      <i class="fa-solid fa-folder-open text-yellow-500 mr-2"></i>
+                      <span class="font-semibold">my-first-react-app/</span>
+                    </div>
+                    <div class="ml-6 mt-1">
+                      <div><i class="fa-solid fa-file-lines text-gray-400 mr-2"></i> package.json</div>
+                      <div><i class="fa-solid fa-folder text-yellow-500 mr-2"></i> public/</div>
+                      <div class="flex items-start">
+                        <i class="fa-solid fa-folder-open text-yellow-500 mr-2"></i>
+                        <span>src/</span>
+                      </div>
+                      <div class="ml-6">
+                        <div><i class="fa-solid fa-file-code text-blue-400 mr-2"></i> main.jsx</div>
+                        <div><i class="fa-solid fa-file-code text-blue-400 mr-2"></i> App.jsx</div>
+                        <div><i class="fa-solid fa-file-code text-purple-400 mr-2"></i> App.css</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-check text-green-500 mt-0.5 mr-2"></i>
+                      <span><span class="font-semibold">src/App.jsx</span> - Your main component</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-check text-green-500 mt-0.5 mr-2"></i>
+                      <span><span class="font-semibold">src/main.jsx</span> - Renders App to the DOM</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-check text-green-500 mt-0.5 mr-2"></i>
+                      <span><span class="font-semibold">public/</span> - Static assets</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-check text-green-500 mt-0.5 mr-2"></i>
+                      <span><span class="font-semibold">package.json</span> - Dependencies and scripts</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-center">
+              <a href="https://vitejs.dev/guide/" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white rounded-full shadow-md transition flex items-center justify-center gap-2 font-medium">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Learn More About Vite</span>
+              </a>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Installing Node.js and npm/yarn -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-brands fa-node-js text-green-600 mr-2"></i> 
+              Installing Node.js and npm/yarn
+            </span>
+          </h3>
+          
+          <div class="pl-2 border-l-4 border-green-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Before you can start working with React, you'll need to set up Node.js and a package manager like npm or Yarn on your development machine. These tools are essential for creating, managing, and building React applications.
+            </p>
+            
+            <div class="bg-white rounded-lg p-5 shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-green-700">What is Node.js and npm?</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-green-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-green-700 mb-2">Node.js</h5>
+                  <p class="text-sm text-gray-700">Node.js is a JavaScript runtime environment that allows you to run JavaScript on your computer outside of a web browser. React development tools and build processes are built on Node.js.</p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                  <h5 class="font-medium text-green-700 mb-2">npm (Node Package Manager)</h5>
+                  <p class="text-sm text-gray-700">npm is Node.js's default package manager that comes bundled with Node.js installation. It allows you to install and manage JavaScript packages and dependencies for your project.</p>
+                </div>
+              </div>
+            </div>
+            
+            <h4 class="text-xl font-medium mb-4 text-green-700">Installation Options</h4>
+            
+            <div class="space-y-6">
+              <!-- Direct Download Method -->
+              <div class="bg-white rounded-lg p-5 shadow-md border-l-4 border-green-500">
+                <h5 class="font-semibold text-lg mb-3 text-gray-800">Option 1: Direct Download (Recommended for Beginners)</h5>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="font-medium mb-2 flex items-center">
+                      <i class="fa-solid fa-download text-blue-600 mr-2"></i>
+                      Step 1: Download
+                    </div>
+                    <p class="text-sm text-gray-700">Visit the <a href="https://nodejs.org" class="text-blue-600 hover:underline">official Node.js website</a> and download the LTS (Long Term Support) version, which is recommended for most users.</p>
+                  </div>
+                  
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="font-medium mb-2 flex items-center">
+                      <i class="fa-solid fa-desktop text-blue-600 mr-2"></i>
+                      Step 2: Install
+                    </div>
+                    <p class="text-sm text-gray-700">Run the downloaded installer and follow the installation wizard's instructions. The default settings are suitable for most users.</p>
+                  </div>
+                  
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="font-medium mb-2 flex items-center">
+                      <i class="fa-solid fa-check-circle text-blue-600 mr-2"></i>
+                      Step 3: Verify
+                    </div>
+                    <p class="text-sm text-gray-700">Open your terminal or command prompt and run these commands to verify installation:</p>
+                    <pre class="bg-gray-100 p-2 mt-2 rounded text-xs overflow-x-auto">node --version
+npm --version</pre>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Package Manager Method -->
+              <div class="bg-white rounded-lg p-5 shadow-md border-l-4 border-indigo-500">
+                <h5 class="font-semibold text-lg mb-3 text-gray-800">Option 2: Using Package Managers</h5>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <!-- macOS -->
+                  <div class="bg-gray-50 p-4 rounded-lg">
+                    <h6 class="font-medium text-gray-800 mb-2">macOS (using Homebrew)</h6>
+                    <pre class="bg-gray-800 text-green-400 p-3 rounded text-xs overflow-x-auto">brew update
+brew install node</pre>
+                    <p class="text-xs text-gray-500">If you don't have Homebrew installed, install it first with:</p>
+                    <pre class="bg-gray-800 text-green-400 p-3 rounded text-xs overflow-x-auto">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+                  </div>
+                  
+                  <!-- Windows -->
+                  <div class="bg-gray-50 p-4 rounded-lg">
+                    <h6 class="font-medium text-gray-800 mb-2">Windows (using Chocolatey)</h6>
+                    <pre class="bg-gray-800 text-blue-400 p-3 rounded text-xs overflow-x-auto">choco install nodejs-lts</pre>
+                    <p class="text-xs text-gray-500">If you don't have Chocolatey installed, follow the instructions at <a href="https://chocolatey.org/install" class="text-blue-600 hover:underline">chocolatey.org/install</a></p>
+                  </div>
+                </div>
+                
+                <!-- Linux -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h6 class="font-medium text-gray-800 mb-2">Linux (Ubuntu/Debian)</h6>
+                  <pre class="bg-gray-800 text-yellow-400 p-3 rounded text-xs overflow-x-auto">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs</pre>
+                </div>
+              </div>
+              
+              <!-- Installing Yarn -->
+              <div class="bg-white rounded-lg p-5 shadow-md border-l-4 border-purple-500">
+                <h5 class="font-semibold text-lg mb-3 text-gray-800">Installing Yarn (Alternative to npm)</h5>
+                <p class="text-gray-700 mb-3">Yarn is an alternative package manager to npm with some performance and workflow advantages. It's optional but popular among React developers.</p>
+                
+                <div class="space-y-3">
+                  <div class="bg-gray-50 p-3 rounded-lg">
+                    <h6 class="font-medium text-gray-800 mb-1">Install Yarn with npm</h6>
+                    <pre class="bg-gray-800 text-purple-400 p-2 rounded text-xs overflow-x-auto">npm install --global yarn</pre>
+                  </div>
+                  
+                  <div class="bg-gray-50 p-3 rounded-lg">
+                    <h6 class="font-medium text-gray-800 mb-1">Verify Yarn installation</h6>
+                    <pre class="bg-gray-800 text-purple-400 p-2 rounded text-xs overflow-x-auto">yarn --version</pre>
+                  </div>
+                </div>
+                
+                <div class="bg-purple-50 p-3 mt-3 rounded-lg">
+                  <div class="flex items-center text-purple-700 mb-1">
+                    <i class="fa-solid fa-lightbulb mr-2"></i>
+                    <h6 class="font-medium">npm vs Yarn Commands</h6>
+                  </div>
+                  <table class="w-full text-sm border-collapse">
+                    <thead>
+                      <tr class="bg-purple-100">
+                        <th class="text-left p-2">Task</th>
+                        <th class="text-left p-2">npm</th>
+                        <th class="text-left p-2">Yarn</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b border-purple-100">
+                        <td class="p-2">Install dependencies</td>
+                        <td class="p-2"><code>npm install</code></td>
+                        <td class="p-2"><code>yarn</code></td>
+                      </tr>
+                      <tr class="border-b border-purple-100">
+                        <td class="p-2">Add dependency</td>
+                        <td class="p-2"><code>npm install [package]</code></td>
+                        <td class="p-2"><code>yarn add [package]</code></td>
+                      </tr>
+                      <tr class="border-b border-purple-100">
+                        <td class="p-2">Remove dependency</td>
+                        <td class="p-2"><code>npm uninstall [package]</code></td>
+                        <td class="p-2"><code>yarn remove [package]</code></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2">Run script</td>
+                        <td class="p-2"><code>npm run [script]</code></td>
+                        <td class="p-2"><code>yarn [script]</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mt-6">
+              <div class="flex items-center text-blue-700 mb-1">
+                <i class="fa-solid fa-info-circle mr-2"></i>
+                <h5 class="font-medium">Node Version Management</h5>
+              </div>
+              <p class="text-sm text-gray-700 mb-2">If you work on multiple projects that require different Node.js versions, consider using a version manager:</p>
+              <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                <li><strong>nvm</strong> (Node Version Manager) - for macOS/Linux</li>
+                <li><strong>nvm-windows</strong> - for Windows</li>
+                <li><strong>fnm</strong> (Fast Node Manager) - cross-platform alternative</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Understanding Project Structure -->
+        <section class="mb-10">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-700 border-b border-blue-200 pb-2">
+            <span class="flex items-center">
+              <i class="fa-solid fa-folder-tree text-orange-500 mr-2"></i> 
+              Understanding React Project Structure
+            </span>
+          </h3>
+          
+          <div class="pl-2 border-l-4 border-orange-300 mb-4">
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Understanding the structure of a React project is essential for efficient development. While there's no single "official" structure that all React projects must follow, modern React applications typically have a similar organization, especially those created with tools like Create React App or Vite.
+            </p>
+            
+            <!-- Complete Project Structure -->
+            <div class="bg-white rounded-lg p-5 shadow-md mb-6">
+              <h4 class="text-xl font-medium mb-4 text-orange-700">Typical React Project Structure</h4>
+              
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="md:w-1/2">
+                  <div class="bg-orange-50 p-4 rounded-lg font-mono text-sm">
+                    <div class="flex items-center">
+                      <i class="fa-solid fa-folder-open text-yellow-600 mr-2"></i>
+                      <span class="font-semibold">my-react-app/</span>
+                    </div>
+                    <div class="ml-5 mt-1 space-y-1">
+                      <div><i class="fa-solid fa-file text-gray-500 mr-2"></i> README.md</div>
+                      <div><i class="fa-solid fa-file text-blue-500 mr-2"></i> package.json</div>
+                      <div><i class="fa-solid fa-file text-blue-500 mr-2"></i> package-lock.json <span class="text-xs text-gray-500">(or yarn.lock)</span></div>
+                      <div><i class="fa-solid fa-file text-gray-500 mr-2"></i> .gitignore</div>
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                        <span class="font-semibold">node_modules/</span>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                        <span class="font-semibold">public/</span>
+                      </div>
+                      <div class="ml-5">
+                        <div><i class="fa-solid fa-file text-gray-500 mr-2"></i> favicon.ico</div>
+                        <div><i class="fa-solid fa-file text-orange-500 mr-2"></i> index.html</div>
+                        <div><i class="fa-solid fa-file-image text-purple-500 mr-2"></i> logo.png</div>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                        <span class="font-semibold">src/</span>
+                      </div>
+                      <div class="ml-5">
+                        <div><i class="fa-solid fa-file-code text-cyan-500 mr-2"></i> index.js <span class="text-xs text-gray-500">(or main.jsx in Vite)</span></div>
+                        <div><i class="fa-solid fa-file-code text-blue-500 mr-2"></i> App.js <span class="text-xs text-gray-500">(or App.jsx)</span></div>
+                        <div><i class="fa-solid fa-file-code text-purple-500 mr-2"></i> App.css</div>
+                        <div class="flex items-center">
+                          <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                          <span class="font-semibold">components/</span>
+                        </div>
+                        <div class="ml-5">
+                          <div><i class="fa-solid fa-file-code text-blue-500 mr-2"></i> Button.jsx</div>
+                          <div><i class="fa-solid fa-file-code text-blue-500 mr-2"></i> Navbar.jsx</div>
+                        </div>
+                        <div class="flex items-center">
+                          <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                          <span class="font-semibold">pages/</span>
+                        </div>
+                        <div class="flex items-center">
+                          <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                          <span class="font-semibold">assets/</span>
+                        </div>
+                        <div class="flex items-center">
+                          <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                          <span class="font-semibold">utils/</span>
+                        </div>
+                        <div class="flex items-center">
+                          <i class="fa-solid fa-folder text-yellow-600 mr-2"></i>
+                          <span class="font-semibold">hooks/</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                  <h5 class="font-medium text-orange-700 mb-3">Key Files and Directories</h5>
+                  <div class="space-y-3">
+                    <div class="bg-white border border-l-4 border-l-orange-500 rounded-r p-3 shadow-sm">
+                      <h6 class="font-medium mb-1">package.json</h6>
+                      <p class="text-sm text-gray-700">Contains project metadata, dependencies, and scripts that can be run (like start, build, test)</p>
+                    </div>
+                    <div class="bg-white border border-l-4 border-l-orange-500 rounded-r p-3 shadow-sm">
+                      <h6 class="font-medium mb-1">public/</h6>
+                      <p class="text-sm text-gray-700">Contains static assets that won't be processed by the build tools. The index.html here is the template for your app</p>
+                    </div>
+                    <div class="bg-white border border-l-4 border-l-orange-500 rounded-r p-3 shadow-sm">
+                      <h6 class="font-medium mb-1">src/</h6>
+                      <p class="text-sm text-gray-700">The main directory where you'll write your React code</p>
+                    </div>
+                    <div class="bg-white border border-l-4 border-l-orange-500 rounded-r p-3 shadow-sm">
+                      <h6 class="font-medium mb-1">src/index.js (or main.jsx)</h6>
+                      <p class="text-sm text-gray-700">The entry point that renders your React app into the DOM</p>
+                    </div>
+                    <div class="bg-white border border-l-4 border-l-orange-500 rounded-r p-3 shadow-sm">
+                      <h6 class="font-medium mb-1">src/App.js (or App.jsx)</h6>
+                      <p class="text-sm text-gray-700">The root component of your application</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Recommended Structure -->
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-lg border border-orange-200">
+              <h5 class="font-bold text-amber-800 mb-3">Recommended Structure for Beginners</h5>
+              <p class="text-gray-700 mb-3">For those just starting with React, we recommend a simple structure to avoid complexity:</p>
+              
+              <div class="bg-white/80 rounded-lg p-4 shadow-sm mb-4">
+                <div class="font-mono text-sm">
+                  <div>src/</div>
+                  <div class="ml-3">components/ <span class="text-gray-500">- Reusable UI components</span></div>
+                  <div class="ml-3">pages/ <span class="text-gray-500">- Components representing entire pages</span></div>
+                  <div class="ml-3">hooks/ <span class="text-gray-500">- Custom React hooks</span></div>
+                  <div class="ml-3">assets/ <span class="text-gray-500">- Images, fonts, etc.</span></div>
+                  <div class="ml-3">utils/ <span class="text-gray-500">- Utility functions</span></div>
+                  <div class="ml-3">App.jsx <span class="text-gray-500">- Root component</span></div>
+                  <div class="ml-3">main.jsx <span class="text-gray-500">- Entry point</span></div>
+                </div>
+              </div>
+              
+              <div class="bg-yellow-100 p-3 rounded-lg flex items-start">
+                <i class="fa-solid fa-lightbulb text-amber-600 mt-1 mr-3"></i>
+                <p class="text-sm text-gray-800">Start with a simpler structure and refactor as your application grows. The best structure is one that makes sense to you and your team and helps you work efficiently.</p>
+              </div>
+            </div>
+            
+            <!-- Configuration Files -->
+            <h4 class="text-xl font-medium my-4 text-orange-700">Common Configuration Files</h4>
+            <div class="bg-white rounded-lg p-4 shadow-md mb-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="flex items-start p-2">
+                  <div class="bg-blue-100 rounded-lg p-2 mr-3">
+                    <i class="fa-solid fa-cog text-blue-700"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium">package.json</h6>
+                    <p class="text-sm text-gray-600">Lists dependencies and scripts</p>
+                  </div>
+                </div>
+                <div class="flex items-start p-2">
+                  <div class="bg-purple-100 rounded-lg p-2 mr-3">
+                    <i class="fa-solid fa-ban text-purple-700"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium">.gitignore</h6>
+                    <p class="text-sm text-gray-600">Specifies files Git should ignore</p>
+                  </div>
+                </div>
+                <div class="flex items-start p-2">
+                  <div class="bg-green-100 rounded-lg p-2 mr-3">
+                    <i class="fa-brands fa-js text-green-700"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium">.babelrc or babel.config.js</h6>
+                    <p class="text-sm text-gray-600">Configures JavaScript transpilation</p>
+                  </div>
+                </div>
+                <div class="flex items-start p-2">
+                  <div class="bg-red-100 rounded-lg p-2 mr-3">
+                    <i class="fa-solid fa-code text-red-700"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-medium">webpack.config.js or vite.config.js</h6>
+                    <p class="text-sm text-gray-600">Configures bundling process</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../../assets/js/components-loader.js"></script>
+  </body>
+</html>

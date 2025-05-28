@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+            animation: {
+              "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <title>Forms | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        overflow-x: auto;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .code-block:hover pre {
+        box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .code-block pre::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          rgba(79, 70, 229, 0.03),
+          rgba(168, 85, 247, 0.03)
+        );
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .code-block:hover pre::before {
+        opacity: 1;
+      }
+
+      .highlight-line {
+        background-color: rgba(80, 80, 80, 0.2);
+        display: block;
+      }
+
+      .animation-delay-2 {
+        animation-delay: 2s;
+      }
+
+      .animation-delay-4 {
+        animation-delay: 4s;
+      }
+
+      .form-section-icon {
+        filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3));
+        transition: all 0.3s ease;
+      }
+
+      .section-hover:hover .form-section-icon {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(79, 70, 229, 0.5));
+      }
+
+      .gradient-border {
+        position: relative;
+        border-radius: 0.75rem;
+      }
+
+      .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 0.85rem;
+        background: linear-gradient(60deg, #4f46e5, #a855f7, #4f46e5);
+        z-index: -1;
+        animation: border-glow 6s linear infinite;
+      }
+
+      @keyframes border-glow {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 200% 50%;
+        }
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        z-index: -1;
+        opacity: 0.4;
+      }
+
+      /* TOC styling */
+      .toc-link.active {
+        color: #4f46e5;
+        font-weight: 600;
+        border-left: 3px solid #4f46e5;
+        background-color: rgba(79, 70, 229, 0.05);
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+
+      /* TOC animation and styling */
+      #toc {
+        animation: slidein 0.5s ease-out forwards;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      @keyframes slidein {
+        0% {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Active TOC link animation */
+      .toc-link.active {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.1);
+        }
+        70% {
+          box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+        }
+      }
+
+      /* Back to top button */
+      .back-to-top {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+      }
+
+      .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      /* Interactive code example styles */
+      .interactive-code {
+        position: relative;
+      }
+
+      .interactive-code::after {
+        content: "Try it";
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: linear-gradient(45deg, #4f46e5, #a855f7);
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        opacity: 0;
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .interactive-code:hover::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Form section specific styles */
+      .form-section {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+
+      .form-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .form-section::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          rgba(79, 70, 229, 0.7),
+          rgba(168, 85, 247, 0.7)
+        );
+        border-radius: 3px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .form-section:hover::after {
+        transform: scaleX(1);
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <!-- Mobile TOC Toggle Button -->
+      <div class="xl:hidden fixed bottom-8 right-8 z-50">
+        <button
+          id="tocToggle"
+          class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center hover:from-blue-700 hover:to-purple-700 transition-all"
+        >
+          <i class="fa-solid fa-list-ul text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Back to top button -->
+      <div class="fixed bottom-8 left-8 z-50 back-to-top" id="backToTop">
+        <button
+          aria-label="Back to top"
+          class="bg-white text-blue-600 p-3 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-50 transition-all border border-blue-200"
+        >
+          <i class="fa-solid fa-arrow-up text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Floating TOC -->
+      <div
+        class="hidden xl:block fixed right-8 top-24 w-64 bg-white/90 backdrop-blur-md p-4 rounded-lg border border-blue-200 shadow-xl max-h-[80vh] overflow-y-auto animate-fade-in transition-all transform translate-x-0 opacity-100 z-50"
+        id="toc"
+      >
+        <h4
+          class="font-bold text-blue-800 mb-3 pb-2 border-b border-blue-100 flex items-center"
+        >
+          <i class="fa-solid fa-list-ul text-blue-600 mr-2"></i>
+          On This Page
+        </h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a
+              href="#form-fundamentals"
+              class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r"
+              >Form Fundamentals</a
+            >
+          </li>
+          <li>
+            <a
+              href="#advanced-form-handling"
+              class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r"
+              >Advanced Form Handling</a
+            >
+          </li>
+          <li>
+            <a
+              href="#form-validation"
+              class="toc-link block pl-3 border-l-2 border-transparent hover:text-blue-600 transition-colors py-1 hover:bg-blue-50 rounded-r"
+              >Form Validation</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mobile TOC Overlay -->
+      <div
+        id="mobileToc"
+        class="xl:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity"
+      >
+        <div
+          class="bg-white/95 w-4/5 max-w-sm h-full right-0 absolute p-5 shadow-xl animate-fade-in"
+        >
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold text-blue-800 text-lg">Table of Contents</h4>
+            <button id="closeToc" class="text-gray-500 hover:text-gray-800">
+              <i class="fa-solid fa-times text-lg"></i>
+            </button>
+          </div>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#form-fundamentals"
+                class="mobile-toc-link flex items-center p-2 rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                <div
+                  class="bg-blue-100 w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-keyboard text-blue-600"></i>
+                </div>
+                <span class="font-medium">Form Fundamentals</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#advanced-form-handling"
+                class="mobile-toc-link flex items-center p-2 rounded-lg hover:bg-purple-50 transition-colors"
+              >
+                <div
+                  class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-cogs text-purple-600"></i>
+                </div>
+                <span class="font-medium">Advanced Form Handling</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#form-validation"
+                class="mobile-toc-link flex items-center p-2 rounded-lg hover:bg-green-50 transition-colors"
+              >
+                <div
+                  class="bg-green-100 w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-check-circle text-green-600"></i>
+                </div>
+                <span class="font-medium">Form Validation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Forms Header - Enhanced with more visual elements -->
+      <div
+        class="bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-8 border border-blue-100 relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"
+        ></div>
+        <div
+          class="absolute top-0 right-24 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2"
+        ></div>
+        <div
+          class="absolute -bottom-8 left-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4"
+        ></div>
+        <div
+          class="absolute bottom-10 left-40 w-32 h-32 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2"
+        ></div>
+
+        <!-- Decorative elements -->
+        <div
+          class="absolute top-10 right-10 text-3xl text-blue-300 opacity-30 rotate-12"
+        >
+          &lt;form&gt;
+        </div>
+        <div
+          class="absolute bottom-10 left-10 text-4xl text-purple-300 opacity-20 -rotate-6"
+        >
+          {...}
+        </div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-blue-100"
+          >
+            <i
+              class="fas fa-keyboard text-5xl text-purple-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-purple-200">
+              <div
+                class="text-xs uppercase tracking-widest text-purple-600 font-semibold"
+              >
+                React Essentials
+              </div>
+              <div class="text-gray-700 font-medium">User Interactions</div>
+            </div>
+          </div>
+
+          <h1
+            class="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-800 via-indigo-700 to-purple-800 drop-shadow-sm leading-tight"
+          >
+            Forms in React
+            <span
+              class="text-lg align-top bg-purple-100 text-purple-800 px-2 py-1 rounded ml-2 font-normal"
+              >Core Concept</span
+            >
+          </h1>
+
+          <p
+            class="text-xl text-gray-700 mb-6 leading-relaxed max-w-2xl font-light mx-auto"
+          >
+            Master the art of handling user input with powerful, accessible, and
+            intuitive React form patterns — from basic controlled inputs to
+            complex multi-step forms and validation.
+          </p>
+
+          <!-- Stats/Quick Facts -->
+          <div class="flex flex-wrap gap-4 mb-4 justify-center">
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fas fa-pen text-blue-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Controlled Inputs</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fas fa-check-double text-green-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Validation Patterns</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fas fa-universal-access text-purple-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Accessibility</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fas fa-arrows-to-circle text-amber-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Data Flow</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Index - Enhanced with gradient styles and animations -->
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-8 shadow-lg border border-purple-200 relative z-10 animate-fade-in gradient-border"
+      >
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-10 animate-blob"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-48 h-48 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4"
+        ></div>
+
+        <div class="flex items-center mb-5">
+          <div
+            class="p-2 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg shadow-md mr-4"
+          >
+            <i
+              class="fas fa-compass text-2xl text-white animate-pulse-slow"
+            ></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-purple-800 text-xl">
+              Quick Reference Guide
+            </h3>
+            <p class="text-gray-600 text-sm">
+              Navigate to the section you're interested in
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+          <a
+            href="#form-fundamentals"
+            class="bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-3 rounded-lg shadow-sm border border-blue-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors"
+            >
+              <i class="fas fa-keyboard text-blue-600"></i>
+            </div>
+            <span class="text-blue-800 font-medium">Form Fundamentals</span>
+          </a>
+          <a
+            href="#advanced-form-handling"
+            class="bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 p-3 rounded-lg shadow-sm border border-purple-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors"
+            >
+              <i class="fas fa-cogs text-purple-600"></i>
+            </div>
+            <span class="text-purple-800 font-medium"
+              >Advanced Form Handling</span
+            >
+          </a>
+          <a
+            href="#form-validation"
+            class="bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-3 rounded-lg shadow-sm border border-green-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors"
+            >
+              <i class="fas fa-check-circle text-green-600"></i>
+            </div>
+            <span class="text-green-800 font-medium">Form Validation</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Form Fundamentals Section -->
+      <section
+        id="form-fundamentals"
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100 form-section"
+      >
+        <h2
+          class="text-3xl font-bold mb-6 text-blue-800 flex items-center gap-3"
+        >
+          <i class="fas fa-keyboard text-blue-500"></i> Form Fundamentals
+        </h2>
+
+        <div class="mb-8">
+          <p class="text-lg text-gray-700 mb-4">
+            Forms in React require a different approach compared to traditional
+            HTML forms. React components maintain internal state, which should
+            be the "single source of truth" for form elements.
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-blue-700">
+            Controlled Components
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <h4 class="font-semibold text-lg mb-2">The React Way</h4>
+            <p class="text-gray-600 mb-4">
+              In React, form elements like <code>&lt;input&gt;</code>,
+              <code>&lt;textarea&gt;</code>, and
+              <code>&lt;select&gt;</code> maintain their own state in vanilla
+              HTML. In React, we typically want to control this state with
+              component state.
+            </p>
+            <div
+              class="bg-gray-100 p-3 rounded-lg mb-2 interactive-code gradient-border"
+            >
+              <div
+                class="flex justify-between items-center px-3 py-2 bg-gray-200 rounded-t-lg border-b border-gray-300"
+              >
+                <div class="font-mono text-xs text-gray-600">NameForm.jsx</div>
+                <div class="flex space-x-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+              </div>
+              <pre><code class="language-jsx">import React, { useState } from 'react';
+
+function NameForm() {
+  const [name, setName] = useState('');
+
+  const handleChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert('A name was submitted: ' + name);
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;label&gt;
+        Name:
+        &lt;input type="text" value={name} onChange={handleChange} /&gt;
+      &lt;/label&gt;
+      &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 italic mt-2">
+              When you use a controlled component, the input's value is always
+              driven by the React state.
+            </p>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-blue-700">
+            Different Form Inputs
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">Text Input</h4>
+              <pre><code class="language-jsx">const [text, setText] = useState('');
+
+&lt;input 
+  type="text" 
+  value={text} 
+  onChange={(e) => setText(e.target.value)} 
+/&gt;</code></pre>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">Checkbox</h4>
+              <pre><code class="language-jsx">const [checked, setChecked] = useState(false);
+
+&lt;input
+  type="checkbox"
+  checked={checked}
+  onChange={(e) => setChecked(e.target.checked)}
+/&gt;</code></pre>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-purple-50 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">Select Dropdown</h4>
+              <pre><code class="language-jsx">const [selectedOption, setSelectedOption] = useState('react');
+
+&lt;select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}&gt;
+  &lt;option value="react"&gt;React&lt;/option&gt;
+  &lt;option value="vue"&gt;Vue&lt;/option&gt;
+  &lt;option value="angular"&gt;Angular&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+            </div>
+
+            <div class="bg-yellow-50 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">Text Area</h4>
+              <pre><code class="language-jsx">const [comment, setComment] = useState('');
+
+&lt;textarea
+  value={comment}
+  onChange={(e) => setComment(e.target.value)}
+  rows={4}
+/&gt;</code></pre>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-lg">
+            <h4 class="font-semibold mb-2">Radio Buttons</h4>
+            <pre><code class="language-jsx">const [size, setSize] = useState('medium');
+
+&lt;&gt;
+  &lt;input
+    type="radio"
+    id="small"
+    name="size"
+    value="small"
+    checked={size === 'small'}
+    onChange={(e) => setSize(e.target.value)}
+  /&gt;
+  &lt;label htmlFor="small"&gt;Small&lt;/label&gt;
+
+  &lt;input
+    type="radio"
+    id="medium"
+    name="size"
+    value="medium"
+    checked={size === 'medium'}
+    onChange={(e) => setSize(e.target.value)}
+  /&gt;
+  &lt;label htmlFor="medium"&gt;Medium&lt;/label&gt;
+
+  &lt;input
+    type="radio"
+    id="large"
+    name="size"
+    value="large"
+    checked={size === 'large'}
+    onChange={(e) => setSize(e.target.value)}
+  /&gt;
+  &lt;label htmlFor="large"&gt;Large&lt;/label&gt;
+&lt;/&gt;</code></pre>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+          <h3 class="text-xl font-semibold mb-4 text-blue-700">
+            Complete Form Example
+          </h3>
+          <div class="bg-gray-100 p-3 rounded-lg">
+            <pre><code class="language-jsx">import React, { useState } from 'react';
+
+function ContactForm() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+    newsletter: false
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted with data:', formData);
+    // Here you would typically send the data to a server
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="firstName" className="block mb-1"&gt;First Name&lt;/label&gt;
+        &lt;input
+          type="text"
+          id="firstName"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label htmlFor="lastName" className="block mb-1"&gt;Last Name&lt;/label&gt;
+        &lt;input
+          type="text"
+          id="lastName"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+        &lt;input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label htmlFor="message" className="block mb-1"&gt;Message&lt;/label&gt;
+        &lt;textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          rows="4"
+          className="w-full border rounded px-3 py-2"
+        &gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+
+      &lt;div className="flex items-center"&gt;
+        &lt;input
+          type="checkbox"
+          id="newsletter"
+          name="newsletter"
+          checked={formData.newsletter}
+          onChange={handleChange}
+          className="mr-2"
+        /&gt;
+        &lt;label htmlFor="newsletter"&gt;Subscribe to newsletter&lt;/label&gt;
+      &lt;/div&gt;
+
+      &lt;button 
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      &gt;
+        Submit
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r">
+          <h4 class="font-semibold text-lg mb-2">Important Note</h4>
+          <p>
+            While controlled components are generally recommended, for large
+            forms with many fields, consider using uncontrolled components with
+            <code>useRef</code> or form libraries to reduce unnecessary
+            re-renders.
+          </p>
+        </div>
+      </section>
+
+      <!-- Advanced Form Handling -->
+      <section
+        id="advanced-form-handling"
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100 form-section"
+      >
+        <h2
+          class="text-3xl font-bold mb-6 text-purple-800 flex items-center gap-3"
+        >
+          <i class="fas fa-cogs text-purple-500"></i> Advanced Form Handling
+        </h2>
+
+        <div class="mb-8">
+          <p class="text-lg text-gray-700 mb-4">
+            For complex forms, using specialized libraries can greatly improve
+            development speed, maintainability, and user experience. Let's
+            explore some advanced form handling techniques.
+          </p>
+        </div>
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-purple-700">
+            Using React Hook Form
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <p class="text-gray-600 mb-4">
+              <a
+                href="https://react-hook-form.com/"
+                class="text-blue-500 hover:underline"
+                target="_blank"
+              >
+                React Hook Form
+              </a>
+              is a popular library that provides efficient form validation with
+              minimal re-renders.
+            </p>
+
+            <div
+              class="bg-gray-100 p-3 rounded-lg mb-2 interactive-code gradient-border"
+            >
+              <div
+                class="flex justify-between items-center px-3 py-2 bg-gray-200 rounded-t-lg border-b border-gray-300"
+              >
+                <div class="font-mono text-xs text-gray-600">HookForm.jsx</div>
+                <div class="flex space-x-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+              </div>
+              <pre><code class="language-jsx">import { useForm } from 'react-hook-form';
+
+function SignupForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  
+  const onSubmit = (data) => {
+    console.log(data);
+    // Submit the data to your API
+  };
+  
+  return (
+    &lt;form onSubmit={handleSubmit(onSubmit)} className="space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="username" className="block mb-1"&gt;Username&lt;/label&gt;
+        &lt;input
+          id="username"
+          {...register("username", { required: "Username is required" })}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+        {errors.username && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.username.message}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+        &lt;input
+          id="email"
+          type="email"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address"
+            }
+          })}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+        {errors.email && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.email.message}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="password" className="block mb-1"&gt;Password&lt;/label&gt;
+        &lt;input
+          id="password"
+          type="password"
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must have at least 8 characters"
+            }
+          })}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+        {errors.password && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.password.message}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;button 
+        type="submit"
+        className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+      &gt;
+        Sign Up
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 italic mt-2">
+              React Hook Form reduces the amount of code you need to write while
+              removing unnecessary re-renders.
+            </p>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-purple-700">
+            Using Formik
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <p class="text-gray-600 mb-4">
+              <a
+                href="https://formik.org/"
+                class="text-blue-500 hover:underline"
+                target="_blank"
+              >
+                Formik
+              </a>
+              is another popular form library that helps with form state,
+              validation, and submission.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg mb-2">
+              <pre><code class="language-jsx">import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+// Validation schema using Yup
+const SignupSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  lastName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
+});
+
+function SignupForm() {
+  return (
+    &lt;Formik
+      initialValues={{
+        firstName: '',
+        lastName: '',
+        email: '',
+      }}
+      validationSchema={SignupSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
+    &gt;
+      {({ isSubmitting }) => (
+        &lt;Form className="space-y-4"&gt;
+          &lt;div&gt;
+            &lt;label htmlFor="firstName" className="block mb-1"&gt;First Name&lt;/label&gt;
+            &lt;Field name="firstName" className="w-full border rounded px-3 py-2" /&gt;
+            &lt;ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label htmlFor="lastName" className="block mb-1"&gt;Last Name&lt;/label&gt;
+            &lt;Field name="lastName" className="w-full border rounded px-3 py-2" /&gt;
+            &lt;ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-1" /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+            &lt;Field type="email" name="email" className="w-full border rounded px-3 py-2" /&gt;
+            &lt;ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" /&gt;
+          &lt;/div&gt;
+
+          &lt;button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 disabled:opacity-50"
+          &gt;
+            Submit
+          &lt;/button&gt;
+        &lt;/Form&gt;
+      )}
+    &lt;/Formik&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-purple-700">
+            Multi-Step Forms
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <p class="text-gray-600 mb-4">
+              For complex forms, breaking them into multiple steps improves user
+              experience and form completion rates.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg mb-2">
+              <pre><code class="language-jsx">import React, { useState } from 'react';
+
+function MultiStepForm() {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    // Personal info
+    firstName: '',
+    lastName: '',
+    email: '',
+    
+    // Address
+    street: '',
+    city: '',
+    zipCode: '',
+    
+    // Account details
+    username: '',
+    password: ''
+  });
+  
+  const updateFormData = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const nextStep = () => setStep(prev => prev + 1);
+  const prevStep = () => setStep(prev => prev - 1);
+  
+  const submitForm = () => {
+    console.log('Form submitted with data:', formData);
+    // Send data to server
+  };
+  
+  // Render different form steps based on current step
+  const renderFormStep = () => {
+    switch(step) {
+      case 1:
+        return (
+          &lt;div className="space-y-4"&gt;
+            &lt;h2 className="text-xl font-semibold"&gt;Personal Information&lt;/h2&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="firstName" className="block mb-1"&gt;First Name&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="lastName" className="block mb-1"&gt;Last Name&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+              &lt;input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div className="pt-4"&gt;
+              &lt;button
+                onClick={nextStep}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              &gt;
+                Next
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        );
+      
+      case 2:
+        return (
+          &lt;div className="space-y-4"&gt;
+            &lt;h2 className="text-xl font-semibold"&gt;Address&lt;/h2&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="street" className="block mb-1"&gt;Street&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="street"
+                name="street"
+                value={formData.street}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="city" className="block mb-1"&gt;City&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="zipCode" className="block mb-1"&gt;Zip Code&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="zipCode"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div className="pt-4 flex space-x-4"&gt;
+              &lt;button
+                onClick={prevStep}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              &gt;
+                Previous
+              &lt;/button&gt;
+              
+              &lt;button
+                onClick={nextStep}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              &gt;
+                Next
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        );
+        
+      case 3:
+        return (
+          &lt;div className="space-y-4"&gt;
+            &lt;h2 className="text-xl font-semibold"&gt;Account Details&lt;/h2&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="username" className="block mb-1"&gt;Username&lt;/label&gt;
+              &lt;input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label htmlFor="password" className="block mb-1"&gt;Password&lt;/label&gt;
+              &lt;input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={updateFormData}
+                className="w-full border rounded px-3 py-2"
+              /&gt;
+            &lt;/div&gt;
+            
+            &lt;div className="pt-4 flex space-x-4"&gt;
+              &lt;button
+                onClick={prevStep}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              &gt;
+                Previous
+              &lt;/button&gt;
+              
+              &lt;button
+                onClick={submitForm}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              &gt;
+                Submit
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        );
+        
+      default:
+        return null;
+    }
+  };
+  
+  return (
+    &lt;div className="max-w-md mx-auto"&gt;
+      &lt;div className="flex justify-between mb-8"&gt;
+        &lt;div className={`step ${step >= 1 ? 'active' : ''}`}&gt;Step 1&lt;/div&gt;
+        &lt;div className={`step ${step >= 2 ? 'active' : ''}`}&gt;Step 2&lt;/div&gt;
+        &lt;div className={`step ${step >= 3 ? 'active' : ''}`}&gt;Step 3&lt;/div&gt;
+      &lt;/div&gt;
+      
+      {renderFormStep()}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-purple-700">
+            File Uploads
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md">
+            <p class="text-gray-600 mb-4">
+              Handling file uploads in React requires special attention for
+              proper state management.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg">
+              <pre><code class="language-jsx">import React, { useState, useRef } from 'react';
+
+function FileUploadForm() {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState('');
+  const fileInputRef = useRef();
+  
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    
+    if (selectedFile) {
+      setFile(selectedFile);
+      
+      // Create a preview for images
+      if (selectedFile.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result);
+        };
+        reader.readAsDataURL(selectedFile);
+      } else {
+        setPreview('');
+      }
+    }
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!file) return;
+    
+    // Create FormData object to send to server
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      // Example API call to upload file
+      // const response = await fetch('your-upload-api', {
+      //   method: 'POST',
+      //   body: formData
+      // });
+      // const data = await response.json();
+      console.log('File uploaded successfully:', file.name);
+      
+      // Reset form
+      setFile(null);
+      setPreview('');
+      fileInputRef.current.value = '';
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+  
+  return (
+    &lt;form onSubmit={handleSubmit} className="space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="file-upload" className="block mb-1"&gt;Choose File&lt;/label&gt;
+        &lt;input
+          type="file"
+          id="file-upload"
+          onChange={handleFileChange}
+          ref={fileInputRef}
+          className="w-full border rounded px-3 py-2"
+        /&gt;
+        &lt;p className="text-sm text-gray-500 mt-1"&gt;
+          {file ? `Selected: ${file.name}` : 'No file selected'}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      
+      {preview && (
+        &lt;div className="mt-4"&gt;
+          &lt;h4 className="font-semibold mb-2"&gt;Preview:&lt;/h4&gt;
+          &lt;img src={preview} alt="Preview" className="max-w-xs rounded border" /&gt;
+        &lt;/div&gt;
+      )}
+      
+      &lt;button 
+        type="submit"
+        disabled={!file}
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50"
+      &gt;
+        Upload
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-purple-100 p-4 rounded-lg">
+          <h4 class="font-semibold mb-2">Advanced Form Techniques</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>
+              Use debouncing for search inputs to prevent excessive API calls
+            </li>
+            <li>
+              Implement field-level validation for immediate user feedback
+            </li>
+            <li>
+              Consider using form state persistence with local storage for
+              longer forms
+            </li>
+            <li>
+              Add auto-save functionality for complex forms to prevent data loss
+            </li>
+            <li>Implement keyboard accessibility for all form elements</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Form Validation Section -->
+      <section
+        id="form-validation"
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100 form-section"
+      >
+        <h2
+          class="text-3xl font-bold mb-6 text-green-800 flex items-center gap-3"
+        >
+          <i class="fas fa-check-circle text-green-500"></i> Form Validation
+        </h2>
+
+        <div class="mb-8">
+          <p class="text-lg text-gray-700 mb-4">
+            Form validation is crucial for ensuring data quality and providing a
+            good user experience. React offers several approaches to implement
+            validation.
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-green-700">
+            Basic Form Validation
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <p class="text-gray-600 mb-4">
+              The simplest approach is to implement validation manually using
+              state.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg mb-2">
+              <pre><code class="language-jsx">import React, { useState } from 'react';
+
+function SignupForm() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  
+  const [errors, setErrors] = useState({});
+  
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: null
+      }));
+    }
+  };
+  
+  const validate = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+    
+    // Confirm password validation
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    
+    return newErrors;
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const formErrors = validate();
+    
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+    
+    // Form is valid, proceed with submission
+    console.log('Form is valid, submitting:', formData);
+    // Submit to API here
+  };
+  
+  return (
+    &lt;form onSubmit={handleSubmit} className="space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+        &lt;input
+          type="text" // Using text instead of email for custom validation
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className={`w-full border rounded px-3 py-2 ${errors.email ? 'border-red-500' : ''}`}
+        /&gt;
+        {errors.email && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.email}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="password" className="block mb-1"&gt;Password&lt;/label&gt;
+        &lt;input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          className={`w-full border rounded px-3 py-2 ${errors.password ? 'border-red-500' : ''}`}
+        /&gt;
+        {errors.password && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.password}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="confirmPassword" className="block mb-1"&gt;Confirm Password&lt;/label&gt;
+        &lt;input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          className={`w-full border rounded px-3 py-2 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+        /&gt;
+        {errors.confirmPassword && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.confirmPassword}&lt;/p&gt;}
+      &lt;/div&gt;
+      
+      &lt;button 
+        type="submit"
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      &gt;
+        Sign Up
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-green-700">
+            Schema-Based Validation
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+            <p class="text-gray-600 mb-4">
+              For more complex validation, consider schema validation libraries
+              like
+              <a
+                href="https://github.com/jquense/yup"
+                class="text-blue-500 hover:underline"
+                target="_blank"
+                >Yup</a
+              >,
+              <a
+                href="https://zod.dev"
+                class="text-blue-500 hover:underline"
+                target="_blank"
+                >Zod</a
+              >, or
+              <a
+                href="https://github.com/hapijs/joi"
+                class="text-blue-500 hover:underline"
+                target="_blank"
+                >Joi</a
+              >.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg mb-2">
+              <pre><code class="language-jsx">import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+function RegistrationForm() {
+  // Define validation schema
+  const validationSchema = Yup.object({
+    firstName: Yup.string()
+      .max(15, 'Must be 15 characters or less')
+      .required('Required'),
+    lastName: Yup.string()
+      .max(20, 'Must be 20 characters or less')
+      .required('Required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Required'),
+    birthDate: Yup.date()
+      .max(new Date(), "You can't be born in the future!")
+      .required('Required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
+      .matches(/[0-9]/, 'Password must contain at least one number')
+      .required('Required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Required'),
+    terms: Yup.boolean()
+      .oneOf([true], 'You must accept the terms and conditions')
+  });
+  
+  // Initialize formik
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      birthDate: '',
+      password: '',
+      confirmPassword: '',
+      terms: false
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    }
+  });
+  
+  return (
+    &lt;form onSubmit={formik.handleSubmit} className="space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="firstName" className="block mb-1"&gt;First Name&lt;/label&gt;
+        &lt;input
+          id="firstName"
+          name="firstName"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.firstName}
+          className={`w-full border rounded px-3 py-2 ${
+            formik.touched.firstName && formik.errors.firstName ? 'border-red-500' : ''
+          }`}
+        /&gt;
+        {formik.touched.firstName && formik.errors.firstName ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.firstName}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="lastName" className="block mb-1"&gt;Last Name&lt;/label&gt;
+        &lt;input
+          id="lastName"
+          name="lastName"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.lastName}
+          className={`w-full border rounded px-3 py-2 ${
+            formik.touched.lastName && formik.errors.lastName ? 'border-red-500' : ''
+          }`}
+        /&gt;
+        {formik.touched.lastName && formik.errors.lastName ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.lastName}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="email" className="block mb-1"&gt;Email Address&lt;/label&gt;
+        &lt;input
+          id="email"
+          name="email"
+          type="email"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+          className={`w-full border rounded px-3 py-2 ${
+            formik.touched.email && formik.errors.email ? 'border-red-500' : ''
+          }`}
+        /&gt;
+        {formik.touched.email && formik.errors.email ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.email}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      {/* Remaining fields follow the same pattern */}
+      
+      &lt;div className="flex items-center"&gt;
+        &lt;input
+          id="terms"
+          name="terms"
+          type="checkbox"
+          onChange={formik.handleChange}
+          checked={formik.values.terms}
+          className="mr-2"
+        /&gt;
+        &lt;label htmlFor="terms"&gt;I accept the terms and conditions&lt;/label&gt;
+      &lt;/div&gt;
+      {formik.touched.terms && formik.errors.terms ? (
+        &lt;div className="text-red-500 text-sm"&gt;{formik.errors.terms}&lt;/div&gt;
+      ) : null}
+      
+      &lt;button 
+        type="submit" 
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      &gt;
+        Register
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-green-700">
+            Hybrid Validation Approaches
+          </h3>
+          <div class="bg-white p-5 rounded-lg shadow-md">
+            <p class="text-gray-600 mb-4">
+              You can also combine client-side and server-side validation for
+              the best user experience.
+            </p>
+
+            <div class="bg-gray-100 p-3 rounded-lg">
+              <pre><code class="language-jsx">import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+function RegistrationForm() {
+  // State for server validation errors
+  const [serverErrors, setServerErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Required'),
+    username: Yup.string()
+      .min(3, 'Must be at least 3 characters')
+      .required('Required'),
+    password: Yup.string()
+      .min(8, 'Must be at least 8 characters')
+      .required('Required')
+  });
+  
+  const checkUsernameAvailability = async (username) => {
+    // Simulate API call to check username availability
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const isTaken = ['admin', 'user', 'test'].includes(username.toLowerCase());
+        resolve(!isTaken);
+      }, 500);
+    });
+  };
+  
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      username: '',
+      password: ''
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      setIsSubmitting(true);
+      setServerErrors({});
+      
+      try {
+        // Check if username is available
+        const isUsernameAvailable = await checkUsernameAvailability(values.username);
+        
+        if (!isUsernameAvailable) {
+          setServerErrors({
+            username: 'This username is already taken'
+          });
+          return;
+        }
+        
+        // Simulate API call to register user
+        console.log('Submitting form:', values);
+        
+        // Simulate successful registration
+        alert('Registration successful!');
+        
+      } catch (error) {
+        console.error('Registration failed:', error);
+        setServerErrors({
+          form: 'Registration failed. Please try again later.'
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  });
+  
+  return (
+    &lt;form onSubmit={formik.handleSubmit} className="space-y-4"&gt;
+      {serverErrors.form && (
+        &lt;div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"&gt;
+          {serverErrors.form}
+        &lt;/div&gt;
+      )}
+      
+      &lt;div&gt;
+        &lt;label htmlFor="email" className="block mb-1"&gt;Email&lt;/label&gt;
+        &lt;input
+          type="email"
+          id="email"
+          name="email"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+          className={`w-full border rounded px-3 py-2 ${
+            (formik.touched.email && formik.errors.email) || serverErrors.email 
+              ? 'border-red-500' 
+              : ''
+          }`}
+        /&gt;
+        {formik.touched.email && formik.errors.email ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.email}&lt;/div&gt;
+        ) : serverErrors.email ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{serverErrors.email}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="username" className="block mb-1"&gt;Username&lt;/label&gt;
+        &lt;input
+          type="text"
+          id="username"
+          name="username"
+          onChange={(e) => {
+            formik.handleChange(e);
+            // Clear server error when field changes
+            if (serverErrors.username) {
+              setServerErrors({...serverErrors, username: null});
+            }
+          }}
+          onBlur={formik.handleBlur}
+          value={formik.values.username}
+          className={`w-full border rounded px-3 py-2 ${
+            (formik.touched.username && formik.errors.username) || serverErrors.username 
+              ? 'border-red-500' 
+              : ''
+          }`}
+        /&gt;
+        {formik.touched.username && formik.errors.username ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.username}&lt;/div&gt;
+        ) : serverErrors.username ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{serverErrors.username}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="password" className="block mb-1"&gt;Password&lt;/label&gt;
+        &lt;input
+          type="password"
+          id="password"
+          name="password"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+          className={`w-full border rounded px-3 py-2 ${
+            formik.touched.password && formik.errors.password ? 'border-red-500' : ''
+          }`}
+        /&gt;
+        {formik.touched.password && formik.errors.password ? (
+          &lt;div className="text-red-500 text-sm mt-1"&gt;{formik.errors.password}&lt;/div&gt;
+        ) : null}
+      &lt;/div&gt;
+      
+      &lt;button
+        type="submit"
+        disabled={isSubmitting}
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50"
+      &gt;
+        {isSubmitting ? 'Registering...' : 'Register'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-green-50 p-4 rounded-lg mb-6">
+          <h4 class="font-semibold mb-2">Validation Best Practices</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>
+              Validate both on submission (for all fields) and on blur (for
+              individual fields)
+            </li>
+            <li>Show validation messages near the corresponding inputs</li>
+            <li>
+              Use appropriate visual cues (colors, icons) to indicate field
+              status
+            </li>
+            <li>
+              For complex requirements, consider a password strength meter or
+              similar interactive feedback
+            </li>
+            <li>
+              Implement meaningful error messages that help the user correct the
+              issue
+            </li>
+            <li>
+              Always validate on the server side, even with client validation
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r">
+          <h4 class="font-semibold text-lg mb-2">
+            Accessibility Considerations
+          </h4>
+          <p class="mb-2">
+            When implementing form validation, ensure your forms remain
+            accessible:
+          </p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Use <code>aria-invalid</code> attribute for invalid fields</li>
+            <li>
+              Associate error messages with form controls using
+              <code>aria-describedby</code>
+            </li>
+            <li>Ensure error messages are announced by screen readers</li>
+            <li>Maintain sufficient color contrast for error states</li>
+            <li>Don't rely solely on color to indicate validation status</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Summary Section -->
+      <div
+        class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-l-4 border-blue-500"
+      >
+        <h2 class="text-2xl font-bold mb-4 text-blue-800">Key Takeaways</h2>
+        <ul class="space-y-2">
+          <li class="flex items-start">
+            <span class="text-blue-500 mr-2">✓</span>
+            <span
+              >Use controlled components to maintain React state as the single
+              source of truth for form inputs</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-500 mr-2">✓</span>
+            <span
+              >For complex forms, consider libraries like React Hook Form or
+              Formik for better developer experience</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-500 mr-2">✓</span>
+            <span
+              >Implement appropriate validation strategies with clear feedback
+              to users</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-500 mr-2">✓</span>
+            <span
+              >Always consider accessibility when building forms to ensure all
+              users can interact with them</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-500 mr-2">✓</span>
+            <span
+              >For complex forms, consider breaking them into multiple steps to
+              improve user experience</span
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- New Call to Action Section -->
+      <div
+        class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 mb-8 text-white relative overflow-hidden"
+      >
+        <!-- Decorative elements -->
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-20 animate-blob"
+        ></div>
+        <div
+          class="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-400 rounded-full mix-blend-overlay filter blur-3xl opacity-20 animate-blob animation-delay-2"
+        ></div>
+
+        <div class="relative z-10">
+          <h2 class="text-2xl font-bold mb-4">Ready to build amazing forms?</h2>
+          <p class="text-lg opacity-90 mb-6 max-w-2xl">
+            Apply these form patterns to create intuitive, accessible, and
+            powerful user interfaces. Remember that great forms improve
+            conversion rates and user satisfaction.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="#form-fundamentals"
+              class="bg-white text-blue-600 px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all font-medium flex items-center space-x-2"
+            >
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span>Back to Form Fundamentals</span>
+            </a>
+            <a
+              href="../hooks.html"
+              class="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-white/30 transition-all font-medium flex items-center"
+            >
+              <i class="fas fa-code mr-2"></i>
+              <span>Explore React Hooks</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../../assets/js/components-loader.js"></script>
+
+    <script>
+      // Initialize highlight.js when the document is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // Apply syntax highlighting to all code blocks
+        document.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+        });
+
+        // Scroll progress indicator
+        const scrollIndicator = document.getElementById("scrollIndicator");
+
+        if (scrollIndicator) {
+          window.addEventListener("scroll", () => {
+            const windowScroll = document.documentElement.scrollTop;
+            const height =
+              document.documentElement.scrollHeight -
+              document.documentElement.clientHeight;
+            const scrolled = (windowScroll / height) * 100;
+
+            scrollIndicator.style.width = scrolled + "%";
+          });
+        }
+
+        // TOC active link highlighting
+        const sections = document.querySelectorAll("section[id]");
+        const tocLinks = document.querySelectorAll(".toc-link");
+
+        function highlightActiveSection() {
+          const scrollY = window.pageYOffset;
+
+          sections.forEach((section) => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 100;
+            const sectionId = section.getAttribute("id");
+
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+              // Remove active from all links
+              tocLinks.forEach((link) => {
+                link.classList.remove("active");
+              });
+
+              // Add active class to current section link
+              const activeLink = document.querySelector(
+                `.toc-link[href="#${sectionId}"]`
+              );
+              if (activeLink) {
+                activeLink.classList.add("active");
+              }
+            }
+          });
+        }
+
+        window.addEventListener("scroll", highlightActiveSection);
+
+        // Initial call to highlight the active section on page load
+        highlightActiveSection();
+
+        // Add animation when hovering over form section icons
+        const sectionIcons = document.querySelectorAll(".form-section i");
+        sectionIcons.forEach((icon) => {
+          icon.addEventListener("mouseenter", () => {
+            icon.classList.add("animate-bounce-slow");
+          });
+
+          icon.addEventListener("mouseleave", () => {
+            icon.classList.remove("animate-bounce-slow");
+          });
+        });
+
+        // Mobile TOC toggle functionality
+        const tocToggle = document.getElementById("tocToggle");
+        const mobileToc = document.getElementById("mobileToc");
+        const closeToc = document.getElementById("closeToc");
+        const mobileLinks = document.querySelectorAll(".mobile-toc-link");
+
+        if (tocToggle && mobileToc) {
+          tocToggle.addEventListener("click", () => {
+            mobileToc.classList.toggle("hidden");
+            document.body.classList.toggle("overflow-hidden");
+          });
+
+          closeToc.addEventListener("click", () => {
+            mobileToc.classList.add("hidden");
+            document.body.classList.remove("overflow-hidden");
+          });
+
+          mobileLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+              mobileToc.classList.add("hidden");
+              document.body.classList.remove("overflow-hidden");
+            });
+          });
+        }
+
+        // Back to top button functionality
+        const backToTopButton = document.getElementById("backToTop");
+
+        if (backToTopButton) {
+          const showScrollButton = () => {
+            const scrollY = window.pageYOffset;
+            const threshold = 400;
+
+            if (scrollY > threshold) {
+              backToTopButton.classList.add("visible");
+            } else {
+              backToTopButton.classList.remove("visible");
+            }
+          };
+
+          backToTopButton.addEventListener("click", () => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          });
+
+          window.addEventListener("scroll", showScrollButton);
+          // Initial check
+          showScrollButton();
+        }
+
+        // Make code examples interactive
+        document.querySelectorAll(".interactive-code").forEach((codeBlock) => {
+          codeBlock.addEventListener("click", () => {
+            const message =
+              "This is a demo. In a real application, this would open in a code sandbox or playground environment!";
+            alert(message);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
