@@ -1,0 +1,2640 @@
+<!-- RTK Query Section -->
+<section class="mb-12" id="rtk-query">
+  <div class="flex items-center gap-3 mb-6">
+    <div
+      class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 shadow-md"
+    >
+      <i class="fas fa-database text-lg"></i>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800">RTK Query</h2>
+      <p class="text-gray-500 text-sm mt-1">
+        The Ultimate Data Fetching Solution for React + Redux
+      </p>
+    </div>
+  </div>
+
+  <!-- What is RTK Query -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+  >
+    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-r">
+      <h3 class="text-xl font-bold text-green-800 mb-2">
+        <i class="fa-solid fa-lightbulb mr-2"></i>
+        What is RTK Query?
+      </h3>
+      <p class="text-green-700">
+        RTK Query is a powerful data fetching and caching library built on top
+        of Redux Toolkit. It eliminates the need to write data fetching logic
+        manually by providing automatic caching, background updates, and
+        generated React hooks.
+      </p>
+    </div>
+
+    <h3 class="text-2xl font-bold mb-4 text-green-800">Why Use RTK Query?</h3>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div>
+        <h4 class="text-lg font-semibold text-red-600 mb-4">
+          ❌ Traditional Problems
+        </h4>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-times text-red-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Writing repetitive fetch logic
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-times text-red-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Manual loading state management
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-times text-red-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Complex caching implementation
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-times text-red-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Data synchronization headaches
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-green-600 mb-4">
+          ✅ RTK Query Solutions
+        </h4>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-check text-green-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">Auto-generated React hooks</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-check text-green-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Built-in loading & error states
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-check text-green-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">Intelligent automatic caching</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <i class="fas fa-check text-green-600 text-xs"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-700">
+                Background data synchronization
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-2xl font-bold mb-4 text-green-800">Key Features</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-bolt text-blue-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Automatic Caching</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Intelligent caching with deduplication and background updates
+        </p>
+      </div>
+
+      <div class="bg-teal-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-sync text-teal-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Background Refetching</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Keep your data fresh with automatic background updates
+        </p>
+      </div>
+
+      <div class="bg-purple-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-code text-purple-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Code Generation</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Generate hooks from OpenAPI schemas automatically
+        </p>
+      </div>
+
+      <div class="bg-orange-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-tags text-orange-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Cache Invalidation</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Flexible tag-based cache invalidation system
+        </p>
+      </div>
+
+      <div class="bg-pink-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-magic text-pink-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Optimistic Updates</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Update UI before server confirmation for better UX
+        </p>
+      </div>
+
+      <div class="bg-indigo-50 p-4 rounded-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-spinner text-indigo-600 text-sm"></i>
+          </div>
+          <h4 class="font-semibold text-gray-800">Loading States</h4>
+        </div>
+        <p class="text-sm text-gray-600">
+          Built-in loading, error, and success state management
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RTK Query vs Traditional Methods -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-yellow-100"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-yellow-800">
+      <i class="fas fa-balance-scale mr-2"></i>
+      RTK Query vs Traditional Methods
+    </h3>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div>
+        <h4 class="text-lg font-semibold text-red-600 mb-4">
+          Traditional useEffect + fetch
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-red-400 mr-2"></i>
+            <span class="text-sm">Traditional.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { useState, useEffect } from 'react';
+
+function UsersList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      await fetch(`/api/users/${id}`, {
+        method: 'DELETE'
+      });
+      // Manual cache update
+      setUsers(users.filter(u => u.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      {users.map(user => (
+        &lt;div key={user.id}&gt;
+          {user.name}
+          &lt;button onClick={() => deleteUser(user.id)}&gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-green-600 mb-4">
+          RTK Query Approach
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-green-400 mr-2"></i>
+            <span class="text-sm">RTKQuery.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { 
+  useGetUsersQuery, 
+  useDeleteUserMutation 
+} from './api';
+
+function UsersList() {
+  const {
+    data: users,
+    error,
+    isLoading,
+    refetch
+  } = useGetUsersQuery();
+
+  const [deleteUser] = useDeleteUserMutation();
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteUser(id).unwrap();
+      // Cache automatically updated!
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
+  };
+
+  if (isLoading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error.message}&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={refetch}&gt;Refresh&lt;/button&gt;
+      {users?.map(user => (
+        &lt;div key={user.id}&gt;
+          {user.name}
+          &lt;button onClick={() => handleDelete(user.id)}&gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+      <h4 class="font-semibold text-blue-800 mb-2">
+        🎯 Benefits of RTK Query:
+      </h4>
+      <ul class="text-sm text-blue-700 space-y-1">
+        <li>
+          • <strong>90% less code</strong> - No manual state management needed
+        </li>
+        <li>
+          • <strong>Automatic caching</strong> - Data shared across components
+        </li>
+        <li>
+          • <strong>Background updates</strong> - Fresh data without user action
+        </li>
+        <li>
+          • <strong>Error handling</strong> - Built-in error states and retry
+          logic
+        </li>
+        <li>
+          • <strong>Type safety</strong> - Full TypeScript support out of the
+          box
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Core RTK Query Concepts -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-indigo-100"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-indigo-800">
+      <i class="fas fa-puzzle-piece mr-2"></i>
+      Core RTK Query Concepts
+    </h3>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
+        <h4 class="text-lg font-bold text-blue-800 mb-3">
+          <i class="fas fa-layer-group mr-2"></i>
+          API Slices
+        </h4>
+        <p class="text-sm text-blue-700 mb-3">
+          An API slice is like a "blueprint" that defines all your API endpoints
+          in one place. Think of it as your data layer configuration.
+        </p>
+        <div class="bg-white p-3 rounded text-xs font-mono text-gray-700">
+          createApi() → API Slice → Endpoints → Generated Hooks
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
+        <h4 class="text-lg font-bold text-green-800 mb-3">
+          <i class="fas fa-exchange-alt mr-2"></i>
+          Queries vs Mutations
+        </h4>
+        <ul class="text-sm text-green-700 space-y-2">
+          <li><strong>Queries:</strong> Read data (GET requests)</li>
+          <li><strong>Mutations:</strong> Modify data (POST/PUT/DELETE)</li>
+          <li>Queries cache automatically</li>
+          <li>Mutations invalidate cache when needed</li>
+        </ul>
+      </div>
+
+      <div
+        class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg"
+      >
+        <h4 class="text-lg font-bold text-purple-800 mb-3">
+          <i class="fas fa-memory mr-2"></i>
+          Automatic Caching
+        </h4>
+        <p class="text-sm text-purple-700 mb-3">
+          RTK Query automatically caches your API responses and shares them
+          across components. No more duplicate network requests!
+        </p>
+        <div class="text-xs text-purple-600">
+          Component A + Component B = 1 API Call ✨
+        </div>
+      </div>
+
+      <div
+        class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg"
+      >
+        <h4 class="text-lg font-bold text-orange-800 mb-3">
+          <i class="fas fa-tags mr-2"></i>
+          Tags & Invalidation
+        </h4>
+        <p class="text-sm text-orange-700 mb-3">
+          Tags help RTK Query know when to refresh cached data. When you update
+          a "Post", all queries tagged with "Post" get refreshed.
+        </p>
+        <div class="text-xs text-orange-600">
+          Update → Invalidate Tags → Refetch → Fresh Data
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r">
+      <h4 class="font-semibold text-yellow-800 mb-2">
+        🧠 Think of RTK Query like...
+      </h4>
+      <p class="text-yellow-700 text-sm">
+        A smart librarian that remembers what books you've read, automatically
+        gets new editions when they're available, and shares books between
+        different reading rooms to avoid duplicates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Installation and Setup -->
+  <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-cyan-100">
+    <h3 class="text-2xl font-bold mb-6 text-cyan-800">
+      <i class="fas fa-download mr-2"></i>
+      Installation and Setup
+    </h3>
+
+    <div class="space-y-6">
+      <div>
+        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+          Step 1: Install Dependencies
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-terminal text-cyan-400 mr-2"></i>
+            <span class="text-sm">Terminal</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-bash"># RTK Query comes with Redux Toolkit
+npm install @reduxjs/toolkit react-redux
+
+# Or with yarn
+yarn add @reduxjs/toolkit react-redux</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+          Step 2: Create Your First API Slice
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-cyan-400 mr-2"></i>
+            <span class="text-sm">src/api/apiSlice.js</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+// Define our API slice
+export const apiSlice = createApi({
+  // Unique key that defines where this data lives in Redux state
+  reducerPath: 'api',
+  
+  // Base query configuration
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api', // Your API base URL
+    prepareHeaders: (headers, { getState }) => {
+      // Add auth token if available
+      const token = getState().auth?.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  
+  // Tags for cache invalidation
+  tagTypes: ['User', 'Post', 'Comment'],
+  
+  // Define endpoints
+  endpoints: (builder) => ({
+    // We'll add endpoints here in the next step
+  }),
+});
+
+// Export hooks for usage in components (will be generated automatically)
+export const {
+  // Hooks will appear here as we add endpoints
+} = apiSlice;</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+          Step 3: Configure Your Store
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-cyan-400 mr-2"></i>
+            <span class="text-sm">src/store/store.js</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">import { configureStore } from '@reduxjs/toolkit';
+import { apiSlice } from '../api/apiSlice';
+
+export const store = configureStore({
+  reducer: {
+    // Add the generated reducer as a specific top-level slice
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    // Add other reducers here
+  },
+  
+  // Add the api middleware enables caching, invalidation, polling, and more
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+});</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+          Step 4: Setup Provider
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-cyan-400 mr-2"></i>
+            <span class="text-sm">src/main.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;React.StrictMode&gt;
+    &lt;Provider store={store}&gt;
+      &lt;App /&gt;
+    &lt;/Provider&gt;
+  &lt;/React.StrictMode&gt;
+);</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-green-50 rounded-lg">
+      <h4 class="font-semibold text-green-800 mb-2">🎉 Congratulations!</h4>
+      <p class="text-sm text-green-700">
+        You now have RTK Query set up and ready to use. Next, we'll add some
+        endpoints and start fetching data!
+      </p>
+    </div>
+  </div>
+
+  <!-- Creating Queries and Mutations -->
+  <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-teal-100">
+    <h3 class="text-2xl font-bold mb-6 text-teal-800">
+      <i class="fas fa-plus-circle mr-2"></i>
+      Creating Queries and Mutations
+    </h3>
+
+    <div class="space-y-8">
+      <div>
+        <h4 class="text-lg font-semibold text-teal-700 mb-4">
+          <i class="fas fa-search mr-2"></i>
+          Adding Query Endpoints (GET requests)
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-teal-400 mr-2"></i>
+            <span class="text-sm">src/api/apiSlice.js - Add to endpoints</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">endpoints: (builder) => ({
+  // Get all users
+  getUsers: builder.query({
+    query: () => 'users',
+    providesTags: ['User'], // This query provides 'User' data
+  }),
+  
+  // Get a single user by ID
+  getUser: builder.query({
+    query: (id) => `users/${id}`,
+    providesTags: (result, error, id) => [{ type: 'User', id }],
+  }),
+  
+  // Get user posts with pagination
+  getUserPosts: builder.query({
+    query: ({ userId, page = 1, limit = 10 }) => 
+      `users/${userId}/posts?page=${page}&limit=${limit}`,
+    providesTags: (result, error, { userId }) => [
+      { type: 'Post', id: 'LIST' },
+      { type: 'User', id: userId }
+    ],
+  }),
+  
+  // Search users with dynamic parameters
+  searchUsers: builder.query({
+    query: ({ searchTerm, filters = {} }) => ({
+      url: 'users/search',
+      params: {
+        q: searchTerm,
+        ...filters
+      }
+    }),
+    providesTags: ['User'],
+  }),
+})</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-purple-700 mb-4">
+          <i class="fas fa-edit mr-2"></i>
+          Adding Mutation Endpoints (POST/PUT/DELETE)
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm">src/api/apiSlice.js - Add to endpoints</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">// Create a new user
+createUser: builder.mutation({
+  query: (newUser) => ({
+    url: 'users',
+    method: 'POST',
+    body: newUser,
+  }),
+  invalidatesTags: ['User'], // Invalidate all User queries
+}),
+
+// Update user
+updateUser: builder.mutation({
+  query: ({ id, ...patch }) => ({
+    url: `users/${id}`,
+    method: 'PATCH',
+    body: patch,
+  }),
+  invalidatesTags: (result, error, { id }) => [{ type: 'User', id }],
+}),
+
+// Delete user
+deleteUser: builder.mutation({
+  query: (id) => ({
+    url: `users/${id}`,
+    method: 'DELETE',
+  }),
+  invalidatesTags: (result, error, id) => [
+    { type: 'User', id },
+    { type: 'User', id: 'LIST' }
+  ],
+}),
+
+// Upload user avatar
+uploadUserAvatar: builder.mutation({
+  query: ({ userId, file }) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    return {
+      url: `users/${userId}/avatar`,
+      method: 'POST',
+      body: formData,
+    };
+  },
+  invalidatesTags: (result, error, { userId }) => [{ type: 'User', id: userId }],
+}),</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-4">
+          <i class="fas fa-cogs mr-2"></i>
+          Advanced Query Features
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+            <span class="text-sm">Advanced patterns</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">// Transform response data
+getUsers: builder.query({
+  query: () => 'users',
+  transformResponse: (response) => {
+    // Transform the response before storing in cache
+    return response.data.map(user => ({
+      ...user,
+      fullName: `${user.firstName} ${user.lastName}`,
+      isActive: user.status === 'active'
+    }));
+  },
+  providesTags: ['User'],
+}),
+
+// Handle errors gracefully
+getUser: builder.query({
+  query: (id) => `users/${id}`,
+  transformErrorResponse: (response, meta, arg) => ({
+    status: response.status,
+    message: response.data?.message || 'User not found',
+    userId: arg
+  }),
+  providesTags: (result, error, id) => [{ type: 'User', id }],
+}),
+
+// Conditional queries
+getUserProfile: builder.query({
+  query: (userId) => `users/${userId}/profile`,
+  // Only run if we have a valid userId
+  skip: (userId) => !userId,
+  providesTags: (result, error, userId) => [{ type: 'Profile', id: userId }],
+}),</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-indigo-50 rounded-lg">
+      <h4 class="font-semibold text-indigo-800 mb-2">💡 Pro Tips</h4>
+      <ul class="text-sm text-indigo-700 space-y-1">
+        <li>• Use specific tags for targeted cache invalidation</li>
+        <li>• Transform responses to shape data for your UI</li>
+        <li>• Handle errors consistently across your app</li>
+        <li>• Use conditional queries to avoid unnecessary requests</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Export Generated Hooks -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-green-800">
+      <i class="fas fa-magic mr-2"></i>
+      Generated Hooks - Your New Superpowers
+    </h3>
+
+    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-r">
+      <p class="text-green-700">
+        <i class="fa-solid fa-sparkles mr-2"></i>
+        RTK Query automatically generates React hooks for every endpoint you
+        define. No more manual hook creation!
+      </p>
+    </div>
+
+    <div class="code-header flex items-center justify-between px-4 py-2">
+      <div class="flex items-center">
+        <i class="fa-solid fa-code text-green-400 mr-2"></i>
+        <span class="text-sm">src/api/apiSlice.js - Export hooks</span>
+      </div>
+    </div>
+    <div class="code-block">
+      <pre
+        class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+      ><code class="language-javascript">// Export hooks for usage in components
+export const {
+  // Query hooks (auto-generated from your query endpoints)
+  useGetUsersQuery,           // ← from getUsers
+  useGetUserQuery,            // ← from getUser  
+  useGetUserPostsQuery,       // ← from getUserPosts
+  useSearchUsersQuery,        // ← from searchUsers
+  useGetUserProfileQuery,     // ← from getUserProfile
+  
+  // Mutation hooks (auto-generated from your mutation endpoints)
+  useCreateUserMutation,      // ← from createUser
+  useUpdateUserMutation,      // ← from updateUser
+  useDeleteUserMutation,      // ← from deleteUser
+  useUploadUserAvatarMutation, // ← from uploadUserAvatar
+  
+  // Utility hooks for advanced use cases
+  usePrefetch,               // Prefetch data
+  useLazyGetUserQuery,       // Lazy query execution
+} = apiSlice;</code></pre>
+    </div>
+
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-blue-800 mb-2">Query Hook Pattern</h4>
+        <div class="text-sm text-blue-700 space-y-1">
+          <div>
+            <code class="bg-blue-100 px-2 py-1 rounded"
+              >use[EndpointName]Query</code
+            >
+          </div>
+          <div>
+            Example:
+            <code class="bg-blue-100 px-2 py-1 rounded">useGetUsersQuery</code>
+          </div>
+        </div>
+      </div>
+      <div class="bg-purple-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-purple-800 mb-2">
+          Mutation Hook Pattern
+        </h4>
+        <div class="text-sm text-purple-700 space-y-1">
+          <div>
+            <code class="bg-purple-100 px-2 py-1 rounded"
+              >use[EndpointName]Mutation</code
+            >
+          </div>
+          <div>
+            Example:
+            <code class="bg-purple-100 px-2 py-1 rounded"
+              >useCreateUserMutation</code
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Using RTK Query in Components -->
+  <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100">
+    <h3 class="text-2xl font-bold mb-6 text-blue-800">
+      <i class="fas fa-rocket mr-2"></i>
+      Using RTK Query in Components
+    </h3>
+
+    <div class="space-y-8">
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-4">
+          <i class="fas fa-download mr-2"></i>
+          Basic Query Usage
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+            <span class="text-sm">UsersList.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import React from 'react';
+import { useGetUsersQuery } from '../api/apiSlice';
+
+function UsersList() {
+  const {
+    data: users,        // The actual data
+    error,              // Error object if request failed
+    isLoading,          // True during initial load
+    isFetching,         // True during any fetch (including background)
+    isSuccess,          // True when data was successfully fetched
+    isError,            // True when there's an error
+    refetch,            // Function to manually refetch
+    currentData,        // Most recent successful data
+  } = useGetUsersQuery();
+
+  // Loading state
+  if (isLoading) {
+    return (
+      &lt;div className="flex items-center justify-center py-8"&gt;
+        &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"&gt;&lt;/div&gt;
+        &lt;span className="ml-2"&gt;Loading users...&lt;/span&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  // Error state
+  if (isError) {
+    return (
+      &lt;div className="bg-red-50 border border-red-200 rounded-lg p-4"&gt;
+        &lt;h3 className="text-red-800 font-semibold"&gt;Error loading users&lt;/h3&gt;
+        &lt;p className="text-red-600 text-sm"&gt;{error.message}&lt;/p&gt;
+        &lt;button 
+          onClick={refetch}
+          className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        &gt;
+          Try Again
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  // Success state
+  return (
+    &lt;div&gt;
+      &lt;div className="flex justify-between items-center mb-4"&gt;
+        &lt;h2 className="text-2xl font-bold"&gt;Users ({users?.length || 0})&lt;/h2&gt;
+        &lt;button 
+          onClick={refetch}
+          disabled={isFetching}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+        &gt;
+          {isFetching ? 'Refreshing...' : 'Refresh'}
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"&gt;
+        {users?.map(user => (
+          &lt;div key={user.id} className="bg-white p-4 rounded-lg shadow border"&gt;
+            &lt;h3 className="font-semibold"&gt;{user.fullName}&lt;/h3&gt;
+            &lt;p className="text-gray-600 text-sm"&gt;{user.email}&lt;/p&gt;
+            &lt;span className={`inline-block px-2 py-1 rounded-full text-xs $\{
+              user.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+            }`}&gt;
+              {user.isActive ? 'Active' : 'Inactive'}
+            &lt;/span&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-purple-700 mb-4">
+          <i class="fas fa-edit mr-2"></i>
+          Using Mutations
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm">CreateUser.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import React, { useState } from 'react';
+import {
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation
+} from '../api/apiSlice';
+
+function UserActions({ user = null, onSuccess }) {
+  const [formData, setFormData] = useState({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+  });
+
+  // Mutations return [mutationFunction, {status, error, data}]
+  const [createUser, { 
+    isLoading: isCreating, 
+    error: createError 
+  }] = useCreateUserMutation();
+
+  const [updateUser, { 
+    isLoading: isUpdating 
+  }] = useUpdateUserMutation();
+
+  const [deleteUser, { 
+    isLoading: isDeleting 
+  }] = useDeleteUserMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (user) {
+        // Update existing user
+        await updateUser({
+          id: user.id,
+          ...formData
+        }).unwrap(); // .unwrap() throws on error, returns data on success
+        
+        alert('User updated successfully!');
+      } else {
+        // Create new user
+        const newUser = await createUser(formData).unwrap();
+        alert(`User ${newUser.fullName} created successfully!`);
+        
+        // Reset form
+        setFormData({ firstName: '', lastName: '', email: '' });
+      }
+      
+      onSuccess?.();
+    } catch (error) {
+      // Error is handled automatically by RTK Query
+      console.error('Operation failed:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!user || !confirm('Are you sure you want to delete this user?')) return;
+    
+    try {
+      await deleteUser(user.id).unwrap();
+      alert('User deleted successfully!');
+      onSuccess?.();
+    } catch (error) {
+      alert('Failed to delete user: ' + error.message);
+    }
+  };
+
+  return (
+    &lt;div className="bg-white p-6 rounded-lg shadow border"&gt;
+      &lt;h3 className="text-lg font-semibold mb-4"&gt;
+        {user ? 'Edit User' : 'Create New User'}
+      &lt;/h3&gt;
+
+      {createError && (
+        &lt;div className="mb-4 p-3 bg-red-50 border border-red-200 rounded"&gt;
+          &lt;p className="text-red-600 text-sm"&gt;{createError.message}&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+
+      &lt;form onSubmit={handleSubmit} className="space-y-4"&gt;
+        &lt;div&gt;
+          &lt;label className="block text-sm font-medium text-gray-700"&gt;
+            First Name
+          &lt;/label&gt;
+          &lt;input
+            type="text"
+            value={formData.firstName}
+            onChange={(e) => setFormData(prev => ({
+              ...prev,
+              firstName: e.target.value
+            }))}
+            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+            required
+          /&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label className="block text-sm font-medium text-gray-700"&gt;
+            Last Name
+          &lt;/label&gt;
+          &lt;input
+            type="text"
+            value={formData.lastName}
+            onChange={(e) => setFormData(prev => ({
+              ...prev,
+              lastName: e.target.value
+            }))}
+            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+            required
+          /&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label className="block text-sm font-medium text-gray-700"&gt;
+            Email
+          &lt;/label&gt;
+          &lt;input
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData(prev => ({
+              ...prev,
+              email: e.target.value
+            }))}
+            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+            required
+          /&gt;
+        &lt;/div&gt;
+
+        &lt;div className="flex gap-3"&gt;
+          &lt;button
+            type="submit"
+            disabled={isCreating || isUpdating}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+          &gt;
+            {isCreating ? 'Creating...' : isUpdating ? 'Updating...' : (user ? 'Update' : 'Create')}
+          &lt;/button&gt;
+
+          {user && (
+            &lt;button
+              type="button"
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 disabled:opacity-50"
+            &gt;
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            &lt;/button&gt;
+          )}
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-green-700 mb-4">
+          <i class="fas fa-search mr-2"></i>
+          Query with Parameters
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-green-400 mr-2"></i>
+            <span class="text-sm">UserProfile.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetUserQuery, useGetUserPostsQuery } from '../api/apiSlice';
+
+function UserProfile() {
+  const { userId } = useParams();
+  
+  // Fetch user data
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    error: userError
+  } = useGetUserQuery(userId);
+
+  // Fetch user posts with pagination
+  const {
+    data: posts,
+    isLoading: isLoadingPosts,
+    error: postsError
+  } = useGetUserPostsQuery({ 
+    userId, 
+    page: 1, 
+    limit: 5 
+  });
+
+  if (isLoadingUser) {
+    return &lt;div&gt;Loading user profile...&lt;/div&gt;;
+  }
+
+  if (userError) {
+    return &lt;div&gt;Error: {userError.message}&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div className="max-w-4xl mx-auto p-6"&gt;
+      {/* User Info */}
+      &lt;div className="bg-white rounded-lg shadow p-6 mb-6"&gt;
+        &lt;h1 className="text-2xl font-bold"&gt;{user.fullName}&lt;/h1&gt;
+        &lt;p className="text-gray-600"&gt;{user.email}&lt;/p&gt;
+        &lt;p className="text-sm text-gray-500"&gt;
+          Status: {user.isActive ? 'Active' : 'Inactive'}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      {/* User Posts */}
+      &lt;div className="bg-white rounded-lg shadow p-6"&gt;
+        &lt;h2 className="text-xl font-semibold mb-4"&gt;Recent Posts&lt;/h2&gt;
+        
+        {isLoadingPosts ? (
+          &lt;div&gt;Loading posts...&lt;/div&gt;
+        ) : postsError ? (
+          &lt;div&gt;Error loading posts: {postsError.message}&lt;/div&gt;
+        ) : posts?.length === 0 ? (
+          &lt;p className="text-gray-500"&gt;No posts found&lt;/p&gt;
+        ) : (
+          &lt;div className="space-y-4"&gt;
+            {posts.map(post => (
+              &lt;div key={post.id} className="border-l-4 border-blue-500 pl-4"&gt;
+                &lt;h3 className="font-semibold"&gt;{post.title}&lt;/h3&gt;
+                &lt;p className="text-gray-600 text-sm"&gt;{post.excerpt}&lt;/p&gt;
+                &lt;p className="text-xs text-gray-400"&gt;
+                  {new Date(post.createdAt).toLocaleDateString()}
+                &lt;/p&gt;
+              &lt;/div&gt;
+            ))}
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+      <h4 class="font-semibold text-blue-800 mb-2">
+        🎯 Key Points to Remember
+      </h4>
+      <ul class="text-sm text-blue-700 space-y-1">
+        <li>
+          • Always check <code>isLoading</code> and <code>isError</code> states
+        </li>
+        <li>
+          • Use <code>.unwrap()</code> on mutations to get data or throw errors
+        </li>
+        <li>• <code>isFetching</code> is true during background updates</li>
+        <li>• RTK Query automatically manages caching and deduplication</li>
+        <li>• Use <code>refetch()</code> to manually refresh data</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Advanced Features -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-orange-100"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-orange-800">
+      <i class="fas fa-star mr-2"></i>
+      Advanced RTK Query Features
+    </h3>
+
+    <div class="space-y-8">
+      <div>
+        <h4 class="text-lg font-semibold text-orange-700 mb-4">
+          <i class="fas fa-tags mr-2"></i>
+          Cache Invalidation Strategies
+        </h4>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h5 class="font-semibold text-orange-800 mb-2">
+              Tag-Based Invalidation
+            </h5>
+            <div class="code-block">
+              <pre
+                class="bg-gray-800 text-gray-100 p-3 rounded text-xs font-mono"
+              ><code>// Query provides tags
+getUsers: builder.query({
+  query: () => 'users',
+  providesTags: ['User']
+}),
+
+// Mutation invalidates tags
+createUser: builder.mutation({
+  query: (user) => ({
+    url: 'users',
+    method: 'POST',
+    body: user
+  }),
+  invalidatesTags: ['User'] // Refetches all User queries
+})</code></pre>
+            </div>
+          </div>
+
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h5 class="font-semibold text-blue-800 mb-2">
+              Selective Invalidation
+            </h5>
+            <div class="code-block">
+              <pre
+                class="bg-gray-800 text-gray-100 p-3 rounded text-xs font-mono"
+              ><code>// Specific tag with ID
+getUser: builder.query({
+  query: (id) => `users/${id}`,
+  providesTags: (result, error, id) => [
+    { type: 'User', id }
+  ]
+}),
+
+// Only invalidate specific user
+updateUser: builder.mutation({
+  query: ({ id, ...patch }) => ({
+    url: `users/${id}`,
+    method: 'PATCH',
+    body: patch
+  }),
+  invalidatesTags: (result, error, { id }) => [
+    { type: 'User', id }
+  ]
+})</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-purple-700 mb-4">
+          <i class="fas fa-clock mr-2"></i>
+          Polling and Real-time Updates
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm">RealTimeData.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { useGetNotificationsQuery } from '../api/apiSlice';
+
+function NotificationCenter() {
+  const {
+    data: notifications,
+    isLoading,
+    error
+  } = useGetNotificationsQuery(undefined, {
+    // Poll every 30 seconds
+    pollingInterval: 30000,
+    
+    // Refetch when window regains focus
+    refetchOnFocus: true,
+    
+    // Refetch when network reconnects
+    refetchOnReconnect: true,
+    
+    // Skip initial fetch if needed
+    skip: false,
+  });
+
+  return (
+    &lt;div className="relative"&gt;
+      &lt;button className="relative p-2 text-gray-600 hover:text-gray-800"&gt;
+        &lt;BellIcon className="w-6 h-6" /&gt;
+        {notifications?.unreadCount > 0 && (
+          &lt;span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"&gt;
+            {notifications.unreadCount}
+          &lt;/span&gt;
+        )}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-teal-700 mb-4">
+          <i class="fas fa-zap mr-2"></i>
+          Conditional Fetching & Lazy Queries
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-teal-400 mr-2"></i>
+            <span class="text-sm">ConditionalFetching.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { useState } from 'react';
+import { 
+  useGetUserQuery, 
+  useLazyGetUserPostsQuery 
+} from '../api/apiSlice';
+
+function UserDashboard({ userId }) {
+  const [showPosts, setShowPosts] = useState(false);
+
+  // Conditional query - only runs if userId exists
+  const {
+    data: user,
+    isLoading
+  } = useGetUserQuery(userId, {
+    skip: !userId // Skip if no userId
+  });
+
+  // Lazy query - triggered manually
+  const [fetchPosts, {
+    data: posts,
+    isLoading: isLoadingPosts,
+    isFetching: isFetchingPosts
+  }] = useLazyGetUserPostsQuery();
+
+  const handleShowPosts = () => {
+    setShowPosts(true);
+    // Trigger the lazy query
+    fetchPosts({ userId, page: 1, limit: 10 });
+  };
+
+  if (!userId) {
+    return &lt;div&gt;Please select a user&lt;/div&gt;;
+  }
+
+  if (isLoading) {
+    return &lt;div&gt;Loading user...&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user?.fullName}&lt;/h2&gt;
+      
+      {!showPosts ? (
+        &lt;button
+          onClick={handleShowPosts}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        &gt;
+          Load Posts
+        &lt;/button&gt;
+      ) : (
+        &lt;div&gt;
+          {isLoadingPosts ? (
+            &lt;div&gt;Loading posts...&lt;/div&gt;
+          ) : (
+            &lt;div&gt;
+              &lt;h3&gt;Posts ({posts?.length || 0})&lt;/h3&gt;
+              {isFetchingPosts && &lt;div&gt;Refreshing...&lt;/div&gt;}
+              {posts?.map(post => (
+                &lt;div key={post.id}&gt;{post.title}&lt;/div&gt;
+              ))}
+            &lt;/div&gt;
+          )}
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-indigo-700 mb-4">
+          <i class="fas fa-rocket mr-2"></i>
+          Prefetching for Better Performance
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-indigo-400 mr-2"></i>
+            <span class="text-sm">PrefetchExample.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { useDispatch } from 'react-redux';
+import { usePrefetch } from '../api/apiSlice';
+
+function UserCard({ user }) {
+  const dispatch = useDispatch();
+  const prefetchUser = usePrefetch('getUser');
+  const prefetchUserPosts = usePrefetch('getUserPosts');
+
+  const handleMouseEnter = () => {
+    // Prefetch user details when hovering
+    prefetchUser(user.id);
+    // Also prefetch their posts
+    prefetchUserPosts({ userId: user.id, page: 1, limit: 5 });
+  };
+
+  return (
+    &lt;div 
+      className="user-card"
+      onMouseEnter={handleMouseEnter}
+    &gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+      &lt;Link to={`/users/${user.id}`}&gt;
+        View Profile
+      &lt;/Link&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Alternative: Prefetch on component mount
+function UsersList() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    // Prefetch first user's details
+    if (users?.length > 0) {
+      dispatch(
+        apiSlice.util.prefetch('getUser', users[0].id, {
+          force: false // Don't prefetch if already cached
+        })
+      );
+    }
+  }, [users, dispatch]);
+
+  // ... rest of component
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-pink-700 mb-4">
+          <i class="fas fa-heart mr-2"></i>
+          Optimistic Updates
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-pink-400 mr-2"></i>
+            <span class="text-sm">OptimisticUpdate.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">// In your API slice
+likePost: builder.mutation({
+  query: ({ postId, liked }) => ({
+    url: `posts/${postId}/like`,
+    method: 'POST',
+    body: { liked }
+  }),
+  
+  // Optimistic update
+  async onQueryStarted({ postId, liked }, { dispatch, queryFulfilled }) {
+    // Update the cache optimistically
+    const patchResult = dispatch(
+      apiSlice.util.updateQueryData('getPost', postId, (draft) => {
+        draft.liked = liked;
+        draft.likesCount += liked ? 1 : -1;
+      })
+    );
+
+    try {
+      await queryFulfilled;
+    } catch {
+      // Revert the optimistic update on error
+      patchResult.undo();
+    }
+  },
+  
+  invalidatesTags: (result, error, { postId }) => [
+    { type: 'Post', id: postId }
+  ]
+}),</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-6 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-200"
+    >
+      <h4 class="font-semibold text-orange-800 mb-2">⚡ Performance Tips</h4>
+      <ul class="text-sm text-orange-700 space-y-1">
+        <li>• Use polling sparingly - it can drain battery and bandwidth</li>
+        <li>• Prefetch data on hover or before navigation for better UX</li>
+        <li>• Use optimistic updates for immediate feedback</li>
+        <li>
+          • Leverage selective cache invalidation to avoid unnecessary refetches
+        </li>
+        <li>• Use conditional queries to prevent unnecessary API calls</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Practical Examples -->
+  <div
+    class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-emerald-100"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-emerald-800">
+      <i class="fas fa-code mr-2"></i>
+      Real-World Practical Examples
+    </h3>
+
+    <div class="space-y-8">
+      <div>
+        <h4 class="text-lg font-semibold text-emerald-700 mb-4">
+          <i class="fas fa-shopping-cart mr-2"></i>
+          E-commerce Product Management
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-emerald-400 mr-2"></i>
+            <span class="text-sm">ecommerceApi.js</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">export const ecommerceApi = createApi({
+  reducerPath: 'ecommerceApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api/v1',
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ['Product', 'Category', 'Cart', 'Order'],
+  endpoints: (builder) => ({
+    // Get products with filtering, sorting, pagination
+    getProducts: builder.query({
+      query: ({ 
+        page = 1, 
+        limit = 20, 
+        category, 
+        sortBy = 'createdAt', 
+        sortOrder = 'desc',
+        minPrice,
+        maxPrice,
+        search 
+      }) => ({
+        url: 'products',
+        params: {
+          page,
+          limit,
+          category,
+          sortBy,
+          sortOrder,
+          minPrice,
+          maxPrice,
+          search
+        }
+      }),
+      providesTags: (result) => [
+        'Product',
+        ...(result?.products || []).map(({ id }) => ({ type: 'Product', id }))
+      ],
+      // Transform response to add computed fields
+      transformResponse: (response) => ({
+        ...response,
+        products: response.products.map(product => ({
+          ...product,
+          isOnSale: product.salePrice < product.regularPrice,
+          discountPercent: Math.round(
+            ((product.regularPrice - product.salePrice) / product.regularPrice) * 100
+          )
+        }))
+    }),
+
+    // Get single product with reviews
+    getProduct: builder.query({
+      query: (id) => `products/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Product', id }],
+    }),
+
+    // Add to cart
+    addToCart: builder.mutation({
+      query: ({ productId, quantity = 1, variants = {} }) => ({
+        url: 'cart/items',
+        method: 'POST',
+        body: { productId, quantity, variants }
+      }),
+      invalidatesTags: ['Cart'],
+      // Optimistic update
+      async onQueryStarted({ productId, quantity }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          ecommerceApi.util.updateQueryData('getCart', undefined, (draft) => {
+            const existingItem = draft.items.find(item => item.productId === productId);
+            if (existingItem) {
+              existingItem.quantity += quantity;
+            } else {
+              draft.items.push({ productId, quantity, addedAt: new Date().toISOString() });
+            }
+            draft.totalItems += quantity;
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      }
+    }),
+
+    // Get cart
+    getCart: builder.query({
+      query: () => 'cart',
+      providesTags: ['Cart'],
+    }),
+
+    // Place order
+    placeOrder: builder.mutation({
+      query: (orderData) => ({
+        url: 'orders',
+        method: 'POST',
+        body: orderData
+      }),
+      invalidatesTags: ['Cart', 'Order'],
+    }),
+  })
+});
+
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useAddToCartMutation,
+  useGetCartQuery,
+  usePlaceOrderMutation,
+} = ecommerceApi;</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-4">
+          <i class="fas fa-users mr-2"></i>
+          User Management System
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+            <span class="text-sm">UserManagement.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import React, { useState } from 'react';
+import {
+  useGetUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useUploadUserAvatarMutation
+} from '../api/userApi';
+
+function UserManagement() {
+  const [filters, setFilters] = useState({
+    role: '',
+    status: '',
+    search: '',
+    page: 1
+  });
+
+  // Fetch users with filters
+  const {
+    data: usersData,
+    isLoading,
+    isFetching,
+    error
+  } = useGetUsersQuery(filters);
+
+  const [createUser] = useCreateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
+  const [uploadAvatar] = useUploadUserAvatarMutation();
+
+  const handleCreateUser = async (userData) => {
+    try {
+      const newUser = await createUser(userData).unwrap();
+      
+      // If avatar file is provided, upload it
+      if (userData.avatarFile) {
+        await uploadAvatar({
+          userId: newUser.id,
+          file: userData.avatarFile
+        }).unwrap();
+      }
+      
+      toast.success('User created successfully!');
+    } catch (error) {
+      toast.error('Failed to create user: ' + error.message);
+    }
+  };
+
+  const handleBulkAction = async (action, selectedUsers) => {
+    const promises = selectedUsers.map(userId => {
+      switch (action) {
+        case 'activate':
+          return updateUser({ id: userId, status: 'active' }).unwrap();
+        case 'deactivate':
+          return updateUser({ id: userId, status: 'inactive' }).unwrap();
+        case 'delete':
+          return deleteUser(userId).unwrap();
+        default:
+          return Promise.resolve();
+      }
+    });
+
+    try {
+      await Promise.all(promises);
+      toast.success(`${action} completed for ${selectedUsers.length} users`);
+    } catch (error) {
+      toast.error(`Bulk ${action} failed: ` + error.message);
+    }
+  };
+
+  return (
+    &lt;div className="p-6"&gt;
+      &lt;div className="mb-6"&gt;
+        &lt;h1 className="text-2xl font-bold mb-4"&gt;User Management&lt;/h1&gt;
+        
+        {/* Filters */}
+        &lt;div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4"&gt;
+          &lt;input
+            type="text"
+            placeholder="Search users..."
+            value={filters.search}
+            onChange={(e) => setFilters(prev => ({ 
+              ...prev, 
+              search: e.target.value,
+              page: 1 
+            }))}
+            className="border rounded px-3 py-2"
+          /&gt;
+          
+          &lt;select
+            value={filters.role}
+            onChange={(e) => setFilters(prev => ({ 
+              ...prev, 
+              role: e.target.value,
+              page: 1 
+            }))}
+            className="border rounded px-3 py-2"
+          &gt;
+            &lt;option value=""&gt;All Roles&lt;/option&gt;
+            &lt;option value="admin"&gt;Admin&lt;/option&gt;
+            &lt;option value="moderator"&gt;Moderator&lt;/option&gt;
+            &lt;option value="user"&gt;User&lt;/option&gt;
+          &lt;/select&gt;
+          
+          &lt;select
+            value={filters.status}
+            onChange={(e) => setFilters(prev => ({ 
+              ...prev, 
+              status: e.target.value,
+              page: 1 
+            }))}
+            className="border rounded px-3 py-2"
+          &gt;
+            &lt;option value=""&gt;All Status&lt;/option&gt;
+            &lt;option value="active"&gt;Active&lt;/option&gt;
+            &lt;option value="inactive"&gt;Inactive&lt;/option&gt;
+            &lt;option value="suspended"&gt;Suspended&lt;/option&gt;
+          &lt;/select&gt;
+
+          &lt;button
+            onClick={() => setFilters({
+              role: '',
+              status: '',
+              search: '',
+              page: 1
+            })}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          &gt;
+            Clear Filters
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      {/* Loading State */}
+      {isLoading && (
+        &lt;div className="text-center py-8"&gt;
+          &lt;div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"&gt;&lt;/div&gt;
+          &lt;p className="mt-2"&gt;Loading users...&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+
+      {/* Error State */}
+      {error && (
+        &lt;div className="bg-red-50 border border-red-200 rounded p-4 mb-4"&gt;
+          &lt;p className="text-red-800"&gt;Error loading users: {error.message}&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+
+      {/* Users Table */}
+      {usersData && (
+        &lt;div&gt;
+          &lt;div className="flex justify-between items-center mb-4"&gt;
+            &lt;p className="text-gray-600"&gt;
+              Showing {usersData.users.length} of {usersData.total} users
+              {isFetching && &lt;span className="ml-2 text-blue-600"&gt;(Updating...)&lt;/span&gt;}
+            &lt;/p&gt;
+            
+            &lt;button
+              onClick={() => handleCreateUser()}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Add New User
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div className="overflow-x-auto"&gt;
+            &lt;table className="min-w-full bg-white border border-gray-200"&gt;
+              &lt;thead className="bg-gray-50"&gt;
+                &lt;tr&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    User
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Role
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                                       Status
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Created
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Actions
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody className="bg-white divide-y divide-gray-200"&gt;
+                {usersData.users.map(user => (
+                  &lt;UserRow 
+                    key={user.id} 
+                    user={user}
+                    onUpdate={updateUser}
+                    onDelete={deleteUser}
+                  /&gt;
+                ))}
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+
+          {/* Pagination */}
+          &lt;Pagination
+            currentPage={filters.page}
+            totalPages={usersData.totalPages}
+            onPageChange={(page) => setFilters(prev => ({ ...prev, page }))}
+          /&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-purple-700 mb-4">
+          <i class="fas fa-upload mr-2"></i>
+          File Upload with Progress
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm">FileUpload.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">import { useState } from 'react';
+import { useUploadFileMutation } from '../api/fileApi';
+
+function FileUpload({ onUploadComplete }) {
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadFile, { isLoading, error }] = useUploadFileMutation();
+
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const result = await uploadFile({
+        file: formData,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setUploadProgress(progress);
+        }
+      }).unwrap();
+
+      onUploadComplete?.(result);
+      setUploadProgress(0);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setUploadProgress(0);
+    }
+  };
+
+  return (
+    &lt;div className="w-full max-w-md mx-auto"&gt;
+      &lt;div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"&gt;
+        &lt;input
+          type="file"
+          onChange={(e) => handleFileUpload(e.target.files[0])}
+          disabled={isLoading}
+          className="hidden"
+          id="file-upload"
+        /&gt;
+        
+        &lt;label
+          htmlFor="file-upload"
+          className={`cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white $\{
+            isLoading 
+              ? 'bg-gray-400 cursor-not-allowed' 
+              : 'bg-blue-600 hover:bg-blue-700'
+          }`}
+        &gt;
+          {isLoading ? 'Uploading...' : 'Choose File'}
+        &lt;/label&gt;
+
+        {isLoading && (
+          &lt;div className="mt-4"&gt;
+            &lt;div className="bg-gray-200 rounded-full h-2"&gt;
+              &lt;div 
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${uploadProgress}%` }}
+              &gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p className="text-sm text-gray-600 mt-2"&gt;
+              {uploadProgress}% uploaded
+            &lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {error && (
+          &lt;div className="mt-4 text-red-600 text-sm"&gt;
+            Upload failed: {error.message}
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance and Best Practices -->
+  <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-red-100">
+    <h3 class="text-2xl font-bold mb-6 text-red-800">
+      <i class="fas fa-tachometer-alt mr-2"></i>
+      Performance & Best Practices
+    </h3>
+
+    <div class="space-y-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-green-50 p-6 rounded-lg">
+          <h4 class="text-lg font-semibold text-green-800 mb-4">
+            ✅ Best Practices
+          </h4>
+          <ul class="space-y-3 text-sm text-green-700">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span
+                ><strong>Use specific tags</strong> for targeted cache
+                invalidation</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span
+                ><strong>Transform responses</strong> to match your UI
+                needs</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span
+                ><strong>Use polling sparingly</strong> for real-time data</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span><strong>Prefetch on hover</strong> for better UX</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span
+                ><strong>Handle errors gracefully</strong> with fallbacks</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-green-600 mt-1"></i>
+              <span
+                ><strong>Use optimistic updates</strong> for immediate
+                feedback</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-red-50 p-6 rounded-lg">
+          <h4 class="text-lg font-semibold text-red-800 mb-4">
+            ❌ Common Mistakes
+          </h4>
+          <ul class="space-y-3 text-sm text-red-700">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span
+                ><strong>Over-invalidating cache</strong> with generic
+                tags</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span><strong>Not handling loading states</strong> properly</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span
+                ><strong>Excessive polling</strong> causing performance
+                issues</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span
+                ><strong>Ignoring error boundaries</strong> for error
+                handling</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span
+                ><strong>Not using TypeScript</strong> for better type
+                safety</span
+              >
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-times text-red-600 mt-1"></i>
+              <span
+                ><strong>Fetching data unnecessarily</strong> without
+                conditions</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-indigo-700 mb-4">
+          <i class="fas fa-cog mr-2"></i>
+          Cache Management Strategies
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-indigo-400 mr-2"></i>
+            <span class="text-sm">cacheStrategies.js</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-javascript">// 1. Hierarchical Tags for Related Data
+getUsers: builder.query({
+  query: () => 'users',
+  providesTags: (result) => [
+    'User',
+    'LIST',
+    ...(result || []).map(({ id }) => ({ type: 'User', id }))
+  ]
+}),
+
+// 2. Conditional Cache Invalidation
+updateUser: builder.mutation({
+  query: ({ id, ...patch }) => ({
+    url: `users/${id}`,
+    method: 'PATCH',
+    body: patch
+  }),
+  invalidatesTags: (result, error, { id, role }) => {
+    const tags = [{ type: 'User', id }];
+    
+    // If role changed, invalidate user lists
+    if (role) {
+      tags.push('LIST');
+    }
+    
+    return tags;
+  }
+}),
+
+// 3. Cache Entry Removal
+deleteUser: builder.mutation({
+  query: (id) => ({
+    url: `users/${id}`,
+    method: 'DELETE'
+  }),
+  invalidatesTags: (result, error, id) => [
+    { type: 'User', id },
+    'LIST' // Refresh all lists
+  ]
+}),
+
+// 4. Manual Cache Updates
+updateUserStatus: builder.mutation({
+  query: ({ id, status }) => ({
+    url: `users/${id}/status`,
+    method: 'PATCH',
+    body: { status }
+  }),
+  async onQueryStarted({ id, status }, { dispatch, queryFulfilled }) {
+    // Update individual user cache
+    const userPatch = dispatch(
+      api.util.updateQueryData('getUser', id, (draft) => {
+        draft.status = status;
+      })
+    );
+    
+    // Update users list cache
+    const listPatch = dispatch(
+      api.util.updateQueryData('getUsers', undefined, (draft) => {
+        const user = draft.find(u => u.id === id);
+        if (user) user.status = status;
+      })
+    );
+
+    try {
+      await queryFulfilled;
+    } catch {
+      userPatch.undo();
+      listPatch.undo();
+    }
+  }
+}),
+
+// 5. Time-based Cache Invalidation
+getNews: builder.query({
+  query: () => 'news',
+  providesTags: ['News'],
+  // Cache for 5 minutes
+  keepUnusedDataFor: 300,
+}),</code></pre>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-orange-700 mb-4">
+          <i class="fas fa-shield-alt mr-2"></i>
+          Error Handling Best Practices
+        </h4>
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-orange-400 mr-2"></i>
+            <span class="text-sm">errorHandling.jsx</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+          ><code class="language-jsx">// Error Boundary Component
+class RTKQueryErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('RTK Query Error:', error, errorInfo);
+    // Log to error reporting service
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        &lt;div className="text-center py-8"&gt;
+          &lt;h2&gt;Something went wrong with data loading&lt;/h2&gt;
+          &lt;button onClick={() => this.setState({ hasError: false })}&gt;
+            Try again
+          &lt;/button&gt;
+        &lt;/div&gt;
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Custom Error Hook
+function useApiError() {
+  const [error, setError] = useState(null);
+
+  const handleError = (error) => {
+    const errorMessage = error?.data?.message || 
+                         error?.message || 
+                         'An unexpected error occurred';
+    
+    setError(errorMessage);
+    
+    // Auto-clear error after 5 seconds
+    setTimeout(() => setError(null), 5000);
+  };
+
+  const clearError = () => setError(null);
+
+  return { error, handleError, clearError };
+}
+
+// Usage in Component
+function DataComponent() {
+  const { error: apiError, handleError } = useApiError();
+  const {
+    data,
+    error,
+    isLoading,
+    retry
+  } = useGetDataQuery(undefined, {
+    retry: (failureCount, error) => {
+      // Retry up to 3 times for network errors
+      if (error.status === 'FETCH_ERROR' && failureCount < 3) {
+        return true;
+      }
+      // Don't retry for client errors (4xx)
+      if (error.status >= 400 && error.status < 500) {
+        return false;
+      }
+      return failureCount < 2;
+    }
+  });
+
+  useEffect(() => {
+    if (error) {
+      handleError(error);
+    }
+  }, [error, handleError]);
+
+  if (isLoading) return &lt;LoadingSpinner /&gt;;
+  
+  if (error) {
+    return (
+      &lt;ErrorDisplay 
+        error={apiError} 
+        onRetry={retry}
+        onDismiss={() => setApiError(null)}
+      /&gt;
+    );
+  }
+
+  return &lt;DataDisplay data={data} /&gt;;
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border border-red-200"
+    >
+      <h4 class="font-semibold text-red-800 mb-2">
+        🎯 Performance Optimization Tips
+      </h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-red-700">
+        <ul class="space-y-1">
+          <li>
+            • Use <code>selectFromResult</code> to prevent unnecessary
+            re-renders
+          </li>
+          <li>• Implement pagination for large datasets</li>
+          <li>
+            • Use <code>keepUnusedDataFor</code> to control cache lifetime
+          </li>
+          <li>• Debounce search queries to reduce API calls</li>
+        </ul>
+        <ul class="space-y-1">
+          <li>• Normalize data structure when possible</li>
+          <li>• Use <code>skip</code> parameter for conditional queries</li>
+          <li>• Implement proper loading skeletons</li>
+          <li>• Monitor bundle size with code splitting</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RTK Query vs Other Solutions -->
+  <div class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-gray-100">
+    <h3 class="text-2xl font-bold mb-6 text-gray-800">
+      <i class="fas fa-balance-scale mr-2"></i>
+      RTK Query vs Other Solutions
+    </h3>
+
+    <div class="space-y-8">
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-4">
+          RTK Query vs React Query (TanStack Query)
+        </h4>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Feature
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  RTK Query
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  React Query
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  Bundle Size
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-700">
+                  Larger (includes Redux)
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-700">
+                  Smaller, standalone
+                </td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  Learning Curve
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-700">
+                  Steeper (Redux concepts)
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-700">Gentler</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  Code Generation
+                </td>
+                <td class="px-6 py-4 text-sm text-green-700">
+                  ✅ Built-in OpenAPI
+                </td>
+                <td class="px-6 py-4 text-sm text-yellow-700">
+                  ⚠️ Third-party tools
+                </td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  DevTools
+                </td>
+                <td class="px-6 py-4 text-sm text-green-700">
+                  ✅ Redux DevTools
+                </td>
+                <td class="px-6 py-4 text-sm text-green-700">
+                  ✅ React Query DevTools
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  State Management
+                </td>
+                <td class="px-6 py-4 text-sm text-green-700">
+                  ✅ Integrated with Redux
+                </td>
+                <td class="px-6 py-4 text-sm text-yellow-700">
+                  ⚠️ Separate state solution needed
+                </td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  Offline Support
+                </td>
+                <td class="px-6 py-4 text-sm text-yellow-700">
+                  ⚠️ Manual implementation
+                </td>
+                <td class="px-6 py-4 text-sm text-green-700">✅ Built-in</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-purple-700 mb-4">
+          When to Use Each
+        </h4>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-blue-50 p-6 rounded-lg">
+            <h5 class="font-semibold text-blue-800 mb-3">
+              Choose RTK Query When:
+            </h5>
+            <ul class="text-sm text-blue-700 space-y-2">
+              <li>• You're already using Redux for state management</li>
+              <li>• You need tight integration with Redux ecosystem</li>
+              <li>• You want code generation from OpenAPI specs</li>
+              <li>• Your team is familiar with Redux patterns</li>
+              <li>• You need normalized cache for complex relationships</li>
+              <li>• You're building a large, complex application</li>
+            </ul>
+          </div>
+
+          <div class="bg-green-50 p-6 rounded-lg">
+            <h5 class="font-semibold text-green-800 mb-3">
+              Choose React Query When:
+            </h5>
+            <ul class="text-sm text-green-700 space-y-2">
+              <li>• You want a smaller bundle size</li>
+              <li>• You don't need complex global state management</li>
+              <li>• You want better offline support out of the box</li>
+              <li>• Your team prefers simpler, more flexible APIs</li>
+              <li>• You're building a simpler application</li>
+              <li>• You want more granular control over caching</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-orange-700 mb-4">
+          Migration Path
+        </h4>
+        <div class="bg-orange-50 p-6 rounded-lg">
+          <h5 class="font-semibold text-orange-800 mb-3">
+            From useEffect + fetch to RTK Query:
+          </h5>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <p class="text-sm text-orange-700 mb-3">
+                <strong>Step 1:</strong> Set up RTK Query
+              </p>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-3 rounded text-xs font-mono"
+                ><code>// Install and configure
+npm install @reduxjs/toolkit
+// Create API slice
+// Add to store</code></pre>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm text-orange-700 mb-3">
+                <strong>Step 2:</strong> Replace gradually
+              </p>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-3 rounded text-xs font-mono"
+                ><code>// Convert one component at a time
+// Replace useEffect with useQuery
+// Replace manual state with RTK Query
+// Add error handling</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-6 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200"
+    >
+      <h4 class="font-semibold text-gray-800 mb-2">💡 Decision Framework</h4>
+      <p class="text-sm text-gray-700">
+        Consider your project size, team expertise, existing tech stack, and
+        specific requirements. RTK Query excels in Redux-heavy apps, while React
+        Query is great for simpler, standalone data fetching needs.
+      </p>
+    </div>
+  </div>
+
+  <!-- Conclusion -->
+  <div
+    class="bg-gradient-to-br from-green-50 to-blue-50 shadow-xl rounded-xl p-8 mb-8 border border-green-200"
+  >
+    <h3 class="text-2xl font-bold mb-6 text-green-800">
+      <i class="fas fa-graduation-cap mr-2"></i>
+      You're Ready to Build with RTK Query!
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+      <div>
+        <h4 class="text-lg font-semibold text-green-700 mb-3">
+          What You've Learned:
+        </h4>
+        <ul class="text-sm text-green-600 space-y-2">
+          <li>✅ What RTK Query is and why it's powerful</li>
+          <li>✅ How to set up and configure RTK Query</li>
+          <li>✅ Creating queries and mutations</li>
+          <li>✅ Using generated hooks in components</li>
+          <li>✅ Advanced features like caching and polling</li>
+          <li>✅ Performance optimization techniques</li>
+          <li>✅ Real-world implementation patterns</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-3">Next Steps:</h4>
+        <ul class="text-sm text-blue-600 space-y-2">
+          <li>🚀 Start with a simple API slice</li>
+          <li>🔧 Add TypeScript for better type safety</li>
+          <li>📊 Implement proper error boundaries</li>
+          <li>⚡ Explore code generation from OpenAPI</li>
+          <li>🎯 Optimize caching strategies</li>
+          <li>📱 Add offline support if needed</li>
+          <li>🧪 Write tests for your API logic</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h4 class="font-semibold text-gray-800 mb-3">🎉 Congratulations!</h4>
+      <p class="text-gray-700 text-sm leading-relaxed">
+        You now have a comprehensive understanding of RTK Query and how to use
+        it to build efficient, maintainable data-fetching solutions in your
+        React applications. RTK Query will dramatically reduce the amount of
+        boilerplate code you need to write while providing powerful features
+        like automatic caching, background updates, and seamless integration
+        with Redux.
+      </p>
+    </div>
+  </div>
+</section>
