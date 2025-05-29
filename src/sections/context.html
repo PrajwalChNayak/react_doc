@@ -1,97 +1,1041 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
             },
             animation: {
-              'spin-slow': 'spin 3s linear infinite',
-            }
-          }
-        }
-      }
+              "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+            },
+          },
+        },
+      };
     </script>
     <title>Context API | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .animation-delay-2 {
+        animation-delay: 2s;
+      }
+
+      .animation-delay-4 {
+        animation-delay: 4s;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+  <body
+    class="bg-gradient-to-br from-orange-50 via-white to-red-100 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
     <!-- Header placeholder - will be filled by components-loader.js -->
     <div id="header-placeholder"></div>
-    <main class="flex-1 container mx-auto px-4 py-10">
-      <h2 class="text-2xl font-semibold mb-4">Context API</h2>
-      <p class="text-lg text-gray-700 mb-4">Understand how to use the Context API for global state management in React.</p>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">What is Context API?</h3>
-        <p class="text-gray-700">The Context API is a React structure that enables you to exchange unique details and assists in solving prop-drilling from all levels of your application.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">When to Use Context API?</h3>
-        <p class="text-gray-700">Context API is used when some data needs to be accessible by many components at different nesting levels. It's great for global state management.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">How to Use Context API?</h3>
-        <p class="text-gray-700">To use the Context API, you need to create a context using <code class="text-blue-500">React.createContext()</code>, provide the context to your component tree, and consume the context in any component that needs it.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">Creating a Context</h3>
-        <p class="text-gray-700">You can create a context in React by using the <code class="text-blue-500">React.createContext()</code> method. This method returns a context object, which you can use to provide and consume values.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">Providing Context</h3>
-        <p class="text-gray-700">To make a context available to all components in your app, wrap your component tree with the context provider. This is done using the <code class="text-blue-500">Context.Provider</code> component.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">Consuming Context</h3>
-        <p class="text-gray-700">There are two ways to consume context in React: using the <code class="text-blue-500">Context.Consumer</code> component or the <code class="text-blue-500">useContext</code> hook. The hook is the preferred way in functional components.</p>
-      </section>
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-2">Example</h3>
-        <p class="text-gray-700">Here's a simple example of how the Context API works:</p>
-        <pre class="bg-gray-100 p-4 rounded-lg">
-          <code class="text-gray-800">
-{`// Create a Context
-const MyContext = React.createContext();
 
-// Create a provider component
-function MyProvider({ children }) {
-  const [value, setValue] = React.useState("some value");
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <!-- Hero Section with Enhanced Animation -->
+      <div
+        class="bg-gradient-to-r from-orange-100 via-red-50 to-pink-100 shadow-xl rounded-xl p-10 mb-8 border border-orange-100 relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-orange-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"
+        ></div>
+        <div
+          class="absolute top-0 right-24 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2"
+        ></div>
+        <div
+          class="absolute -bottom-8 left-20 w-64 h-64 bg-pink-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4"
+        ></div>
+        <div
+          class="absolute bottom-10 left-40 w-32 h-32 bg-amber-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2"
+        ></div>
+
+        <!-- Decorative elements -->
+        <div
+          class="absolute top-10 right-10 text-3xl text-orange-300 opacity-30 rotate-12"
+        >
+          🔗
+        </div>
+        <div
+          class="absolute bottom-10 left-10 text-4xl text-red-300 opacity-20 -rotate-6"
+        >
+          📡
+        </div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-orange-100"
+          >
+            <i
+              class="fa-solid fa-share-nodes text-5xl text-red-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-red-200">
+              <div
+                class="text-xs uppercase tracking-widest text-red-600 font-semibold"
+              >
+                React Data Flow
+              </div>
+              <div class="text-gray-700 font-medium">State Sharing</div>
+            </div>
+          </div>
+
+          <h2
+            class="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-800 via-red-700 to-pink-800 drop-shadow-sm leading-tight"
+          >
+            Context API
+            <span
+              class="text-lg align-top bg-red-100 text-red-800 px-2 py-1 rounded ml-2 font-normal"
+              >State Management</span
+            >
+          </h2>
+
+          <p
+            class="text-xl text-gray-700 mb-6 leading-relaxed max-w-2xl font-light"
+          >
+            Share data across components without prop drilling. Perfect for
+            themes, user auth, and global settings.
+          </p>
+
+          <!-- Stats/Quick Facts -->
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-rocket text-orange-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Built-in to React</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-ban text-red-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">No Prop Drilling</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-globe text-pink-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Global State</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-layer-group text-amber-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Provider Pattern</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Reference Index -->
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-6 shadow-lg border border-red-200 relative z-10 animate-fade-in"
+        >
+          <div class="flex items-center mb-5">
+            <div
+              class="p-2 bg-gradient-to-br from-red-600 to-orange-600 rounded-lg shadow-md mr-4"
+            >
+              <i class="fa-solid fa-compass text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-red-800 text-xl">Quick Navigation</h3>
+              <p class="text-gray-600 text-sm">Jump to the section you need</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a
+              href="#what-is-context"
+              class="bg-gradient-to-r from-orange-50 to-red-50 hover:from-orange-100 hover:to-red-100 p-3 rounded-lg shadow-sm border border-orange-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-orange-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-orange-200 transition-colors"
+              >
+                <i class="fa-solid fa-question text-orange-600"></i>
+              </div>
+              <span class="text-orange-800 font-medium">What is Context?</span>
+            </a>
+            <a
+              href="#basic-example"
+              class="bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-3 rounded-lg shadow-sm border border-green-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors"
+              >
+                <i class="fa-solid fa-play text-green-600"></i>
+              </div>
+              <span class="text-green-800 font-medium">Basic Example</span>
+            </a>
+            <a
+              href="#step-by-step"
+              class="bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 p-3 rounded-lg shadow-sm border border-blue-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors"
+              >
+                <i class="fa-solid fa-list-ol text-blue-600"></i>
+              </div>
+              <span class="text-blue-800 font-medium">Step by Step</span>
+            </a>
+            <a
+              href="#real-world"
+              class="bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 p-3 rounded-lg shadow-sm border border-purple-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors"
+              >
+                <i class="fa-solid fa-earth-americas text-purple-600"></i>
+              </div>
+              <span class="text-purple-800 font-medium">Real World Use</span>
+            </a>
+            <a
+              href="#best-practices"
+              class="bg-gradient-to-r from-amber-50 to-yellow-50 hover:from-amber-100 hover:to-yellow-100 p-3 rounded-lg shadow-sm border border-amber-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-amber-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-amber-200 transition-colors"
+              >
+                <i class="fa-solid fa-star text-amber-600"></i>
+              </div>
+              <span class="text-amber-800 font-medium">Best Practices</span>
+            </a>
+            <a
+              href="#tips"
+              class="bg-gradient-to-r from-pink-50 to-rose-50 hover:from-pink-100 hover:to-rose-100 p-3 rounded-lg shadow-sm border border-pink-100 transition-all hover:shadow-md flex items-center group"
+            >
+              <div
+                class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-pink-200 transition-colors"
+              >
+                <i class="fa-solid fa-lightbulb text-pink-600"></i>
+              </div>
+              <span class="text-pink-800 font-medium">Tips & Tricks</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- What is Context API Section -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-orange-100"
+        id="what-is-context"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-question-circle text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">
+              What is Context API?
+            </h3>
+            <p class="text-gray-600">Understanding the fundamentals</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div
+            class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-lg border border-orange-200"
+          >
+            <p class="text-lg text-gray-700 mb-4">
+              <strong>Context API</strong> lets you share data between
+              components without passing props down multiple levels.
+            </p>
+            <p class="text-gray-700">
+              Imagine you have a big family tree, and you want to share some
+              family news with everyone. Instead of telling each person
+              individually and asking them to pass it on, you could just
+              announce it at a family gathering where everyone can hear it
+              directly. That's exactly what Context API does for React
+              components! It lets you share data (like user info, themes, or
+              settings) with any component that needs it, without having to pass
+              it down through every single component in between.
+            </p>
+          </div>
+
+          <!-- Problem Context Solves -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+              <h4 class="font-bold text-red-800 mb-3 flex items-center">
+                <i class="fa-solid fa-times-circle text-red-600 mr-2"></i>
+                Without Context
+              </h4>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-red-500 rounded mr-2"></div>
+                  Pass props through multiple components
+                </div>
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-red-500 rounded mr-2"></div>
+                  Components get props they don't use
+                </div>
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-red-500 rounded mr-2"></div>
+                  Hard to maintain and update
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+              <h4 class="font-bold text-green-800 mb-3 flex items-center">
+                <i class="fa-solid fa-check-circle text-green-600 mr-2"></i>
+                With Context
+              </h4>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
+                  Share data directly
+                </div>
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
+                  Components only get what they need
+                </div>
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
+                  Clean and maintainable code
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Example Section -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+        id="basic-example"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-play text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">Simple Example</h3>
+            <p class="text-gray-600">Your first Context implementation</p>
+          </div>
+        </div>
+
+        <div
+          class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r"
+        >
+          <div class="flex items-center">
+            <i class="fa-solid fa-info-circle text-yellow-600 mr-2"></i>
+            <p class="text-yellow-800">
+              Simple example: Share a username across different components.
+            </p>
+          </div>
+        </div>
+
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code mr-2"></i>
+            <span class="text-sm">UserContext.js</span>
+          </div>
+          <div class="text-xs text-gray-400">React Context Example</div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-900 text-gray-100 p-6 rounded-b-lg overflow-x-auto"
+          ><code class="language-jsx">// 1. Create your context
+import React, { createContext, useContext, useState } from 'react';
+
+const UserContext = createContext();
+
+// 2. Create a Provider component
+function UserProvider({ children }) {
+  const [user, setUser] = useState('John Doe');
 
   return (
-    <MyContext.Provider value={{ value, setValue }}>
+    &lt;UserContext.Provider value={{ user, setUser }}&gt;
       {children}
-    </MyContext.Provider>
+    &lt;/UserContext.Provider&gt;
   );
 }
 
-// Consuming the context in a component
-function MyComponent() {
-  const { value, setValue } = React.useContext(MyContext);
+// 3. Create a custom hook for easy access
+function useUser() {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within UserProvider');
+  }
+  return context;
+}
+
+export { UserProvider, useUser };</code></pre>
+        </div>
+
+        <div class="mt-6">
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code mr-2"></i>
+              <span class="text-sm">App.js</span>
+            </div>
+            <div class="text-xs text-gray-400">Using the Context</div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-900 text-gray-100 p-6 rounded-b-lg overflow-x-auto"
+            ><code class="language-jsx">import React from 'react';
+import { UserProvider } from './UserContext';
+import Header from './Header';
+import Profile from './Profile';
+
+function App() {
+  return (
+    &lt;UserProvider&gt;
+      &lt;div className="app"&gt;
+        &lt;Header /&gt;
+        &lt;Profile /&gt;
+      &lt;/div&gt;
+    &lt;/UserProvider&gt;
+  );
+}
+
+// Header component can access user data directly
+function Header() {
+  const { user } = useUser();
+  
+  return (
+    &lt;header&gt;
+      &lt;h1&gt;Welcome, {user}!&lt;/h1&gt;
+    &lt;/header&gt;
+  );
+}
+
+// Profile component can also access and modify user data
+function Profile() {
+  const { user, setUser } = useUser();
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Current user: {user}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setUser('Jane Smith')}&gt;
+        Change to Jane
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step by Step Guide -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100"
+        id="step-by-step"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-list-ol text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">Step-by-Step Guide</h3>
+            <p class="text-gray-600">How to implement Context in 3 steps</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex">
+            <div
+              class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-4"
+            >
+              1
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xl font-semibold text-gray-800 mb-2">
+                Create the Context
+              </h4>
+              <p class="text-gray-700 mb-3">
+                Use
+                <code class="bg-gray-100 px-2 py-1 rounded"
+                  >React.createContext()</code
+                >
+                to create a new context.
+              </p>
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <pre
+                  class="text-sm"
+                ><code class="language-jsx">const MyContext = React.createContext();
+// Or with default value
+const MyContext = React.createContext('default value');</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex">
+            <div
+              class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-4"
+            >
+              2
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xl font-semibold text-gray-800 mb-2">
+                Wrap with Provider
+              </h4>
+              <p class="text-gray-700 mb-3">
+                Wrap components with
+                <code class="bg-gray-100 px-2 py-1 rounded"
+                  >Context.Provider</code
+                >
+                to share data.
+              </p>
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <pre
+                  class="text-sm"
+                ><code class="language-jsx">&lt;MyContext.Provider value={sharedData}&gt;
+  &lt;YourApp /&gt;
+&lt;/MyContext.Provider&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex">
+            <div
+              class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-4"
+            >
+              3
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xl font-semibold text-gray-800 mb-2">
+                Consume the Context
+              </h4>
+              <p class="text-gray-700 mb-3">
+                Use
+                <code class="bg-gray-100 px-2 py-1 rounded">useContext()</code>
+                hook in any component to access the shared data.
+              </p>
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <pre
+                  class="text-sm"
+                ><code class="language-jsx">function MyComponent() {
+  const data = useContext(MyContext);
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real World Example -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-purple-100"
+        id="real-world"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-purple-500 to-violet-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-earth-americas text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">
+              Real-World Example: Theme Switcher
+            </h3>
+            <p class="text-gray-600">
+              Practical implementation you'll actually use
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="bg-purple-50 border-l-4 border-purple-400 p-4 mb-6 rounded-r"
+        >
+          <p class="text-purple-800">
+            <i class="fa-solid fa-lightbulb mr-2"></i>
+            Theme switcher using Context - perfect for light/dark mode.
+          </p>
+        </div>
+
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-palette mr-2"></i>
+            <span class="text-sm">ThemeContext.js</span>
+          </div>
+          <div class="text-xs text-gray-400">Theme Management</div>
+        </div>
+        <div class="code-block">
+          <pre
+            class="bg-gray-900 text-gray-100 p-6 rounded-b-lg overflow-x-auto"
+          ><code class="language-jsx">import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const ThemeContext = createContext();
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+
+  // Load theme from localStorage on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+  }, []);
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   return (
-    <div>
-      <p>The context value is: {value}</p>
-      <button onClick={() => setValue("a new value")}>
-        Change Context Value
-      </button>
-    </div>
+    &lt;ThemeContext.Provider value={{ theme, toggleTheme }}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
   );
-}`}
-          </code>
-        </pre>
-      </section>
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within ThemeProvider');
+  }
+  return context;
+}</code></pre>
+        </div>
+
+        <div class="mt-6">
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-toggle-on mr-2"></i>
+              <span class="text-sm">ThemeToggle.js</span>
+            </div>
+            <div class="text-xs text-gray-400">Theme Toggle Component</div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-900 text-gray-100 p-6 rounded-b-lg overflow-x-auto"
+            ><code class="language-jsx">import React from 'react';
+import { useTheme } from './ThemeContext';
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    &lt;button
+      onClick={toggleTheme}
+      className={`
+        px-4 py-2 rounded-lg transition-colors
+        ${theme === 'light' 
+          ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' 
+          : 'bg-gray-700 text-white hover:bg-gray-600'
+        }
+      `}
+    &gt;
+      {theme === 'light' ? '🌙 Dark' : '☀️ Light'} Mode
+    &lt;/button&gt;
+  );
+}
+
+export default ThemeToggle;</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Practices Section -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-amber-100"
+        id="best-practices"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-star text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">Best Practices</h3>
+            <p class="text-gray-600">Do's and don'ts for Context API</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Do's -->
+          <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+            <h4 class="font-bold text-green-800 mb-4 flex items-center">
+              <i class="fa-solid fa-check-circle text-green-600 mr-2"></i>
+              ✅ Do These Things
+            </h4>
+            <ul class="space-y-3 text-sm text-gray-700">
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span
+                  >Use Context for truly global data (themes, auth,
+                  language)</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Create custom hooks for easier access</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span
+                  >Split contexts by concern (UserContext, ThemeContext)</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Add error boundaries for context providers</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Use TypeScript for better type safety</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Don'ts -->
+          <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+            <h4 class="font-bold text-red-800 mb-4 flex items-center">
+              <i class="fa-solid fa-times-circle text-red-600 mr-2"></i>
+              ❌ Avoid These Mistakes
+            </h4>
+            <ul class="space-y-3 text-sm text-gray-700">
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Don't overuse Context for local component state</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Don't put everything in one massive context</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Don't forget to handle undefined context values</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span>Don't update context values too frequently</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"
+                ></div>
+                <span
+                  >Don't use Context as a replacement for props in all
+                  cases</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Performance Tip -->
+        <div class="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r">
+          <h5 class="font-semibold text-blue-800 mb-2 flex items-center">
+            <i class="fa-solid fa-rocket mr-2"></i>
+            Performance Tip
+          </h5>
+          <p class="text-blue-700 text-sm">
+            Context changes cause all consuming components to re-render. Split
+            frequently changing data into separate contexts for better
+            performance.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tips & Tricks Section -->
+      <div
+        class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-pink-100"
+        id="tips"
+      >
+        <div class="flex items-center mb-6">
+          <div
+            class="p-3 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-lightbulb text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800">Tips & Tricks</h3>
+            <p class="text-gray-600">Pro tips for Context mastery</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Tip 1: Custom Hook -->
+          <div
+            class="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-lg border border-pink-200"
+          >
+            <h4 class="font-semibold text-pink-800 mb-3 flex items-center">
+              <i class="fa-solid fa-magic-wand-sparkles text-pink-600 mr-2"></i>
+              Always Create Custom Hooks
+            </h4>
+            <p class="text-gray-700 mb-3">
+              Create custom hooks instead of using useContext directly. Better
+              error handling + cleaner code.
+            </p>
+            <div class="bg-white p-4 rounded border">
+              <pre
+                class="text-sm"
+              ><code class="language-jsx">// ✅ Good - Custom hook with error handling
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+}
+
+// ❌ Avoid - Direct useContext usage everywhere
+const auth = useContext(AuthContext); // No error handling</code></pre>
+            </div>
+          </div>
+
+          <!-- Tip 2: Multiple Contexts -->
+          <div
+            class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-lg border border-blue-200"
+          >
+            <h4 class="font-semibold text-blue-800 mb-3 flex items-center">
+              <i class="fa-solid fa-layer-group text-blue-600 mr-2"></i>
+              Split Large Contexts
+            </h4>
+            <p class="text-gray-700 mb-3">
+              Create separate contexts for different features. Better
+              performance, easier to manage.
+            </p>
+            <div class="bg-white p-4 rounded border">
+              <pre
+                class="text-sm"
+              ><code class="language-jsx">// ✅ Good - Separate contexts
+&lt;AuthProvider&gt;
+  &lt;ThemeProvider&gt;
+    &lt;LanguageProvider&gt;
+      &lt;App /&gt;
+    &lt;/LanguageProvider&gt;
+  &lt;/ThemeProvider&gt;
+&lt;/AuthProvider&gt;
+
+// ❌ Avoid - One massive context
+&lt;AppStateProvider&gt; {/* Contains auth, theme, language, etc. */}
+  &lt;App /&gt;
+&lt;/AppStateProvider&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Tip 3: Default Values -->
+          <div
+            class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200"
+          >
+            <h4 class="font-semibold text-green-800 mb-3 flex items-center">
+              <i class="fa-solid fa-shield-halved text-green-600 mr-2"></i>
+              Provide Meaningful Default Values
+            </h4>
+            <p class="text-gray-700 mb-3">
+              Always provide default values when creating context. Prevents
+              errors and helps with testing.
+            </p>
+            <div class="bg-white p-4 rounded border">
+              <pre
+                class="text-sm"
+              ><code class="language-jsx">// ✅ Good - Meaningful defaults
+const ThemeContext = createContext({
+  theme: 'light',
+  toggleTheme: () => {
+    console.warn('toggleTheme called outside of ThemeProvider');
+  }
+});
+
+// ❌ Avoid - No defaults
+const ThemeContext = createContext();</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Summary -->
+      <div
+        class="bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100 shadow-xl rounded-xl p-8 border border-indigo-200"
+      >
+        <div class="text-center">
+          <div
+            class="inline-flex items-center p-3 bg-white rounded-lg shadow-md mb-4"
+          >
+            <i
+              class="fa-solid fa-graduation-cap text-3xl text-indigo-600 mr-3"
+            ></i>
+            <div class="text-left">
+              <div class="font-bold text-indigo-800">
+                You've learned Context API!
+              </div>
+              <div class="text-sm text-gray-600">
+                Ready to eliminate prop drilling
+              </div>
+            </div>
+          </div>
+
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">Quick Recap</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+            <div class="bg-white/70 p-4 rounded-lg">
+              <div class="font-semibold text-indigo-800 mb-2">📝 Create</div>
+              <p class="text-sm text-gray-700">
+                Use createContext() to make a new context
+              </p>
+            </div>
+            <div class="bg-white/70 p-4 rounded-lg">
+              <div class="font-semibold text-purple-800 mb-2">🎁 Provide</div>
+              <p class="text-sm text-gray-700">
+                Wrap components with Provider to share data
+              </p>
+            </div>
+            <div class="bg-white/70 p-4 rounded-lg">
+              <div class="font-semibold text-pink-800 mb-2">🔍 Consume</div>
+              <p class="text-sm text-gray-700">
+                Use useContext() hook to access shared data
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-gray-700">
+              Context API is perfect for global state like themes,
+              authentication, and user preferences. Start small, keep it
+              focused, and your React apps will be much cleaner! 🚀
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
     <!-- Footer placeholder - will be filled by components-loader.js -->
     <div id="footer-placeholder"></div>
-    
+
     <!-- Load components-loader.js before other scripts -->
-    <script src="../assets/js/components-loader.js"></script>
+    <script src="../../assets/js/components-loader.js"></script>
+
+    <!-- Scroll Progress Indicator Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const indicator = document.getElementById("scrollIndicator");
+
+        function updateScrollProgress() {
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollHeight =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const scrollPercent = (scrollTop / scrollHeight) * 100;
+          indicator.style.width = scrollPercent + "%";
+        }
+
+        window.addEventListener("scroll", updateScrollProgress);
+        updateScrollProgress(); // Initial call
+
+        // Highlight.js initialization
+        if (typeof hljs !== "undefined") {
+          hljs.highlightAll();
+        }
+      });
+    </script>
   </body>
 </html>

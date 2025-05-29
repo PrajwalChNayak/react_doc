@@ -1,0 +1,3345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+            animation: {
+              "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <title>Redux & Redux Toolkit | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollIndicator" class="scroll-indicator" style="width: 0%"></div>
+
+    <!-- Header placeholder - will be filled by components-loader.js -->
+    <div id="header-placeholder"></div>
+
+    <main class="flex-1 p-8 max-w-6xl mx-auto w-full">
+      <!-- Hero Section -->
+      <div
+        class="relative p-12 rounded-2xl mb-10 overflow-hidden shadow-2xl"
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      >
+        <!-- Animated background elements -->
+        <div
+          class="absolute top-6 right-8 w-24 h-24 bg-white/10 rounded-full"
+          style="animation: float 8s ease-in-out infinite"
+        ></div>
+        <div
+          class="absolute -bottom-4 -left-4 w-32 h-32 bg-white/5 rounded-full"
+          style="animation: float 6s ease-in-out infinite; animation-delay: 2s"
+        ></div>
+        <div
+          class="absolute top-1/2 left-1/4 w-16 h-16 bg-purple-300/20 rounded-full"
+          style="animation: blob 7s infinite"
+        ></div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-blue-100"
+          >
+            <i
+              class="fa-solid fa-store text-5xl text-purple-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-purple-200">
+              <div
+                class="text-xs uppercase tracking-widest text-purple-600 font-semibold"
+              >
+                State Management
+              </div>
+              <div class="text-gray-700 font-medium">Redux Ecosystem</div>
+            </div>
+          </div>
+
+          <h1
+            class="text-5xl font-extrabold mb-3 relative z-10"
+            style="
+              background: linear-gradient(to right, #ffffff, #f8fafc, #e2e8f0);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            "
+          >
+            Redux & Redux Toolkit
+          </h1>
+          <p class="text-xl text-gray-100 relative z-10 font-light max-w-2xl">
+            Predictable state container for JavaScript apps - the industry
+            standard for complex state management.
+          </p>
+
+          <!-- Stats/Quick Facts -->
+          <div class="flex flex-wrap gap-4 mb-4 mt-6">
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-chart-line text-green-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Predictable</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-bug text-blue-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">DevTools</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-rocket text-purple-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">RTK Query</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-users text-orange-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Community</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div
+        class="p-10 bg-gradient-to-r from-purple-100 via-blue-50 to-indigo-100 rounded-xl border border-purple-100 mb-10 relative overflow-hidden shadow-xl"
+      >
+        <div
+          class="absolute right-0 top-0 w-40 h-40 -mt-16 -mr-16 bg-purple-100 rounded-full opacity-50"
+          style="animation: blob 7s infinite"
+        ></div>
+
+        <h3
+          class="text-xl font-semibold text-purple-800 mb-3 flex items-center"
+        >
+          <i class="fas fa-compass text-indigo-500 mr-2"></i>
+          Quick Navigation
+        </h3>
+
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10"
+        >
+          <a
+            href="#redux-fundamentals"
+            class="bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-red-100 to-red-200 text-red-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-cube"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Redux Core</span>
+              <p class="text-xs text-gray-500 mt-1">Actions, Reducers, Store</p>
+            </div>
+          </a>
+
+          <a
+            href="#redux-toolkit"
+            class="bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-tools"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Redux Toolkit</span>
+              <p class="text-xs text-gray-500 mt-1">Modern Redux development</p>
+            </div>
+          </a>
+
+          <a
+            href="#rtk-query"
+            class="bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-database"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">RTK Query</span>
+              <p class="text-xs text-gray-500 mt-1">Data fetching & caching</p>
+            </div>
+          </a>
+
+          <a
+            href="#best-practices"
+            class="bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-star"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Best Practices</span>
+              <p class="text-xs text-gray-500 mt-1">Patterns & guidelines</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Redux Fundamentals Section -->
+      <section class="mb-12" id="redux-fundamentals">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-red-100 to-red-200 text-red-600 shadow-md"
+          >
+            <i class="fas fa-cube text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800">Redux Fundamentals</h2>
+            <p class="text-gray-500 text-sm mt-1">
+              A complete beginner's guide to understanding Redux
+            </p>
+          </div>
+        </div>
+
+        <!-- What is Redux? -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-blue-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-question-circle text-blue-500"></i>
+            What is Redux and Why Use It?
+          </h3>
+
+          <div
+            class="bg-blue-50 p-6 rounded-lg mb-6 border-l-4 border-blue-400"
+          >
+            <h4 class="font-bold text-blue-800 mb-3">
+              🏪 Think of Redux like a Bank
+            </h4>
+            <p class="text-blue-700 leading-relaxed">
+              Imagine your application's data (state) is like money, and Redux
+              is like a bank. Instead of keeping your money under your mattress
+              (in individual components), you store it all safely in one place -
+              the bank (Redux store). When you need money, you go to the bank
+              with a withdrawal slip (action), the teller (reducer) processes
+              it, and gives you what you need.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+              <h4 class="font-bold text-green-800 mb-3 flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                Problems Redux Solves
+              </h4>
+              <ul class="space-y-2 text-green-700">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span
+                    ><strong>Prop Drilling:</strong> No more passing data
+                    through 10+ components</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span
+                    ><strong>Shared State:</strong> Multiple components can
+                    access the same data</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span
+                    ><strong>Predictability:</strong> State changes are
+                    predictable and traceable</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span
+                    ><strong>Debugging:</strong> Time-travel debugging with
+                    DevTools</span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-orange-50 p-6 rounded-lg border border-orange-200">
+              <h4 class="font-bold text-orange-800 mb-3 flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                When NOT to Use Redux
+              </h4>
+              <ul class="space-y-2 text-orange-700">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-orange-500 mt-1 text-xs"></i>
+                  <span>Simple apps with minimal state</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-orange-500 mt-1 text-xs"></i>
+                  <span>Static websites or landing pages</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-orange-500 mt-1 text-xs"></i>
+                  <span>Prototypes or learning projects</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-orange-500 mt-1 text-xs"></i>
+                  <span>Apps with only local component state</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+            <h4 class="font-bold text-purple-800 mb-3">✨ When Redux Shines</h4>
+            <p class="text-purple-700 leading-relaxed">
+              Use Redux when you have complex applications with lots of state
+              that needs to be shared between many components, especially when
+              state changes frequently and you need to track those changes for
+              debugging.
+            </p>
+          </div>
+        </div>
+
+        <!-- The Three Principles -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-red-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-red-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-lightbulb text-yellow-500"></i>
+            The Three Core Principles
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+              class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-database text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-blue-800">
+                  1. Single Source of Truth
+                </h4>
+              </div>
+              <p class="text-sm text-blue-700 text-center mb-3">
+                All your app's state lives in one place - the Redux store.
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-blue-600">
+                <strong>Analogy:</strong> Like having one master filing cabinet
+                for all your important documents instead of scattered papers
+                everywhere.
+              </div>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-lock text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-green-800">2. State is Read-Only</h4>
+              </div>
+              <p class="text-sm text-green-700 text-center mb-3">
+                You can't directly change the state. You must send an "action"
+                to describe what happened.
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-green-600">
+                <strong>Analogy:</strong> Like a vending machine - you can't
+                reach in and grab a snack. You must insert coins and press a
+                button.
+              </div>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border border-purple-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-cog text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-purple-800">3. Pure Functions</h4>
+              </div>
+              <p class="text-sm text-purple-700 text-center mb-3">
+                State changes are made by pure functions called "reducers" that
+                are predictable and testable.
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-purple-600">
+                <strong>Analogy:</strong> Like a recipe - same ingredients
+                always produce the same result.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Essential Building Blocks -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-indigo-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-indigo-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-building text-indigo-500"></i>
+            Essential Redux Building Blocks
+          </h3>
+
+          <!-- Store -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-warehouse text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-orange-800">The Store</h4>
+                <p class="text-orange-600 text-sm">
+                  The central repository for all your app's state
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-orange-50 p-6 rounded-lg mb-4 border-l-4 border-orange-400"
+            >
+              <p class="text-orange-800 leading-relaxed">
+                <strong>🏪 Simple Explanation:</strong> The store is like a big
+                container that holds all the data your app needs. It's the only
+                place where your app's state lives. Think of it as your app's
+                memory - everything it needs to remember is stored here.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-white p-4 rounded border border-orange-200">
+                <h5 class="font-semibold text-orange-800 mb-2">
+                  What it holds:
+                </h5>
+                <ul class="text-sm text-orange-700 space-y-1">
+                  <li>• User information</li>
+                  <li>• App settings</li>
+                  <li>• UI state (loading, errors)</li>
+                  <li>• Any shared data</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded border border-orange-200">
+                <h5 class="font-semibold text-orange-800 mb-2">
+                  What it provides:
+                </h5>
+                <ul class="text-sm text-orange-700 space-y-1">
+                  <li>• getState() - read current state</li>
+                  <li>• dispatch() - send actions</li>
+                  <li>• subscribe() - listen for changes</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded border border-orange-200">
+                <h5 class="font-semibold text-orange-800 mb-2">
+                  Key features:
+                </h5>
+                <ul class="text-sm text-orange-700 space-y-1">
+                  <li>• Single source of truth</li>
+                  <li>• Immutable updates</li>
+                  <li>• Predictable changes</li>
+                  <li>• DevTools integration</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-bolt text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-green-800">Actions</h4>
+                <p class="text-green-600 text-sm">
+                  Messages that describe what happened in your app
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-green-50 p-6 rounded-lg mb-4 border-l-4 border-green-400"
+            >
+              <p class="text-green-800 leading-relaxed">
+                <strong>📨 Simple Explanation:</strong> Actions are like
+                messages or events. When something happens in your app (user
+                clicks a button, data loads, etc.), you create an action to
+                describe what happened. It's like saying "Hey Redux, the user
+                just added a new item to their cart!"
+              </p>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg text-white text-sm">
+              <div class="text-green-400 mb-2">
+                // Actions are just plain JavaScript objects
+              </div>
+              <div class="text-gray-300">const addTodoAction = {</div>
+              <div class="text-gray-300 ml-4">
+                type: 'ADD_TODO',
+                <span class="text-yellow-300">// What happened</span>
+              </div>
+              <div class="text-gray-300 ml-4">
+                payload: { <span class="text-yellow-300">// Extra data</span>
+              </div>
+              <div class="text-gray-300 ml-8">id: 1,</div>
+              <div class="text-gray-300 ml-8">text: 'Learn Redux'</div>
+              <div class="text-gray-300 ml-4">}</div>
+              <div class="text-gray-300">}</div>
+            </div>
+          </div>
+
+          <!-- Reducers -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-cogs text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-purple-800">Reducers</h4>
+                <p class="text-purple-600 text-sm">
+                  Pure functions that update state based on actions
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-purple-50 p-6 rounded-lg mb-4 border-l-4 border-purple-400"
+            >
+              <p class="text-purple-800 leading-relaxed">
+                <strong>🍎➡️🥧 Simple Explanation:</strong> A reducer is like a
+                chef following a recipe. Give it the current state (ingredients)
+                and an action (recipe instructions), and it returns a new state
+                (finished dish). The same inputs always produce the same output
+                - no surprises!
+              </p>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg text-white text-sm">
+              <div class="text-purple-400 mb-2">
+                // Reducer: (currentState, action) => newState
+              </div>
+              <div class="text-gray-300">
+                function todoReducer(state = [], action) {
+              </div>
+              <div class="text-gray-300 ml-4">switch (action.type) {</div>
+              <div class="text-gray-300 ml-8">case 'ADD_TODO':</div>
+              <div class="text-gray-300 ml-12">
+                return [...state, action.payload];
+                <span class="text-yellow-300">// New array</span>
+              </div>
+              <div class="text-gray-300 ml-8">default:</div>
+              <div class="text-gray-300 ml-12">
+                return state; <span class="text-yellow-300">// No change</span>
+              </div>
+              <div class="text-gray-300 ml-4">}</div>
+              <div class="text-gray-300">}</div>
+            </div>
+          </div>
+
+          <!-- Dispatch -->
+          <div class="mb-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-paper-plane text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-blue-800">Dispatch</h4>
+                <p class="text-blue-600 text-sm">
+                  The only way to trigger state changes
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-blue-50 p-6 rounded-lg mb-4 border-l-4 border-blue-400"
+            >
+              <p class="text-blue-800 leading-relaxed">
+                <strong>📬 Simple Explanation:</strong> Dispatch is like mailing
+                a letter. When you want to change the state, you "dispatch"
+                (send) an action to the store. It's the postal service that
+                delivers your action to the reducer, which then updates the
+                state.
+              </p>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg text-white text-sm">
+              <div class="text-blue-400 mb-2">// Dispatching an action</div>
+              <div class="text-gray-300">store.dispatch({</div>
+              <div class="text-gray-300 ml-4">type: 'ADD_TODO',</div>
+              <div class="text-gray-300 ml-4">
+                payload: { id: 1, text: 'Learn Redux' }
+              </div>
+              <div class="text-gray-300">});</div>
+              <div class="text-green-400 mt-2">
+                // This triggers the reducer and updates the state!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Redux Data Flow -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-gray-200"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-route text-gray-600"></i>
+            Redux Data Flow - Step by Step
+          </h3>
+
+          <div class="bg-gray-50 p-6 rounded-lg mb-6">
+            <h4 class="font-bold text-gray-800 mb-3">
+              🔄 The Redux Cycle Explained
+            </h4>
+            <p class="text-gray-700 leading-relaxed">
+              Think of Redux data flow like ordering food at a restaurant. You
+              (component) tell the waiter (dispatch) what you want (action), the
+              waiter gives it to the kitchen (reducer), the kitchen prepares
+              your meal (new state), and you get your food (component updates).
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-bold">1</span>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-blue-800 mb-2">
+                  🖱️ User Interaction
+                </h4>
+                <p class="text-gray-700">
+                  User clicks a button, submits a form, or triggers any event in
+                  your React component.
+                </p>
+                <div class="bg-blue-50 p-3 rounded mt-2 text-sm text-blue-700">
+                  Example: User clicks "Add Todo" button
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-bold">2</span>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-green-800 mb-2">
+                  📨 Dispatch Action
+                </h4>
+                <p class="text-gray-700">
+                  Your component creates and dispatches an action describing
+                  what happened.
+                </p>
+                <div
+                  class="bg-green-50 p-3 rounded mt-2 text-sm text-green-700"
+                >
+                  dispatch({ type: 'ADD_TODO', payload: 'Learn Redux' })
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-bold">3</span>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-purple-800 mb-2">
+                  ⚙️ Reducer Processes
+                </h4>
+                <p class="text-gray-700">
+                  Redux calls your reducer function with the current state and
+                  the action.
+                </p>
+                <div
+                  class="bg-purple-50 p-3 rounded mt-2 text-sm text-purple-700"
+                >
+                  The reducer looks at the action type and decides how to update
+                  the state
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-bold">4</span>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-orange-800 mb-2">💾 State Updates</h4>
+                <p class="text-gray-700">
+                  The reducer returns a new state object, and the store updates
+                  its state.
+                </p>
+                <div
+                  class="bg-orange-50 p-3 rounded mt-2 text-sm text-orange-700"
+                >
+                  New todo item is added to the state array
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-bold">5</span>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-red-800 mb-2">
+                  🔄 Components Re-render
+                </h4>
+                <p class="text-gray-700">
+                  All components connected to the store automatically re-render
+                  with the new state.
+                </p>
+                <div class="bg-red-50 p-3 rounded mt-2 text-sm text-red-700">
+                  Todo list component updates to show the new todo item
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200"
+          >
+            <h4 class="font-bold text-gray-800 mb-3">
+              🎯 Key Points to Remember
+            </h4>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                <span
+                  >State changes are <strong>predictable</strong> - same action
+                  always produces same result</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                <span
+                  >Data flows in <strong>one direction</strong> - from store to
+                  components</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                <span
+                  >Components <strong>never directly</strong> modify the
+                  state</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                <span
+                  >All state changes are <strong>traceable</strong> through
+                  actions</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Actions Example -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-blue-800">Actions</h3>
+          <p class="text-gray-700 mb-6">
+            Actions are plain JavaScript objects that describe what happened.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+              <span class="text-sm">actions.js</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+            ><code class="language-javascript">// Action Types
+const ADD_TODO = 'ADD_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+const SET_FILTER = 'SET_FILTER';
+
+// Action Creators
+export const addTodo = (text) => ({
+  type: ADD_TODO,
+  payload: {
+    id: Date.now(),
+    text,
+    completed: false
+  }
+});
+
+export const toggleTodo = (id) => ({
+  type: TOGGLE_TODO,
+  payload: { id }
+});
+
+export const setFilter = (filter) => ({
+  type: SET_FILTER,
+  payload: { filter }
+});</code></pre>
+          </div>
+        </div>
+
+        <!-- Reducers Example -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-green-800">Reducers</h3>
+          <p class="text-gray-700 mb-6">
+            Reducers specify how the application's state changes in response to
+            actions.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-green-400 mr-2"></i>
+              <span class="text-sm">reducers.js</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+            ><code class="language-javascript">const initialState = {
+  todos: [],
+  filter: 'ALL'
+};
+
+const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return {
+        ...state,
+        todos: [...state.todos, action.payload]
+      };
+      
+    case 'TOGGLE_TODO':
+      return {
+        ...state,
+        todos: state.todos.map(todo =>
+          todo.id === action.payload.id
+            ? { ...todo, completed: !todo.completed }
+            : todo
+        )
+      };
+      
+    case 'SET_FILTER':
+      return {
+        ...state,
+        filter: action.payload.filter
+      };
+      
+    default:
+      return state;
+  }
+};</code></pre>
+          </div>
+        </div>
+
+        <!-- Store Example -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-purple-100"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-purple-800">Store</h3>
+          <p class="text-gray-700 mb-6">
+            The store holds the complete state tree of your application.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+              <span class="text-sm">store.js</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+            ><code class="language-javascript">import { createStore } from 'redux';
+import todoReducer from './reducers';
+
+const store = createStore(
+  todoReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+// Using the store
+store.dispatch(addTodo('Learn Redux'));
+store.dispatch(toggleTodo(1));
+
+// Subscribe to changes
+store.subscribe(() => {
+  console.log('State updated:', store.getState());
+});</code></pre>
+          </div>
+        </div>
+
+        <!-- Practical Examples Section -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-green-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-code text-green-500"></i>
+            Practical Examples for Beginners
+          </h3>
+
+          <div
+            class="bg-green-50 p-6 rounded-lg mb-8 border-l-4 border-green-400"
+          >
+            <p class="text-green-800 leading-relaxed">
+              <strong>🎯 Learning by Example:</strong> The best way to
+              understand Redux is to see it in action! Let's build some simple,
+              real-world examples that demonstrate each concept clearly.
+            </p>
+          </div>
+
+          <!-- Simple Counter Example -->
+          <div class="mb-10">
+            <h4
+              class="text-xl font-bold mb-4 text-blue-800 flex items-center gap-2"
+            >
+              <i class="fas fa-calculator text-blue-600"></i>
+              Example 1: Simple Counter (Your First Redux App)
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+              <p class="text-blue-700">
+                <strong>What we're building:</strong> A simple counter that can
+                increment, decrement, and reset. Perfect for understanding the
+                Redux flow!
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">
+                Step 1: Define Actions
+              </h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">counterActions.js</span>
+                <i class="fas fa-bolt text-yellow-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-javascript">// Action Types - What can happen to our counter?
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+const RESET = 'RESET';
+const INCREMENT_BY_AMOUNT = 'INCREMENT_BY_AMOUNT';
+
+// Action Creators - Functions that create actions
+export const increment = () => ({
+  type: INCREMENT
+  // No payload needed - just increment by 1
+});
+
+export const decrement = () => ({
+  type: DECREMENT
+  // No payload needed - just decrement by 1
+});
+
+export const reset = () => ({
+  type: RESET
+  // Reset to 0
+});
+
+export const incrementByAmount = (amount) => ({
+  type: INCREMENT_BY_AMOUNT,
+  payload: amount  // How much to increment by
+});
+
+// Example usage:
+// dispatch(increment());           // Count goes up by 1
+// dispatch(decrement());           // Count goes down by 1
+// dispatch(incrementByAmount(5));  // Count goes up by 5
+// dispatch(reset());               // Count becomes 0</code></pre>
+              </div>
+            </div>
+
+            <!-- Reducer -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">
+                Step 2: Create Reducer
+              </h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">counterReducer.js</span>
+                <i class="fas fa-cog text-purple-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-javascript">// Initial state - what our counter starts with
+const initialState = {
+  count: 0
+};
+
+// Reducer function - handles all state changes
+const counterReducer = (state = initialState, action) => {
+  // Use switch statement to handle different action types
+  switch (action.type) {
+    case 'INCREMENT':
+      return {
+        ...state,           // Copy all existing state
+        count: state.count + 1  // Update only the count
+      };
+      
+    case 'DECREMENT':
+      return {
+        ...state,
+        count: state.count - 1
+      };
+      
+    case 'RESET':
+      return {
+        ...state,
+        count: 0            // Reset to 0
+      };
+      
+    case 'INCREMENT_BY_AMOUNT':
+      return {
+        ...state,
+        count: state.count + action.payload  // Use the payload
+      };
+      
+    default:
+      return state;         // Always return current state for unknown actions
+  }
+};
+
+export default counterReducer;</code></pre>
+              </div>
+            </div>
+
+            <!-- Store Setup -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">
+                Step 3: Create Store
+              </h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">store.js</span>
+                <i class="fas fa-database text-orange-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-javascript">import { createStore } from 'redux';
+import counterReducer from './counterReducer';
+
+// Create the store with our reducer
+const store = createStore(
+  counterReducer,
+  // Enable Redux DevTools Extension (for debugging)
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+export default store;</code></pre>
+              </div>
+            </div>
+
+            <!-- React Component -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">
+                Step 4: Connect to React
+              </h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">Counter.jsx</span>
+                <i class="fas fa-layer-group text-blue-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-jsx">import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, reset, incrementByAmount } from './counterActions';
+
+function Counter() {
+  // Get data from Redux store
+  const count = useSelector(state => state.count);
+  
+  // Get dispatch function to send actions
+  const dispatch = useDispatch();
+
+  return (
+    &lt;div style={{ textAlign: 'center', padding: '20px' }}&gt;
+      &lt;h1&gt;Counter: {count}&lt;/h1&gt;
+      
+      &lt;div&gt;
+        &lt;button onClick={() => dispatch(decrement())}&gt;
+          - Decrease
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(increment())}&gt;
+          + Increase
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(incrementByAmount(5))}&gt;
+          +5 Add Five
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(reset())}&gt;
+          🔄 Reset
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Counter;</code></pre>
+              </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <h5 class="font-semibold text-blue-800 mb-2">🎉 How it Works:</h5>
+              <ol class="text-blue-700 space-y-1 text-sm ml-4">
+                <li>1. User clicks "+Increase" button</li>
+                <li>
+                  2. <code>dispatch(increment())</code> sends action to store
+                </li>
+                <li>
+                  3. Reducer receives action and returns new state with count +
+                  1
+                </li>
+                <li>4. Component automatically re-renders with new count</li>
+                <li>5. User sees updated number on screen!</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Todo List Example -->
+          <div class="mb-10">
+            <h4
+              class="text-xl font-bold mb-4 text-purple-800 flex items-center gap-2"
+            >
+              <i class="fas fa-list-check text-purple-600"></i>
+              Example 2: Todo List (Multiple Items & Complex State)
+            </h4>
+
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+              <p class="text-purple-700">
+                <strong>What we're building:</strong> A todo list where you can
+                add, toggle completion, and delete todos. This shows how to
+                handle arrays and more complex state!
+              </p>
+            </div>
+
+            <!-- Todo Actions -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">Todo Actions</h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">todoActions.js</span>
+                <i class="fas fa-bolt text-yellow-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-javascript">// Action Types
+const ADD_TODO = 'ADD_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+const DELETE_TODO = 'DELETE_TODO';
+
+// Action Creators
+export const addTodo = (text) => ({
+  type: ADD_TODO,
+  payload: {
+    id: Date.now(),        // Simple ID generation
+    text: text,
+    completed: false
+  }
+});
+
+export const toggleTodo = (id) => ({
+  type: TOGGLE_TODO,
+  payload: { id }
+});
+
+export const deleteTodo = (id) => ({
+  type: DELETE_TODO,
+  payload: { id }
+});
+
+// Example usage:
+// dispatch(addTodo('Learn Redux'));
+// dispatch(toggleTodo(1623456789));
+// dispatch(deleteTodo(1623456789));</code></pre>
+              </div>
+            </div>
+
+            <!-- Todo Reducer -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">Todo Reducer</h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">todoReducer.js</span>
+                <i class="fas fa-cog text-purple-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-javascript">const initialState = {
+  todos: []  // Start with empty array
+};
+
+const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return {
+        ...state,
+        todos: [...state.todos, action.payload]  // Add new todo to end
+      };
+      
+    case 'TOGGLE_TODO':
+      return {
+        ...state,
+        todos: state.todos.map(todo =>
+          todo.id === action.payload.id
+            ? { ...todo, completed: !todo.completed }  // Toggle this todo
+            : todo                                       // Keep others same
+        )
+      };
+      
+    case 'DELETE_TODO':
+      return {
+        ...state,
+        todos: state.todos.filter(todo => 
+          todo.id !== action.payload.id  // Keep all except deleted one
+        )
+      };
+      
+    default:
+      return state;
+  }
+};
+
+export default todoReducer;</code></pre>
+              </div>
+            </div>
+
+            <!-- Todo Component -->
+            <div class="mb-6">
+              <h5 class="font-semibold text-gray-800 mb-3">Todo Component</h5>
+              <div
+                class="code-header flex items-center justify-between px-4 py-2"
+              >
+                <span class="text-sm">TodoApp.jsx</span>
+                <i class="fas fa-layer-group text-blue-400"></i>
+              </div>
+              <div class="code-block">
+                <pre
+                  class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+                ><code class="language-jsx">import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodo, toggleTodo, deleteTodo } from './todoActions';
+
+function TodoApp() {
+  const [inputText, setInputText] = useState('');
+  
+  // Get todos from Redux store
+  const todos = useSelector(state => state.todos);
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputText.trim()) {
+      dispatch(addTodo(inputText));  // Add new todo
+      setInputText('');              // Clear input
+    }
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;My Todo List&lt;/h1&gt;
+      
+      {/* Add new todo form */}
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="What needs to be done?"
+        /&gt;
+        &lt;button type="submit"&gt;Add Todo&lt;/button&gt;
+      &lt;/form&gt;
+
+      {/* Display todos */}
+      &lt;ul&gt;
+        {todos.map(todo => (
+          &lt;li key={todo.id}&gt;
+            &lt;span
+              style={{
+                textDecoration: todo.completed ? 'line-through' : 'none',
+                cursor: 'pointer'
+              }}
+              onClick={() => dispatch(toggleTodo(todo.id))}
+            &gt;
+              {todo.text}
+            &lt;/span&gt;
+            
+            &lt;button onClick={() => dispatch(deleteTodo(todo.id))}&gt;
+              Delete
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      
+      &lt;p&gt;Total todos: {todos.length}&lt;/p&gt;
+      &lt;p&gt;Completed: {todos.filter(t => t.completed).length}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default TodoApp;</code></pre>
+              </div>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <h5 class="font-semibold text-purple-800 mb-2">
+                💡 Key Learning Points:
+              </h5>
+              <ul class="text-purple-700 space-y-1 text-sm">
+                <li>
+                  • <strong>Arrays in state:</strong> Use spread operator to add
+                  items, map() to update, filter() to delete
+                </li>
+                <li>
+                  • <strong>Unique IDs:</strong> Each todo needs a unique ID to
+                  identify it for updates/deletes
+                </li>
+                <li>
+                  • <strong>Immutability:</strong> Never modify the original
+                  array, always create new ones
+                </li>
+                <li>
+                  • <strong>Multiple actions:</strong> One reducer can handle
+                  many different action types
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Real-world Use Cases -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-orange-800 flex items-center gap-2"
+            >
+              <i class="fas fa-globe text-orange-600"></i>
+              Real-World Use Cases
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200"
+              >
+                <h5
+                  class="font-bold text-blue-800 mb-3 flex items-center gap-2"
+                >
+                  <i class="fas fa-shopping-cart"></i>
+                  E-commerce App
+                </h5>
+                <ul class="text-blue-700 space-y-2 text-sm">
+                  <li>• Shopping cart items</li>
+                  <li>• User authentication status</li>
+                  <li>• Product filters and search</li>
+                  <li>• Order history</li>
+                  <li>• Loading states for API calls</li>
+                </ul>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200"
+              >
+                <h5
+                  class="font-bold text-green-800 mb-3 flex items-center gap-2"
+                >
+                  <i class="fas fa-comments"></i>
+                  Social Media App
+                </h5>
+                <ul class="text-green-700 space-y-2 text-sm">
+                  <li>• Posts and comments</li>
+                  <li>• User profiles and friends</li>
+                  <li>• Notifications</li>
+                  <li>• Like/unlike states</li>
+                  <li>• Real-time chat messages</li>
+                </ul>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border border-purple-200"
+              >
+                <h5
+                  class="font-bold text-purple-800 mb-3 flex items-center gap-2"
+                >
+                  <i class="fas fa-chart-line"></i>
+                  Dashboard App
+                </h5>
+                <ul class="text-purple-700 space-y-2 text-sm">
+                  <li>• Charts and analytics data</li>
+                  <li>• User permissions</li>
+                  <li>• Multiple data filters</li>
+                  <li>• Theme preferences</li>
+                  <li>• Widget configurations</li>
+                </ul>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg border border-orange-200"
+              >
+                <h5
+                  class="font-bold text-orange-800 mb-3 flex items-center gap-2"
+                >
+                  <i class="fas fa-gamepad"></i>
+                  Game App
+                </h5>
+                <ul class="text-orange-700 space-y-2 text-sm">
+                  <li>• Game state and score</li>
+                  <li>• Player inventory</li>
+                  <li>• Leaderboards</li>
+                  <li>• Game settings</li>
+                  <li>• Achievement progress</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Common Beginner Mistakes -->
+          <div class="bg-red-50 p-6 rounded-lg border-l-4 border-red-400">
+            <h4 class="font-bold text-red-800 mb-4 flex items-center gap-2">
+              <i class="fas fa-exclamation-triangle"></i>
+              Common Beginner Mistakes to Avoid
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h5 class="font-semibold text-red-700 mb-2">
+                  ❌ Don't Do This:
+                </h5>
+                <ul class="text-red-600 space-y-2 text-sm">
+                  <li>• Mutating state directly: <code>state.count++</code></li>
+                  <li>• Forgetting to return new state</li>
+                  <li>
+                    • Using Redux for everything (even simple local state)
+                  </li>
+                  <li>• Not using action creators</li>
+                  <li>• Making API calls in reducers</li>
+                </ul>
+              </div>
+
+              <div>
+                <h5 class="font-semibold text-green-700 mb-2">
+                  ✅ Do This Instead:
+                </h5>
+                <ul class="text-green-600 space-y-2 text-sm">
+                  <li>
+                    • Always return new objects:
+                    <code>{...state, count: state.count + 1}</code>
+                  </li>
+                  <li>• Use spread operator and array methods</li>
+                  <li>• Keep local state local, global state global</li>
+                  <li>• Create action creator functions</li>
+                  <li>• Keep reducers pure and simple</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Redux Toolkit Section -->
+      <section class="mb-12" id="redux-toolkit">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 shadow-md"
+          >
+            <i class="fas fa-tools text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800">
+              Redux Toolkit (RTK)
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              The modern way to use Redux - easier and faster!
+            </p>
+          </div>
+        </div>
+
+        <!-- What is RTK? -->
+        <div
+          class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8 border border-blue-200"
+        >
+          <div
+            class="bg-blue-100 border-l-4 border-blue-400 p-4 mb-6 rounded-r"
+          >
+            <p class="text-blue-800">
+              <i class="fa-solid fa-lightbulb mr-2"></i>
+              <strong>Think of Redux Toolkit as "Redux made easy"</strong> -
+              it's like having a smart assistant that handles all the tedious
+              work while you focus on what matters!
+            </p>
+          </div>
+
+          <h3 class="text-2xl font-bold mb-6 text-blue-800">
+            What is Redux Toolkit? 🤔
+          </h3>
+
+          <div class="mb-8">
+            <div class="bg-white/70 p-6 rounded-lg shadow-md mb-6">
+              <div class="flex items-start gap-4">
+                <div class="text-4xl">🧰</div>
+                <div>
+                  <h4 class="text-lg font-bold text-gray-800 mb-3">
+                    The "Easy Mode" for Redux
+                  </h4>
+                  <p class="text-gray-700 mb-4">
+                    Remember how traditional Redux required lots of repetitive
+                    code? Redux Toolkit (RTK) is like having a magical toolkit
+                    that does all the boring setup for you!
+                  </p>
+
+                  <div
+                    class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-4"
+                  >
+                    <p class="text-yellow-800 text-sm">
+                      <strong>📝 Analogy:</strong> If traditional Redux is like
+                      building a house brick by brick, RTK is like using
+                      pre-made modules that snap together easily!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="text-2xl font-bold mb-4 text-blue-800">
+            Why Should You Use Redux Toolkit? 🚀
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-magic text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">90% Less Code</h4>
+                  <p class="text-sm text-gray-600">
+                    Eliminates repetitive boilerplate - write 10 lines instead
+                    of 50!
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-shield-alt text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    "Mutate" Safely with Immer
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Write code like <code>state.count++</code> - RTK handles
+                    immutability!
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-bug text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    Amazing DevTools Built-in
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Time-travel debugging and state inspection work out of the
+                    box
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-code text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">TypeScript Heaven</h4>
+                  <p class="text-sm text-gray-600">
+                    Incredible TypeScript support with auto-generated types
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-database text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    RTK Query for API Calls
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Handles server data, caching, and loading states
+                    automatically
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-graduation-cap text-green-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    Best Practices Built-in
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Forces you to follow Redux best practices automatically
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Before vs After Comparison -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-indigo-800 flex items-center gap-2"
+            >
+              <i class="fas fa-compare text-indigo-600"></i>
+              Before RTK vs After RTK - See the Difference!
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Traditional Redux -->
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <div class="flex items-center mb-4">
+                  <div class="text-2xl mr-3">😤</div>
+                  <h5 class="font-bold text-red-800">
+                    Traditional Redux (The Hard Way)
+                  </h5>
+                </div>
+                <div class="text-sm text-red-700 space-y-2">
+                  <div>✗ 50+ lines of boilerplate code</div>
+                  <div>✗ Manual action types and creators</div>
+                  <div>✗ Complex immutability patterns</div>
+                  <div>✗ Store setup with middleware</div>
+                  <div>✗ Lots of room for mistakes</div>
+                </div>
+              </div>
+
+              <!-- RTK -->
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <div class="flex items-center mb-4">
+                  <div class="text-2xl mr-3">🎉</div>
+                  <h5 class="font-bold text-green-800">
+                    Redux Toolkit (The Easy Way)
+                  </h5>
+                </div>
+                <div class="text-sm text-green-700 space-y-2">
+                  <div>✓ 10-15 lines with createSlice</div>
+                  <div>✓ Auto-generated actions and types</div>
+                  <div>✓ Write "mutative" logic safely</div>
+                  <div>✓ One-line store configuration</div>
+                  <div>✓ Hard to make mistakes!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RTK Key Features -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-purple-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-purple-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-star text-purple-500"></i>
+            Key RTK Features You'll Love
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- configureStore -->
+            <div
+              class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-cog text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-blue-800">configureStore</h4>
+              </div>
+              <p class="text-sm text-blue-700 text-center mb-3">
+                One function call to set up your entire store with DevTools and
+                middleware included!
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-blue-600">
+                <strong>Before:</strong> 20+ lines of store setup<br />
+                <strong>After:</strong> 3 lines and you're done!
+              </div>
+            </div>
+
+            <!-- createSlice -->
+            <div
+              class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-cut text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-green-800">createSlice</h4>
+              </div>
+              <p class="text-sm text-green-700 text-center mb-3">
+                Creates actions, action creators, and reducers all in one place.
+                Magic! ✨
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-green-600">
+                <strong>Before:</strong> Separate files for actions, types,
+                reducers<br />
+                <strong>After:</strong> Everything in one slice!
+              </div>
+            </div>
+
+            <!-- Immer Integration -->
+            <div
+              class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border border-purple-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-magic text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-purple-800">Immer Integration</h4>
+              </div>
+              <p class="text-sm text-purple-700 text-center mb-3">
+                Write code that looks like you're mutating state, but it's
+                actually immutable!
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-purple-600">
+                <strong>Before:</strong>
+                <code>{...state, count: state.count + 1}</code><br />
+                <strong>After:</strong> <code>state.count++</code>
+              </div>
+            </div>
+
+            <!-- createAsyncThunk -->
+            <div
+              class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg border border-orange-200"
+            >
+              <div class="text-center mb-4">
+                <div
+                  class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2"
+                >
+                  <i class="fas fa-cloud-download-alt text-white text-xl"></i>
+                </div>
+                <h4 class="font-bold text-orange-800">createAsyncThunk</h4>
+              </div>
+              <p class="text-sm text-orange-700 text-center mb-3">
+                Handles async operations like API calls with automatic
+                loading/error states.
+              </p>
+              <div class="bg-white p-3 rounded text-xs text-orange-600">
+                <strong>Before:</strong> Complex async middleware setup<br />
+                <strong>After:</strong> One function for all async needs!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step-by-Step Guide -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-indigo-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-indigo-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-list-ol text-indigo-500"></i>
+            Step-by-Step: Convert Your First Redux App to RTK
+          </h3>
+
+          <div
+            class="bg-indigo-50 p-6 rounded-lg mb-8 border-l-4 border-indigo-400"
+          >
+            <p class="text-indigo-800 leading-relaxed">
+              <strong>🎯 Let's transform our counter example!</strong> We'll
+              take the traditional Redux counter we built earlier and show you
+              how RTK makes it 10x easier. Follow along step by step!
+            </p>
+          </div>
+
+          <!-- Step 1: Install RTK -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white font-bold">1</span>
+              </div>
+              <h4 class="text-lg font-bold text-blue-800">
+                Install Redux Toolkit
+              </h4>
+            </div>
+
+            <div
+              class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm mb-4"
+            >
+              <div class="text-green-400"># If you haven't already:</div>
+              <div>npm install @reduxjs/toolkit react-redux</div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <p class="text-blue-700 text-sm">
+                <strong>💡 Pro Tip:</strong> RTK includes Redux core, so you
+                don't need to install regular Redux separately!
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2: Create Slice -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white font-bold">2</span>
+              </div>
+              <h4 class="text-lg font-bold text-green-800">
+                Create a Slice (Replaces Actions + Reducer)
+              </h4>
+            </div>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">counterSlice.js</span>
+              <i class="fas fa-cut text-green-400"></i>
+            </div>
+            <div class="code-block mb-4">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-javascript">import { createSlice } from '@reduxjs/toolkit';
+
+// This ONE slice replaces your actions file AND reducer file!
+const counterSlice = createSlice({
+  name: 'counter',                    // Name for this slice
+  initialState: {                     // Starting state
+    count: 0
+  },
+  reducers: {                         // All your reducer logic
+    increment: (state) => {
+      state.count += 1;               // Look! Direct mutation (thanks to Immer)
+    },
+    decrement: (state) => {
+      state.count -= 1;               // So much cleaner!
+    },
+    reset: (state) => {
+      state.count = 0;
+    },
+    incrementByAmount: (state, action) => {
+      state.count += action.payload;  // action.payload is automatic
+    }
+  }
+});
+
+// Actions are automatically generated! 🎉
+export const { increment, decrement, reset, incrementByAmount } = counterSlice.actions;
+
+// Export the reducer
+export default counterSlice.reducer;
+
+// That's it! Compare this to 50+ lines of traditional Redux!</code></pre>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h5 class="font-semibold text-green-800 mb-2">
+                🎉 What Just Happened?
+              </h5>
+              <ul class="text-green-700 space-y-1 text-sm">
+                <li>
+                  • <strong>No action types:</strong> RTK creates them
+                  automatically
+                </li>
+                <li>
+                  • <strong>No action creators:</strong> Generated from your
+                  reducer names
+                </li>
+                <li>
+                  • <strong>Direct "mutations":</strong> Write
+                  <code>state.count++</code> safely
+                </li>
+                <li>
+                  • <strong>One file:</strong> Everything related to counter
+                  state in one place
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Step 3: Configure Store -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white font-bold">3</span>
+              </div>
+              <h4 class="text-lg font-bold text-purple-800">
+                Configure Store (Super Simple)
+              </h4>
+            </div>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">store.js</span>
+              <i class="fas fa-cog text-purple-400"></i>
+            </div>
+            <div class="code-block mb-4">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-javascript">import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
+
+// That's it! One function call and you're done! 🚀
+const store = configureStore({
+  reducer: {
+    counter: counterReducer
+    // Add more slices here as your app grows
+  }
+  // RTK automatically adds:
+  // ✓ Redux DevTools Extension
+  // ✓ Thunk middleware for async actions
+  // ✓ Serialization checks
+  // ✓ Immutability checks
+});
+
+export default store;
+
+// Compare this to traditional Redux store setup - SO MUCH EASIER!</code></pre>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <h5 class="font-semibold text-purple-800 mb-2">
+                ✨ Built-in Magic
+              </h5>
+              <p class="text-purple-700 text-sm">
+                <code>configureStore</code> automatically includes DevTools,
+                thunk middleware, and development-time checks. No more complex
+                setup!
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 4: Use in React -->
+          <div class="mb-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white font-bold">4</span>
+              </div>
+              <h4 class="text-lg font-bold text-orange-800">
+                Use in React (Same as Before)
+              </h4>
+            </div>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">Counter.jsx</span>
+              <i class="fas fa-layer-group text-orange-400"></i>
+            </div>
+            <div class="code-block mb-4">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-jsx">import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, reset, incrementByAmount } from './counterSlice';
+
+function Counter() {
+  // Get data from store (same as before)
+  const count = useSelector(state => state.counter.count);
+  const dispatch = useDispatch();
+
+  return (
+    &lt;div style={{ textAlign: 'center', padding: '20px' }}&gt;
+      &lt;h1&gt;RTK Counter: {count}&lt;/h1&gt;
+      
+      &lt;div&gt;
+        &lt;button onClick={() => dispatch(decrement())}&gt;
+          - Decrease
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(increment())}&gt;
+          + Increase  
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(incrementByAmount(5))}&gt;
+          +5 Add Five
+        &lt;/button&gt;
+        
+        &lt;button onClick={() => dispatch(reset())}&gt;
+          🔄 Reset
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Counter;
+
+// React usage is exactly the same! The magic happens behind the scenes.</code></pre>
+            </div>
+
+            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+              <h5 class="font-semibold text-orange-800 mb-2">
+                🎯 Same React Code!
+              </h5>
+              <p class="text-orange-700 text-sm">
+                The React component code is identical to traditional Redux. RTK
+                just makes the behind-the-scenes setup much easier!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced RTK Features -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-teal-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-teal-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-rocket text-teal-500"></i>
+            Advanced RTK Features (When You're Ready)
+          </h3>
+
+          <!-- createAsyncThunk -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-blue-800 flex items-center gap-2"
+            >
+              <i class="fas fa-cloud-download-alt text-blue-600"></i>
+              createAsyncThunk - API Calls Made Easy
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+              <p class="text-blue-700">
+                <strong>What it does:</strong> Handles async operations (like
+                API calls) and automatically manages loading/success/error
+                states. No more manual action types for async!
+              </p>
+            </div>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">userSlice.js</span>
+              <i class="fas fa-cloud text-blue-400"></i>
+            </div>
+            <div class="code-block">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-javascript">import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Create async thunk for fetching user data
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',                           // Action type prefix
+  async (userId) => {                         // Async function
+    const response = await fetch(`/api/users/${userId}`);
+    return response.json();                   // This becomes action.payload
+  }
+);
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    data: null,
+    loading: false,
+    error: null
+  },
+  reducers: {
+    clearUser: (state) => {
+      state.data = null;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;                 // Auto-handled loading state
+        state.error = null;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;          // API response data
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;   // Auto-handled error
+      });
+  }
+});
+
+export const { clearUser } = userSlice.actions;
+export default userSlice.reducer;
+
+// Usage in component:
+// dispatch(fetchUser(123)); // Automatically handles loading/success/error!</code></pre>
+            </div>
+          </div>
+
+          <!-- RTK Query Preview -->
+          <div class="mb-6">
+            <h4
+              class="text-xl font-bold mb-4 text-green-800 flex items-center gap-2"
+            >
+              <i class="fas fa-database text-green-600"></i>
+              RTK Query - The Ultimate API Solution
+            </h4>
+
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <p class="text-green-700 mb-3">
+                <strong>Even more powerful:</strong> RTK Query handles all your
+                API needs with automatic caching, background refetching, and
+                optimistic updates. It's like having a full-time API expert on
+                your team!
+              </p>
+              <p class="text-green-600 text-sm">
+                👉 We'll cover RTK Query in detail in the next section - it's
+                amazing!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Practical Todo Example with RTK -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-purple-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-purple-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-list-check text-purple-500"></i>
+            Practical Example: Todo App with RTK
+          </h3>
+
+          <div
+            class="bg-purple-50 p-6 rounded-lg mb-8 border-l-4 border-purple-400"
+          >
+            <p class="text-purple-800 leading-relaxed">
+              <strong>🎯 Let's build something real!</strong> Here's how to create a complete todo app using RTK. You'll see how much cleaner and easier it is compared to traditional Redux!
+            </p>
+          </div>
+
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-purple-800">
+              Complete Todo Slice
+            </h4>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">todoSlice.js</span>
+              <i class="fas fa-cut text-purple-400"></i>
+            </div>
+            <div class="code-block mb-6">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-javascript">import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Async thunk for fetching todos from API
+export const fetchTodos = createAsyncThunk(
+  'todos/fetchTodos',
+  async () => {
+    const response = await fetch('/api/todos');
+    return response.json();
+  }
+);
+
+// Async thunk for adding todo to server
+export const addTodoAsync = createAsyncThunk(
+  'todos/addTodo',
+  async (todoText) => {
+    const response = await fetch('/api/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: todoText, completed: false })
+    });
+    return response.json();
+  }
+);
+
+const todoSlice = createSlice({
+  name: 'todos',
+  initialState: {
+    items: [],
+    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    error: null,
+    filter: 'all' // 'all' | 'active' | 'completed'
+  },
+  reducers: {
+    // Synchronous actions
+    todoAdded: (state, action) => {
+      state.items.push({
+        id: Date.now(),
+        text: action.payload,
+        completed: false
+      });
+    },
+    todoToggled: (state, action) => {
+      const todo = state.items.find(todo => todo.id === action.payload);
+      if (todo) {
+        todo.completed = !todo.completed; // Direct mutation thanks to Immer!
+      }
+    },
+    todoDeleted: (state, action) => {
+      state.items = state.items.filter(todo => todo.id !== action.payload);
+    },
+    allCompleted: (state) => {
+      state.items.forEach(todo => {
+        todo.completed = true; // Mutate all items easily
+      });
+    },
+    completedCleared: (state) => {
+      state.items = state.items.filter(todo => !todo.completed);
+    },
+    filterChanged: (state, action) => {
+      state.filter = action.payload;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      // Handle fetchTodos
+      .addCase(fetchTodos.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
+      })
+      .addCase(fetchTodos.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      // Handle addTodoAsync
+      .addCase(addTodoAsync.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      });
+  }
+});
+
+// Export actions
+export const {
+  todoAdded,
+  todoToggled,
+  todoDeleted,
+  allCompleted,
+  completedCleared,
+  filterChanged
+} = todoSlice.actions;
+
+// Export selectors
+export const selectAllTodos = (state) => state.todos.items;
+export const selectTodosByFilter = (state) => {
+  const { items, filter } = state.todos;
+  switch (filter) {
+    case 'active':
+      return items.filter(todo => !todo.completed);
+    case 'completed':
+      return items.filter(todo => todo.completed);
+    default:
+      return items;
+  }
+};
+
+export default todoSlice.reducer;</code></pre>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <h5 class="font-semibold text-purple-800 mb-2">
+                🎉 Look How Clean This Is!
+              </h5>
+              <ul class="text-purple-700 space-y-1 text-sm">
+                <li>• <strong>One file</strong> handles all todo logic</li>
+                <li>• <strong>Direct mutations</strong> like <code>todo.completed = !todo.completed</code></li>
+                <li>• <strong>Async actions</strong> with automatic loading states</li>
+                <li>• <strong>Built-in selectors</strong> for filtering</li>
+                <li>• <strong>No action types</strong> to manually define</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="text-xl font-bold mb-4 text-purple-800">
+              Using the Todo Slice in React
+            </h4>
+
+            <div
+              class="code-header flex items-center justify-between px-4 py-2"
+            >
+              <span class="text-sm">TodoApp.jsx</span>
+              <i class="fas fa-layer-group text-purple-400"></i>
+            </div>
+            <div class="code-block">
+              <pre
+                class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+              ><code class="language-jsx">import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchTodos,
+  todoAdded,
+  todoToggled,
+  todoDeleted,
+  filterChanged,
+  selectTodosByFilter
+} from './todoSlice';
+
+function TodoApp() {
+  const [inputText, setInputText] = useState('');
+  const dispatch = useDispatch();
+  
+  // Get data from store using selectors
+  const todos = useSelector(selectTodosByFilter);
+  const filter = useSelector(state => state.todos.filter);
+  const status = useSelector(state => state.todos.status);
+  const error = useSelector(state => state.todos.error);
+
+  // Load todos on component mount
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchTodos());
+    }
+  }, [status, dispatch]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputText.trim()) {
+      dispatch(todoAdded(inputText)); // So simple!
+      setInputText('');
+    }
+  };
+
+  if (status === 'loading') {
+    return &lt;div&gt;Loading todos...&lt;/div&gt;;
+  }
+
+  if (status === 'failed') {
+    return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div className="todo-app"&gt;
+      &lt;h1&gt;RTK Todo App&lt;/h1&gt;
+      
+      {/* Add new todo */}
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="What needs to be done?"
+        /&gt;
+        &lt;button type="submit"&gt;Add Todo&lt;/button&gt;
+      &lt;/form&gt;
+
+      {/* Filter buttons */}
+      &lt;div className="filters"&gt;
+        {['all', 'active', 'completed'].map(filterType => (
+          &lt;button
+            key={filterType}
+            className={filter === filterType ? 'active' : ''}
+            onClick={() => dispatch(filterChanged(filterType))}
+          &gt;
+            {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+
+      {/* Todo list */}
+      &lt;ul className="todo-list"&gt;
+        {todos.map(todo => (
+          &lt;li key={todo.id} className={todo.completed ? 'completed' : ''}&gt;
+            &lt;span
+              onClick={() => dispatch(todoToggled(todo.id))}
+              style={{ cursor: 'pointer' }}
+            &gt;
+              {todo.text}
+            &lt;/span&gt;
+            &lt;button
+              onClick={() => dispatch(todoDeleted(todo.id))}
+              className="delete-btn"
+            &gt;
+              ×
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+
+      &lt;div className="stats"&gt;
+        &lt;span&gt;{todos.length} item(s) shown&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default TodoApp;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- RTK vs Traditional Redux Comparison -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-teal-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-teal-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-balance-scale text-teal-500"></i>
+            RTK vs Traditional Redux: Side-by-Side Comparison
+          </h3>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Traditional Redux -->
+            <div class="bg-red-50 rounded-lg p-6 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-4 flex items-center">
+                <i class="fas fa-frown mr-2"></i>
+                Traditional Redux (The Old Way)
+              </h4>
+
+              <div class="space-y-4 text-sm">
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-red-700">actions/todoActions.js</strong>
+                  <div class="text-red-600 mt-1">25+ lines of action types and creators</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-red-700">reducers/todoReducer.js</strong>
+                  <div class="text-red-600 mt-1">40+ lines of complex switch statements</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-red-700">store/index.js</strong>
+                  <div class="text-red-600 mt-1">15+ lines of middleware setup</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-red-700">Immutability</strong>
+                  <div class="text-red-600 mt-1">
+                    <code>{`{...state, todos: state.todos.map(...)}`}</code>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-red-700">Async Actions</strong>
+                  <div class="text-red-600 mt-1">Custom middleware or thunks required</div>
+                </div>
+
+                <div class="bg-red-100 p-3 rounded border-l-4 border-red-400 mt-4">
+                  <strong>Total: ~80-100 lines of boilerplate</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- RTK -->
+            <div class="bg-green-50 rounded-lg p-6 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-4 flex items-center">
+                <i class="fas fa-smile mr-2"></i>
+                Redux Toolkit (The New Way)
+              </h4>
+
+              <div class="space-y-4 text-sm">
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-green-700">todoSlice.js</strong>
+                  <div class="text-green-600 mt-1">Everything in one file!</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-green-700">store.js</strong>
+                  <div class="text-green-600 mt-1">3 lines with configureStore</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-green-700">Actions</strong>
+                  <div class="text-green-600 mt-1">Auto-generated from reducer names</div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-green-700">Immutability</strong>
+                  <div class="text-green-600 mt-1">
+                    <code>state.count++</code> (Immer handles it!)
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded border">
+                  <strong class="text-green-700">Async Actions</strong>
+                  <div class="text-green-600 mt-1">createAsyncThunk built-in</div>
+                </div>
+
+                <div class="bg-green-100 p-3 rounded border-l-4 border-green-400 mt-4">
+                  <strong>Total: ~30-40 lines total</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-lg border border-green-200">
+            <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+              <i class="fas fa-chart-line mr-2"></i>
+              The RTK Advantage: Numbers Don't Lie
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div class="bg-white p-4 rounded shadow">
+                <div class="text-3xl font-bold text-green-600">75%</div>
+                <div class="text-sm text-gray-600">Less Code</div>
+              </div>
+              <div class="bg-white p-4 rounded shadow">
+                <div class="text-3xl font-bold text-blue-600">90%</div>
+                <div class="text-sm text-gray-600">Fewer Bugs</div>
+              </div>
+              <div class="bg-white p-4 rounded shadow">
+                <div class="text-3xl font-bold text-purple-600">5x</div>
+                <div class="text-sm text-gray-600">Faster Development</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Best Practices with RTK -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+        >
+          <h3
+            class="text-2xl font-bold mb-6 text-green-800 flex items-center gap-3"
+          >
+            <i class="fa-solid fa-star text-green-500"></i>
+            RTK Best Practices & Tips
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Do's -->
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+              <h4 class="font-bold text-green-800 mb-4 flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                ✅ Do This
+              </h4>
+              <ul class="space-y-3 text-green-700 text-sm">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span><strong>Keep slices focused:</strong> One slice per feature or domain</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span><strong>Use createAsyncThunk:</strong> For all API calls and async operations</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span><strong>Write "mutative" logic:</strong> <code>state.count++</code> is totally fine!</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span><strong>Export selectors:</strong> Keep data access logic in slices</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-right text-green-500 mt-1 text-xs"></i>
+                  <span><strong>Use RTK Query:</strong> For server state management</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Don'ts -->
+            <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+              <h4 class="font-bold text-red-800 mb-4 flex items-center">
+                <i class="fas fa-times-circle mr-2"></i>
+                ❌ Don't Do This
+              </h4>
+              <ul class="space-y-3 text-red-700 text-sm">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                  <span><strong>Don't return state:</strong> Immer handles immutability</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                  <span><strong>Don't put everything in Redux:</strong> Keep local state local</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                  <span><strong>Don't make slices too big:</strong> Split large slices into smaller ones</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                  <span><strong>Don't mix sync/async:</strong> Use extraReducers for async actions</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                  <span><strong>Don't ignore DevTools:</strong> They're incredibly powerful!</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
+            <h4 class="font-bold text-blue-800 mb-3">
+              🎯 Pro Tips for RTK Success
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-700 text-sm">
+              <div>
+                <h5 class="font-semibold mb-2">Naming Conventions:</h5>
+                <ul class="space-y-1">
+                  <li>• Slice names: camelCase (userProfile, shoppingCart)</li>
+                  <li>• Action names: verb + noun (userAdded, cartCleared)</li>
+                  <li>• Async thunks: verb + Resource (fetchUser, updateProfile)</li>
+                </ul>
+              </div>
+              <div>
+                <h5 class="font-semibold mb-2">File Organization:</h5>
+                <ul class="space-y-1">
+                  <li>• One slice per file</li>
+                  <li>• Group related slices in folders</li>
+                  <li>• Export selectors from slice files</li>
+                  <li>• Keep store configuration separate</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Migration Tips -->
+        <div
+          class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-8 mb-8 border border-yellow-200"
+        >
+          <h3 class="text-2xl font-bold text-yellow-800 mb-4 flex items-center">
+            <i class="fas fa-exchange-alt mr-3"></i>
+            Migration Tips: From Redux to RTK
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-semibold text-green-800 mb-3 flex items-center">
+                <i class="fas fa-thumbs-up mr-2"></i>
+                Easy Migration Strategy
+              </h4>
+              <ul class="text-sm text-green-700 space-y-2">
+                <li>• Start with new features using RTK</li>
+                <li>• Convert one slice at a time</li>
+                <li>• RTK is 100% compatible with existing Redux</li>
+                <li>• No need to rewrite everything at once</li>
+                <li>• Keep existing reducers while adding RTK slices</li>
+                <li>• Team can learn RTK gradually</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-orange-800 mb-3 flex items-center">
+                <i class="fas fa-lightbulb mr-2"></i>
+                What to Convert First
+              </h4>
+              <ul class="text-sm text-orange-700 space-y-2">
+                <li>• Simple slices (like counter, toggles)</li>
+                <li>• New features you're building</li>
+                <li>• Slices with lots of boilerplate</li>
+                <li>• API-heavy slices (use RTK Query)</li>
+                <li>• Complex async logic (use createAsyncThunk)</li>
+                <li>• Leave working code alone until you need to change it</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-white p-4 rounded-lg">
+            <h4 class="font-semibold text-gray-800 mb-2">🚀 Migration Checklist</h4>
+            <div class="text-sm text-gray-700">
+              <div class="flex items-center gap-2 mb-1">
+                <input type="checkbox" class="rounded" />
+                <span>Install @reduxjs/toolkit</span>
+              </div>
+              <div class="flex items-center gap-2 mb-1">
+                <input type="checkbox" class="rounded" />
+                <span>Replace createStore with configureStore</span>
+              </div>
+              <div class="flex items-center gap-2 mb-1">
+                <input type="checkbox" class="rounded" />
+                <span>Convert one reducer to a slice</span>
+              </div>
+              <div class="flex items-center gap-2 mb-1">
+                <input type="checkbox" class="rounded" />
+                <span>Update imports in components</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="checkbox" class="rounded" />
+                <span>Test everything works the same</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="mt-6 bg-white p-4 rounded-lg border border-yellow-300">
+            <h4 class="font-semibold text-yellow-800 mb-2">
+              🎯 RTK Migration Golden Rule
+            </h4>
+            <p class="text-yellow-700 text-sm">
+              <strong>"If it ain't broke, don't fix it immediately."</strong>
+              RTK works alongside traditional Redux perfectly. Migrate
+              gradually, starting with new features, then convert old code when
+              you need to modify it anyway.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RTK Query Section -->
+      <section class="mb-12" id="rtk-query">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 shadow-md"
+          >
+            <i class="fas fa-database text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800">RTK Query</h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Powerful data fetching and caching solution
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-green-100"
+        >
+          <div
+            class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-r"
+          >
+            <p class="text-green-800">
+              <i class="fa-solid fa-rocket mr-2"></i>
+              RTK Query is a powerful data fetching and caching solution built
+              on top of Redux Toolkit.
+            </p>
+          </div>
+
+          <h3 class="text-2xl font-bold mb-4 text-green-800">Key Features</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-bolt text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">Automatic Caching</h4>
+                  <p class="text-sm text-gray-600">
+                    Intelligent caching and background updates
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-sync text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    Background Refetching
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Keep your data fresh automatically
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-spinner text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">Loading States</h4>
+                  <p class="text-sm text-gray-600">
+                    Built-in loading and error handling
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-code text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">Code Generation</h4>
+                  <p class="text-sm text-gray-600">
+                    Generate hooks from OpenAPI schemas
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-tags text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    Cache Invalidation
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Flexible tag-based cache invalidation
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <i class="fas fa-magic text-blue-600 text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800">
+                    Optimistic Updates
+                  </h4>
+                  <p class="text-sm text-gray-600">
+                    Update UI before server confirmation
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- API Slice Example -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-teal-100"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-teal-800">
+            Creating an API Slice
+          </h3>
+          <p class="text-gray-700 mb-6">
+            Define your API endpoints and automatically generate hooks for React
+            components.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-teal-400 mr-2"></i>
+              <span class="text-sm">api.js</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+            ><code class="language-javascript">import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const apiSlice = createApi({
+  reducerPath: 'api',
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api',
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    }
+  }),
+  tagTypes: ['Post', 'User'],
+  endpoints: (builder) => ({
+    getPosts: builder.query({
+      query: () => 'posts',
+      providesTags: ['Post']
+    }),
+    
+    getPost: builder.query({
+      query: (id) => `posts/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Post', id }]
+    }),
+    
+    createPost: builder.mutation({
+      query: (newPost) => ({
+        url: 'posts',
+        method: 'POST',
+        body: newPost
+      }),
+      invalidatesTags: ['Post']
+    }),
+    
+    updatePost: builder.mutation({
+      query: ({ id, ...patch }) => ({
+        url: `posts/${id}`,
+        method: 'PATCH',
+        body: patch
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Post', id }]
+    }),
+    
+    deletePost: builder.mutation({
+      query: (id) => ({
+        url: `posts/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Post']
+    })
+  })
+});
+
+// Export hooks for usage in components
+export const {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation
+} = apiSlice;</code></pre>
+          </div>
+        </div>
+
+        <!-- Using RTK Query Hooks -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-8 border border-blue-100"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-blue-800">
+            Using RTK Query Hooks
+          </h3>
+          <p class="text-gray-700 mb-6">
+            Use the generated hooks in your React components for automatic data
+            fetching and caching.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+              <span class="text-sm">PostsList.jsx</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre
+              class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"
+            ><code class="language-jsx">import React from 'react';
+import {
+  useGetPostsQuery,
+  useCreatePostMutation,
+  useDeletePostMutation
+} from './api';
+
+function PostsList() {
+  const {
+    data: posts,
+    error,
+    isLoading,
+    isFetching,
+    refetch
+  } = useGetPostsQuery();
+
+  const [createPost, { isLoading: isCreating }] = useCreatePostMutation();
+  const [deletePost] = useDeletePostMutation();
+
+  const handleCreatePost = async () => {
+    try {
+      await createPost({
+        title: 'New Post',
+        content: 'Post content...'
+      }).unwrap();
+    } catch (err) {
+      console.error('Failed to create post:', err);
+    }
+  };
+
+  const handleDeletePost = async (id) => {
+    try {
+      await deletePost(id).unwrap();
+    } catch (err) {
+      console.error('Failed to delete post:', err);
+    }
+  };
+
+  if (isLoading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error.message}&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleCreatePost} disabled={isCreating}&gt;
+        {isCreating ? 'Creating...' : 'Create Post'}
+      &lt;/button&gt;
+      
+      &lt;button onClick={refetch}&gt;Refresh&lt;/button&gt;
+      
+      {isFetching && &lt;div&gt;Updating...&lt;/div&gt;}
+      
+      &lt;ul&gt;
+        {posts?.map(post => (
+          &lt;li key={post.id}&gt;
+            &lt;h3&gt;{post.title}&lt;/h3&gt;
+            &lt;p&gt;{post.content}&lt;/p&gt;
+            &lt;button onClick={() => handleDeletePost(post.id)}&gt;
+              Delete
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best Practices Section -->
+      <section class="mb-12" id="best-practices">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 shadow-md"
+          >
+            <i class="fas fa-star text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800">Best Practices</h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Guidelines for effective Redux usage
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white/70 p-6 rounded-lg shadow-md">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-layer-group text-blue-500 mr-3 text-xl"></i>
+              <h4 class="font-semibold text-gray-800">Structure Your State</h4>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Normalize nested/relational data</li>
+              <li>• Keep state flat when possible</li>
+              <li>• Separate UI state from domain data</li>
+              <li>• Use feature-based folder structure</li>
+            </ul>
+          </div>
+
+          <div class="bg-white/70 p-6 rounded-lg shadow-md">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-bolt text-green-500 mr-3 text-xl"></i>
+              <h4 class="font-semibold text-gray-800">Performance Tips</h4>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Use RTK Query for server state</li>
+              <li>• Connect components at the right level</li>
+              <li>• Use selectors with reselect</li>
+              <li>• Avoid creating objects in selectors</li>
+            </ul>
+          </div>
+
+          <div class="bg-white/70 p-6 rounded-lg shadow-md">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-shield-alt text-orange-500 mr-3 text-xl"></i>
+              <h4 class="font-semibold text-gray-800">Type Safety</h4>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Use TypeScript with RTK</li>
+              <li>• Define typed hooks</li>
+              <li>• Type your slices properly</li>
+              <li>• Use RTK Query code generation</li>
+            </ul>
+          </div>
+
+          <div class="bg-white/70 p-6 rounded-lg shadow-md">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-bug text-red-500 mr-3 text-xl"></i>
+              <h4 class="font-semibold text-gray-800">Debugging</h4>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Use Redux DevTools extension</li>
+              <li>• Enable action type checking</li>
+              <li>• Add meaningful action names</li>
+              <li>• Use middleware for logging</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- When to Use Redux -->
+        <div
+          class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-8 mt-8 border border-amber-200"
+        >
+          <h3 class="text-2xl font-bold text-amber-800 mb-4 flex items-center">
+            <i class="fas fa-question-circle mr-3"></i>
+            When to Use Redux
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-semibold text-green-800 mb-3 flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                Good Use Cases
+              </h4>
+              <ul class="text-sm text-green-700 space-y-2">
+                <li>• Complex state logic with multiple actions</li>
+                <li>• App state needed in many components</li>
+                <li>• State updates happen frequently</li>
+                <li>• Medium to large-sized applications</li>
+                <li>• Need for powerful debugging tools</li>
+                <li>• Team needs predictable state updates</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-red-800 mb-3 flex items-center">
+                <i class="fas fa-times-circle mr-2"></i>
+                Consider Alternatives When
+              </h4>
+              <ul class="text-sm text-red-700 space-y-2">
+                <li>• Simple app with minimal state</li>
+                <li>• State is mostly local to components</li>
+                <li>• Small team, simple requirements</li>
+                <li>• Learning curve is too steep</li>
+                <li>• Quick prototyping needed</li>
+                <li>• Built-in React state is sufficient</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Getting Started -->
+      <div
+        class="bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100 rounded-xl p-8 mb-8 relative overflow-hidden shadow-xl"
+      >
+        <div
+          class="absolute top-0 right-0 w-32 h-32 -mt-16 -mr-16 bg-purple-200 rounded-full opacity-30"
+        ></div>
+
+        <h3 class="text-2xl font-bold text-indigo-800 mb-4 flex items-center">
+          <i class="fas fa-rocket mr-3"></i>
+          Getting Started
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-indigo-700 mb-3">Installation</h4>
+            <div
+              class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm"
+            >
+              <div class="text-green-400"># NPM</div>
+              <div>npm install @reduxjs/toolkit react-redux</div>
+              <div class="mt-2 text-green-400"># Yarn</div>
+              <div>yarn add @reduxjs/toolkit react-redux</div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-indigo-700 mb-3">Quick Links</h4>
+            <div class="space-y-2">
+              <a
+                href="https://redux-toolkit.js.org/"
+                class="block bg-white/70 p-3 rounded-lg hover:bg-white transition-colors"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-external-link-alt text-indigo-500 mr-2"></i>
+                  <span class="font-medium">Redux Toolkit Docs</span>
+                </div>
+              </a>
+              <a
+                href="https://react-redux.js.org/"
+                class="block bg-white/70 p-3 rounded-lg hover:bg-white transition-colors"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-external-link-alt text-indigo-500 mr-2"></i>
+                  <span class="font-medium">React-Redux Docs</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer placeholder - will be filled by components-loader.js -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load components-loader.js before other scripts -->
+    <script src="../../assets/js/components-loader.js"></script>
+
+    <!-- Initialize Syntax Highlighting and other page features -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initialize syntax highlighting
+        document.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+        });
+
+        // Initialize scroll indicator
+        const scrollIndicator = document.getElementById("scrollIndicator");
+        window.addEventListener("scroll", () => {
+          const scrollHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPosition = window.pageYOffset;
+          const scrollPercentage = (scrollPosition / scrollHeight) * 100;
+          scrollIndicator.style.width = scrollPercentage + "%";
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

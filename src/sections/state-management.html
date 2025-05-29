@@ -9,37 +9,1128 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
               sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
             },
             animation: {
               "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
             },
           },
         },
       };
     </script>
     <title>State Management | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .glass-card {
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
     <!-- Header placeholder - will be filled by components-loader.js -->
     <div id="header-placeholder"></div>
-    <main class="flex-1 container mx-auto px-4 py-10">
-      <h2 class="text-2xl font-semibold mb-4">State Management</h2>
-      <p class="text-lg text-gray-700 mb-4">
-        Explore how to manage state in React using useState, useReducer, and
-        state lifting.
-      </p>
-      <!-- Add more content as needed -->
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <!-- Hero Section -->
+      <div
+        class="p-16 bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 rounded-3xl shadow-2xl mb-10 text-white relative overflow-hidden"
+        style="animation: fadeIn 0.8s ease-out forwards"
+      >
+        <div
+          class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-70"
+          style="animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+        ></div>
+        <div
+          class="absolute -bottom-6 -left-6 w-20 h-20 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full opacity-60"
+          style="animation: float 6s ease-in-out infinite"
+        ></div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-blue-100"
+          >
+            <i
+              class="fa-solid fa-database text-5xl text-indigo-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-indigo-200">
+              <div
+                class="text-xs uppercase tracking-widest text-indigo-600 font-semibold"
+              >
+                React Essentials
+              </div>
+              <div class="text-gray-700 font-medium">State Management</div>
+            </div>
+          </div>
+
+          <h1
+            class="text-5xl font-extrabold mb-3 relative z-10"
+            style="
+              background: linear-gradient(to right, #ffffff, #f8fafc, #e2e8f0);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            "
+          >
+            State Management
+          </h1>
+          <p class="text-xl text-gray-100 relative z-10 font-light max-w-2xl">
+            Master the art of managing data in React applications - from local
+            state to global solutions.
+          </p>
+
+          <!-- Stats/Quick Facts -->
+          <div class="flex flex-wrap gap-4 mb-4 mt-6">
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-rocket text-orange-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Built-in Hooks</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-arrows-up-down text-purple-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">State Lifting</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-globe text-blue-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Global State</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-cogs text-green-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Redux & RTK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div
+        class="p-10 bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 rounded-xl border border-blue-100 mb-10 relative overflow-hidden shadow-xl"
+        style="
+          backdrop-filter: blur(10px);
+          animation: fadeIn 0.8s ease-out forwards;
+        "
+      >
+        <div
+          class="absolute right-0 top-0 w-40 h-40 -mt-16 -mr-16 bg-blue-100 rounded-full opacity-50"
+          style="animation: blob 7s infinite"
+        ></div>
+        <div
+          class="absolute left-1/2 bottom-0 w-24 h-24 -mb-8 bg-purple-100 rounded-full opacity-40"
+          style="animation: blob 7s infinite; animation-delay: 2s"
+        ></div>
+
+        <h3 class="text-xl font-semibold text-blue-800 mb-3 flex items-center">
+          <i class="fas fa-compass text-indigo-500 mr-2"></i>
+          Quick Navigation
+        </h3>
+
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10"
+        >
+          <a
+            href="#local-state"
+            class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-home"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Local State</span>
+              <p class="text-xs text-gray-500 mt-1">useState & useReducer</p>
+            </div>
+          </a>
+
+          <a
+            href="#global-state"
+            class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-globe"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Global Solutions</span>
+              <p class="text-xs text-gray-500 mt-1">Redux, Context API</p>
+            </div>
+          </a>
+
+          <a
+            href="#advanced-patterns"
+            class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Advanced Patterns</span>
+              <p class="text-xs text-gray-500 mt-1">
+                State machines, undo/redo
+              </p>
+            </div>
+          </a>
+
+          <a
+            href="#comparison"
+            class="feature-card bg-white/80 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3 group"
+          >
+            <div
+              class="p-3 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 text-amber-600 group-hover:scale-110 transition-transform"
+            >
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <div>
+              <span class="font-medium text-gray-800">Comparison</span>
+              <p class="text-xs text-gray-500 mt-1">Which solution to choose</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Local State Management Section -->
+      <section class="mb-12" id="local-state">
+        <div
+          class="flex items-center gap-3 mb-6"
+          style="animation: fadeIn 0.8s ease-out forwards"
+        >
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 shadow-md shadow-blue-100"
+          >
+            <i class="fas fa-home text-lg"></i>
+          </div>
+          <div>
+            <h2
+              class="text-3xl font-bold text-gray-800"
+              style="
+                background: linear-gradient(to right, #3b82f6, #4f46e5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              "
+            >
+              Local State Management
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Managing state within individual components
+            </p>
+          </div>
+        </div>
+
+        <!-- When to Lift State Up -->
+        <div
+          class="glass-card bg-gradient-to-r from-blue-100 via-purple-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-blue-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-blue-500"><i class="fas fa-arrow-up"></i></span>
+            When to Lift State Up
+          </h3>
+          <p class="text-gray-600 mb-4">
+            "Lifting state up" means moving state from a child component to a
+            parent component so multiple children can share the same data.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-green-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-green-700 mb-2">
+                ✅ Lift State When:
+              </h4>
+              <ul class="list-disc ml-4 text-sm text-gray-700">
+                <li>Multiple components need the same data</li>
+                <li>Components need to communicate with each other</li>
+                <li>Parent needs to coordinate child behavior</li>
+                <li>Data needs to be synchronized across siblings</li>
+                <li>You need a single source of truth</li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-blue-700 mb-2">
+                🏠 Keep Local When:
+              </h4>
+              <ul class="list-disc ml-4 text-sm text-gray-700">
+                <li>Only one component uses the data</li>
+                <li>State is specific to component behavior</li>
+                <li>No other components need to know about it</li>
+                <li>It's UI-specific (like form validation)</li>
+                <li>Performance would suffer from lifting</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <span class="text-sm">Example: Temperature Calculator</span>
+            <i class="fas fa-thermometer-half"></i>
+          </div>
+          <div class="code-block">
+            <pre><code class="language-jsx">// State lifted to parent to share between components
+function TemperatureCalculator() {
+  const [temperature, setTemperature] = useState('');
+  const [scale, setScale] = useState('c');
+
+  const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+  const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+  return (
+    &lt;div&gt;
+      &lt;TemperatureInput
+        scale="c"
+        temperature={celsius}
+        onTemperatureChange={(temp) => {
+          setTemperature(temp);
+          setScale('c');
+        }}
+      /&gt;
+      &lt;TemperatureInput
+        scale="f"
+        temperature={fahrenheit}
+        onTemperatureChange={(temp) => {
+          setTemperature(temp);
+          setScale('f');
+        }}
+      /&gt;
+      &lt;BoilingVerdict celsius={parseFloat(celsius)} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- State Management Patterns -->
+        <div
+          class="glass-card bg-gradient-to-r from-purple-100 via-pink-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-purple-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-purple-500"><i class="fas fa-sitemap"></i></span>
+            State Management Patterns
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-purple-700 mb-3">
+                Co-location Pattern
+              </h4>
+              <p class="text-sm text-gray-600 mb-3">
+                Keep state as close as possible to where it's used.
+              </p>
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-xs overflow-x-auto"
+              >
+                <pre><code>// Good: State only in component that needs it
+function UserForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  
+  return (
+    &lt;form&gt;
+      &lt;input 
+        value={name} 
+        onChange={(e) => setName(e.target.value)} 
+      /&gt;
+      &lt;input 
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)} 
+      /&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-purple-700 mb-3">
+                Composition Pattern
+              </h4>
+              <p class="text-sm text-gray-600 mb-3">
+                Use props to compose behavior instead of complex state.
+              </p>
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-xs overflow-x-auto"
+              >
+                <pre><code>// Good: Composable components
+function Modal({ isOpen, onClose, children }) {
+  return isOpen ? (
+    &lt;div className="modal"&gt;
+      &lt;button onClick={onClose}&gt;×&lt;/button&gt;
+      {children}
+    &lt;/div&gt;
+  ) : null;
+}
+
+// Usage
+&lt;Modal isOpen={showModal} onClose={() => setShowModal(false)}&gt;
+  &lt;UserForm /&gt;
+&lt;/Modal&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Context API Link -->
+        <div
+          class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-xl border border-indigo-200 mb-6"
+        >
+          <div class="flex items-center gap-4">
+            <div class="p-3 rounded-full bg-indigo-500 text-white">
+              <i class="fas fa-link text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-indigo-800 mb-1">
+                Context API for Prop Drilling
+              </h4>
+              <p class="text-sm text-gray-600">
+                When you need to pass data through many component levels,
+                Context API eliminates prop drilling.
+              </p>
+            </div>
+            <a
+              href="context.html"
+              class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors flex items-center gap-2"
+            >
+              <span>Learn Context API</span>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Global State Solutions Section -->
+      <section class="mb-12" id="global-state">
+        <div
+          class="flex items-center gap-3 mb-6"
+          style="animation: fadeIn 0.8s ease-out forwards"
+        >
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-green-100 to-green-200 text-green-600 shadow-md shadow-green-100"
+          >
+            <i class="fas fa-globe text-lg"></i>
+          </div>
+          <div>
+            <h2
+              class="text-3xl font-bold text-gray-800"
+              style="
+                background: linear-gradient(to right, #10b981, #059669);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              "
+            >
+              Global State Solutions
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Managing state across your entire application
+            </p>
+          </div>
+        </div>
+
+        <!-- Redux Fundamentals -->
+        <div
+          class="glass-card bg-gradient-to-r from-green-100 via-emerald-50 to-teal-100 shadow-xl rounded-xl p-10 mb-6 border border-green-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-green-500"><i class="fas fa-database"></i></span>
+            Redux Fundamentals
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Redux is a predictable state container for JavaScript apps. It helps
+            you manage application state in a predictable way.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="flex items-center mb-2">
+                <div
+                  class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-store text-blue-600 text-sm"></i>
+                </div>
+                <h4 class="font-semibold text-blue-700">Store</h4>
+              </div>
+              <p class="text-xs text-gray-600">
+                Single source of truth that holds the entire state tree of your
+                application.
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="flex items-center mb-2">
+                <div
+                  class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-bolt text-purple-600 text-sm"></i>
+                </div>
+                <h4 class="font-semibold text-purple-700">Actions</h4>
+              </div>
+              <p class="text-xs text-gray-600">
+                Plain objects that describe what happened and carry information.
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="flex items-center mb-2">
+                <div
+                  class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-cogs text-green-600 text-sm"></i>
+                </div>
+                <h4 class="font-semibold text-green-700">Reducers</h4>
+              </div>
+              <p class="text-xs text-gray-600">
+                Pure functions that specify how state changes in response to
+                actions.
+              </p>
+            </div>
+          </div>
+
+       
+        </div>
+
+        <!-- Redux Toolkit (RTK) -->
+      
+
+    
+
+        <!-- Redux Link -->
+        <div
+          class="bg-gradient-to-r from-green-100 to-emerald-100 p-6 rounded-xl border border-green-200 mb-6"
+        >
+          <div class="flex items-center gap-4">
+            <div class="p-3 rounded-full bg-green-500 text-white">
+              <i class="fas fa-database text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-green-800 mb-1">
+                Complete Redux Guide
+              </h4>
+              <p class="text-sm text-gray-600">
+                Dive deeper into Redux with comprehensive examples, Redux
+                Toolkit, RTK Query, and advanced patterns.
+              </p>
+            </div>
+            <a
+              href="redux.html"
+              class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2"
+            >
+              <span>Learn Redux</span>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- State Management Comparison -->
+        <div
+          class="glass-card bg-gradient-to-r from-purple-100 via-pink-50 to-red-100 shadow-xl rounded-xl p-10 mb-6 border border-purple-100 relative overflow-hidden"
+          id="comparison"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-purple-500"
+              ><i class="fas fa-balance-scale"></i
+            ></span>
+            Comparing State Management Solutions
+          </h3>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b-2 border-purple-200">
+                  <th class="text-left p-3 font-semibold text-purple-800">
+                    Solution
+                  </th>
+                  <th class="text-left p-3 font-semibold text-purple-800">
+                    Best For
+                  </th>
+                  <th class="text-left p-3 font-semibold text-purple-800">
+                    Learning Curve
+                  </th>
+                  <th class="text-left p-3 font-semibold text-purple-800">
+                    Bundle Size
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-b border-purple-100">
+                  <td class="p-3 font-medium">useState</td>
+                  <td class="p-3">Local component state</td>
+                  <td class="p-3 text-green-600">Easy</td>
+                  <td class="p-3 text-green-600">None</td>
+                </tr>
+                <tr class="border-b border-purple-100">
+                  <td class="p-3 font-medium">useReducer</td>
+                  <td class="p-3">Complex local state logic</td>
+                  <td class="p-3 text-yellow-600">Medium</td>
+                  <td class="p-3 text-green-600">None</td>
+                </tr>
+                <tr class="border-b border-purple-100">
+                  <td class="p-3 font-medium">Context API</td>
+                  <td class="p-3">Avoid prop drilling</td>
+                  <td class="p-3 text-green-600">Easy</td>
+                  <td class="p-3 text-green-600">None</td>
+                </tr>
+                <tr class="border-b border-purple-100">
+                  <td class="p-3 font-medium">Redux + RTK</td>
+                  <td class="p-3">Large apps, time-travel debugging</td>
+                  <td class="p-3 text-red-600">Hard</td>
+                  <td class="p-3 text-yellow-600">Medium</td>
+                </tr>
+                <tr class="border-b border-purple-100">
+                  <td class="p-3 font-medium">Zustand</td>
+                  <td class="p-3">Simple global state</td>
+                  <td class="p-3 text-green-600">Easy</td>
+                  <td class="p-3 text-green-600">Small</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Advanced State Patterns Section -->
+      <section class="mb-12" id="advanced-patterns">
+        <div
+          class="flex items-center gap-3 mb-6"
+          style="animation: fadeIn 0.8s ease-out forwards"
+        >
+          <div
+            class="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 shadow-md shadow-purple-100"
+          >
+            <i class="fas fa-cogs text-lg"></i>
+          </div>
+          <div>
+            <h2
+              class="text-3xl font-bold text-gray-800"
+              style="
+                background: linear-gradient(to right, #8b5cf6, #7c3aed);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              "
+            >
+              Advanced State Patterns
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Sophisticated state management techniques
+            </p>
+          </div>
+        </div>
+
+        <!-- State Machines -->
+        <div
+          class="glass-card bg-gradient-to-r from-purple-100 via-indigo-50 to-blue-100 shadow-xl rounded-xl p-10 mb-6 border border-purple-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-purple-500"
+              ><i class="fas fa-project-diagram"></i
+            ></span>
+            State Machines Concept
+          </h3>
+          <p class="text-gray-600 mb-4">
+            State machines provide a structured way to manage complex state
+            transitions and ensure your application state remains predictable.
+          </p>
+
+          <div class="bg-purple-50 p-4 rounded-lg mb-4">
+            <h4 class="font-semibold text-purple-700 mb-2">Key Benefits:</h4>
+            <ul class="list-disc ml-4 text-sm text-gray-700">
+              <li>
+                <strong>Predictable transitions:</strong> Clear rules for state
+                changes
+              </li>
+              <li>
+                <strong>Impossible states:</strong> Prevents invalid state
+                combinations
+              </li>
+              <li>
+                <strong>Visual modeling:</strong> Can be represented as diagrams
+              </li>
+              <li>
+                <strong>Testing:</strong> Easier to test all possible states
+              </li>
+            </ul>
+          </div>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <span class="text-sm">Simple State Machine Example</span>
+            <i class="fas fa-diagram-project"></i>
+          </div>
+          <div class="code-block">
+            <pre><code class="language-jsx">import { useMachine } from '@xstate/react';
+import { createMachine } from 'xstate';
+
+const toggleMachine = createMachine({
+  id: 'toggle',
+  initial: 'inactive',
+  states: {
+    inactive: {
+      on: { TOGGLE: 'active' }
+    },
+    active: {
+      on: { TOGGLE: 'inactive' }
+    }
+  }
+});
+
+function Toggle() {
+  const [current, send] = useMachine(toggleMachine);
+
+  return (
+    &lt;button onClick={() => send('TOGGLE')}&gt;
+      {current.value === 'active' ? 'ON' : 'OFF'}
+    &lt;/button&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Optimistic Updates -->
+        <div
+          class="glass-card bg-gradient-to-r from-green-100 via-emerald-50 to-teal-100 shadow-xl rounded-xl p-10 mb-6 border border-green-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-green-500"><i class="fas fa-rocket"></i></span>
+            Optimistic Updates
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Update the UI immediately when a user performs an action, then
+            handle the server response. This makes your app feel faster.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-green-700 mb-2">✅ When to Use:</h4>
+              <ul class="list-disc ml-4 text-xs text-gray-700">
+                <li>High success rate operations</li>
+                <li>User expects immediate feedback</li>
+                <li>Easy to roll back changes</li>
+                <li>Non-critical operations</li>
+              </ul>
+            </div>
+            <div class="bg-red-50 p-4 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-red-700 mb-2">❌ Avoid When:</h4>
+              <ul class="list-disc ml-4 text-xs text-gray-700">
+                <li>Critical operations (payments)</li>
+                <li>High failure rate expected</li>
+                <li>Complex rollback logic needed</li>
+                <li>Data integrity is crucial</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <span class="text-sm">Optimistic Update Pattern</span>
+            <i class="fas fa-lightning-bolt"></i>
+          </div>
+          <div class="code-block">
+            <pre><code class="language-jsx">function useLikePost() {
+  const [posts, setPosts] = useState([]);
+
+  const likePost = async (postId) => {
+    // Optimistic update - update UI immediately
+    setPosts(prev => prev.map(post => 
+      post.id === postId 
+        ? { ...post, liked: true, likes: post.likes + 1 }
+        : post
+    ));
+
+    try {
+      // Send request to server
+      await api.likePost(postId);
+    } catch (error) {
+      // Rollback on error
+      setPosts(prev => prev.map(post => 
+        post.id === postId 
+          ? { ...post, liked: false, likes: post.likes - 1 }
+          : post
+      ));
+      
+      toast.error('Failed to like post');
+    }
+  };
+
+  return { posts, likePost };
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Undo/Redo Functionality -->
+        <div
+          class="glass-card bg-gradient-to-r from-amber-100 via-yellow-50 to-orange-100 shadow-xl rounded-xl p-10 mb-6 border border-amber-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-amber-500"><i class="fas fa-undo"></i></span>
+            Undo/Redo Functionality
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Implement undo/redo by maintaining a history of state changes. This
+            pattern is great for editors, drawing apps, and form builders.
+          </p>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <span class="text-sm">Undo/Redo Hook</span>
+            <i class="fas fa-history"></i>
+          </div>
+          <div class="code-block">
+            <pre><code class="language-jsx">function useUndoRedo(initialState) {
+  const [history, setHistory] = useState([initialState]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const current = history[currentIndex];
+  const canUndo = currentIndex > 0;
+  const canRedo = currentIndex < history.length - 1;
+
+  const push = (newState) => {
+    // Remove any redo history when pushing new state
+    const newHistory = history.slice(0, currentIndex + 1);
+    setHistory([...newHistory, newState]);
+    setCurrentIndex(newHistory.length);
+  };
+
+  const undo = () => {
+    if (canUndo) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const redo = () => {
+    if (canRedo) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  return {
+    current,
+    push,
+    undo,
+    redo,
+    canUndo,
+    canRedo
+  };
+}
+
+// Usage in a drawing app
+function DrawingApp() {
+  const { current, push, undo, redo, canUndo, canRedo } = useUndoRedo([]);
+
+  const addShape = (shape) => {
+    push([...current, shape]);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={undo} disabled={!canUndo}&gt;Undo&lt;/button&gt;
+      &lt;button onClick={redo} disabled={!canRedo}&gt;Redo&lt;/button&gt;
+      &lt;Canvas shapes={current} onAddShape={addShape} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- State Persistence -->
+        <div
+          class="glass-card bg-gradient-to-r from-cyan-100 via-blue-50 to-indigo-100 shadow-xl rounded-xl p-10 mb-6 border border-cyan-100 relative overflow-hidden"
+        >
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <span class="text-cyan-500"><i class="fas fa-database"></i></span>
+            State Persistence
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Save state to localStorage, sessionStorage, or other storage
+            solutions so data persists between browser sessions.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-cyan-700 mb-2">localStorage</h4>
+              <p class="text-xs text-gray-600 mb-2">
+                Persists until manually cleared
+              </p>
+              <ul class="list-disc ml-4 text-xs text-gray-600">
+                <li>User preferences</li>
+                <li>Shopping cart</li>
+                <li>App settings</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-cyan-700 mb-2">sessionStorage</h4>
+              <p class="text-xs text-gray-600 mb-2">
+                Persists for browser session
+              </p>
+              <ul class="list-disc ml-4 text-xs text-gray-600">
+                <li>Form data</li>
+                <li>Temporary state</li>
+                <li>Navigation state</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-semibold text-cyan-700 mb-2">IndexedDB</h4>
+              <p class="text-xs text-gray-600 mb-2">Large amounts of data</p>
+              <ul class="list-disc ml-4 text-xs text-gray-600">
+                <li>Offline data</li>
+                <li>Complex objects</li>
+                <li>File storage</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <span class="text-sm">Persistent State Hook</span>
+            <i class="fas fa-save"></i>
+          </div>
+          <div class="code-block">
+            <pre><code class="language-jsx">function useLocalStorage(key, initialValue) {
+  // Get value from localStorage or use initial value
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that persists the new value to localStorage
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have the same API as useState
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
+// Usage
+function UserPreferences() {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const [language, setLanguage] = useLocalStorage('language', 'en');
+
+  return (
+    &lt;div&gt;
+      &lt;select value={theme} onChange={(e) => setTheme(e.target.value)}&gt;
+        &lt;option value="light"&gt;Light&lt;/option&gt;
+        &lt;option value="dark"&gt;Dark&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best Practices Summary -->
+      <div
+        class="bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100 shadow-xl rounded-xl p-8 border border-indigo-200"
+      >
+        <div class="text-center mb-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">
+            State Management Best Practices
+          </h3>
+          <p class="text-gray-600">
+            Key principles for effective state management in React
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-home text-blue-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Start Local</h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Begin with local state and lift up only when necessary.
+            </p>
+          </div>
+
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Keep It Simple</h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Use the simplest solution that works for your use case.
+            </p>
+          </div>
+
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-lock text-purple-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Immutable Updates</h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Always update state immutably to ensure predictable re-renders.
+            </p>
+          </div>
+
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-sitemap text-orange-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">
+                Single Source of Truth
+              </h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Avoid duplicating state across multiple components.
+            </p>
+          </div>
+
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-tachometer-alt text-red-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Consider Performance</h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Be mindful of unnecessary re-renders and optimize when needed.
+            </p>
+          </div>
+
+          <div class="bg-white/70 p-4 rounded-lg">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-bug text-indigo-500 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Debugging Tools</h4>
+            </div>
+            <p class="text-sm text-gray-600">
+              Use React DevTools and Redux DevTools for debugging.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
+
     <!-- Footer placeholder - will be filled by components-loader.js -->
     <div id="footer-placeholder"></div>
 
     <!-- Load components-loader.js before other scripts -->
     <script src="../../assets/js/components-loader.js"></script>
+
+    <!-- Scroll Progress Indicator Script -->
+    <script>
+      // Initialize highlight.js when the document is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // Apply syntax highlighting to all code blocks
+        document.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+        });
+
+        // Scroll progress indicator
+        const scrollIndicator = document.getElementById("scrollIndicator");
+
+        if (scrollIndicator) {
+          window.addEventListener("scroll", () => {
+            const windowScroll = document.documentElement.scrollTop;
+            const height =
+              document.documentElement.scrollHeight -
+              document.documentElement.clientHeight;
+            const scrolled = (windowScroll / height) * 100;
+            scrollIndicator.style.width = scrolled + "%";
+          });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
