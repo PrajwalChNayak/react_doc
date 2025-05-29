@@ -1,82 +1,1860 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ["Inter", "sans-serif"],
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
             },
             animation: {
-              "spin-slow": "spin 3s linear infinite",
+              'spin-slow': 'spin 3s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'blob': 'blob 7s infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'bounce-slow': 'bounce 3s infinite',
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'scale-in': 'scaleIn 0.4s ease-out',
+              'gradient-shift': 'gradientShift 8s ease-in-out infinite',
+              'shimmer': 'shimmer 2s linear infinite',
             },
-          },
-        },
-      };
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' }
+              },
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' }
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' }
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(30px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' }
+              },
+              scaleIn: {
+                '0%': { transform: 'scale(0.95)', opacity: '0' },
+                '100%': { transform: 'scale(1)', opacity: '1' }
+              },
+              gradientShift: {
+                '0%, 100%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' }
+              },
+              shimmer: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' }
+              }
+            }
+          }
+        }
+      }
     </script>
     <title>Routing | React Documentation</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+      
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #4f46e5, #a855f7, #ec4899);
+        z-index: 1000;
+        transition: width 0.2s ease;
+        box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+      }
+      
+      .code-header {
+        background: linear-gradient(135deg, #282c34, #3e4451);
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: 'Fira Code', monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .code-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shimmer 3s infinite;
+      }
+      
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        position: relative;
+        background: linear-gradient(135deg, #1a1d23, #282c34);
+      }
+      
+      .highlight-line {
+        background-color: rgba(80, 80, 80, 0.2);
+        display: block;
+      }
+      
+      /* Enhanced scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: linear-gradient(180deg, #f1f5f9, #e2e8f0);
+        border-radius: 6px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #6366f1, #8b5cf6);
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #4f46e5, #7c3aed);
+      }
+      
+      .toc-link.active {
+        color: #4f46e5;
+        font-weight: 600;
+        border-left: 3px solid #4f46e5;
+        background: linear-gradient(90deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
+        border-radius: 0 0.5rem 0.5rem 0;
+        transform: translateX(2px);
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+      }
+      
+      /* Enhanced TOC styling */
+      #toc {
+        animation: slidein 0.5s ease-out forwards;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      @keyframes slidein {
+        0% {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+      /* Gradient animations */
+      .gradient-bg {
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease-in-out infinite;
+      }
+      
+      /* Enhanced hover effects */
+      .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      /* Glassmorphism effect */
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Icon animations */
+      .icon-bounce {
+        animation: bounce 2s infinite;
+      }
+      
+      .icon-spin-slow {
+        animation: spin-slow 4s linear infinite;
+      }
+      
+      /* Enhanced section borders */
+      .section-border {
+        border: 1px solid;
+        border-image: linear-gradient(45deg, #4f46e5, #7c3aed, #ec4899) 1;
+      }
+      
+      /* Floating elements */
+      .float-element {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      /* Text gradient effects */
+      .text-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      /* Enhanced card effects */
+      .card-enhanced {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+        backdrop-filter: blur(15px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .card-enhanced:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        border-color: rgba(79, 70, 229, 0.3);
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
-    <!-- Header placeholder - will be filled by components-loader.js -->
-    <div id="header-placeholder"></div>
-    <main class="flex-1 container mx-auto px-4 py-10">
-      <h2 class="text-2xl font-semibold mb-4">Routing</h2>
-      <p class="text-lg text-gray-700 mb-4">
-        Discover how to implement routing in React applications using React
-        Router.
-      </p>
+  <body class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col gradient-bg">
+    <!-- Enhanced Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Header placeholder -->
+    <div id="header-placeholder" style="z-index: 100;"></div>
+    
+    <main class="flex-1 container mx-auto px-4 py-8 relative" style="z-index: 10;">
+      <!-- Enhanced Hero Section -->
+      <div class="relative overflow-hidden rounded-2xl mb-8 animate-fade-in">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 backdrop-blur-sm"></div>
+        <div class="glass-effect rounded-2xl p-12 relative" style="z-index: 20;">
+          <!-- Enhanced floating background elements -->
+          <div class="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style="z-index: 1;"></div>
+          <div class="absolute top-0 right-24 w-72 h-72 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2" style="z-index: 1;"></div>
+          <div class="absolute -bottom-8 left-20 w-72 h-72 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4" style="z-index: 1;"></div>
+          
+          <!-- Enhanced decorative code elements -->
+          <div class="absolute top-10 right-10 text-4xl text-blue-400 opacity-40 rotate-12 font-mono animate-pulse-slow" style="z-index: 2;">{}</div>
+          <div class="absolute bottom-10 left-10 text-5xl text-purple-400 opacity-30 -rotate-6 font-mono animate-float">/ /</div>
+          <div class="absolute top-1/2 right-1/4 text-2xl text-indigo-400 opacity-25 rotate-45 font-mono">&lt;/&gt;</div>
+          
+          <div class="relative" style="z-index: 30;">
+            <!-- Enhanced icon card -->
+            <div class="inline-flex items-center p-6 glass-effect rounded-xl shadow-2xl transform -rotate-1 mb-6 border-2 border-purple-200/50 hover-lift">
+              <i class="fa-solid fa-route text-6xl text-purple-600 animate-float mr-6"></i>
+              <div class="pl-6 border-l-2 border-purple-300">
+                <div class="text-sm uppercase tracking-widest text-purple-700 font-bold mb-1">React Navigation</div>
+                <div class="text-gray-800 font-semibold text-lg">Seamless Transitions</div>
+                <div class="text-purple-600 text-sm">✨ Modern Routing</div>
+              </div>
+            </div>
+            
+            <!-- Enhanced title with gradient text -->
+            <h2 class="text-6xl font-black mb-6 leading-tight animate-slide-up">
+              <span class="text-gradient">Routing in React</span>
+              <span class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg px-4 py-2 rounded-full ml-4 font-normal animate-bounce-slow">Essential</span>
+            </h2>
+            
+            <!-- Enhanced description -->
+            <p class="text-2xl text-gray-700 mb-8 leading-relaxed max-w-3xl font-light animate-fade-in">
+              🚀 Discover how to implement routing in React applications using React Router. Create seamless navigation experiences and build single-page applications with multiple views and URL-based navigation.
+            </p>
+            
+            <!-- Enhanced feature badges -->
+            <div class="flex flex-wrap gap-6 mb-6">
+              <div class="card-enhanced py-3 px-6 rounded-full shadow-lg flex items-center hover-lift">
+                <i class="fa-solid fa-link text-blue-600 mr-3 text-lg icon-bounce"></i>
+                <span class="text-gray-800 font-medium">Client-Side Navigation</span>
+              </div>
+              <div class="card-enhanced py-3 px-6 rounded-full shadow-lg flex items-center hover-lift">
+                <i class="fa-solid fa-code-branch text-green-600 mr-3 text-lg icon-spin-slow"></i>
+                <span class="text-gray-800 font-medium">URL-Based Rendering</span>
+              </div>
+              <div class="card-enhanced py-3 px-6 rounded-full shadow-lg flex items-center hover-lift">
+                <i class="fa-solid fa-shield-alt text-purple-600 mr-3 text-lg float-element"></i>
+                <span class="text-gray-800 font-medium">Protected Routes</span>
+              </div>
+              <div class="card-enhanced py-3 px-6 rounded-full shadow-lg flex items-center hover-lift">
+                <i class="fa-solid fa-sitemap text-amber-600 mr-3 text-lg animate-pulse-slow"></i>
+                <span class="text-gray-800 font-medium">Nested Routes</span>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Enhanced Quick Reference Index -->
+          <div class="card-enhanced rounded-2xl p-8 mb-6 shadow-2xl border-2 border-purple-200/30 animate-scale-in" style="z-index: 30; position: relative;">
+            <div class="flex items-center mb-6">
+              <div class="p-4 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-xl mr-6 float-element">
+                <i class="fa-solid fa-compass text-3xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-purple-900 text-2xl mb-1">Quick Reference Guide</h3>
+                <p class="text-gray-600">Navigate to the section you're interested in</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a href="#introduction" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-purple-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-purple-100 to-purple-200 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-compass text-purple-700 text-xl"></i>
+                </div>
+                <span class="text-purple-900 font-semibold">Introduction to React Router</span>
+              </a>
+              <a href="#core-components" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-indigo-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-indigo-100 to-violet-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-puzzle-piece text-indigo-600 text-xl"></i>
+                </div>
+                <span class="text-indigo-900 font-semibold">Core Router Components</span>
+              </a>
+              <a href="#basic-route-config" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-green-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-green-100 to-emerald-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-code text-green-600 text-xl"></i>
+                </div>
+                <span class="text-green-900 font-semibold">Route Configuration</span>
+              </a>
+              <a href="#navigation-components" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-blue-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-blue-100 to-cyan-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-link text-blue-600 text-xl"></i>
+                </div>
+                <span class="text-blue-900 font-semibold">Navigation Components</span>
+              </a>
+              <a href="#advanced-routing" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-amber-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-amber-100 to-yellow-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-sitemap text-amber-600 text-xl"></i>
+                </div>
+                <span class="text-amber-900 font-semibold">Advanced Routing</span>
+              </a>
+              <a href="#router-hooks" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-red-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-red-100 to-rose-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-code-branch text-red-600 text-xl"></i>
+                </div>
+                <span class="text-red-900 font-semibold">Router Hooks & Utilities</span>
+              </a>
+              <a href="#code-splitting" class="card-enhanced p-5 rounded-xl shadow-lg border-2 border-violet-100/50 transition-all hover-lift flex items-center group">
+                <div class="bg-gradient-to-br from-violet-100 to-purple-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-bolt text-violet-600 text-xl"></i>
+                </div>
+                <span class="text-violet-900 font-semibold">Code Splitting & Optimization</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Enhanced content sections with proper z-index -->
+      <div class="space-y-8" style="z-index: 20; position: relative;">
+        
+        <!-- Introduction Section -->
+        <div class="card-enhanced rounded-2xl p-8 shadow-xl border-2 border-gray-200/30 hover-lift animate-fade-in">
+          <h2 class="text-3xl font-bold mb-6 text-purple-900 flex items-center" id="introduction">
+            <div class="bg-gradient-to-br from-purple-600 to-blue-600 p-3 rounded-xl mr-4 shadow-lg">
+              <i class="fa-solid fa-compass text-white text-xl"></i>
+            </div>
+            Introduction to React Router
+          </h2>
+          
+          <div class="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl border-2 border-purple-100 mb-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-purple-200 rounded-full opacity-30 -mt-10 -mr-10"></div>
+            <p class="text-gray-800 mb-4 relative z-10">
+              <strong class="text-purple-800">What is routing?</strong> Imagine a website as a book. In regular websites, when you click a link, it's like replacing the entire book just to read a different page. But with React Router, it's like flipping to a new page while keeping the same book in your hands - much faster and smoother! ✨
+            </p>
+          </div>
+          
+          <div class="glass-effect p-6 rounded-xl border-2 border-purple-200/50 mb-6 animate-pulse-slow">
+            <h3 class="text-purple-900 font-bold mb-3 flex items-center text-xl">
+              <i class="fa-solid fa-lightbulb text-purple-600 mr-3 text-2xl animate-bounce"></i>Simple Definition
+            </h3>
+            <p class="text-gray-800 text-lg">
+              React Router is a tool that helps your React app show different content when the user clicks on different links, <strong class="text-purple-700">without</strong> reloading the entire page.
+            </p>
+          </div>
+          
+          <p class="text-gray-700 mb-4">
+            As a beginner, here's what React Router does for your app:
+          </p>
+          <ul class="list-disc pl-8 mb-4 text-gray-700 space-y-2">
+            <li><strong>Shows different screens</strong> when the URL changes (like showing a profile page when you go to <code class="bg-gray-100 px-1 rounded">/profile</code>)</li>
+            <li><strong>Changes the URL</strong> in your browser without refreshing the page (making navigation feel instant)</li>
+            <li><strong>Keeps everything in sync</strong> so the URL always matches what's on screen</li>
+          </ul>
+          <p class="text-gray-700 mb-4">
+            The big benefit? Your app feels like a smooth, native app instead of a clunky website. Users can navigate around without waiting for new pages to load!
+          </p>
+          
+          <div class="flex items-center p-4 bg-blue-50 rounded-lg mb-6 border border-blue-200">
+            <div class="bg-blue-100 p-2 rounded-full mr-3">
+              <i class="fa-solid fa-info text-blue-600"></i>
+            </div>
+            <p class="text-sm text-blue-800">
+              <strong>Real-world example:</strong> Think of how apps like Instagram or Twitter let you click on profiles and posts without the whole page refreshing. That smooth navigation is what React Router brings to your web apps!
+            </p>
+          </div>
+        </div>
 
-      <h2 class="text-xl font-semibold mt-6 mb-4">Introduction to Routing</h2>
-      <p class="text-gray-700 mb-4">
-        Routing is an essential part of building single-page applications (SPAs)
-        with React. It allows you to navigate between different views or
-        components without reloading the entire page.
-      </p>
+        <!-- Installation Section -->
+        <div class="card-enhanced rounded-2xl p-8 shadow-xl border-2 border-blue-200/30 hover-lift">
+          <h2 class="text-3xl font-bold mb-6 text-blue-900 flex items-center">
+            <div class="bg-gradient-to-br from-blue-600 to-cyan-600 p-3 rounded-xl mr-4 shadow-lg animate-bounce-slow">
+              <i class="fa-solid fa-download text-white text-xl"></i>
+            </div>
+            Installation
+          </h2>
+          
+          <div class="glass-effect p-6 rounded-xl border-2 border-blue-200/50 mb-6">
+            <p class="text-gray-800 mb-4 text-lg">
+              To get started with React Router, you need to install it using npm or yarn:
+            </p>
+            
+            <!-- Enhanced code block -->
+            <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+              <div class="code-header flex items-center justify-between px-6 py-3">
+                <div class="flex items-center">
+                  <i class="fa-solid fa-terminal text-green-400 mr-3 text-lg"></i>
+                  <span class="text-sm font-mono text-gray-300">Installation Commands</span>
+                </div>
+                <div class="flex space-x-2">
+                  <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                </div>
+              </div>
+              <pre class="bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 p-6 m-0 overflow-x-auto"><code class="language-bash"># Install React Router using npm
+npm install react-router-dom
 
-      <h2 class="text-xl font-semibold mt-6 mb-4">React Router</h2>
-      <p class="text-gray-700 mb-4">
-        React Router is the standard library for routing in React. It enables
-        the navigation among views of various components in a React Application,
-        allows changing the browser URL, and keeps UI in sync with the URL.
-      </p>
+# OR using yarn
+yarn add react-router-dom</code></pre>
+            </div>
+          </div>
+        </div>
 
-      <h2 class="text-xl font-semibold mt-6 mb-4">Basic Example</h2>
-      <pre class="bg-gray-100 p-4 rounded-lg mb-4"><code>
+        <!-- Core Components Section -->
+        <div class="card-enhanced rounded-2xl p-8 shadow-xl border-2 border-indigo-200/30 hover-lift">
+          <h2 class="text-3xl font-bold mb-6 text-indigo-900 flex items-center" id="core-components">
+            <div class="bg-gradient-to-br from-indigo-600 to-purple-600 p-3 rounded-xl mr-4 shadow-lg">
+              <i class="fa-solid fa-puzzle-piece text-white text-xl"></i>
+            </div>
+            Core Router Components Explained
+          </h2>
+          
+          <p class="text-gray-700 mb-5">
+            React Router has three main components that work together to make routing work: <code class="bg-indigo-50 px-1 py-0.5 rounded text-indigo-700">BrowserRouter</code>, <code class="bg-indigo-50 px-1 py-0.5 rounded text-indigo-700">Routes</code>, and <code class="bg-indigo-50 px-1 py-0.5 rounded text-indigo-700">Route</code>. Let's understand what each one does:
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- BrowserRouter explanation -->
+            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-5 rounded-lg border border-indigo-100 shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="bg-indigo-100 p-2 rounded-full mr-3">
+                  <i class="fa-solid fa-globe text-indigo-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-indigo-800">BrowserRouter</h3>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">
+                <strong>Think of it as:</strong> The foundation of your routing system
+              </p>
+              <p class="text-gray-700 text-sm mb-3">
+                BrowserRouter is the main container for all your routing. It uses the HTML5 history API to keep your UI in sync with the URL in the browser address bar.
+              </p>
+              <div class="bg-white/80 p-3 rounded border border-indigo-100">
+                <p class="text-xs text-indigo-700 font-medium mb-1">What it does:</p>
+                <ul class="text-xs text-gray-600 list-disc pl-4 space-y-1">
+                  <li>Listens for URL changes</li>
+                  <li>Manages browser history</li>
+                  <li>Enables back/forward button functionality</li>
+                  <li>Passes routing information to child components</li>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Routes explanation -->
+            <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border border-blue-100 shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="bg-blue-100 p-2 rounded-full mr-3">
+                  <i class="fa-solid fa-map text-blue-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-blue-800">Routes</h3>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">
+                <strong>Think of it as:</strong> A switchboard that directs traffic
+              </p>
+              <p class="text-gray-700 text-sm mb-3">
+                The Routes component looks at all of its child Route components and renders the one whose path best matches the current URL. It ensures only one route is shown at a time.
+              </p>
+              <div class="bg-white/80 p-3 rounded border border-blue-100">
+                <p class="text-xs text-blue-700 font-medium mb-1">What it does:</p>
+                <ul class="text-xs text-gray-600 list-disc pl-4 space-y-1">
+                  <li>Groups all your Route components</li>
+                  <li>Finds the best matching Route for the current URL</li>
+                  <li>Prevents multiple routes from rendering at once</li>
+                  <li>Replaced the old "Switch" component from React Router v5</li>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Route explanation -->
+            <div class="bg-gradient-to-r from-cyan-50 to-green-50 p-5 rounded-lg border border-cyan-100 shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="bg-cyan-100 p-2 rounded-full mr-3">
+                  <i class="fa-solid fa-road text-cyan-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-cyan-800">Route</h3>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">
+                <strong>Think of it as:</strong> A single road to a destination
+              </p>
+              <p class="text-gray-700 text-sm mb-3">
+                Each Route component maps a URL path to a specific React component. When the current URL matches its path, it renders the specified component.
+              </p>
+              <div class="bg-white/80 p-3 rounded border border-cyan-100">
+                <p class="text-xs text-cyan-700 font-medium mb-1">What it does:</p>
+                <ul class="text-xs text-gray-600 list-disc pl-4 space-y-1">
+                  <li>Connects a URL path to a React component</li>
+                  <li>Takes a "path" prop that defines the URL pattern</li>
+                  <li>Takes an "element" prop with the component to render</li>
+                  <li>Can handle dynamic parameters with path patterns like "/users/:userId"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 mb-5">
+            <h4 class="font-medium text-indigo-800 mb-2 flex items-center">
+              <i class="fa-solid fa-lightbulb text-indigo-600 mr-2"></i>How They Work Together
+            </h4>
+            <p class="text-gray-700 mb-3">
+              These three components work together like a well-organized transportation system:
+            </p>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+              <li><strong>BrowserRouter</strong> creates the environment for routing to work</li>
+              <li><strong>Routes</strong> acts like a traffic controller, looking at all available routes</li>
+              <li><strong>Route</strong> components define the individual paths and what should appear when those paths are visited</li>
+            </ol>
+            <p class="text-gray-700 mt-3">
+              Together, they create a seamless navigation experience where the UI updates to match the URL without reloading the page.
+            </p>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+            <p class="text-yellow-800">
+              <strong>Important:</strong> Always make sure your <code>Route</code> components are wrapped inside a <code>Routes</code> component, and that everything is inside a <code>BrowserRouter</code>. This structure is essential for React Router to work properly.
+            </p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-4 text-green-800 flex items-center" id="basic-route-config">
+          <i class="fa-solid fa-code text-green-600 mr-3"></i>
+          Basic Route Configuration
+        </h2>
+        <p class="text-gray-700 mb-4">
+          Setting up routes is like drawing a map for your app that says "when the user goes to this address, show this screen." Each route connects a URL path (like <code class="bg-gray-100 px-1 rounded">/about</code>) to a specific component (like <code class="bg-gray-100 px-1 rounded">AboutPage</code>).
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div class="font-semibold text-green-800 mb-2">Step 1</div>
+            <p class="text-sm text-gray-700">Import the necessary components from React Router</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div class="font-semibold text-green-800 mb-2">Step 2</div>
+            <p class="text-sm text-gray-700">Wrap your app in a <code>BrowserRouter</code> component</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div class="font-semibold text-green-800 mb-2">Step 3</div>
+            <p class="text-sm text-gray-700">Define your routes using the <code>Routes</code> and <code>Route</code> components</p>
+          </div>
+        </div>
+        
+        <p class="text-gray-700 mb-4">
+          Here's a simple example showing how to create routes in your app:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-green-100 overflow-hidden mb-6 relative z-40">
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-green-400 mr-2"></i>
+              <span class="text-sm font-mono">App.jsx</span>
+            </div>
+            <div class="flex space-x-1">
+              <div class="w-3 h-3 rounded-full bg-red-400"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <div class="w-3 h-3 rounded-full bg-green-400"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Your page components
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+
+function App() {
+    return (
+        &lt;BrowserRouter&gt;            {/* Step 1: The router container */}
+            &lt;Routes&gt;                {/* Step 2: Group all your routes */}
+                {/* Step 3: Define each route with path and component */}
+                &lt;Route path="/" element={&lt;Home /&gt;} /&gt;             
+                {/* When URL is yoursite.com/ show the Home component */}
+                
+                &lt;Route path="/about" element={&lt;About /&gt;} /&gt;       
+                {/* When URL is yoursite.com/about show the About component */}
+                
+                &lt;Route path="/contact" element={&lt;Contact /&gt;} /&gt;   
+                {/* When URL is yoursite.com/contact show the Contact component */}
+            &lt;/Routes&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}
+      </code></pre>
+      <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+        <p class="text-yellow-700">
+          <strong>Note:</strong> If you see code that looks different, it might
+          be using an older version of React Router. Here's how it looked in v5:
+        </p>
+        <pre class="bg-gray-100 p-4 rounded-lg mt-2"><code>
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
     return (
         &lt;Router&gt;
-            &lt;Switch&gt;
-                &lt;Route path="/" exact component={Home} /&gt;
+            &lt;Switch&gt;                {/* This is now called 'Routes' in v6 */}
+                &lt;Route path="/" exact component={Home} /&gt;      {/* In v6: element={&lt;Home /&gt;} */}
                 &lt;Route path="/about" component={About} /&gt;
                 &lt;Route path="/contact" component={Contact} /&gt;
             &lt;/Switch&gt;
         &lt;/Router&gt;
     );
 }
+        </code></pre>
+      </div>
+
+      </div>
+
+     
+        <h2 class="text-2xl font-semibold mb-4 text-blue-800 flex items-center" id="navigation-components">
+          <i class="fa-solid fa-link text-blue-600 mr-3"></i>
+          Navigation Components
+        </h2>
+        <p class="text-gray-700 mb-4">
+          Once you have routes set up, you need ways for users to navigate between
+          them. React Router gives you special components that work like links but
+          don't cause page refreshes.
+        </p>
+      <h3 class="text-lg font-semibold mt-4 mb-3 flex items-center">
+        <i class="fa-solid fa-link text-blue-600 mr-2"></i>Link Component
+      </h3>
+      
+      <div class="bg-blue-50 p-4 rounded-lg mb-5 border border-blue-100">
+        <h4 class="font-medium text-blue-800 mb-1">What's a Link?</h4>
+        <p class="text-gray-700 text-sm">
+          In regular HTML, we use <code>&lt;a&gt;</code> tags for links, but these reload the entire page when clicked.
+          The <code>Link</code> component from React Router looks like a regular link but performs navigation without page reloads!
+        </p>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-4 mb-5">
+        <div class="flex-1 bg-red-50 p-4 rounded-lg border border-red-100">
+          <h4 class="font-medium text-red-700 mb-2 flex items-center">
+            <i class="fa-solid fa-times-circle mr-2"></i>Regular Link (Don't Use)
+          </h4>
+          <code class="text-red-800 bg-red-100 px-2 py-1 rounded block">
+            &lt;a href="/about"&gt;About&lt;/a&gt;
+          </code>
+          <p class="text-sm text-gray-700 mt-2">Causes full page reload!</p>
+        </div>
+        
+        <div class="flex-1 bg-green-50 p-4 rounded-lg border border-green-100">
+          <h4 class="font-medium text-green-700 mb-2 flex items-center">
+            <i class="fa-solid fa-check-circle mr-2"></i>React Router Link (Use This)
+          </h4>
+          <code class="text-green-800 bg-green-100 px-2 py-1 rounded block">
+            &lt;Link to="/about"&gt;About&lt;/Link&gt;
+          </code>
+          <p class="text-sm text-gray-700 mt-2">Smooth navigation without reload!</p>
+        </div>
+      </div>
+      
+      <p class="text-gray-700 mb-4">
+        Here's how to create a navigation menu with <code>Link</code> components:
+      </p>
+      
+      
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-blue-400 mr-2"></i>
+            <span class="text-sm font-mono">Navigation.jsx</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { Link } from 'react-router-dom';  // Step 1: Import the Link component
+
+function Navigation() {
+    return (
+        &lt;nav className="bg-gray-100 p-4 rounded"&gt;
+            &lt;ul className="flex space-x-4"&gt;
+                {/* Step 2: Replace all &lt;a&gt; tags with &lt;Link&gt; components */}
+                &lt;li&gt;&lt;Link to="/" className="text-blue-500 hover:underline"&gt;Home&lt;/Link&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;Link to="/about" className="text-blue-500 hover:underline"&gt;About&lt;/Link&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;Link to="/contact" className="text-blue-500 hover:underline"&gt;Contact&lt;/Link&gt;&lt;/li&gt;
+                {/* Notice we use "to" instead of "href" */}
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    );
+}
       </code></pre>
 
-      <h2 class="text-xl font-semibold mt-6 mb-4">Conclusion</h2>
+      <h3 class="text-lg font-semibold mt-4 mb-2">NavLink Component</h3>
       <p class="text-gray-700 mb-4">
-        Using React Router, you can create a seamless navigation experience in
-        your React applications. Make sure to explore its features like nested
-        routes, route parameters, and programmatic navigation.
+        The <code>NavLink</code> is a special version of <code>Link</code> that
+        knows when it's "active." This is perfect for navigation menus where you
+        want to highlight the current page:
       </p>
-    </main>
-    <!-- Footer placeholder - will be filled by components-loader.js -->
-    <div id="footer-placeholder"></div>
+      <pre class="bg-gray-100 p-4 rounded-lg mb-4"><code>
+import { NavLink } from 'react-router-dom';
 
-    <!-- Load components-loader.js before other scripts -->
+function Navigation() {
+    return (
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;
+                    &lt;NavLink 
+                        to="/" 
+                        className={({ isActive }) => isActive ? "active-link" : undefined}
+                    &gt;
+                        Home
+                    &lt;/NavLink&gt;
+                &lt;/li&gt;
+                {/* More navigation items */}
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    );
+}
+      </code></pre>
+
+      </div>
+
+     
+        <h2 class="text-2xl font-semibold mb-4 text-indigo-800 flex items-center">
+          <i class="fa-solid fa-code-branch text-indigo-600 mr-3"></i>
+          Programmatic Navigation
+        </h2>
+        <p class="text-gray-700 mb-4">
+          Sometimes you need to navigate using code instead of links. For example,
+          after a user submits a form or when a timer completes. That's when
+          programmatic navigation comes in:
+      </p>
+      <pre class="bg-gray-100 p-4 rounded-lg mb-4"><code>
+import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+    const navigate = useNavigate();
+    
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Process login...
+        
+        // Redirect after successful login
+        navigate('/dashboard');
+        
+        // You can also pass state to the new location
+        // navigate('/dashboard', { state: { from: 'login' } });
+    };
+    
+    return (
+        &lt;form onSubmit={handleSubmit}&gt;
+            {/* Form fields */}
+            &lt;button type="submit"&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    );
+}
+      </code></pre>
+
+      
+
+      <div class="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-200 relative z-40">
+        <h2 class="text-2xl font-semibold mb-4 text-amber-800 flex items-center" id="advanced-routing">
+          <i class="fa-solid fa-sitemap text-amber-600 mr-3"></i>
+          Advanced Routing
+        </h2>
+        <p class="text-gray-700 mb-4">
+          Once you're comfortable with basic routing, you can use more powerful
+          features to build complex applications.
+        </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2">Nested Routes</h3>
+      <p class="text-gray-700 mb-4">
+        Nested routes let you create layouts with sub-pages. Think of them like
+        folders inside folders:
+      </p>
+      <pre class="bg-gray-100 p-4 rounded-lg mb-4"><code>
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+
+function App() {
+    return (
+        &lt;BrowserRouter&gt;
+            &lt;Routes&gt;
+                &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
+                    &lt;Route index element={&lt;Home /&gt;} /&gt;
+                    &lt;Route path="dashboard" element={&lt;Dashboard /&gt;}&gt;
+                        &lt;Route path="profile" element={&lt;Profile /&gt;} /&gt;
+                        &lt;Route path="settings" element={&lt;Settings /&gt;} /&gt;
+                    &lt;/Route&gt;
+                &lt;/Route&gt;
+            &lt;/Routes&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}
+
+function Layout() {
+    return (
+        &lt;div&gt;
+            &lt;header&gt;Header content&lt;/header&gt;
+            &lt;main&gt;
+                {/* Nested routes are rendered here */}
+                &lt;Outlet /&gt;
+            &lt;/main&gt;
+            &lt;footer&gt;Footer content&lt;/footer&gt;
+        &lt;/div&gt;
+    );
+}
+      </code></pre>
+
+      <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+        <i class="fa-solid fa-tag text-amber-600 mr-2"></i>Dynamic Routes with Parameters
+      </h3>
+      
+      <div class="bg-amber-50 p-5 rounded-lg border border-amber-100 mb-5">
+        <div class="flex items-center mb-2">
+          <i class="fa-solid fa-lightbulb text-amber-600 mr-2"></i>
+          <h4 class="font-medium text-amber-800">Dynamic Routes: One Route, Many Pages</h4>
+        </div>
+        <p class="text-gray-700">
+          Instead of creating separate routes for each item (like <code>/products/shirt</code>, <code>/products/pants</code>), 
+          dynamic routes let you create <strong>one flexible path</strong> with <strong>variable parts</strong> that change based on what the user wants to see.
+        </p>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-4 mb-5">
+        <div class="flex-1 bg-white p-4 rounded-lg border border-amber-100 shadow-sm">
+          <div class="flex items-center mb-2">
+            <i class="fa-solid fa-map-pin text-amber-500 mr-2"></i>
+            <span class="text-amber-800 font-medium">How It Works</span>
+          </div>
+          <p class="text-gray-700 mb-2 text-sm">In the route <code>/products/:id</code>:</p>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li>• <code>:id</code> is a variable that captures any value</li>
+            <li>• <code>/products/123</code> → id = "123"</li>
+            <li>• <code>/products/t-shirt</code> → id = "t-shirt"</li>
+          </ul>
+        </div>
+        
+        <div class="flex-1 bg-white p-4 rounded-lg border border-amber-100 shadow-sm">
+          <div class="flex items-center mb-2">
+            <i class="fa-solid fa-list-check text-amber-500 mr-2"></i>
+            <span class="text-amber-800 font-medium">Perfect For</span>
+          </div>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li>• Product pages</li>
+            <li>• User profiles</li>
+            <li>• Blog posts</li>
+            <li>• Any content with similar layouts but different data</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="bg-white p-0 rounded-lg shadow-md border border-amber-100 overflow-hidden mb-6 relative z-40">
+        <div class="code-header flex items-center justify-between px-4 py-2 bg-amber-50">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-amber-400 mr-2"></i>
+            <span class="text-sm font-medium">3 Simple Steps: Dynamic Routes in Action</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">// Step 1: Define a dynamic route with parameter
+&lt;Route path="/products/:id" element={&lt;ProductDetail /&gt;} /&gt;
+
+// Step 2: Create a component that uses the parameter
+import { useParams } from 'react-router-dom';
+
+function ProductDetail() {
+    // Step 3: Extract the parameter value with useParams hook
+    const { id } = useParams();
+    
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Product: {id}&lt;/h1&gt;
+            {/* Now you can use the id to fetch product data */}
+        &lt;/div&gt;
+    );
+}
+
+// BONUS: Working with query parameters (e.g., ?color=red&size=large)
+import { useSearchParams } from 'react-router-dom';
+
+function ProductFilters() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const color = searchParams.get('color'); // Gets "red" from ?color=red
+    
+    return (
+        &lt;div&gt;
+            &lt;p&gt;Selected color: {color || "none"}&lt;/p&gt;
+            {/* Update filters with setSearchParams({...}) */}
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+        <i class="fa-solid fa-shield-alt text-indigo-600 mr-2"></i>Protected Routes
+      </h3>
+      
+      <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 mb-5">
+        <h4 class="font-medium text-indigo-800 mb-2">What are Protected Routes?</h4>
+        <p class="text-gray-700">
+          Protected routes are pages in your app that only certain users should be able to see. Think of them like VIP rooms that require a special pass to enter. If someone tries to access these routes without permission, they get redirected elsewhere (usually to a login page).
+        </p>
+      </div>
+      
+      <div class="flex items-center mb-5">
+        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+          <i class="fa-solid fa-user-lock text-indigo-600 text-xl"></i>
+        </div>
+        <div class="ml-4">
+          <h4 class="font-medium text-gray-800">Common examples of protected routes:</h4>
+          <ul class="text-gray-700 list-disc ml-5 mt-1 space-y-1 text-sm">
+            <li>User dashboard</li>
+            <li>Profile settings</li>
+            <li>Account management pages</li>
+            <li>Admin panels</li>
+          </ul>
+        </div>
+      </div>
+      
+      <p class="text-gray-700 mb-4">
+        Creating protected routes is easy! Let's break it down into simple steps:
+      </p>
+      
+      <div class="bg-white p-0 rounded-lg shadow-md border border-indigo-100 overflow-hidden mb-6">
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-indigo-400 mr-2"></i>
+            <span class="text-sm font-mono">ProtectedRoutes.jsx</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { Navigate, Outlet } from 'react-router-dom';
+
+// Step 1: Create a component that will check if the user is logged in
+function ProtectedRoute({ isAuthenticated }) {
+    // Step 2: Check if user is authenticated
+    if (!isAuthenticated) {
+        // Step 3: If not authenticated, redirect to login
+        return &lt;Navigate to="/login" replace /&gt;;
+        // The 'replace' prop replaces the current URL in history
+        // so the user can't press the back button to access the protected page
+    }
+    
+    // Step 4: If authenticated, render whatever is inside this route
+    return &lt;Outlet /&gt;;  // Outlet renders child routes
+}
+
+// Step 5: Use the ProtectedRoute in your route configuration
+function AppRoutes() {
+    // This would typically come from your auth system
+    const isUserLoggedIn = checkIfUserIsLoggedIn();  
+    
+    return (
+        &lt;Routes&gt;
+            {/* Public routes anyone can access */}
+            &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+            &lt;Route path="/login" element={&lt;Login /&gt;} /&gt;
+            
+            {/* Protected routes - wrapped in our ProtectedRoute component */}
+            &lt;Route element={&lt;ProtectedRoute isAuthenticated={isUserLoggedIn} /&gt;}&gt;
+                &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;} /&gt;
+                &lt;Route path="/profile" element={&lt;Profile /&gt;} /&gt;
+                &lt;Route path="/settings" element={&lt;Settings /&gt;} /&gt;
+            &lt;/Route&gt;
+        &lt;/Routes&gt;
+    );
+}
+      </code></pre>
+      
+      <div class="bg-indigo-100 p-5 rounded-lg border border-indigo-200 mb-5">
+        <h4 class="font-medium text-indigo-800 mb-3 flex items-center">
+          <i class="fa-solid fa-lightbulb text-indigo-600 mr-2"></i>
+          Understanding the Outlet Component
+        </h4>
+        <p class="text-gray-700 mb-3">
+          You may have noticed the <code class="bg-indigo-50 px-1 py-0.5 rounded text-indigo-700">&lt;Outlet /&gt;</code> component in the code above. This is a key part of how protected routes work:
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+          <div class="bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+            <h5 class="font-medium text-indigo-700 mb-2">What is Outlet?</h5>
+            <p class="text-gray-700 text-sm">
+              <code>Outlet</code> is like a window or placeholder that shows the child routes within a parent route. Think of it as saying "if the user passes the authentication check, display whatever child route they're trying to access right here."
+            </p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+            <h5 class="font-medium text-indigo-700 mb-2">Why use Outlet?</h5>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Enables nested routing in React Router</li>
+              <li>• Allows multiple routes to share the same protection logic</li>
+              <li>• Creates cleaner, more organized routing code</li>
+              <li>• Reduces code duplication for access control</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+          <h5 class="font-medium text-indigo-700 mb-2">How Outlet Works in Protected Routes:</h5>
+          <ol class="text-gray-700 text-sm space-y-2 ml-4 list-decimal">
+            <li>
+              <strong>Authentication Check:</strong> The ProtectedRoute component first checks if the user is authenticated
+            </li>
+            <li>
+              <strong>Conditional Rendering:</strong> If authenticated, the <code>&lt;Outlet /&gt;</code> renders the matching child route
+            </li>
+            <li>
+              <strong>Child Routes:</strong> Your dashboard, profile, and settings routes are all children of the ProtectedRoute
+            </li>
+            <li>
+              <strong>One Guard, Many Routes:</strong> This approach protects multiple routes with a single authentication check
+            </li>
+          </ol>
+          <p class="mt-3 text-sm text-gray-700">
+            Without <code>Outlet</code>, you'd have to repeat your authentication logic in every protected component, making your code harder to maintain.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2">
+        Route Guards and Authentication
+      </h3>
+      <p class="text-gray-700 mb-4">
+        Route guards are more advanced bouncers that can perform additional
+        checks. For example, they can check not just if a user is logged in, but
+        also what permissions they have:
+      </p>
+      <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-indigo-400 mr-2"></i>
+            <span class="text-sm font-mono">RouteGuard.jsx</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { useLocation, Navigate, Outlet } from 'react-router-dom';
+
+function RequireAuth({ allowedRoles }) {
+    const { user } = useAuth(); // Your authentication hook (you'd create this)
+    const location = useLocation();
+    
+    // First check: Is the user logged in?
+    if (!user) {
+        // If not logged in, redirect to login page
+        // Also remember where they were trying to go (to redirect back later)
+        return &lt;Navigate to="/login" state={{ from: location }} replace /&gt;;
+    }
+    
+    // Second check: Does the user have permission?
+    if (!allowedRoles.includes(user.role)) {
+        // If the user doesn't have the right role (e.g., not an admin)
+        return &lt;Navigate to="/unauthorized" replace /&gt;;
+    }
+    
+    // If they pass all checks, show the protected content
+    return &lt;Outlet /&gt;;
+}
+
+// In your routes configuration
+&lt;Route element={&lt;RequireAuth allowedRoles={['admin']} /&gt;}&gt;
+    &lt;Route path="/admin" element={&lt;AdminPanel /&gt;} /&gt;
+&lt;/Route&gt;</code></pre>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold mb-4 text-purple-800 flex items-center" id="router-hooks">
+          <i class="fa-solid fa-tools text-purple-600 mr-3"></i>Router Hooks and Utilities
+        </h2>
+        <p class="text-gray-700 mb-6">
+          React Router provides special functions called "hooks" that let you
+          access routing information and navigate from anywhere in your
+          components. Think of these hooks as your navigation toolkit:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-purple-50 p-4 rounded-lg shadow-sm border border-purple-100">
+            <div class="flex items-center mb-2">
+              <i class="fa-solid fa-compass text-purple-600 mr-2"></i>
+              <strong class="text-purple-800">useNavigate</strong>
+            </div>
+            <p class="text-gray-700 text-sm">Programmatic navigation between routes</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg shadow-sm border border-purple-100">
+            <div class="flex items-center mb-2">
+              <i class="fa-solid fa-location-dot text-purple-600 mr-2"></i>
+              <strong class="text-purple-800">useLocation</strong>
+            </div>
+            <p class="text-gray-700 text-sm">Access current URL information and state</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg shadow-sm border border-purple-100">
+            <div class="flex items-center mb-2">
+              <i class="fa-solid fa-tags text-purple-600 mr-2"></i>
+              <strong class="text-purple-800">useParams</strong>
+            </div>
+            <p class="text-gray-700 text-sm">Extract dynamic parameters from the URL</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg shadow-sm border border-purple-100">
+            <div class="flex items-center mb-2">
+              <i class="fa-solid fa-filter text-purple-600 mr-2"></i>
+              <strong class="text-purple-800">useSearchParams</strong>
+            </div>
+            <p class="text-gray-700 text-sm">Read and modify query string parameters</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+          <i class="fa-solid fa-compass text-purple-600 mr-2"></i>useNavigate
+        </h3>
+        <p class="text-gray-700 mb-4">
+          The <code class="bg-purple-50 px-1 py-0.5 rounded text-purple-700">useNavigate</code> hook gives you a navigation function you
+          can call from anywhere. Think of it as a "go to page" remote control that lets you change pages programmatically:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+          <div class="code-header flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <i class="fa-solid fa-terminal text-green-400 mr-3 text-lg"></i>
+              <span class="text-sm font-mono text-gray-300">Navigation Commands</span>
+            </div>
+            <div class="flex space-x-2">
+              <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { useNavigate } from 'react-router-dom';
+
+function NavigationExample() {
+    // Get the navigate function
+    const navigate = useNavigate();
+    
+    return (
+        &lt;div className="navigation-examples"&gt;
+            &lt;button onClick={() => navigate('/dashboard')}&gt;
+                Go to Dashboard
+            &lt;/button&gt;
+            
+            {/* Replace current history entry (can't go back) */}
+            &lt;button onClick={() => navigate('/profile', { replace: true })}&gt;
+                Go to Profile
+            &lt;/button&gt;
+            
+            {/* Navigation with browser history */}
+            &lt;button onClick={() => navigate(-1)}&gt;Go Back&lt;/button&gt;
+            &lt;button onClick={() => navigate(1)}&gt;Go Forward&lt;/button&gt;
+            
+            {/* Pass state data to the destination */}
+            &lt;button onClick={() => 
+                navigate('/details', { state: { from: 'navigation example' } })
+            }&gt;
+                Go to Details with State
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+          </div>
+        </div>
+
+      <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+          <i class="fa-solid fa-location-dot text-purple-600 mr-2"></i>useLocation
+        </h3>
+        <p class="text-gray-700 mb-4">
+          The <code class="bg-purple-50 px-1 py-0.5 rounded text-purple-700">useLocation</code> hook tells you information about the
+          current page URL and any data that was passed during navigation. It's like a GPS that can tell you exactly where you are in your app and how you got there:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+          <div class="code-header flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <i class="fa-solid fa-terminal text-green-400 mr-3 text-lg"></i>
+              <span class="text-sm font-mono text-gray-300">Location Commands</span>
+            </div>
+            <div class="flex space-x-2">
+              <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { useLocation } from 'react-router-dom';
+
+function CurrentRoute() {
+    // useLocation gives us details about the current URL
+    const location = useLocation();
+    
+    return (
+        &lt;div className="location-info p-4 border rounded"&gt;
+            &lt;h2&gt;Current Location Information&lt;/h2&gt;
+            
+            {/* URL path information */}
+            &lt;p&gt;Current path: {location.pathname}&lt;/p&gt;     {/* e.g., "/products/123" */}
+            &lt;p&gt;Search params: {location.search}&lt;/p&gt;     {/* e.g., "?color=red" */}
+            &lt;p&gt;Hash: {location.hash}&lt;/p&gt;                {/* e.g., "#section1" */}
+            
+            {/* Access the invisible state data passed during navigation */}
+            {location.state && (
+                &lt;div className="state-info mt-4 bg-blue-50 p-3 rounded"&gt;
+                    &lt;h3&gt;Navigation State Data&lt;/h3&gt;
+                    &lt;p&gt;Navigated from: {location.state.from}&lt;/p&gt;
+                    {location.state.timestamp && (
+                        &lt;p&gt;Timestamp: {location.state.timestamp}&lt;/p&gt;
+                    )}
+                &lt;/div&gt;
+            )}
+        &lt;/div&gt;
+    );
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-6">
+          <p class="text-blue-700">
+            <strong>Tip:</strong> <code class="bg-blue-100 px-1 py-0.5 rounded">useLocation</code> is especially useful for analytics tracking, breadcrumbs, or when you need to respond to URL changes in your app.
+          </p>
+        </div>
+        
+        <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+          <i class="fa-solid fa-filter text-purple-600 mr-2"></i>useSearchParams
+        </h3>
+        <p class="text-gray-700 mb-4">
+          The <code class="bg-purple-50 px-1 py-0.5 rounded text-purple-700">useSearchParams</code> hook handles query string parameters in your URL (the <code>?key=value&part=2</code> part). It lets you read and update these parameters easily:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+          <div class="code-header flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <i class="fa-solid fa-terminal text-green-400 mr-3 text-lg"></i>
+              <span class="text-sm font-mono text-gray-300">Search Params Commands</span>
+            </div>
+            <div class="flex space-x-2">
+              <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { useSearchParams } from 'react-router-dom';
+
+function ProductFilters() {
+    // Get and set search parameters from the URL
+    const [searchParams, setSearchParams] = useSearchParams();
+    
+    // Read current filter values from URL
+    const category = searchParams.get('category') || 'all';
+    const minPrice = searchParams.get('minPrice') || '';
+    const maxPrice = searchParams.get('maxPrice') || '';
+    
+    // Function to update filters in the URL
+    const updateFilters = (newCategory, newMinPrice, newMaxPrice) => {
+        const params = new URLSearchParams();
+        
+        if (newCategory && newCategory !== 'all') {
+            params.set('category', newCategory);
+        }
+        
+        if (newMinPrice) {
+            params.set('minPrice', newMinPrice);
+        }
+        
+        if (newMaxPrice) {
+            params.set('maxPrice', newMaxPrice);
+        }
+        
+        // Update URL with new parameters
+        setSearchParams(params);
+    };
+    
+    return (
+        &lt;div className="product-filters"&gt;
+            &lt;h2&gt;Product Filters&lt;/h2&gt;
+            
+            &lt;div className="filter-controls"&gt;
+                &lt;select 
+                    value={category}
+                    onChange={(e) => updateFilters(e.target.value, minPrice, maxPrice)}
+                &gt;
+                    &lt;option value="all"&gt;All Categories&lt;/option&gt;
+                    &lt;option value="electronics"&gt;Electronics&lt;/option&gt;
+                    &lt;option value="clothing"&gt;Clothing&lt;/option&gt;
+                &lt;/select&gt;
+                
+                &lt;div className="price-range"&gt;
+                    &lt;input 
+                        type="number" 
+                        placeholder="Min Price" 
+                        value={minPrice}
+                        onChange={(e) => updateFilters(category, e.target.value, maxPrice)}
+                    /&gt;
+                    &lt;input 
+                        type="number" 
+                        placeholder="Max Price" 
+                        value={maxPrice}
+                        onChange={(e) => updateFilters(category, minPrice, e.target.value)}
+                    /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;p&gt;Current URL parameters: {window.location.search}&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+          <i class="fa-solid fa-tags text-purple-600 mr-2"></i>useParams
+        </h3>
+        <p class="text-gray-700 mb-4">
+          The <code class="bg-purple-50 px-1 py-0.5 rounded text-purple-700">useParams</code> hook extracts dynamic parts (parameters) from the
+          current URL. It's like extracting variables from a web address so you can use them in your component:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+          <div class="code-header flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <i class="fa-solid fa-terminal text-green-400 mr-3 text-lg"></i>
+              <span class="text-sm font-mono text-gray-300">User Profile Commands</span>
+            </div>
+            <div class="flex space-x-1">
+              <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { useParams } from 'react-router-dom';
+
+function UserProfile() {
+    // Extract URL parameters - when URL is /users/123, userId will be "123"
+    const { userId } = useParams();
+    
+    // You can use the parameter to fetch data or conditionally render content
+    return (
+        &lt;div className="user-profile"&gt;
+            &lt;h1&gt;User Profile: {userId}&lt;/h1&gt;
+            &lt;p&gt;Showing details for user ID: {userId}&lt;/p&gt;
+            {/* The component will automatically update when the URL parameter changes */}
+        &lt;/div&gt;
+    );
+}
+
+// In your route configuration:
+// &lt;Route path="/users/:userId" element={&lt;UserProfile /&gt;} /&gt;</code></pre>
+          </div>
+        </div>
+
+      <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center" id="code-splitting">
+        <i class="fa-solid fa-bolt text-purple-600 mr-2"></i>Route-based Code Splitting
+      </h3>
+      <p class="text-gray-700 mb-4">
+        As your app grows, loading everything at once can slow it down. Code
+        splitting lets you load just the code needed for the current page. It's
+        like downloading only the book chapters you're reading right now, rather
+        than the whole book:
+      </p>
+      
+      <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm font-mono">AppWithCodeSplitting.jsx</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">import { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Instead of importing components normally:
+// import Home from './pages/Home';
+// import About from './pages/About';
+
+// Lazy load components - only download them when needed
+const Home = lazy(() => import('./pages/Home'));       // Will load when visiting home page
+const About = lazy(() => import('./pages/About'));     // Will load when visiting about page
+const Dashboard = lazy(() => import('./pages/Dashboard')); // Will load when visiting dashboard
+
+function App() {
+    return (
+        &lt;BrowserRouter&gt;
+            {/* The Suspense component shows a fallback while code is loading */}
+            &lt;Suspense fallback={
+                &lt;div className="flex justify-center items-center h-screen"&gt;
+                    &lt;div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"&gt;&lt;/div&gt;
+                    &lt;span className="ml-3 text-purple-600"&gt;Loading...&lt;/span&gt;
+                &lt;/div&gt;
+            }&gt;
+                &lt;Routes&gt;
+                    &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+                    &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+                    &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;} /&gt;
+                &lt;/Routes&gt;
+            &lt;/Suspense&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}
+      </code></pre>
+        </div>
+      </div>
+
+      <div class="flex items-center p-4 bg-yellow-50 rounded-lg mb-6 border border-yellow-200">
+        <div class="bg-yellow-100 p-2 rounded-full mr-3">
+          <i class="fa-solid fa-lightbulb text-yellow-600"></i>
+        </div>
+        <p class="text-sm text-yellow-800">
+          Code splitting can dramatically improve initial load time by reducing the size of your JavaScript bundle. Users only download what they need when they need it.
+        </p>
+      </div>
+
+      <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+        <div class="code-header flex items-center justify-between px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+            <span class="text-sm font-mono">AppImplementation.jsx</span>
+          </div>
+          <div class="flex space-x-1">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+        </div>
+        <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">function App() {
+    return (
+        &lt;BrowserRouter&gt;
+            {/* The Suspense component shows a fallback while code is loading */}
+            &lt;Suspense fallback={
+                &lt;div className="flex justify-center items-center h-screen"&gt;
+                    &lt;div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"&gt;&lt;/div&gt;
+                    &lt;span className="ml-3 text-purple-600"&gt;Loading...&lt;/span&gt;
+                &lt;/div&gt;
+            }&gt;
+                &lt;Routes&gt;
+                    &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+                    &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+                    &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;} /&gt;
+                &lt;/Routes&gt;
+            &lt;/Suspense&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}</code></pre>
+        </div>
+      </div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-3 flex items-center">
+          <i class="fa-solid fa-exchange-alt text-purple-600 mr-2"></i>Navigation State Management
+        </h3>
+        <p class="text-gray-700 mb-4">
+          Sometimes you need to pass information between pages without showing it
+          in the URL. For example, you might want to remember where a user came
+          from or what they were doing. Navigation state lets you attach invisible
+          data to navigation actions:
+        </p>
+        
+        <div class="bg-white p-0 rounded-lg shadow-md border border-purple-100 overflow-hidden mb-6">
+          <div class="code-header flex items-center justify-between px-4 py-2">
+            <div class="flex items-center">
+              <i class="fa-solid fa-code text-purple-400 mr-2"></i>
+              <span class="text-sm font-mono">NavigationState.jsx</span>
+            </div>
+            <div class="flex space-x-1">
+              <div class="w-3 h-3 rounded-full bg-red-400"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <div class="w-3 h-3 rounded-full bg-green-400"></div>
+            </div>
+          </div>
+          <div class="code-block">
+            <pre class="bg-gray-800 text-gray-100 p-5 rounded-b-lg overflow-x-auto text-sm font-mono m-0"><code class="language-jsx">// Passing state during navigation (data that travels with the user)
+import { Link, useNavigate } from 'react-router-dom';
+
+function ProductList() {
+    const navigate = useNavigate();
+    
+    return (
+        &lt;div className="product-list"&gt;
+            {/* Method 1: Pass state via Link component */}
+            &lt;Link 
+                to="/product/1" 
+                state={{ 
+                    fromList: true,
+                    viewMethod: "link" 
+                }}
+                className="text-blue-500 hover:underline"
+            &gt;
+                Product 1
+            &lt;/Link&gt;
+            
+            {/* Method 2: Pass state programmatically with navigate */}
+            &lt;button 
+                onClick={() => navigate('/product/2', { 
+                    state: { 
+                        fromList: true,           // Remember where user came from
+                        viewedAt: new Date(),     // Remember when they viewed it
+                        viewMethod: "button"      // How they navigated
+                    } 
+                })}
+                className="bg-blue-500 text-white px-4 py-2 rounded ml-4"
+            &gt;
+                Product 2
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Retrieving state in the destination component
+import { useLocation } from 'react-router-dom';
+
+function ProductDetail() {
+    const location = useLocation();
+    
+    // Access the state passed during navigation
+    // Use empty object as fallback if no state exists
+    const { fromList, viewedAt, viewMethod } = location.state || {};
+    
+    return (
+        &lt;div className="product-detail p-4 border rounded-lg bg-white"&gt;
+            &lt;h1 className="text-xl font-bold mb-4"&gt;Product Detail Page&lt;/h1&gt;
+            
+            {/* Conditional rendering based on navigation state */}
+            {fromList && (
+                &lt;div className="bg-blue-50 p-3 rounded-lg mb-3"&gt;
+                    &lt;p&gt;You came from the product list&lt;/p&gt;
+                    {viewMethod && &lt;p&gt;Navigation method: {viewMethod}&lt;/p&gt;}
+                &lt;/div&gt;
+            )}
+            
+            {viewedAt && (
+                &lt;p className="text-gray-500 text-sm"&gt;
+                    Viewed at: {viewedAt.toString()}
+                &lt;/p&gt;
+            )}
+        &lt;/div&gt;
+    );
+}
+            </code></pre>
+          </div>
+        </div>
+        
+        <div class="bg-indigo-50 border-l-4 border-indigo-400 p-4 rounded-r-lg mb-8">
+          <p class="text-indigo-700">
+            <strong>When to use navigation state:</strong> Navigation state is perfect for passing temporary data between routes that shouldn't be in the URL. For persistent data, consider React Context or state management libraries like Redux instead.
+          </p>
+        </div>
+      </div>
+      
+      <h2 class="text-2xl font-semibold mb-4 text-purple-800 flex items-center">
+        <i class="fa-solid fa-flag-checkered text-blue-600 mr-3"></i>Conclusion
+      </h2>
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 shadow-md border border-blue-100">
+        <p class="text-gray-700 mb-4">
+          React Router transforms your single-page application into a multi-page
+          experience without the slowness of traditional page loads. Here's a
+          quick recap of what we've learned:
+        </p>
+
+      <!-- React Router Flow Diagram for Beginners -->
+      <div class="bg-white rounded-xl p-6 shadow-md border border-blue-200 mb-6 overflow-x-auto">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <i class="fa-solid fa-diagram-project text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-blue-800">How React Router Works - Visual Guide</h3>
+        </div>
+        
+        <div class="flex flex-col items-center mb-6 min-w-fit">
+          <!-- Flow diagram showing React Router process -->
+          <div class="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 w-full">
+            <!-- Step 1 -->
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 w-full md:w-64">
+              <div class="flex items-center mb-2">
+                <div class="bg-blue-100 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                  <span class="font-bold text-blue-700">1</span>
+                </div>
+                <h4 class="font-semibold text-blue-700">User Clicks Link</h4>
+              </div>
+              <p class="text-sm text-gray-700">User clicks a <code>&lt;Link&gt;</code> component in your app</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="transform md:rotate-0 rotate-90 text-blue-300">
+              <i class="fa-solid fa-arrow-right text-xl"></i>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200 w-full md:w-64">
+              <div class="flex items-center mb-2">
+                <div class="bg-indigo-100 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                  <span class="font-bold text-indigo-700">2</span>
+                </div>
+                <h4 class="font-semibold text-indigo-700">URL Changes</h4>
+              </div>
+              <p class="text-sm text-gray-700">Browser address changes without page reload</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="transform md:rotate-0 rotate-90 text-blue-300">
+              <i class="fa-solid fa-arrow-right text-xl"></i>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 w-full md:w-64">
+              <div class="flex items-center mb-2">
+                <div class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                  <span class="font-bold text-purple-700">3</span>
+                </div>
+                <h4 class="font-semibold text-purple-700">Route Matches</h4>
+              </div>
+              <p class="text-sm text-gray-700">React Router finds the route that matches the new URL</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="transform md:rotate-0 rotate-90 text-blue-300">
+              <i class="fa-solid fa-arrow-right text-xl"></i>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200 w-full md:w-64">
+              <div class="flex items-center mb-2">
+                <div class="bg-green-100 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                  <span class="font-bold text-green-700">4</span>
+                </div>
+                <h4 class="font-semibold text-green-700">Component Renders</h4>
+              </div>
+              <p class="text-sm text-gray-700">The matching component gets displayed on screen</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-center mb-6">
+          <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200 max-w-xl">
+            <div class="flex items-center mb-2">
+              <i class="fa-solid fa-lightbulb text-yellow-600 mr-2"></i>
+              <span class="font-medium text-yellow-800">The Magic of React Router</span>
+            </div>
+            <p class="text-sm text-gray-700">
+              All of this happens <strong>without</strong> loading a new page from the server! 
+              That's why your app feels so fast and smooth compared to traditional websites.
+            </p>
+          </div>
+        </div>
+                
+        <!-- Key Concepts -->
+        <h4 class="font-semibold text-blue-800 mb-3">Key Concepts To Remember</h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="flex items-start">
+            <div class="bg-blue-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-route text-blue-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-blue-700">Routes</h4>
+              <p class="text-gray-600 text-sm">Connect URLs to React components</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-link text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-indigo-700">Links</h4>
+              <p class="text-gray-600 text-sm">Navigate without page refreshes</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-purple-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-tags text-purple-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-purple-700">URL Parameters</h4>
+              <p class="text-gray-600 text-sm">Create dynamic, reusable pages</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-green-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-shield-alt text-green-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-green-700">Protected Routes</h4>
+              <p class="text-gray-600 text-sm">Control access to certain pages</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-red-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-tools text-red-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-red-700">Hooks</h4>
+              <p class="text-gray-600 text-sm">Access routing information from anywhere</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-amber-100 rounded-full p-2 mr-3 mt-1">
+              <i class="fa-solid fa-bolt text-amber-600 text-sm"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-amber-700">Code Splitting</h4>
+              <p class="text-gray-600 text-sm">Load only what's needed, when it's needed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-gray-700 mb-6 text-lg leading-relaxed">
+        When building your app, start with simple routing and add more complex
+        features as you need them. Good navigation makes your app feel intuitive
+        and professional. React Router provides all the tools you need to create
+        modern, responsive navigation experiences.
+      </p>
+
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-5 border border-green-200 shadow-md mb-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 h-32 w-32 bg-green-200 rounded-full opacity-20 -mt-10 -mr-10"></div>
+        <div class="relative z-10 flex">
+          <div class="bg-white rounded-full p-3 shadow-md mr-4">
+            <i class="fa-solid fa-lightbulb text-yellow-500 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-green-800 mb-2">Pro Tip</h3>
+            <p class="text-green-700">
+              Plan your route structure before you start coding! Draw a simple diagram of your pages and how they connect to
+              each other. This will help you decide where to use nested routes,
+              parameters, and protected sections.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder" style="z-index: 100;"></div>
+
+    <!-- Enhanced JavaScript -->
     <script src="../../assets/js/components-loader.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Enhanced scroll progress indicator
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        function updateScrollIndicator() {
+          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          
+          if (scrollIndicator) {
+            scrollIndicator.style.width = scrolled + "%";
+          }
+        }
+        
+        // Smooth scroll behavior for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, observerOptions);
+        
+        // Observe all cards for animations
+        document.querySelectorAll('.card-enhanced').forEach(card => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          card.style.transition = 'all 0.6s ease-out';
+          observer.observe(card);
+        });
+        
+        window.addEventListener('scroll', updateScrollIndicator);
+        
+        // Initialize highlight.js
+        document.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+        
+        updateScrollIndicator();
+      });
+    </script>
   </body>
 </html>
