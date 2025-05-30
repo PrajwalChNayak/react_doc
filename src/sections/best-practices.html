@@ -9,37 +9,1406 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
               sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
             },
             animation: {
               "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
             },
           },
         },
       };
     </script>
-    <title>Best Practices | React Documentation</title>
+    <title>React Best Practices | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .code-block {
+        background: #282c34;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+      }
+
+      .floating-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .floating-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .icon-gradient {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-purple-100 font-sans min-h-screen flex flex-col"
+  >
     <!-- Header placeholder - will be filled by components-loader.js -->
     <div id="header-placeholder"></div>
-    <main class="flex-1 container mx-auto px-4 py-10">
-      <h2 class="text-2xl font-semibold mb-4">Best Practices</h2>
-      <p class="text-lg text-gray-700 mb-4">
-        Follow these best practices to write clean, maintainable, and efficient
-        React code.
-      </p>
-      <!-- Add more content as needed -->
+
+    <!-- Hero Section -->
+    <main class="flex-1">
+      <div class="container mx-auto px-4 py-12">
+        <div class="text-center mb-16">
+          <h1 class="text-5xl font-bold gradient-text mb-6 animate-fade-in">
+            React Best Practices
+          </h1>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Master the art of building maintainable, scalable, and high-quality
+            React applications with these comprehensive best practices and
+            proven patterns.
+          </p>
+          <div class="mt-8 flex justify-center">
+            <div
+              class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-2xl border border-blue-200"
+            >
+              <div class="flex items-center space-x-4 text-sm">
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                  <span class="text-gray-700">Production Ready</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-users text-blue-500 mr-2"></i>
+                  <span class="text-gray-700">Team Collaboration</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-rocket text-purple-500 mr-2"></i>
+                  <span class="text-gray-700">Performance Optimized</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-12 border border-blue-100"
+        >
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+            <i class="fas fa-compass text-blue-500 mr-3"></i>
+            Quick Navigation
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a
+              href="#component-design"
+              class="group p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-puzzle-piece text-2xl text-blue-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Component Design</h3>
+                <p class="text-xs text-gray-600 mt-1">SRP & Composition</p>
+              </div>
+            </a>
+            <a
+              href="#code-organization"
+              class="group p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-folder-tree text-2xl text-green-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Code Organization</h3>
+                <p class="text-xs text-gray-600 mt-1">Structure & Modularity</p>
+              </div>
+            </a>
+            <a
+              href="#state-management"
+              class="group p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-database text-2xl text-purple-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">State Management</h3>
+                <p class="text-xs text-gray-600 mt-1">Data Flow & Context</p>
+              </div>
+            </a>
+            <a
+              href="#hooks-performance"
+              class="group p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border border-orange-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-bolt text-2xl text-orange-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Hooks & Performance</h3>
+                <p class="text-xs text-gray-600 mt-1">
+                  Optimization & Patterns
+                </p>
+              </div>
+            </a>
+            <a
+              href="#error-handling"
+              class="group p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-lg border border-red-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-shield-alt text-2xl text-red-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Error Handling</h3>
+                <p class="text-xs text-gray-600 mt-1">Resilience & Testing</p>
+              </div>
+            </a>
+            <a
+              href="#development-workflow"
+              class="group p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg border border-indigo-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-code-branch text-2xl text-indigo-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">
+                  Development Workflow
+                </h3>
+                <p class="text-xs text-gray-600 mt-1">Process & Standards</p>
+              </div>
+            </a>
+            <a
+              href="#advanced-patterns"
+              class="group p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg border border-teal-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-magic text-2xl text-teal-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Advanced Patterns</h3>
+                <p class="text-xs text-gray-600 mt-1">Architecture & APIs</p>
+              </div>
+            </a>
+            <a
+              href="#team-collaboration"
+              class="group p-4 bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg border border-pink-200 hover:shadow-lg transition-all duration-300"
+            >
+              <div class="text-center">
+                <i
+                  class="fas fa-users text-2xl text-pink-600 mb-2 group-hover:scale-110 transition-transform"
+                ></i>
+                <h3 class="font-semibold text-gray-800">Team Collaboration</h3>
+                <p class="text-xs text-gray-600 mt-1">
+                  Standards & Maintenance
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Component Design Best Practices -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-12 border border-blue-100"
+          id="component-design"
+        >
+          <div class="flex items-center mb-8">
+            <div class="bg-blue-100 p-3 rounded-full mr-4">
+              <i class="fas fa-puzzle-piece text-2xl text-blue-600"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800">
+                Component Design Best Practices
+              </h2>
+              <p class="text-gray-600">
+                Build reusable, maintainable components with clear
+                responsibilities
+              </p>
+            </div>
+          </div>
+
+          <!-- Single Responsibility Principle -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-target text-blue-500 mr-2"></i>
+              Single Responsibility Principle
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Bad Example -->
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 mb-3 flex items-center">
+                  <i class="fas fa-times-circle mr-2"></i>
+                  ❌ Bad: Multiple Responsibilities
+                </h4>
+                <pre
+                  class="bg-red-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-jsx">// This component does too many things!
+function UserDashboard({ userId }) {
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [theme, setTheme] = useState('light');
+  
+  // Fetching user data
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then(res => res.json())
+      .then(setUser);
+  }, [userId]);
+  
+  // Fetching posts
+  useEffect(() => {
+    fetch(`/api/posts?userId=${userId}`)
+      .then(res => res.json())
+      .then(setPosts);
+  }, [userId]);
+  
+  // Theme management
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+  
+  // Rendering everything together
+  return (
+    &lt;div className={`dashboard ${theme}`}&gt;
+      &lt;header&gt;
+        &lt;h1&gt;{user?.name}&lt;/h1&gt;
+        &lt;button onClick={toggleTheme}&gt;Toggle Theme&lt;/button&gt;
+      &lt;/header&gt;
+      &lt;main&gt;
+        &lt;section&gt;
+          {posts.map(post =&gt; (
+            &lt;div key={post.id}&gt;{post.title}&lt;/div&gt;
+          ))}
+        &lt;/section&gt;
+        &lt;aside&gt;
+          {notifications.map(notif =&gt; (
+            &lt;div key={notif.id}&gt;{notif.message}&lt;/div&gt;
+          ))}
+        &lt;/aside&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+
+              <!-- Good Example -->
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3 flex items-center">
+                  <i class="fas fa-check-circle mr-2"></i>
+                  ✅ Good: Single Responsibility
+                </h4>
+                <pre
+                  class="bg-green-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-jsx">// Each component has a single, clear responsibility
+
+// 1. Data fetching hook
+function useUser(userId) {
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then(res => res.json())
+      .then(setUser);
+  }, [userId]);
+  
+  return user;
+}
+
+// 2. Theme management
+function useTheme() {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () => setTheme(prev => 
+    prev === 'light' ? 'dark' : 'light'
+  );
+  return { theme, toggleTheme };
+}
+
+// 3. Posts component
+function PostsList({ userId }) {
+  const posts = usePosts(userId);
+  return (
+    &lt;section&gt;
+      {posts.map(post =&gt; (
+        &lt;PostCard key={post.id} post={post} /&gt;
+      ))}
+    &lt;/section&gt;
+  );
+}
+
+// 4. Main dashboard (composition)
+function UserDashboard({ userId }) {
+  const user = useUser(userId);
+  const { theme, toggleTheme } = useTheme();
+  
+  return (
+    &lt;div className={`dashboard ${theme}`}&gt;
+      &lt;DashboardHeader 
+        user={user} 
+        onToggleTheme={toggleTheme} 
+      /&gt;
+      &lt;main&gt;
+        &lt;PostsList userId={userId} /&gt;
+        &lt;NotificationsSidebar userId={userId} /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component Composition -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-layer-group text-blue-500 mr-2"></i>
+              Component Composition Patterns
+            </h3>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Compound Components Pattern
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-jsx">// Flexible and intuitive API
+function Card({ children, className = '' }) {
+  return (
+    &lt;div className={`card ${className}`}&gt;
+      {children}
+    &lt;/div&gt;
+  );
+}
+
+Card.Header = function CardHeader({ children, className = '' }) {
+  return (
+    &lt;div className={`card-header ${className}`}&gt;
+      {children}
+    &lt;/div&gt;
+  );
+};
+
+Card.Body = function CardBody({ children, className = '' }) {
+  return (
+    &lt;div className={`card-body ${className}`}&gt;
+      {children}
+    &lt;/div&gt;
+  );
+};
+
+Card.Footer = function CardFooter({ children, className = '' }) {
+  return (
+    &lt;div className={`card-footer ${className}`}&gt;
+      {children}
+    &lt;/div&gt;
+  );
+};
+
+// Usage - Clean and readable
+function UserProfile({ user }) {
+  return (
+    &lt;Card&gt;
+      &lt;Card.Header&gt;
+        &lt;h2&gt;{user.name}&lt;/h2&gt;
+        &lt;p&gt;{user.email}&lt;/p&gt;
+      &lt;/Card.Header&gt;
+      &lt;Card.Body&gt;
+        &lt;p&gt;{user.bio}&lt;/p&gt;
+        &lt;UserStats stats={user.stats} /&gt;
+      &lt;/Card.Body&gt;
+      &lt;Card.Footer&gt;
+        &lt;Button variant="primary"&gt;Edit Profile&lt;/Button&gt;
+      &lt;/Card.Footer&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Render Props Pattern
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-jsx">// Flexible data sharing pattern
+function DataProvider({ url, children }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    setLoading(true);
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        setData(data);
+        setError(null);
+      })
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [url]);
+  
+  return children({ data, loading, error });
+}
+
+// Usage - Consumer decides how to render
+function UserList() {
+  return (
+    &lt;DataProvider url="/api/users"&gt;
+      {({ data, loading, error }) => {
+        if (loading) return &lt;LoadingSpinner /&gt;;
+        if (error) return &lt;ErrorMessage error={error} /&gt;;
+        
+        return (
+          &lt;ul&gt;
+            {data.map(user => (
+              &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+            ))}
+          &lt;/ul&gt;
+        );
+      }}
+    &lt;/DataProvider&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Props Design -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-cogs text-blue-500 mr-2"></i>
+              Props Design & API Patterns
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 mb-3">
+                  ❌ Poor Props API
+                </h4>
+                <pre
+                  class="bg-red-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-jsx">// Too many props, unclear API
+function Button({
+  text,
+  clickHandler,
+  buttonType,
+  isDisabled,
+  buttonStyle,
+  hasIcon,
+  iconName,
+  iconPosition,
+  customClass,
+  dataTestId
+}) {
+  return (
+    &lt;button
+      type={buttonType}
+      disabled={isDisabled}
+      onClick={clickHandler}
+      className={`btn ${buttonStyle} ${customClass}`}
+      data-testid={dataTestId}
+    &gt;
+      {hasIcon && iconPosition === 'left' && 
+        &lt;Icon name={iconName} /&gt;
+      }
+      {text}
+      {hasIcon && iconPosition === 'right' && 
+        &lt;Icon name={iconName} /&gt;
+      }
+    &lt;/button&gt;
+  );
+}</code></pre>
+              </div>
+
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3">
+                  ✅ Clean Props API
+                </h4>
+                <pre
+                  class="bg-green-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-jsx">// Clear, flexible API with sensible defaults
+function Button({
+  children,
+  variant = 'primary',
+  size = 'medium',
+  disabled = false,
+  loading = false,
+  leftIcon,
+  rightIcon,
+  ...rest
+}) {
+  const baseClasses = 'btn focus:outline-none transition-colors';
+  const variantClasses = {
+    primary: 'bg-blue-500 hover:bg-blue-600 text-white',
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800',
+    danger: 'bg-red-500 hover:bg-red-600 text-white'
+  };
+  const sizeClasses = {
+    small: 'px-3 py-1 text-sm',
+    medium: 'px-4 py-2',
+    large: 'px-6 py-3 text-lg'
+  };
+  
+  return (
+    &lt;button
+      className={`
+        ${baseClasses}
+        ${variantClasses[variant]}
+        ${sizeClasses[size]}
+        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+      `}
+      disabled={disabled || loading}
+      {...rest}
+    &gt;
+      {loading && &lt;Spinner size="sm" /&gt;}
+      {leftIcon && &lt;Icon name={leftIcon} className="mr-2" /&gt;}
+      {children}
+      {rightIcon && &lt;Icon name={rightIcon} className="ml-2" /&gt;}
+    &lt;/button&gt;
+  );
+}
+
+// Usage is clear and flexible
+&lt;Button 
+  variant="danger" 
+  leftIcon="trash" 
+  onClick={handleDelete}
+&gt;
+  Delete User
+&lt;/Button&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Naming Conventions -->
+          <div class="mb-8">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-tag text-blue-500 mr-2"></i>
+              Naming Conventions & Standards
+            </h3>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 class="font-semibold text-green-800 mb-3">
+                    ✅ Good Naming
+                  </h4>
+                  <ul class="space-y-2 text-sm">
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded"
+                        >UserProfile</code
+                      >
+                      - Clear component purpose
+                    </li>
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded"
+                        >useUserData</code
+                      >
+                      - Custom hook prefix
+                    </li>
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded"
+                        >handleSubmit</code
+                      >
+                      - Event handler pattern
+                    </li>
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded"
+                        >isLoading</code
+                      >
+                      - Boolean prefix
+                    </li>
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded">userId</code>
+                      - Clear variable purpose
+                    </li>
+                    <li>
+                      <code class="bg-green-100 px-2 py-1 rounded"
+                        >FETCH_SUCCESS</code
+                      >
+                      - Constant naming
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-red-800 mb-3">
+                    ❌ Poor Naming
+                  </h4>
+                  <ul class="space-y-2 text-sm">
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded"
+                        >Component1</code
+                      >
+                      - Non-descriptive
+                    </li>
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded">getData</code>
+                      - Too generic
+                    </li>
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded">click</code> -
+                      Missing context
+                    </li>
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded">flag</code> -
+                      Unclear boolean
+                    </li>
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded">temp</code> -
+                      Temporary naming
+                    </li>
+                    <li>
+                      <code class="bg-red-100 px-2 py-1 rounded">data</code> -
+                      Too vague
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-blue-100 border-l-4 border-blue-500 p-4 rounded-r">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-blue-600 mr-3"></i>
+              <div>
+                <h4 class="font-semibold text-blue-800">Key Takeaways</h4>
+                <ul class="mt-2 text-sm text-blue-700 space-y-1">
+                  <li>
+                    • Each component should have a single, clear responsibility
+                  </li>
+                  <li>
+                    • Use composition over inheritance for flexible component
+                    design
+                  </li>
+                  <li>
+                    • Design props APIs that are intuitive and self-documenting
+                  </li>
+                  <li>
+                    • Follow consistent naming conventions across your codebase
+                  </li>
+                  <li>
+                    • Prefer small, focused components over large, monolithic
+                    ones
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Organization -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-12 border border-green-100"
+          id="code-organization"
+        >
+          <div class="flex items-center mb-8">
+            <div class="bg-green-100 p-3 rounded-full mr-4">
+              <i class="fas fa-folder-tree text-2xl text-green-600"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800">
+                Code Organization & Structure
+              </h2>
+              <p class="text-gray-600">
+                Organize your codebase for scalability and maintainability
+              </p>
+            </div>
+          </div>
+
+          <!-- Project Structure -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-sitemap text-green-500 mr-2"></i>
+              Project Structure Patterns
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Feature-based Structure -->
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3">
+                  ✅ Feature-based Structure (Recommended)
+                </h4>
+                <pre
+                  class="bg-green-100 p-4 rounded text-sm overflow-x-auto"
+                ><code>src/
+├── components/           # Shared/reusable components
+│   ├── ui/              # Basic UI components
+│   │   ├── Button/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Button.test.tsx
+│   │   │   ├── Button.stories.tsx
+│   │   │   └── index.ts
+│   │   └── Input/
+│   └── layout/          # Layout components
+│       ├── Header/
+│       └── Sidebar/
+├── features/            # Feature-specific code
+│   ├── authentication/
+│   │   ├── components/
+│   │   │   ├── LoginForm/
+│   │   │   └── SignupForm/
+│   │   ├── hooks/
+│   │   │   ├── useAuth.ts
+│   │   │   └── useLogin.ts
+│   │   ├── services/
+│   │   │   └── authAPI.ts
+│   │   ├── types/
+│   │   │   └── auth.types.ts
+│   │   └── index.ts
+│   ├── dashboard/
+│   └── user-management/
+├── hooks/               # Shared custom hooks
+├── services/            # API services
+├── utils/               # Utility functions
+├── types/               # TypeScript type definitions
+└── pages/               # Route components</code></pre>
+              </div>
+
+              <!-- Type-based Structure -->
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 mb-3">
+                  ❌ Type-based Structure (Not Recommended)
+                </h4>
+                <pre
+                  class="bg-red-100 p-4 rounded text-sm overflow-x-auto"
+                ><code>src/
+├── components/          # ALL components mixed together
+│   ├── Button.tsx
+│   ├── LoginForm.tsx
+│   ├── UserProfile.tsx
+│   ├── DashboardChart.tsx
+│   ├── Sidebar.tsx
+│   └── ... (100+ components)
+├── hooks/               # ALL hooks mixed together
+│   ├── useAuth.ts
+│   ├── useUser.ts
+│   ├── useChart.ts
+│   └── ... (50+ hooks)
+├── services/            # ALL services mixed together
+│   ├── authAPI.ts
+│   ├── userAPI.ts
+│   ├── dashboardAPI.ts
+│   └── ...
+└── utils/
+    ├── authUtils.ts
+    ├── chartUtils.ts
+    └── ...
+
+// Problems:
+// - Hard to find related files
+// - No clear feature boundaries
+// - Difficult to delete features
+// - Poor team collaboration</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Import/Export Patterns -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-exchange-alt text-green-500 mr-2"></i>
+              Import/Export Patterns
+            </h3>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Barrel Exports (index.ts files)
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-javascript">// components/ui/index.ts - Clean barrel export
+export { Button } from './Button';
+export { Input } from './Input';
+export { Modal } from './Modal';
+export { Spinner } from './Spinner';
+
+// features/authentication/index.ts
+export { LoginForm } from './components/LoginForm';
+export { SignupForm } from './components/SignupForm';
+export { useAuth } from './hooks/useAuth';
+export type { AuthUser, LoginCredentials } from './types/auth.types';
+
+// Usage - Clean imports
+import { Button, Input, Modal } from '@/components/ui';
+import { LoginForm, useAuth } from '@/features/authentication';</code></pre>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3">
+                  ✅ Good Import Practices
+                </h4>
+                <pre
+                  class="bg-green-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-javascript">// Use absolute imports with path mapping
+import { Button } from '@/components/ui';
+import { useAuth } from '@/features/authentication';
+import { API_ENDPOINTS } from '@/constants';
+
+// Group related imports
+import React, { useState, useEffect } from 'react';
+
+// External libraries first
+import { format } from 'date-fns';
+import { toast } from 'react-hot-toast';
+
+// Internal imports after
+import { UserCard } from './UserCard';
+import { useUsers } from '../hooks/useUsers';
+
+// Type imports separately (TypeScript)
+import type { User } from '@/types';
+import type { ComponentProps } from 'react';</code></pre>
+              </div>
+
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 mb-3">
+                  ❌ Poor Import Practices
+                </h4>
+                <pre
+                  class="bg-red-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-javascript">// Relative imports that are hard to track
+import { Button } from '../../../components/ui/Button';
+import { useAuth } from '../../../../features/auth/hooks/useAuth';
+
+// Mixed import styles
+import React from 'react';
+import { UserCard } from './UserCard';
+import { format } from 'date-fns';
+import { useUsers } from '../hooks/useUsers';
+import { toast } from 'react-hot-toast';
+
+// Importing entire libraries
+import * as _ from 'lodash';  // Instead of specific functions
+import * as React from 'react';  // When not necessary</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Module Organization -->
+          <div class="mb-8">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-cubes text-green-500 mr-2"></i>
+              Modularity & Separation of Concerns
+            </h3>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Clear Separation Example
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-javascript">// features/user-management/services/userAPI.ts
+export class UserAPI {
+  static async getUsers(params?: GetUsersParams): Promise&lt;User[]&gt; {
+    const response = await fetch(`/api/users?${new URLSearchParams(params)}`);
+    return response.json();
+  }
+  
+  static async createUser(userData: CreateUserData): Promise&lt;User&gt; {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    return response.json();
+  }
+}
+
+// features/user-management/hooks/useUsers.ts
+export function useUsers(filters?: UserFilters) {
+  const [users, setUsers] = useState&lt;User[]&gt;([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState&lt;string | null&gt;(null);
+  
+  const fetchUsers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await UserAPI.getUsers(filters);
+      setUsers(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch users');
+    } finally {
+      setLoading(false);
+    }
+  }, [filters]);
+  
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+  
+  return { users, loading, error, refetch: fetchUsers };
+}
+
+// features/user-management/components/UserList/UserList.tsx
+export function UserList({ filters }: UserListProps) {
+  const { users, loading, error } = useUsers(filters);
+  
+  if (loading) return &lt;LoadingSpinner /&gt;;
+  if (error) return &lt;ErrorMessage message={error} /&gt;;
+  
+  return (
+    &lt;div className="user-list"&gt;
+      {users.map(user =&gt; (
+        &lt;UserCard key={user.id} user={user} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded-r">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-green-600 mr-3"></i>
+              <div>
+                <h4 class="font-semibold text-green-800">
+                  Organization Best Practices
+                </h4>
+                <ul class="mt-2 text-sm text-green-700 space-y-1">
+                  <li>• Organize by feature, not by file type</li>
+                  <li>• Use barrel exports for clean import statements</li>
+                  <li>• Implement absolute imports with path mapping</li>
+                  <li>• Keep related files close together</li>
+                  <li>• Maintain consistent folder and file naming</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- State Management -->
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 mb-12 border border-purple-100"
+          id="state-management"
+        >
+          <div class="flex items-center mb-8">
+            <div class="bg-purple-100 p-3 rounded-full mr-4">
+              <i class="fas fa-database text-2xl text-purple-600"></i>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800">
+                State Management Best Practices
+              </h2>
+              <p class="text-gray-600">
+                Design efficient state architecture for your applications
+              </p>
+            </div>
+          </div>
+
+          <!-- Local vs Global State -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-layer-group text-purple-500 mr-2"></i>
+              Local vs Global State Decision Framework
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3">
+                  ✅ Use Local State When:
+                </h4>
+                <ul class="space-y-2 text-sm text-green-700">
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span>State is only used by one component</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span>Form input values and validation</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span>UI state (modals, dropdowns, tabs)</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span>Component-specific loading states</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span>Temporary data transformations</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                <h4 class="font-semibold text-blue-800 mb-3">
+                  📊 Use Global State When:
+                </h4>
+                <ul class="space-y-2 text-sm text-blue-700">
+                  <li class="flex items-start">
+                    <i class="fas fa-globe text-blue-500 mr-2 mt-1"></i>
+                    <span>Data needed by multiple components</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-globe text-blue-500 mr-2 mt-1"></i>
+                    <span>User authentication and profile</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-globe text-blue-500 mr-2 mt-1"></i>
+                    <span>Application theme and settings</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-globe text-blue-500 mr-2 mt-1"></i>
+                    <span>Shopping cart contents</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-globe text-blue-500 mr-2 mt-1"></i>
+                    <span>Real-time notifications</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Practical Examples
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-jsx">// ✅ Good: Local state for component-specific UI
+function SearchInput({ onSearch }) {
+  const [query, setQuery] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(query);
+  };
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        value={query}
+        onChange={(e) =&gt; setQuery(e.target.value)}
+        onFocus={() =&gt; setIsExpanded(true)}
+        onBlur={() =&gt; setIsExpanded(false)}
+        className={isExpanded ? 'expanded' : 'collapsed'}
+      /&gt;
+    &lt;/form&gt;
+  );
+}
+
+// ✅ Good: Global state for shared user data
+const UserContext = createContext();
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  const login = async (credentials) => {
+    const userData = await authAPI.login(credentials);
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+  
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    authAPI.logout();
+  };
+  
+  return (
+    &lt;UserContext.Provider value={{ user, isAuthenticated, login, logout }}&gt;
+      {children}
+    &lt;/UserContext.Provider&gt;
+  );
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- State Normalization -->
+          <div class="mb-10">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-sitemap text-purple-500 mr-2"></i>
+              State Normalization & Data Structure
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 mb-3">
+                  ❌ Nested, Denormalized State
+                </h4>
+                <pre
+                  class="bg-red-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-javascript">// Hard to update, prone to inconsistencies
+const initialState = {
+  posts: [
+    {
+      id: 1,
+      title: 'Post 1',
+      author: {
+        id: 101,
+        name: 'John Doe',
+        email: 'john@example.com'
+      },
+      comments: [
+        {
+          id: 201,
+          text: 'Great post!',
+          author: {
+            id: 102,
+            name: 'Jane Smith',
+            email: 'jane@example.com'
+          }
+        }
+      ]
+    }
+  ]
+};
+
+// Updating author name requires deep updates
+// Author data is duplicated across posts/comments</code></pre>
+              </div>
+
+              <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-800 mb-3">
+                  ✅ Normalized State Structure
+                </h4>
+                <pre
+                  class="bg-green-100 p-4 rounded text-sm overflow-x-auto"
+                ><code class="language-javascript">// Easier to update, no data duplication
+const initialState = {
+  entities: {
+    users: {
+      101: { id: 101, name: 'John Doe', email: 'john@example.com' },
+      102: { id: 102, name: 'Jane Smith', email: 'jane@example.com' }
+    },
+    posts: {
+      1: { 
+        id: 1, 
+        title: 'Post 1', 
+        authorId: 101, 
+        commentIds: [201] 
+      }
+    },
+    comments: {
+      201: { 
+        id: 201, 
+        text: 'Great post!', 
+        authorId: 102, 
+        postId: 1 
+      }
+    }
+  },
+  ui: {
+    selectedPostId: null,
+    isLoading: false
+  }
+};
+
+// Easy updates with selectors
+const selectPostWithAuthor = (state, postId) => {
+  const post = state.entities.posts[postId];
+  const author = state.entities.users[post.authorId];
+  return { ...post, author };
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Context API Guidelines -->
+          <div class="mb-8">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-share-alt text-purple-500 mr-2"></i>
+              Context API Usage Guidelines
+            </h3>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+              <h4 class="font-semibold text-gray-800 mb-3">
+                Smart Context Design Pattern
+              </h4>
+              <pre
+                class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"
+              ><code class="language-jsx">// Split context by concern to prevent unnecessary re-renders
+// ✅ Good: Separate contexts for different concerns
+
+// Theme context - rarely changes
+const ThemeContext = createContext();
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+  
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  }, []);
+  
+  const value = useMemo(() => ({
+    theme,
+    toggleTheme
+  }), [theme, toggleTheme]);
+  
+  return (
+    &lt;ThemeContext.Provider value={value}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// User context - changes occasionally
+const UserContext = createContext();
+export function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const value = useMemo(() => ({
+    user,
+    isLoading,
+    setUser
+  }), [user, isLoading]);
+  
+  return (
+    &lt;UserContext.Provider value={value}&gt;
+      {children}
+    &lt;/UserContext.Provider&gt;
+  );
+}
+
+// Custom hooks for easy consumption
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within ThemeProvider');
+  }
+  return context;
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within UserProvider');
+  }
+  return context;
+};</code></pre>
+            </div>
+
+            <div
+              class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r"
+            >
+              <h4 class="font-semibold text-yellow-800 mb-2">
+                ⚠️ Context Anti-patterns to Avoid
+              </h4>
+              <ul class="text-sm text-yellow-700 space-y-1">
+                <li>• Don't put everything in one massive context</li>
+                <li>• Avoid putting frequently changing data in context</li>
+                <li>
+                  • Don't use context for component-to-component communication
+                </li>
+                <li>
+                  • Avoid creating new objects in context value on every render
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-purple-100 border-l-4 border-purple-500 p-4 rounded-r">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-purple-600 mr-3"></i>
+              <div>
+                <h4 class="font-semibold text-purple-800">
+                  State Management Principles
+                </h4>
+                <ul class="mt-2 text-sm text-purple-700 space-y-1">
+                  <li>• Keep state as close to where it's used as possible</li>
+                  <li>• Normalize complex state structures</li>
+                  <li>• Use multiple contexts instead of one large context</li>
+                  <li>
+                    • Implement proper error boundaries for state failures
+                  </li>
+                  <li>
+                    • Consider using state machines for complex state logic
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Continue with remaining sections... -->
+        <!-- I'll add the remaining sections in the next function call to avoid hitting length limits -->
+      </div>
     </main>
+
     <!-- Footer placeholder - will be filled by components-loader.js -->
     <div id="footer-placeholder"></div>
 
     <!-- Load components-loader.js before other scripts -->
     <script src="../../assets/js/components-loader.js"></script>
+    <script>
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>
