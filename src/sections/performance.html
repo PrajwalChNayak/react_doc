@@ -1,39 +1,3077 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/jsx.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
             },
             animation: {
-              'spin-slow': 'spin 3s linear infinite',
-            }
-          }
-        }
-      }
+              "spin-slow": "spin 3s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              blob: "blob 7s infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 3s infinite",
+              "fade-in": "fadeIn 0.5s ease-out",
+              "chart-bar": "chartBar 2s ease-out forwards",
+              "performance-meter": "performanceMeter 3s ease-out forwards",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              chartBar: {
+                "0%": { height: "0%", opacity: "0" },
+                "100%": { height: "var(--bar-height)", opacity: "1" },
+              },
+              performanceMeter: {
+                "0%": { width: "0%" },
+                "100%": { width: "var(--meter-width)" },
+              },
+            },
+          },
+        },
+      };
     </script>
     <title>Performance | React Documentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap");
+
+      .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #ef4444, #f97316, #eab308);
+        z-index: 100;
+        transition: width 0.2s ease;
+      }
+
+      .code-header {
+        background: #282c34;
+        border-bottom: 1px solid #3e4451;
+        color: #abb2bf;
+        font-family: "Fira Code", monospace;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .code-block pre {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .performance-meter {
+        position: relative;
+        background: #e5e7eb;
+        border-radius: 9999px;
+        overflow: hidden;
+      }
+
+      .performance-meter::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: linear-gradient(to right, #ef4444, #f97316, #22c55e);
+        border-radius: 9999px;
+        animation: performance-meter 2s ease-out forwards;
+        width: var(--meter-width);
+      }
+
+      .chart-bar {
+        animation: chart-bar 1.5s ease-out forwards;
+        animation-delay: var(--delay);
+      }
+
+      .before-after-slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.5rem;
+      }
+
+      .before-after-slider .before,
+      .before-after-slider .after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      .before-after-slider:hover .before {
+        transform: translateX(-50%);
+      }
+
+      .before-after-slider:hover .after {
+        transform: translateX(0);
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .animation-delay-2 {
+        animation-delay: 2s;
+      }
+
+      .animation-delay-4 {
+        animation-delay: 4s;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+  <body
+    class="bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 font-sans min-h-screen flex flex-col"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
     <!-- Header placeholder - will be filled by components-loader.js -->
     <div id="header-placeholder"></div>
-    <main class="flex-1 container mx-auto px-4 py-10">
-      <h2 class="text-2xl font-semibold mb-4">Performance</h2>
-      <p class="text-lg text-gray-700 mb-4">Tips and techniques for optimizing the performance of your React applications.</p>
-      <!-- Add more content as needed -->
-    </main>
-    <!-- Footer placeholder - will be filled by components-loader.js -->
-    <div id="footer-placeholder"></div>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <!-- Hero Section with Performance Theme -->
+      <div
+        class="bg-gradient-to-r from-red-100 via-orange-50 to-yellow-100 shadow-xl rounded-xl p-10 mb-8 border border-red-100 relative overflow-hidden"
+      >
+        <!-- Animated background elements -->
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"
+        ></div>
+        <div
+          class="absolute top-0 right-24 w-64 h-64 bg-orange-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2"
+        ></div>
+        <div
+          class="absolute -bottom-8 left-20 w-64 h-64 bg-yellow-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4"
+        ></div>
+
+        <!-- Decorative elements -->
+        <div
+          class="absolute top-10 right-10 text-3xl text-red-300 opacity-30 rotate-12"
+        >
+          <i class="fa-solid fa-gauge-high"></i>
+        </div>
+        <div
+          class="absolute bottom-10 left-10 text-4xl text-orange-300 opacity-20 -rotate-6"
+        >
+          <i class="fa-solid fa-rocket"></i>
+        </div>
+
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center p-4 bg-white/90 rounded-lg shadow-lg transform -rotate-2 mb-4 border border-red-100"
+          >
+            <i
+              class="fa-solid fa-tachometer-alt text-5xl text-red-600 animate-float"
+            ></i>
+            <div class="ml-4 pl-4 border-l border-red-200">
+              <div
+                class="text-xs uppercase tracking-widest text-red-600 font-semibold"
+              >
+                React Optimization
+              </div>
+              <div class="text-gray-700 font-medium">Performance Guide</div>
+            </div>
+          </div>
+
+          <h2
+            class="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-red-800 via-orange-700 to-yellow-800 drop-shadow-sm leading-tight"
+          >
+            Performance Optimization
+            <span
+              class="text-lg align-top bg-red-100 text-red-800 px-2 py-1 rounded ml-2 font-normal"
+              >Master Guide</span
+            >
+          </h2>
+
+          <p
+            class="text-xl text-gray-700 mb-6 leading-relaxed max-w-3xl font-light"
+          >
+            Master the art of React performance optimization with this
+            comprehensive guide. Learn proven techniques, patterns, and
+            strategies to build lightning-fast React applications that scale
+            efficiently and provide exceptional user experiences.
+          </p>
+
+          <!-- Performance Stats -->
+          <div class="flex flex-wrap gap-4 mb-6">
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-bolt text-yellow-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Lightning Fast</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-memory text-blue-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Memory Efficient</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-chart-line text-green-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Scalable Architecture</span>
+            </div>
+            <div
+              class="bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm flex items-center"
+            >
+              <i class="fa-solid fa-mobile-alt text-purple-500 mr-2"></i>
+              <span class="text-gray-700 text-sm">Mobile Optimized</span>
+            </div>
+          </div>
+
+          <!-- Performance Metrics Visualization -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-orange-200"
+          >
+            <h3
+              class="font-bold text-orange-800 text-lg mb-4 flex items-center"
+            >
+              <i class="fa-solid fa-chart-bar text-orange-600 mr-2"></i>
+              Performance Impact Comparison
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="text-center">
+                <div
+                  class="performance-meter h-4 mb-2"
+                  style="--meter-width: 85%"
+                ></div>
+                <div class="text-sm font-medium text-gray-700">
+                  Load Time Improvement
+                </div>
+                <div class="text-xs text-gray-500">85% faster</div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="performance-meter h-4 mb-2"
+                  style="--meter-width: 70%"
+                ></div>
+                <div class="text-sm font-medium text-gray-700">
+                  Memory Usage Reduction
+                </div>
+                <div class="text-xs text-gray-500">70% less memory</div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="performance-meter h-4 mb-2"
+                  style="--meter-width: 92%"
+                ></div>
+                <div class="text-sm font-medium text-gray-700">
+                  User Experience Score
+                </div>
+                <div class="text-xs text-gray-500">92/100 Lighthouse</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Navigation Index -->
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-8 shadow-lg border border-red-200"
+      >
+        <div class="flex items-center mb-5">
+          <div
+            class="p-2 bg-gradient-to-br from-red-600 to-orange-600 rounded-lg shadow-md mr-4"
+          >
+            <i class="fa-solid fa-map text-2xl text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-red-800 text-xl">
+              Performance Optimization Roadmap
+            </h3>
+            <p class="text-gray-600 text-sm">
+              Jump to the optimization technique you need
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a
+            href="#rendering-optimization"
+            class="bg-gradient-to-r from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 p-3 rounded-lg shadow-sm border border-red-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-red-200 transition-colors"
+            >
+              <i class="fa-solid fa-sync-alt text-red-600"></i>
+            </div>
+            <span class="text-red-800 font-medium">Rendering</span>
+          </a>
+          <a
+            href="#state-management"
+            class="bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 p-3 rounded-lg shadow-sm border border-orange-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-orange-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-orange-200 transition-colors"
+            >
+              <i class="fa-solid fa-database text-orange-600"></i>
+            </div>
+            <span class="text-orange-800 font-medium">State</span>
+          </a>
+          <a
+            href="#component-architecture"
+            class="bg-gradient-to-r from-yellow-50 to-lime-50 hover:from-yellow-100 hover:to-lime-100 p-3 rounded-lg shadow-sm border border-yellow-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-yellow-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-yellow-200 transition-colors"
+            >
+              <i class="fa-solid fa-sitemap text-yellow-600"></i>
+            </div>
+            <span class="text-yellow-800 font-medium">Architecture</span>
+          </a>
+          <a
+            href="#list-optimization"
+            class="bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-3 rounded-lg shadow-sm border border-green-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors"
+            >
+              <i class="fa-solid fa-list text-green-600"></i>
+            </div>
+            <span class="text-green-800 font-medium">Lists</span>
+          </a>
+          <a
+            href="#network-optimization"
+            class="bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 p-3 rounded-lg shadow-sm border border-blue-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors"
+            >
+              <i class="fa-solid fa-wifi text-blue-600"></i>
+            </div>
+            <span class="text-blue-800 font-medium">Network</span>
+          </a>
+          <a
+            href="#bundle-optimization"
+            class="bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 p-3 rounded-lg shadow-sm border border-purple-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors"
+            >
+              <i class="fa-solid fa-archive text-purple-600"></i>
+            </div>
+            <span class="text-purple-800 font-medium">Bundles</span>
+          </a>
+          <a
+            href="#browser-optimization"
+            class="bg-gradient-to-r from-indigo-50 to-blue-50 hover:from-indigo-100 hover:to-blue-100 p-3 rounded-lg shadow-sm border border-indigo-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-indigo-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-indigo-200 transition-colors"
+            >
+              <i class="fa-solid fa-window-maximize text-indigo-600"></i>
+            </div>
+            <span class="text-indigo-800 font-medium">Browser</span>
+          </a>
+          <a
+            href="#debugging-tools"
+            class="bg-gradient-to-r from-pink-50 to-rose-50 hover:from-pink-100 hover:to-rose-100 p-3 rounded-lg shadow-sm border border-pink-100 transition-all hover:shadow-md flex items-center group"
+          >
+            <div
+              class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center mr-3 group-hover:bg-pink-200 transition-colors"
+            >
+              <i class="fa-solid fa-bug text-pink-600"></i>
+            </div>
+            <span class="text-pink-800 font-medium">Debugging</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- React Rendering Optimization -->
+      <section class="mb-12" id="rendering-optimization">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-red-100">
+          <div class="flex items-center mb-6">
+            <div
+              class="p-3 bg-gradient-to-br from-red-600 to-pink-600 rounded-lg shadow-md mr-4"
+            >
+              <i class="fa-solid fa-sync-alt text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-red-800">
+                React Rendering Optimization
+              </h3>
+              <p class="text-gray-600">
+                Master React's reconciliation process and prevent unnecessary
+                re-renders
+              </p>
+            </div>
+          </div>
+
+          <!-- Understanding Virtual DOM -->
+          <div
+            class="mb-8 p-6 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200"
+          >
+            <h4 class="text-xl font-bold mb-4 text-red-700 flex items-center">
+              <i class="fa-solid fa-diagram-project text-red-600 mr-2"></i>
+              Understanding React's Reconciliation Process
+            </h4>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div>
+                <p class="text-gray-700 mb-4">
+                  React's Virtual DOM is a performance optimization that allows
+                  React to minimize expensive DOM operations by:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                  <li>Creating a virtual representation of the UI in memory</li>
+                  <li>
+                    Comparing (diffing) the new virtual DOM with the previous
+                    version
+                  </li>
+                  <li>Updating only the parts of the real DOM that changed</li>
+                  <li>Batching multiple updates for better performance</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded-lg shadow-sm">
+                <h5 class="font-semibold text-red-700 mb-2">
+                  Reconciliation Algorithm Steps
+                </h5>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center p-2 bg-red-50 rounded">
+                    <span
+                      class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2"
+                      >1</span
+                    >
+                    <span>State/Props Change</span>
+                  </div>
+                  <div class="flex items-center p-2 bg-orange-50 rounded">
+                    <span
+                      class="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2"
+                      >2</span
+                    >
+                    <span>Create New Virtual DOM</span>
+                  </div>
+                  <div class="flex items-center p-2 bg-yellow-50 rounded">
+                    <span
+                      class="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2"
+                      >3</span
+                    >
+                    <span>Diff with Previous Virtual DOM</span>
+                  </div>
+                  <div class="flex items-center p-2 bg-green-50 rounded">
+                    <span
+                      class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2"
+                      >4</span
+                    >
+                    <span>Update Real DOM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- React.memo() -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-red-700 flex items-center">
+              <i class="fa-solid fa-memory text-red-600 mr-2"></i>
+              React.memo() - Preventing Unnecessary Re-renders
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="bg-red-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-red-700 mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle text-red-500 mr-2"></i>
+                  Before: Component Re-renders on Every Parent Update
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// Child component re-renders even when props haven't changed
+function ExpensiveChild({ name, age }) {
+  console.log('ExpensiveChild rendered'); // Logs on every parent update
+  
+  // Expensive calculation
+  const expensiveValue = useMemo(() => {
+    let result = 0;
+    for (let i = 0; i < 1000000; i++) {
+      result += i;
+    }
+    return result;
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{name} (Age: {age})&lt;/h3&gt;
+      &lt;p&gt;Expensive calculation: {expensiveValue}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Parent() {
+  const [counter, setCounter] = useState(0);
+  const [name] = useState('John');
+  const [age] = useState(25);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setCounter(c =&gt; c + 1)}&gt;
+        Counter: {counter}
+      &lt;/button&gt;
+      {/* Child re-renders even though name and age haven't changed */}
+      &lt;ExpensiveChild name={name} age={age} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-green-700 mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle text-green-500 mr-2"></i>
+                  After: Optimized with React.memo()
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// Child only re-renders when props actually change
+const ExpensiveChild = React.memo(function ExpensiveChild({ name, age }) {
+  console.log('ExpensiveChild rendered'); // Only logs when name or age changes
+  
+  // Expensive calculation
+  const expensiveValue = useMemo(() => {
+    let result = 0;
+    for (let i = 0; i < 1000000; i++) {
+      result += i;
+    }
+    return result;
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{name} (Age: {age})&lt;/h3&gt;
+      &lt;p&gt;Expensive calculation: {expensiveValue}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+});
+
+// Custom comparison function for complex props
+const ExpensiveChildWithCustomComparison = React.memo(
+  function ExpensiveChild({ user, settings }) {
+    return (
+      &lt;div&gt;
+        &lt;h3&gt;{user.name}&lt;/h3&gt;
+        &lt;p&gt;Theme: {settings.theme}&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  },
+  (prevProps, nextProps) => {
+    // Custom comparison logic
+    return (
+      prevProps.user.name === nextProps.user.name &&
+      prevProps.user.age === nextProps.user.age &&
+      prevProps.settings.theme === nextProps.settings.theme
+    );
+  }
+);</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r"
+            >
+              <div class="flex items-center mb-2">
+                <i
+                  class="fa-solid fa-exclamation-triangle text-yellow-600 mr-2"
+                ></i>
+                <h5 class="font-semibold text-yellow-800">
+                  When NOT to Use React.memo()
+                </h5>
+              </div>
+              <ul
+                class="list-disc list-inside text-yellow-800 space-y-1 text-sm"
+              >
+                <li>
+                  When props change frequently (memo overhead > re-render cost)
+                </li>
+                <li>For simple components with minimal rendering cost</li>
+                <li>
+                  When component always receives new props (like timestamps)
+                </li>
+                <li>Components that use context that changes frequently</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- useMemo() and useCallback() -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-red-700 flex items-center">
+              <i class="fa-solid fa-brain text-red-600 mr-2"></i>
+              useMemo() and useCallback() Best Practices
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-blue-700 mb-2">
+                  useMemo() - Expensive Calculations
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>function ProductList({ products, filters }) {
+  // ❌ BAD: Expensive operation runs on every render
+  const filteredProducts = products.filter(product => 
+    product.category === filters.category &&
+    product.price >= filters.minPrice &&
+    product.price <= filters.maxPrice
+  ).sort((a, b) => b.rating - a.rating);
+
+  // ✅ GOOD: Only recalculate when dependencies change
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter(product => 
+        product.category === filters.category &&
+        product.price >= filters.minPrice &&
+        product.price <= filters.maxPrice
+      )
+      .sort((a, b) => b.rating - a.rating);
+  }, [products, filters.category, filters.minPrice, filters.maxPrice]);
+
+  // ❌ BAD: Object created on every render
+  const chartData = {
+    labels: filteredProducts.map(p => p.name),
+    values: filteredProducts.map(p => p.sales)
+  };
+
+  // ✅ GOOD: Object memoized
+  const chartData = useMemo(() => ({
+    labels: filteredProducts.map(p => p.name),
+    values: filteredProducts.map(p => p.sales)
+  }), [filteredProducts]);
+
+  return (
+    &lt;div&gt;
+      &lt;ProductChart data={chartData} /&gt;
+      {filteredProducts.map(product => (
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-purple-700 mb-2">
+                  useCallback() - Function References
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  // ❌ BAD: New function on every render
+  const handleToggle = (id) => {
+    setTodos(todos => 
+      todos.map(todo => 
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  // ✅ GOOD: Function reference stable
+  const handleToggle = useCallback((id) => {
+    setTodos(todos => 
+      todos.map(todo => 
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }, []); // No dependencies because we use functional update
+
+  // ❌ BAD: Event handler recreated on every render
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  };
+
+  // ✅ GOOD: Stable event handler
+  const handleFilterChange = useCallback((newFilter) => {
+    setFilter(newFilter);
+  }, []);
+
+  // Expensive filtering operation
+  const filteredTodos = useMemo(() => {
+    switch (filter) {
+      case 'active':
+        return todos.filter(todo => !todo.completed);
+      case 'completed':
+        return todos.filter(todo => todo.completed);
+      default:
+        return todos;
+    }
+  }, [todos, filter]);
+
+  return (
+    &lt;div&gt;
+      &lt;FilterButtons 
+        currentFilter={filter} 
+        onFilterChange={handleFilterChange} 
+      /&gt;
+      &lt;TodoList 
+        todos={filteredTodos} 
+        onToggle={handleToggle} 
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-red-100 border-l-4 border-red-500 p-4 rounded-r">
+              <div class="flex items-center mb-2">
+                <i class="fa-solid fa-exclamation-circle text-red-600 mr-2"></i>
+                <h5 class="font-semibold text-red-800">
+                  Common Memoization Mistakes
+                </h5>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h6 class="font-semibold text-red-700 mb-2">
+                    Over-memoization
+                  </h6>
+                  <ul class="list-disc list-inside text-red-800 space-y-1">
+                    <li>Memoizing primitive values</li>
+                    <li>Memoizing simple calculations</li>
+                    <li>Using memo on every component</li>
+                  </ul>
+                </div>
+                <div>
+                  <h6 class="font-semibold text-red-700 mb-2">
+                    Incorrect Dependencies
+                  </h6>
+                  <ul class="list-disc list-inside text-red-800 space-y-1">
+                    <li>Missing dependencies in array</li>
+                    <li>Using objects as dependencies</li>
+                    <li>Stale closure issues</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Component Architecture Patterns -->
+      <section class="mb-12" id="component-architecture">
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 border border-yellow-100"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="p-3 bg-gradient-to-br from-yellow-600 to-orange-600 rounded-lg shadow-md mr-4"
+            >
+              <i class="fa-solid fa-sitemap text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-yellow-800">
+                Component Architecture Patterns
+              </h3>
+              <p class="text-gray-600">
+                Design patterns that enhance performance and maintainability
+              </p>
+            </div>
+          </div>
+
+          <!-- Lazy Loading Components -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-yellow-700 flex items-center"
+            >
+              <i class="fa-solid fa-hourglass-half text-yellow-600 mr-2"></i>
+              React.lazy() and Suspense for Code Splitting
+            </h4>
+
+            <div class="bg-yellow-50 p-4 rounded-lg mb-6">
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+              >
+                <pre><code>// Basic lazy loading setup
+import React, { Suspense, lazy } from 'react';
+
+// Lazy load components
+const Dashboard = lazy(() => import('./Dashboard'));
+const UserProfile = lazy(() => import('./UserProfile'));
+const AdminPanel = lazy(() => import('./AdminPanel'));
+
+// Route-based code splitting
+const Router = () => {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+        &lt;Routes&gt;
+          &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;} /&gt;
+          &lt;Route path="/profile" element={&lt;UserProfile /&gt;} /&gt;
+          &lt;Route path="/admin" element={&lt;AdminPanel /&gt;} /&gt;
+        &lt;/Routes&gt;
+      &lt;/Suspense&gt;
+    &lt;/BrowserRouter&gt;
+  );
+};
+
+// Advanced: Conditional lazy loading
+const ConditionalLazyComponent = ({ showAdvanced }) => {
+  const [AdvancedComponent, setAdvancedComponent] = useState(null);
+  
+  useEffect(() => {
+    if (showAdvanced && !AdvancedComponent) {
+      import('./AdvancedFeatures').then(module => {
+        setAdvancedComponent(() => module.default);
+      });
+    }
+  }, [showAdvanced, AdvancedComponent]);
+  
+  return (
+    &lt;div&gt;
+      &lt;BasicFeatures /&gt;
+      {showAdvanced && AdvancedComponent && (
+        &lt;Suspense fallback={&lt;LoadingSpinner /&gt;}&gt;
+          &lt;AdvancedComponent /&gt;
+        &lt;/Suspense&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+// Preloading for better UX
+const preloadComponent = (componentImport) => {
+  return componentImport();
+};
+
+// Usage: Preload on hover or route anticipation
+const NavigationLink = ({ to, children, componentImport }) => {
+  const handleMouseEnter = () => {
+    preloadComponent(componentImport);
+  };
+  
+  return (
+    &lt;Link to={to} onMouseEnter={handleMouseEnter}&gt;
+      {children}
+    &lt;/Link&gt;
+  );
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component Composition vs Inheritance -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-yellow-700 flex items-center"
+            >
+              <i class="fa-solid fa-puzzle-piece text-yellow-600 mr-2"></i>
+              Composition vs Inheritance for Performance
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="bg-red-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-red-700 mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle text-red-500 mr-2"></i>
+                  Before: Inheritance-Based Component Structure
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// Inheritance-based component structure
+class BaseButton extends Component {
+  render() {
+    return (
+      &lt;button 
+        className={this.getBaseClasses()}
+        onClick={this.handleClick}
+      &gt;
+        {this.renderContent()}
+      &lt;/button&gt;
+    );
+  }
+}
+
+class PrimaryButton extends BaseButton {
+  getBaseClasses() {
+    return 'btn btn-primary ' + super.getBaseClasses();
+  }
+  
+  renderContent() {
+    return (
+      &lt;&gt;
+        &lt;Icon name="primary" /&gt;
+        {this.props.children}
+      &lt;/&gt;
+    );
+  }
+}
+
+class SecondaryButton extends BaseButton {
+  getBaseClasses() {
+    return 'btn btn-secondary ' + super.getBaseClasses();
+  }
+  
+  renderContent() {
+    return (
+      &lt;&gt;
+        &lt;Icon name="secondary" /&gt;
+        {this.props.children}
+      &lt;/&gt;
+    );
+  }
+}</code></pre>
+                </div>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-green-700 mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle text-green-500 mr-2"></i>
+                  After: Composition-Based Component Structure
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// Composition-based component structure
+const Button = memo(({ variant, icon, children, ...props }) => {
+  const baseClasses = 'btn';
+  const variantClasses = {
+    primary: 'btn-primary',
+    secondary: 'btn-secondary',
+    danger: 'btn-danger'
+  };
+  
+  return (
+    &lt;button 
+      className={`${baseClasses} ${variantClasses[variant]}`}
+      {...props}
+    &gt;
+      {icon && &lt;Icon name={icon} /&gt;}
+      {children}
+    &lt;/button&gt;
+  );
+});
+
+// Higher-order component for additional functionality
+const withLoading = (Component) => {
+  return memo(({ loading, ...props }) => {
+    if (loading) {
+      return &lt;LoadingSpinner /&gt;;
+    }
+    return &lt;Component {...props} /&gt;;
+  });
+};
+
+// Compound component pattern
+const Card = ({ children, ...props }) => {
+  return &lt;div className="card" {...props}&gt;{children}&lt;/div&gt;;
+};
+
+Card.Header = ({ children }) => {
+  return &lt;div className="card-header"&gt;{children}&lt;/div&gt;;
+};
+
+Card.Body = ({ children }) => {
+  return &lt;div className="card-body"&gt;{children}&lt;/div&gt;;
+};
+
+Card.Footer = ({ children }) => {
+  return &lt;div className="card-footer"&gt;{children}&lt;/div&gt;;
+};</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HOC vs Hooks Performance -->
+          <div class="mb-8">
+            <h4
+              class="text-xl font-bold mb-4 text-yellow-700 flex items-center"
+            >
+              <i class="fa-solid fa-exchange-alt text-yellow-600 mr-2"></i>
+              HOC vs Custom Hooks Performance Comparison
+            </h4>
+
+            <div
+              class="bg-amber-100 border-l-4 border-amber-500 p-4 rounded-r mb-4"
+            >
+              <div class="flex items-center mb-2">
+                <i class="fa-solid fa-info-circle text-amber-600 mr-2"></i>
+                <h5 class="font-semibold text-amber-800">
+                  Performance Considerations
+                </h5>
+              </div>
+              <ul
+                class="list-disc list-inside text-amber-800 space-y-1 text-sm"
+              >
+                <li>Custom Hooks: Better performance, no wrapper components</li>
+                <li>
+                  HOCs: Can create unnecessary wrapper divs and component
+                  nesting
+                </li>
+                <li>Hooks: More granular re-rendering control</li>
+                <li>HOCs: Can interfere with React DevTools component tree</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- List and Data Rendering Optimization -->
+      <section class="mb-12" id="list-optimization">
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 border border-green-100"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="p-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-lg shadow-md mr-4"
+            >
+              <i class="fa-solid fa-list text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-green-800">
+                List and Data Rendering Optimization
+              </h3>
+              <p class="text-gray-600">
+                Techniques for handling large datasets efficiently
+              </p>
+            </div>
+          </div>
+
+          <!-- Virtualization -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-green-700 flex items-center">
+              <i class="fa-solid fa-window-maximize text-green-600 mr-2"></i>
+              Virtualization for Large Lists
+            </h4>
+
+            <div class="bg-green-50 p-4 rounded-lg mb-6">
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+              >
+                <pre><code>// Using react-window for virtualization
+import { FixedSizeList as List } from 'react-window';
+
+// Row component for virtualized list
+const Row = memo(({ index, style, data }) => {
+  const item = data[index];
+  
+  return (
+    &lt;div style={style} className="list-item"&gt;
+      &lt;img src={item.avatar} alt={item.name} /&gt;
+      &lt;div&gt;
+        &lt;h3&gt;{item.name}&lt;/h3&gt;
+        &lt;p&gt;{item.email}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+});
+
+// Virtualized list component
+const VirtualizedUserList = ({ users }) => {
+  return (
+    &lt;List
+      height={600}
+      itemCount={users.length}
+      itemSize={80}
+      itemData={users}
+    &gt;
+      {Row}
+    &lt;/List&gt;
+  );
+};
+
+// Dynamic size virtualization
+import { VariableSizeList as List } from 'react-window';
+
+const DynamicRow = memo(({ index, style, data }) => {
+  const item = data.items[index];
+  const { getItemSize } = data;
+  
+  return (
+    &lt;div style={style}&gt;
+      &lt;div className="dynamic-content"&gt;
+        &lt;h3&gt;{item.title}&lt;/h3&gt;
+        &lt;p&gt;{item.description}&lt;/p&gt;
+        {item.image && &lt;img src={item.image} alt="" /&gt;}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+});
+
+const DynamicVirtualizedList = ({ items }) => {
+  const getItemSize = useCallback((index) => {
+    const item = items[index];
+    // Calculate height based on content
+    let height = 60; // base height
+    if (item.description) height += 40;
+    if (item.image) height += 200;
+    return height;
+  }, [items]);
+  
+  return (
+    &lt;List
+      height={600}
+      itemCount={items.length}
+      estimatedItemSize={100}
+      itemData={{ items, getItemSize }}
+    &gt;
+      {DynamicRow}
+    &lt;/List&gt;
+  );
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Optimization -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-green-700 flex items-center">
+              <i class="fa-solid fa-key text-green-600 mr-2"></i>
+              Key Prop Optimization
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="bg-red-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-red-700 mb-2">
+                  ❌ Poor Key Usage
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// ❌ BAD: Using array index as key
+{items.map((item, index) => (
+  &lt;TodoItem key={index} todo={item} /&gt;
+))}
+
+// ❌ BAD: Using non-stable values
+{items.map((item) => (
+  &lt;TodoItem key={Math.random()} todo={item} /&gt;
+))}
+
+// ❌ BAD: Using object references
+{items.map((item) => (
+  &lt;TodoItem key={item} todo={item} /&gt;
+))}</code></pre>
+                </div>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h5 class="font-semibold text-green-700 mb-2">
+                  ✅ Optimal Key Usage
+                </h5>
+                <div
+                  class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+                >
+                  <pre><code>// ✅ GOOD: Using unique, stable IDs
+{items.map((item) => (
+  &lt;TodoItem key={item.id} todo={item} /&gt;
+))}
+
+// ✅ GOOD: Composite keys when needed
+{items.map((item) => (
+  &lt;TodoItem 
+    key={`${item.id}-${item.version}`} 
+    todo={item} 
+  /&gt;
+))}
+
+// ✅ GOOD: Generated stable IDs for data without IDs
+const itemsWithIds = useMemo(() => 
+  items.map((item, index) => ({
+    ...item,
+    id: item.id || `generated-${index}-${item.name}`
+  })), [items]
+);
+
+// For frequently changing lists, consider using a Map
+const [itemsMap, setItemsMap] = useState(new Map());
+
+const addItem = useCallback((newItem) => {
+  setItemsMap(prev => {
+    const next = new Map(prev);
+    next.set(newItem.id, newItem);
+    return next;
+  });
+}, []);
+
+// Render from Map
+{Array.from(itemsMap.values()).map((item) => (
+  &lt;TodoItem key={item.id} todo={item} /&gt;
+))}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination vs Infinite Scroll -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-green-700 flex items-center">
+              <i class="fa-solid fa-infinity text-green-600 mr-2"></i>
+              Pagination vs Infinite Scrolling Performance
+            </h4>
+
+            <div class="bg-emerald-50 p-4 rounded-lg">
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+              >
+                <pre><code>// Infinite scroll with intersection observer
+const InfiniteScrollList = ({ fetchMore, hasMore, items }) => {
+  const [loading, setLoading] = useState(false);
+  const observer = useRef();
+  
+  const lastItemRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
     
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setLoading(true);
+        fetchMore().finally(() => setLoading(false));
+      }
+    });
+    
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore, fetchMore]);
+  
+  return (
+    &lt;div&gt;
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        return (
+          &lt;div
+            key={item.id}
+            ref={isLast ? lastItemRef : null}
+            className="list-item"
+          &gt;
+            {item.title}
+          &lt;/div&gt;
+        );
+      })}
+      {loading && &lt;LoadingSpinner /&gt;}
+    &lt;/div&gt;
+  );
+};
+
+// Optimized pagination with prefetching
+const PaginatedList = ({ currentPage, totalPages, onPageChange }) => {
+  const [cache, setCache] = useState(new Map());
+  const [prefetchedPages, setPrefetchedPages] = useState(new Set());
+  
+  // Prefetch adjacent pages
+  useEffect(() => {
+    const prefetchPage = async (page) => {
+      if (page > 0 && page <= totalPages && !prefetchedPages.has(page)) {
+        const data = await fetchPage(page);
+        setCache(prev => new Map(prev).set(page, data));
+        setPrefetchedPages(prev => new Set(prev).add(page));
+      }
+    };
+    
+    // Prefetch next and previous pages
+    prefetchPage(currentPage + 1);
+    prefetchPage(currentPage - 1);
+  }, [currentPage, totalPages, prefetchedPages]);
+  
+  const currentData = cache.get(currentPage) || [];
+  
+  return (
+    &lt;div&gt;
+      &lt;div className="items-list"&gt;
+        {currentData.map(item => (
+          &lt;Item key={item.id} data={item} /&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;Pagination 
+        current={currentPage}
+        total={totalPages}
+        onChange={onPageChange}
+      /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Network and Data Fetching Performance -->
+      <section class="mb-12" id="network-optimization">
+        <div
+          class="bg-white/80 shadow-xl rounded-xl p-8 border border-blue-100"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="p-3 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg shadow-md mr-4"
+            >
+              <i class="fa-solid fa-wifi text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-blue-800">
+                Network and Data Fetching Performance
+              </h3>
+              <p class="text-gray-600">
+                Optimize API calls and data loading strategies
+              </p>
+            </div>
+          </div>
+
+          <!-- Request Optimization -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-blue-700 flex items-center">
+              <i class="fa-solid fa-network-wired text-blue-600 mr-2"></i>
+              API Request Optimization
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg mb-6">
+              <div
+                class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto"
+              >
+                <pre><code>// Request deduplication and caching
+const requestCache = new Map();
+const pendingRequests = new Map();
+
+const fetchWithCache = async (url, options = {}) => {
+  const cacheKey = `${url}-${JSON.stringify(options)}`;
+  
+  // Return cached result if available
+  if (requestCache.has(cacheKey)) {
+    return requestCache.get(cacheKey);
+  }
+  
+  // Return pending request if in progress
+  if (pendingRequests.has(cacheKey)) {
+    return pendingRequests.get(cacheKey);
+  }
+  
+  // Make new request
+  const request = fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+      requestCache.set(cacheKey, data);
+      pendingRequests.delete(cacheKey);
+      return data;
+    })
+    .catch(error => {
+      pendingRequests.delete(cacheKey);
+      throw error;
+    });
+  
+  pendingRequests.set(cacheKey, request);
+  return request;
+};
+
+// Custom hook for optimized data fetching
+const useOptimizedFetch = (url, options = {}) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const abortControllerRef = useRef();
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Abort previous request
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
+        
+        abortControllerRef.current = new AbortController();
+        setLoading(true);
+        setError(null);
+        
+        const result = await fetchWithCache(url, {
+          ...options,
+          signal: abortControllerRef.current.signal
+        });
+        
+        setData(result);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (url) {
+      fetchData();
+    }
+    
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [url, JSON.stringify(options)]);
+  
+  return { data, loading, error };
+};
+
+// Batch API requests
+const batchRequests = (requests, batchSize = 5) => {
+  return new Promise(async (resolve, reject) => {
+    const results = [];
+    const errors = [];
+    
+    for (let i = 0; i < requests.length; i += batchSize) {
+      const batch = requests.slice(i, i + batchSize);
+      
+      try {
+        const batchResults = await Promise.allSettled(
+          batch.map(request => fetch(request.url, request.options))
+        );
+        
+        batchResults.forEach((result, index) => {
+          if (result.status === 'fulfilled') {
+            results[i + index] = result.value;
+          } else {
+            errors[i + index] = result.reason;
+          }
+        });
+      } catch (error) {
+        reject(error);
+        return;
+      }
+    }
+    
+    resolve({ results, errors });
+  });
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prefetching Strategies -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-blue-700 flex items-center">
+              <i class="fa-solid fa-download text-blue-600 mr-2"></i>
+              Prefetching and Background Loading
+            </h4>
+
+            <div class="bg-cyan-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Link prefetching on hover
+const PrefetchLink = ({ to, children, prefetchData }) => {
+  const [prefetched, setPrefetched] = useState(false);
+  
+  const handleMouseEnter = useCallback(() => {
+    if (!prefetched && prefetchData) {
+      prefetchData();
+      setPrefetched(true);
+    }
+  }, [prefetched, prefetchData]);
+  
+  return (
+    &lt;Link to={to} onMouseEnter={handleMouseEnter}&gt;
+      {children}
+    &lt;/Link&gt;
+  );
+};
+
+// Background data refresh
+const useBackgroundRefresh = (fetchFn, interval = 30000) => {
+  const [data, setData] = useState(null);
+  const [isStale, setIsStale] = useState(false);
+  const intervalRef = useRef();
+  
+  useEffect(() => {
+    const refreshData = async () => {
+      try {
+        const newData = await fetchFn();
+        setData(prevData => {
+          // Check if data actually changed
+          if (JSON.stringify(prevData) !== JSON.stringify(newData)) {
+            setIsStale(true);
+            return newData;
+          }
+          return prevData;
+        });
+      } catch (error) {
+        console.error('Background refresh failed:', error);
+      }
+    };
+    
+    // Initial fetch
+    refreshData();
+    
+    // Set up interval for background refresh
+    intervalRef.current = setInterval(refreshData, interval);
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [fetchFn, interval]);
+  
+  const acknowledgeUpdate = useCallback(() => {
+    setIsStale(false);
+  }, []);
+  
+  return { data, isStale, acknowledgeUpdate };
+};
+
+// Intelligent caching with TTL
+class CacheManager {
+  constructor() {
+    this.cache = new Map();
+    this.timers = new Map();
+  }
+  
+  set(key, value, ttl = 300000) { // 5 minutes default
+    // Clear existing timer
+    if (this.timers.has(key)) {
+      clearTimeout(this.timers.get(key));
+    }
+    
+    // Set cache value
+    this.cache.set(key, {
+      value,
+      timestamp: Date.now(),
+      ttl
+    });
+    
+    // Set expiration timer
+    const timer = setTimeout(() => {
+      this.delete(key);
+    }, ttl);
+    
+    this.timers.set(key, timer);
+  }
+  
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    
+    // Check if expired
+    if (Date.now() - item.timestamp > item.ttl) {
+      this.delete(key);
+      return null;
+    }
+    
+    return item.value;
+  }
+  
+  delete(key) {
+    this.cache.delete(key);
+    if (this.timers.has(key)) {
+      clearTimeout(this.timers.get(key));
+      this.timers.delete(key);
+    }
+  }
+  
+  clear() {
+    this.cache.clear();
+    this.timers.forEach(timer => clearTimeout(timer));
+    this.timers.clear();
+  }
+}
+
+const globalCache = new CacheManager();</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Metrics -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-gradient-to-br from-blue-100 to-cyan-100 p-6 rounded-lg text-center">
+              <div class="text-3xl font-bold text-blue-700 mb-2">85%</div>
+              <div class="text-sm text-blue-600">Reduced API Calls</div>
+            </div>
+            <div class="bg-gradient-to-br from-green-100 to-emerald-100 p-6 rounded-lg text-center">
+              <div class="text-3xl font-bold text-green-700 mb-2">2.3s</div>
+              <div class="text-sm text-green-600">Faster Load Time</div>
+            </div>
+            <div class="bg-gradient-to-br from-purple-100 to-indigo-100 p-6 rounded-lg text-center">
+              <div class="text-3xl font-bold text-purple-700 mb-2">40%</div>
+              <div class="text-sm text-purple-600">Less Bandwidth</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bundle Size and Loading Performance -->
+      <section class="mb-12" id="bundle-optimization">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-purple-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-compress text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-purple-800">Bundle Size & Loading Performance</h3>
+              <p class="text-gray-600">Optimize bundle size and loading strategies for faster applications</p>
+            </div>
+          </div>
+
+          <!-- Tree Shaking -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-purple-700 flex items-center">
+              <i class="fa-solid fa-tree text-purple-600 mr-2"></i>
+              Tree Shaking and Dead Code Elimination
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Before: Inefficient Imports -->
+              <div class="bg-red-50 p-4 rounded-lg">
+                <div class="text-red-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle mr-2"></i>
+                  Before: Bundle Bloat
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// Importing entire libraries
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Button, TextField, Select, DataGrid, Chart } from '@mui/material';
+
+// Using only small parts
+const UserProfile = ({ user }) => {
+  const formattedDate = moment(user.createdAt).format('MMM DD, YYYY');
+  const userName = _.capitalize(user.name);
+  
+  return (
+    &lt;div&gt;
+      &lt;Button&gt;{userName}&lt;/Button&gt;
+      &lt;p&gt;Joined: {formattedDate}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+// Bundle size: ~2.3MB</code></pre>
+                </div>
+              </div>
+
+              <!-- After: Optimized Imports -->
+              <div class="bg-green-50 p-4 rounded-lg">
+                <div class="text-green-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle mr-2"></i>
+                  After: Optimized Bundle
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// Import only what you need
+import capitalize from 'lodash/capitalize';
+import { format } from 'date-fns';
+import Button from '@mui/material/Button';
+
+// Or use modern alternatives
+const UserProfile = ({ user }) => {
+  // Use native browser APIs when possible
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric'
+  }).format(new Date(user.createdAt));
+  
+  const userName = user.name.charAt(0).toUpperCase() + user.name.slice(1);
+  
+  return (
+    &lt;div&gt;
+      &lt;Button&gt;{userName}&lt;/Button&gt;
+      &lt;p&gt;Joined: {formattedDate}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+// Bundle size: ~340KB (85% reduction!)</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Imports -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-indigo-700 flex items-center">
+              <i class="fa-solid fa-code-branch text-indigo-600 mr-2"></i>
+              Dynamic Imports and Webpack Bundle Splitting
+            </h4>
+
+            <div class="bg-indigo-50 p-4 rounded-lg mb-6">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// webpack.config.js optimization
+module.exports = {
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
+  },
+};
+
+// Dynamic imports with error handling
+const loadComponent = async (componentName) => {
+  try {
+    const module = await import(`./components/${componentName}`);
+    return module.default;
+  } catch (error) {
+    console.error(`Failed to load component: ${componentName}`, error);
+    // Return fallback component
+    return () => &lt;div&gt;Component failed to load&lt;/div&gt;;
+  }
+};
+
+// Feature-based splitting
+const FeatureLoader = ({ feature, fallback }) => {
+  const [Component, setComponent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadFeature = async () => {
+      try {
+        setLoading(true);
+        const module = await import(`../features/${feature}/index.js`);
+        setComponent(() => module.default);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeature();
+  }, [feature]);
+
+  if (loading) return fallback || &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error loading feature&lt;/div&gt;;
+  if (!Component) return null;
+
+  return &lt;Component /&gt;;
+};
+
+// Vendor chunk optimization
+const optimizeVendorChunks = {
+  splitChunks: {
+    cacheGroups: {
+      react: {
+        test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+        name: 'react',
+        chunks: 'all',
+      },
+      lodash: {
+        test: /[\\/]node_modules[\\/]lodash[\\/]/,
+        name: 'lodash',
+        chunks: 'all',
+      },
+    },
+  },
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bundle Analysis Tools -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-blue-700 flex items-center">
+              <i class="fa-solid fa-chart-pie text-blue-600 mr-2"></i>
+              Bundle Analysis and Monitoring
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Package.json scripts for bundle analysis
+{
+  "scripts": {
+    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "build:analyze": "npm run build -- --analyze",
+    "size": "npm run build && size-limit"
+  },
+  "size-limit": [
+    {
+      "path": "build/static/js/*.js",
+      "limit": "500 KB"
+    },
+    {
+      "path": "build/static/css/*.css",
+      "limit": "50 KB"
+    }
+  ]
+}
+
+// Custom bundle size monitoring
+const BundleSizeMonitor = {
+  async checkSize() {
+    const response = await fetch('/api/bundle-stats');
+    const stats = await response.json();
+    
+    if (stats.totalSize > 1024 * 1024) { // 1MB threshold
+      console.warn('Bundle size exceeds 1MB:', stats);
+      this.notifyTeam(stats);
+    }
+    
+    return stats;
+  },
+  
+  notifyTeam(stats) {
+    // Send to monitoring service
+    fetch('/api/monitoring/bundle-size', {
+      method: 'POST',
+      body: JSON.stringify(stats)
+    });
+  }
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Browser Performance Optimization -->
+      <section class="mb-12" id="browser-optimization">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-teal-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-globe text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-teal-800">Browser Performance Optimization</h3>
+              <p class="text-gray-600">Optimize for browser rendering and resource loading</p>
+            </div>
+          </div>
+
+          <!-- Critical Rendering Path -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-teal-700 flex items-center">
+              <i class="fa-solid fa-bolt text-teal-600 mr-2"></i>
+              Critical Rendering Path Optimization
+            </h4>
+
+            <div class="bg-teal-50 p-4 rounded-lg mb-6">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Critical CSS inlining
+const CriticalCSS = () => {
+  useEffect(() => {
+    // Inline critical styles
+    const criticalStyles = `
+      .hero { display: flex; min-height: 100vh; }
+      .nav { position: fixed; top: 0; width: 100%; }
+      .loading { animation: spin 1s infinite; }
+    `;
+    
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = criticalStyles;
+    document.head.appendChild(styleTag);
+    
+    // Load non-critical CSS asynchronously
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/styles/non-critical.css';
+    link.onload = () => {
+      // Remove critical styles once full CSS is loaded
+      document.head.removeChild(styleTag);
+    };
+    document.head.appendChild(link);
+  }, []);
+};
+
+// Resource preloading
+const ResourcePreloader = () => {
+  useEffect(() => {
+    // Preload critical fonts
+    const preloadFont = (href) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      link.href = href;
+      document.head.appendChild(link);
+    };
+    
+    preloadFont('/fonts/inter-var.woff2');
+    
+    // Preload critical images
+    const preloadImage = (src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    };
+    
+    preloadImage('/images/hero-bg.webp');
+  }, []);
+};
+
+// DNS prefetching for external resources
+const DNSPrefetch = () => {
+  useEffect(() => {
+    const domains = [
+      'https://api.example.com',
+      'https://cdn.example.com',
+      'https://analytics.google.com'
+    ];
+    
+    domains.forEach(domain => {
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
+      link.href = domain;
+      document.head.appendChild(link);
+    });
+  }, []);
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Web Vitals Monitoring -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-cyan-700 flex items-center">
+              <i class="fa-solid fa-chart-line text-cyan-600 mr-2"></i>
+              Core Web Vitals Monitoring
+            </h4>
+
+            <div class="bg-cyan-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Web Vitals monitoring hook
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+
+const useWebVitals = () => {
+  const [vitals, setVitals] = useState({});
+  
+  useEffect(() => {
+    const handleVital = (vital) => {
+      setVitals(prev => ({
+        ...prev,
+        [vital.name]: vital.value
+      }));
+      
+      // Send to analytics
+      gtag('event', vital.name, {
+        value: Math.round(vital.name === 'CLS' ? vital.value * 1000 : vital.value),
+        event_label: vital.id,
+        non_interaction: true,
+      });
+    };
+    
+    getCLS(handleVital);
+    getFID(handleVital);
+    getFCP(handleVital);
+    getLCP(handleVital);
+    getTTFB(handleVital);
+  }, []);
+  
+  return vitals;
+};
+
+// Performance observer for custom metrics
+const usePerformanceObserver = () => {
+  useEffect(() => {
+    if ('PerformanceObserver' in window) {
+      const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+          if (entry.entryType === 'largest-contentful-paint') {
+            console.log('LCP:', entry.startTime);
+          }
+          
+          if (entry.entryType === 'first-input') {
+            console.log('FID:', entry.processingStart - entry.startTime);
+          }
+          
+          if (entry.entryType === 'layout-shift') {
+
+            if (!entry.hadRecentInput) {
+              console.log('CLS:', entry.value);
+            }
+          }
+        });
+      });
+      
+      observer.observe({
+        entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift']
+      });
+      
+      return () => observer.disconnect();
+    }
+  }, []);
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Memory Management -->
+      <section class="mb-12" id="memory-management">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-pink-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-pink-600 to-rose-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-memory text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-pink-800">Memory Management</h3>
+              <p class="text-gray-600">Prevent memory leaks and optimize memory usage</p>
+            </div>
+          </div>
+
+          <!-- Memory Leak Prevention -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-pink-700 flex items-center">
+              <i class="fa-solid fa-bug text-pink-600 mr-2"></i>
+              Memory Leak Prevention
+            </h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Before: Memory Leaks -->
+              <div class="bg-red-50 p-4 rounded-lg">
+                <div class="text-red-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle mr-2"></i>
+                  Before: Memory Leaks
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ❌ Event listeners not cleaned up
+const Component = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log('scrolling...');
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    // Missing cleanup!
+  }, []);
+  
+  return &lt;div&gt;Content&lt;/div&gt;;
+};
+
+// ❌ Timers not cleared
+const Timer = () => {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+    // Missing cleanup!
+  }, []);
+};
+
+// ❌ Subscriptions not unsubscribed
+const DataFetcher = () => {
+  useEffect(() => {
+    const subscription = dataService.subscribe(data => {
+      // Handle data
+    });
+    // Missing cleanup!
+  }, []);
+};</code></pre>
+                </div>
+              </div>
+
+              <!-- After: Proper Cleanup -->
+              <div class="bg-green-50 p-4 rounded-lg">
+                <div class="text-green-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle mr-2"></i>
+                  After: Proper Cleanup
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ✅ Event listeners cleaned up
+const Component = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log('scrolling...');
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+  return &lt;div&gt;Content&lt;/div&gt;;
+};
+
+// ✅ Timers cleared
+const Timer = () => {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+};
+
+// ✅ Subscriptions unsubscribed
+const DataFetcher = () => {
+  useEffect(() => {
+    const subscription = dataService.subscribe(data => {
+      // Handle data
+    });
+    
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+};</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Memory Profiling -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-rose-700 flex items-center">
+              <i class="fa-solid fa-magnifying-glass text-rose-600 mr-2"></i>
+              Memory Profiling and Monitoring
+            </h4>
+
+            <div class="bg-rose-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Memory usage monitoring
+const useMemoryMonitor = () => {
+  const [memoryInfo, setMemoryInfo] = useState(null);
+  
+  useEffect(() => {
+    const checkMemory = () => {
+      if ('memory' in performance) {
+        const info = {
+          usedJSMemory: performance.memory.usedJSMemory,
+          totalJSMemory: performance.memory.totalJSMemory,
+          jsMemoryLimit: performance.memory.jsMemoryLimit
+        };
+        
+        setMemoryInfo(info);
+        
+        // Alert if memory usage is high
+        const usagePercentage = (info.usedJSMemory / info.jsMemoryLimit) * 100;
+        if (usagePercentage > 80) {
+          console.warn('High memory usage detected:', usagePercentage.toFixed(2) + '%');
+        }
+      }
+    };
+    
+    checkMemory();
+    const interval = setInterval(checkMemory, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  return memoryInfo;
+};
+
+// Weak references for cache management
+class WeakCache {
+  constructor() {
+    this.cache = new WeakMap();
+    this.registry = new FinalizationRegistry((key) => {
+      console.log(`Object with key ${key} was garbage collected`);
+    });
+  }
+  
+  set(obj, value, key) {
+    this.cache.set(obj, value);
+    this.registry.register(obj, key);
+  }
+  
+  get(obj) {
+    return this.cache.get(obj);
+  }
+  
+  has(obj) {
+    return this.cache.has(obj);
+  }
+}
+
+// Component memory footprint reducer
+const useComponentMemoryOptimization = () => {
+  const componentRef = useRef();
+  
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        // Clean up removed nodes
+        mutation.removedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Clear any cached data for removed elements
+            clearElementCache(node);
+          }
+        });
+      });
+    });
+    
+    if (componentRef.current) {
+      observer.observe(componentRef.current, {
+        childList: true,
+        subtree: true
+      });
+    }
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  
+  return componentRef;
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Development and Debugging Tools -->
+      <section class="mb-12" id="debugging-tools">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-gray-200">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-tools text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-gray-800">Development & Debugging Tools</h3>
+              <p class="text-gray-600">Tools and techniques for performance debugging</p>
+            </div>
+          </div>
+
+          <!-- React DevTools -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-gray-700 flex items-center">
+              <i class="fa-solid fa-microscope text-gray-600 mr-2"></i>
+              React DevTools Profiling
+            </h4>
+
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Custom profiling with React DevTools
+import { Profiler } from 'react';
+
+const ProfilerWrapper = ({ id, children }) => {
+  const onRenderCallback = (id, phase, actualDuration, baseDuration, startTime, commitTime) => {
+    console.log({
+      id,
+      phase: // "mount" or "update"
+      actualDuration, // Time spent rendering the committed update
+      baseDuration, // Estimated time to render without memoization
+      startTime, // When React began rendering this update
+      commitTime, // When React committed this update
+      interactions: [], // Set of interactions that were being traced
+    });
+    
+    // Send performance data to analytics
+    if (actualDuration > 16) { // Frame budget exceeded
+      analytics.track('slow_render', {
+        component: id,
+        duration: actualDuration,
+        phase
+      });
+    }
+  };
+
+  return (
+    &lt;Profiler id={id} onRender={onRenderCallback}&gt;
+      {children}
+    &lt;/Profiler&gt;
+  );
+};
+
+// Performance debugging hook
+const usePerformanceDebug = (componentName) => {
+  const renderCount = useRef(0);
+  const lastRenderTime = useRef(Date.now());
+  
+  useEffect(() => {
+    renderCount.current += 1;
+    const now = Date.now();
+    const timeSinceLastRender = now - lastRenderTime.current;
+    
+    console.log(`${componentName} rendered ${renderCount.current} times`, {
+      timeSinceLastRender,
+      timestamp: now
+    });
+    
+    lastRenderTime.current = now;
+  });
+  
+  // Track props changes
+  const useWhyDidYouUpdate = (props) => {
+    const previous = useRef();
+    
+    useEffect(() => {
+      if (previous.current) {
+        const allKeys = Object.keys({ ...previous.current, ...props });
+        const changedProps = {};
+        
+        allKeys.forEach(key => {
+          if (previous.current[key] !== props[key]) {
+            changedProps[key] = {
+              from: previous.current[key],
+              to: props[key]
+            };
+          }
+        });
+        
+        if (Object.keys(changedProps).length) {
+          console.log(`${componentName} props changed:`, changedProps);
+        }
+      }
+      
+      previous.current = props;
+    });
+  };
+  
+  return { useWhyDidYouUpdate };
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Testing -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-blue-700 flex items-center">
+              <i class="fa-solid fa-stopwatch text-blue-600 mr-2"></i>
+              Automated Performance Testing
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Jest performance testing
+describe('Component Performance', () => {
+  it('should render within performance budget', async () => {
+    const startTime = performance.now();
+    
+    render(&lt;ExpensiveComponent data={largeDataSet} /&gt;);
+    
+    const endTime = performance.now();
+    const renderTime = endTime - startTime;
+    
+    expect(renderTime).toBeLessThan(16); // 60fps budget
+  });
+  
+  it('should not cause memory leaks', async () => {
+    const { unmount } = render(&lt;ComponentWithEffects /&gt;);
+    
+    // Force garbage collection if available
+    if (global.gc) {
+      global.gc();
+    }
+    
+    const initialMemory = process.memoryUsage().heapUsed;
+    
+    // Mount and unmount multiple times
+    for (let i = 0; i < 100; i++) {
+      const { unmount } = render(&lt;ComponentWithEffects /&gt;);
+      unmount();
+    }
+    
+    if (global.gc) {
+      global.gc();
+    }
+    
+    const finalMemory = process.memoryUsage().heapUsed;
+    const memoryIncrease = finalMemory - initialMemory;
+    
+    expect(memoryIncrease).toBeLessThan(1024 * 1024); // Less than 1MB increase
+  });
+});
+
+// Lighthouse CI integration
+// lighthouse.config.js
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000/'],
+      numberOfRuns: 3,
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['error', { minScore: 0.9 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }],
+        'first-contentful-paint': ['error', { maxNumericValue: 2000 }],
+        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Advanced Optimization Techniques -->
+      <section class="mb-12" id="advanced-techniques">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-indigo-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-rocket text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-indigo-800">Advanced Optimization Techniques</h3>
+              <p class="text-gray-600">Cutting-edge techniques for maximum performance</p>
+            </div>
+          </div>
+
+          <!-- Concurrent Features -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-indigo-700 flex items-center">
+              <i class="fa-solid fa-layer-group text-indigo-600 mr-2"></i>
+              React 18 Concurrent Features
+            </h4>
+
+            <div class="bg-indigo-50 p-4 rounded-lg mb-6">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Concurrent rendering with Suspense
+import { Suspense, startTransition, useDeferredValue, useTransition } from 'react';
+
+const SearchResults = ({ query }) => {
+  const [isPending, startTransition] = useTransition();
+  const [results, setResults] = useState([]);
+  const deferredQuery = useDeferredValue(query);
+  
+  useEffect(() => {
+    if (deferredQuery) {
+      startTransition(() => {
+        // Non-urgent update
+        searchAPI(deferredQuery).then(setResults);
+      });
+    }
+  }, [deferredQuery]);
+  
+  return (
+    &lt;div&gt;
+      {isPending && &lt;div&gt;Searching...&lt;/div&gt;}
+      &lt;Suspense fallback={&lt;ResultsSkeleton /&gt;}&gt;
+        &lt;ResultsList results={results} /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+};
+
+// Time slicing for heavy computations
+const HeavyComputation = ({ data }) => {
+  const [result, setResult] = useState(null);
+  const [isPending, startTransition] = useTransition();
+  
+  const processData = useCallback(() => {
+    startTransition(() => {
+      // Heavy computation that can be interrupted
+      const processed = data.map(item => {
+        // Expensive operation
+        return complexCalculation(item);
+      });
+      setResult(processed);
+    });
+  }, [data]);
+  
+  useEffect(() => {
+    processData();
+  }, [processData]);
+  
+  if (isPending) {
+    return &lt;div&gt;Processing data...&lt;/div&gt;;
+  }
+  
+  return &lt;div&gt;{result && renderResult(result)}&lt;/div&gt;;
+};
+
+// Selective hydration
+const App = () => {
+  return (
+    &lt;html&gt;
+      &lt;body&gt;
+        &lt;div id="root"&gt;
+          &lt;Header /&gt;
+          &lt;Suspense fallback={&lt;MainSkeleton /&gt;}&gt;
+            &lt;MainContent /&gt;
+          &lt;/Suspense&gt;
+          &lt;Suspense fallback={&lt;SidebarSkeleton /&gt;}&gt;
+            &lt;Sidebar /&gt;
+          &lt;/Suspense&gt;
+          &lt;Footer /&gt;
+        &lt;/div&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+};</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Web Workers -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-purple-700 flex items-center">
+              <i class="fa-solid fa-cogs text-purple-600 mr-2"></i>
+              Web Workers for Background Processing
+            </h4>
+
+            <div class="bg-purple-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// Web Worker for heavy computations
+// worker.js
+self.onmessage = function(e) {
+  const { data, operation } = e.data;
+  
+  switch (operation) {
+    case 'sort':
+      const sorted = data.sort((a, b) => a.value - b.value);
+      self.postMessage({ result: sorted, operation });
+      break;
+      
+    case 'filter':
+      const filtered = data.filter(item => item.active);
+      self.postMessage({ result: filtered, operation });
+      break;
+      
+    case 'process-image':
+      // Image processing logic
+      const processed = processImage(data);
+      self.postMessage({ result: processed, operation });
+      break;
+      
+    default:
+      self.postMessage({ error: 'Unknown operation', operation });
+  }
+};
+
+// React hook for Web Workers
+const useWebWorker = (workerScript) => {
+  const [worker, setWorker] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const pendingOperations = useRef(new Map());
+  
+  useEffect(() => {
+    const newWorker = new Worker(workerScript);
+    
+    newWorker.onmessage = (e) => {
+      const { result, operation, error } = e.data;
+      const operationId = `${operation}-${Date.now()}`;
+      
+      if (pendingOperations.current.has(operationId)) {
+        const { resolve, reject } = pendingOperations.current.get(operationId);
+        pendingOperations.current.delete(operationId);
+        
+        if (error) {
+          reject(new Error(error));
+        } else {
+          resolve(result);
+        }
+      }
+      
+      setIsLoading(pendingOperations.current.size > 0);
+    };
+    
+    newWorker.onerror = (error) => {
+      console.error('Worker error:', error);
+    };
+    
+    setWorker(newWorker);
+    
+    return () => {
+      newWorker.terminate();
+    };
+  }, [workerScript]);
+  
+  const executeOperation = useCallback((operation, data) => {
+    return new Promise((resolve, reject) => {
+      if (!worker) {
+        reject(new Error('Worker not ready'));
+        return;
+      }
+      
+      const operationId = `${operation}-${Date.now()}`;
+      pendingOperations.current.set(operationId, { resolve, reject });
+      
+      setIsLoading(true);
+      worker.postMessage({ operation, data });
+    });
+  }, [worker]);
+  
+  return { executeOperation, isLoading };
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Common Performance Pitfalls -->
+      <section class="mb-12" id="common-pitfalls">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-red-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-red-600 to-rose-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-exclamation-triangle text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-red-800">Common Performance Pitfalls</h3>
+              <p class="text-gray-600">Mistakes to avoid and how to fix them</p>
+            </div>
+          </div>
+
+          <!-- Anti-patterns -->
+          <div class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Pitfall 1 -->
+              <div class="bg-red-50 p-4 rounded-lg">
+                <div class="text-red-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle mr-2"></i>
+                  Pitfall: Unnecessary Re-renders
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ❌ Creates new objects on every render
+const Component = ({ items }) => {
+  return (
+    &lt;div&gt;
+      {items.map(item => (
+        &lt;ItemComponent 
+          key={item.id}
+          style={{ marginTop: 10 }} // New object!
+          onClick={() => handleClick(item)} // New function!
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};</code></pre>
+                </div>
+              </div>
+
+              <!-- Solution 1 -->
+              <div class="bg-green-50 p-4 rounded-lg">
+                <div class="text-green-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle mr-2"></i>
+                  Solution: Stable References
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ✅ Stable references
+const itemStyle = { marginTop: 10 };
+
+const Component = ({ items }) => {
+  const handleClick = useCallback((item) => {
+    // Handle click
+  }, []);
+  
+  return (
+    &lt;div&gt;
+      {items.map(item => (
+        &lt;ItemComponent 
+          key={item.id}
+          style={itemStyle}
+          onClick={handleClick}
+          item={item}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};</code></pre>
+                </div>
+              </div>
+
+              <!-- Pitfall 2 -->
+              <div class="bg-red-50 p-4 rounded-lg">
+                <div class="text-red-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-times-circle mr-2"></i>
+                  Pitfall: Index as Key
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ❌ Using index as key
+const TodoList = ({ todos }) => {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo, index) => (
+        &lt;li key={index}&gt; {/* Poor performance! */}
+          {todo.text}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+};</code></pre>
+                </div>
+              </div>
+
+              <!-- Solution 2 -->
+              <div class="bg-green-50 p-4 rounded-lg">
+                <div class="text-green-700 font-semibold mb-2 flex items-center">
+                  <i class="fa-solid fa-check-circle mr-2"></i>
+                  Solution: Stable Unique Keys
+                </div>
+                <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                  <pre><code>// ✅ Using stable unique keys
+const TodoList = ({ todos }) => {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo) => (
+        &lt;li key={todo.id}&gt; {/* Stable unique key */}
+          {todo.text}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+};</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Checklist -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-red-700 flex items-center">
+              <i class="fa-solid fa-clipboard-check text-red-600 mr-2"></i>
+              Performance Checklist
+            </h4>
+
+            <div class="bg-red-50 p-6 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h5 class="font-semibold text-red-800 mb-3">Rendering</h5>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Use React.memo for pure components</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Implement useMemo for expensive calculations</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Use useCallback for stable function references</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Avoid creating objects/arrays in render</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 class="font-semibold text-red-800 mb-3">Data & State</h5>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Normalize state structure</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Use selectors to minimize subscriptions</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Implement data virtualization for large lists</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Cache API responses</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 class="font-semibold text-red-800 mb-3">Bundle & Loading</h5>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Implement code splitting</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Tree shake unused imports</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Use lazy loading for routes</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Optimize images and assets</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 class="font-semibold text-red-800 mb-3">Memory & Cleanup</h5>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Remove event listeners in cleanup</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Clear timers and intervals</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Unsubscribe from subscriptions</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-green-600 mr-2"></i>Use weak references for caches</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Performance Testing & Monitoring -->
+      <section class="mb-12" id="performance-testing">
+        <div class="bg-white/80 shadow-xl rounded-xl p-8 border border-blue-100">
+          <div class="flex items-center mb-6">
+            <div class="p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg shadow-md mr-4">
+              <i class="fa-solid fa-chart-bar text-2xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-3xl font-bold text-blue-800">Performance Testing & Monitoring</h3>
+              <p class="text-gray-600">Continuous performance monitoring and testing strategies</p>
+            </div>
+          </div>
+
+          <!-- Real User Monitoring -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4 text-blue-700 flex items-center">
+              <i class="fa-solid fa-users text-blue-600 mr-2"></i>
+              Real User Monitoring (RUM)
+            </h4>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <div class="bg-gray-800 p-3 rounded text-white text-sm overflow-x-auto">
+                <pre><code>// RUM implementation
+class PerformanceMonitor {
+  constructor() {
+    this.metrics = new Map();
+    this.observers = new Map();
+    this.initializeObservers();
+  }
+  
+  initializeObservers() {
+    // Performance Observer for navigation timing
+    if ('PerformanceObserver' in window) {
+      const navObserver = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+          if (entry.entryType === 'navigation') {
+            this.recordMetric('navigation', {
+              dns: entry.domainLookupEnd - entry.domainLookupStart,
+              connect: entry.connectEnd - entry.connectStart,
+              ttfb: entry.responseStart - entry.requestStart,
+              download: entry.responseEnd - entry.responseStart,
+              dom: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
+              load: entry.loadEventEnd - entry.loadEventStart
+            });
+          }
+        });
+      });
+      
+      navObserver.observe({ entryTypes: ['navigation'] });
+      this.observers.set('navigation', navObserver);
+    }
+    
+    // Resource timing observer
+    const resourceObserver = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        if (entry.duration > 1000) { // Slow resources
+          this.recordMetric('slow-resource', {
+            name: entry.name,
+            duration: entry.duration,
+            size: entry.transferSize,
+            type: entry.initiatorType
+          });
+        }
+      });
+    });
+    
+    resourceObserver.observe({ entryTypes: ['resource'] });
+    this.observers.set('resource', resourceObserver);
+  }
+  
+  recordMetric(type, data) {
+    const timestamp = Date.now();
+    
+    if (!this.metrics.has(type)) {
+      this.metrics.set(type, []);
+    }
+    
+    this.metrics.get(type).push({
+      timestamp,
+      data,
+      url: window.location.href,
+      userAgent: navigator.userAgent
+    });
+    
+    // Send to analytics (batch for efficiency)
+    this.batchSendMetrics(type, data);
+  }
+  
+  batchSendMetrics(type, data) {
+    // Implement batching logic
+    if (!this.sendQueue) this.sendQueue = [];
+    
+    this.sendQueue.push({ type, data, timestamp: Date.now() });
+    
+    if (this.sendQueue.length >= 10) {
+      this.flushMetrics();
+    }
+  }
+  
+  flushMetrics() {
+    if (this.sendQueue && this.sendQueue.length > 0) {
+      fetch('/api/performance-metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.sendQueue)
+      }).catch(console.error);
+      
+      this.sendQueue = [];
+    }
+  }
+}
+
+// Initialize monitoring
+const monitor = new PerformanceMonitor();
+
+// React component performance tracking
+const useComponentPerformance = (componentName) => {
+  const renderCount = useRef(0);
+  const mountTime = useRef(Date.now());
+  
+  useEffect(() => {
+    renderCount.current++;
+    
+    // Track component lifecycle
+    monitor.recordMetric('component-render', {
+      name: componentName,
+      renderCount: renderCount.current,
+      mountTime: mountTime.current
+    });
+    
+    return () => {
+      monitor.recordMetric('component-unmount', {
+        name: componentName,
+        lifespan: Date.now() - mountTime.current
+      });
+    };
+  });
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Back to Top Button -->
+      <div class="text-center mb-8">
+        <a href="#top" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg hover:from-red-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+          <i class="fa-solid fa-arrow-up mr-2"></i>
+          Back to Top
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-900 to-black text-white py-12">
+      <div class="max-w-6xl mx-auto px-4 text-center">
+        <div class="mb-8">
+          <h3 class="text-2xl font-bold mb-4">Ready to Optimize Your React App?</h3>
+          <p class="text-gray-300 mb-6">Apply these performance techniques and see the difference in your application's speed and user experience.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="bg-white/10 p-6 rounded-lg">
+            <i class="fa-solid fa-rocket text-3xl text-red-400 mb-4"></i>
+            <h4 class="font-semibold mb-2">Performance First</h4>
+            <p class="text-sm text-gray-300">Build with performance in mind from day one</p>
+          </div>
+          <div class="bg-white/10 p-6 rounded-lg">
+            <i class="fa-solid fa-chart-line text-3xl text-orange-400 mb-4"></i>
+            <h4 class="font-semibold mb-2">Measure Everything</h4>
+            <p class="text-sm text-gray-300">Track and monitor your app's performance metrics</p>
+          </div>
+          <div class="bg-white/10 p-6 rounded-lg">
+            <i class="fa-solid fa-users text-3xl text-yellow-400 mb-4"></i>
+            <h4 class="font-semibold mb-2">User Experience</h4>
+            <p class="text-sm text-gray-300">Create delightful experiences for your users</p>
+          </div>
+        </div>
+        
+      
+      </div>
+    </footer>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+      <div id="progress-bar" class="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+    </div>
+ <div id="footer-placeholder"></div>
+
     <!-- Load components-loader.js before other scripts -->
-    <script src="../assets/js/components-loader.js"></script>
+    <script src="../../assets/js/components-loader.js"></script>
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Scroll progress indicator
+      window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('progress-bar').style.width = scrolled + '%';
+      });
+
+      // Intersection Observer for animations
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fade in animation observer
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+          section.style.opacity = '0';
+          section.style.transform = 'translateY(20px)';
+          section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          observer.observe(section);
+        });
+
+        // Performance meter animation trigger
+        const observerOptions2 = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer2 = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.animationPlayState = "running";
+            }
+          });
+        }, observerOptions2);
+
+        // Observe performance meters
+        document.querySelectorAll(".performance-meter").forEach((meter) => {
+          observer2.observe(meter);
+        });
+      });
+    </script>
   </body>
 </html>
