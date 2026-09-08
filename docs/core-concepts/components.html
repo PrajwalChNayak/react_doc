@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components · React 19 Docs</title>
+<meta name="description" content="The function that takes props and returns UI, and the purity rule that makes it work.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Components · React 19 Docs">
+<meta property="og:description" content="The function that takes props and returns UI, and the purity rule that makes it work.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html" aria-current="page"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#core-concepts">Core Concepts</a></li><li><span aria-current="page">Components</span></li></ol><header class="page-header"><h1 class="page-title">Components</h1><p class="page-description">The function that takes props and returns UI, and the purity rule that makes it work.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>A component is a JavaScript function that takes an object of props and returns what should appear on screen. That is the entire contract.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">StatusPill</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;span</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`pill pill-</span><span class="tok-punct">${</span>status<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>status<span class="tok-punct">}</span><span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Two conventions turn a function into a component: its name starts with a capital letter, and it returns React elements (or <code>null</code>). Nothing else is required — no base class, no registration, no decorator.</p>
+<p>Components compose. A page is a component that renders layout components, which render feature components, which render form controls. The same mechanism works at every level, which is why React has no concept of &quot;widget&quot; versus &quot;page&quot;.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>Splitting a UI into components buys three things.</p>
+<p><strong>Reuse.</strong> A <code>&lt;Button&gt;</code> written once looks the same everywhere and changes in one place.</p>
+<p><strong>Isolation.</strong> State declared inside a component belongs to that component instance. Two <code>&lt;SearchBox /&gt;</code> elements have independent state without any extra work.</p>
+<p><strong>A rendering boundary.</strong> React tracks components individually, so when state changes it re-renders that component's subtree rather than the whole app. The boundaries you draw are the boundaries React optimizes along.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Extract a component when a piece of markup has its own name, its own state, or its own reason to change. &quot;This block is 40 lines long&quot; is a weaker signal than &quot;this block has a job I can name.&quot;</p>
+<p>Extract when the same markup appears twice with different data. Do not extract before the second use — a premature abstraction with six configuration props is harder to read than the duplication it replaced.</p>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Do not create a component whose only job is to hold a variable. If you find yourself passing eight props down through a component that uses none of them, you want <a href="../patterns/composition.html">composition</a> — pass the rendered element as <code>children</code> instead.</p>
+<p>Do not define a component inside another component's body:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ProfilePage</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>name<span class="tok-punct">,</span> setName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// Wrong: a brand-new function identity on every render.</span>
+  <span class="tok-keyword">function</span> <span class="tok-type">NameField</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;input</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setName</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;NameField</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Every render creates a different <code>NameField</code> function. React compares element types by identity, sees a different type, and unmounts and remounts the subtree — destroying its DOM state, including focus and cursor position. Define components at the top level of a module and pass data through props.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">Avatar</span><span class="tok-punct">(</span><span class="tok-punct">{</span> name<span class="tok-punct">,</span> color <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> initials <span class="tok-punct">=</span> name
+    <span class="tok-punct">.</span><span class="tok-fn">split</span><span class="tok-punct">(</span><span class="tok-string">' '</span><span class="tok-punct">)</span>
+    <span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>part<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> part<span class="tok-punct">[</span><span class="tok-number">0</span><span class="tok-punct">]</span><span class="tok-punct">)</span>
+    <span class="tok-punct">.</span><span class="tok-fn">join</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;span</span>
+      <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+        display<span class="tok-punct">:</span> <span class="tok-string">'inline-flex'</span><span class="tok-punct">,</span>
+        alignItems<span class="tok-punct">:</span> <span class="tok-string">'center'</span><span class="tok-punct">,</span>
+        justifyContent<span class="tok-punct">:</span> <span class="tok-string">'center'</span><span class="tok-punct">,</span>
+        width<span class="tok-punct">:</span> <span class="tok-number">36</span><span class="tok-punct">,</span>
+        height<span class="tok-punct">:</span> <span class="tok-number">36</span><span class="tok-punct">,</span>
+        borderRadius<span class="tok-punct">:</span> <span class="tok-string">'50%'</span><span class="tok-punct">,</span>
+        background<span class="tok-punct">:</span> color<span class="tok-punct">,</span>
+        color<span class="tok-punct">:</span> <span class="tok-string">'white'</span><span class="tok-punct">,</span>
+        fontWeight<span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>initials<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ReviewerRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> name<span class="tok-punct">,</span> color<span class="tok-punct">,</span> role <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;li</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'flex'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">10</span><span class="tok-punct">,</span> alignItems<span class="tok-punct">:</span> <span class="tok-string">'center'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">6</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;Avatar</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span> <span class="tok-attr">color</span><span class="tok-punct">=</span><span class="tok-punct">{</span>color<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;span</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;strong</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/strong</span><span class="tok-tag">&gt;</span> — <span class="tok-punct">{</span>role<span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ReviewerList</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> reviewers <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Ana Ruiz'</span><span class="tok-punct">,</span> color<span class="tok-punct">:</span> <span class="tok-string">'#2b6cb0'</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">'Editor'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+    <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Tom Beck'</span><span class="tok-punct">,</span> color<span class="tok-punct">:</span> <span class="tok-string">'#2f855a'</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">'Legal'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> listStyle<span class="tok-punct">:</span> <span class="tok-string">'none'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>reviewers<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>reviewer<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;ReviewerRow</span>
+          <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>reviewer<span class="tok-punct">.</span>id<span class="tok-punct">}</span>
+          <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-punct">{</span>reviewer<span class="tok-punct">.</span>name<span class="tok-punct">}</span>
+          <span class="tok-attr">color</span><span class="tok-punct">=</span><span class="tok-punct">{</span>reviewer<span class="tok-punct">.</span>color<span class="tok-punct">}</span>
+          <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-punct">{</span>reviewer<span class="tok-punct">.</span>role<span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">function Avatar({ name, color }) {
+  const initials = name
+    .split(' ')
+    .map((part) =&gt; part[0])
+    .join('');
+
+  return (
+    &lt;span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 36,
+        height: 36,
+        borderRadius: '50%',
+        background: color,
+        color: 'white',
+        fontWeight: 600,
+      }}
+    &gt;
+      {initials}
+    &lt;/span&gt;
+  );
+}
+
+function ReviewerRow({ name, color, role }) {
+  return (
+    &lt;li style={{ display: 'flex', gap: 10, alignItems: 'center', padding: 6 }}&gt;
+      &lt;Avatar name={name} color={color} /&gt;
+      &lt;span&gt;
+        &lt;strong&gt;{name}&lt;/strong&gt; — {role}
+      &lt;/span&gt;
+    &lt;/li&gt;
+  );
+}
+
+export default function ReviewerList() {
+  const reviewers = [
+    { id: 1, name: 'Ana Ruiz', color: '#2b6cb0', role: 'Editor' },
+    { id: 2, name: 'Tom Beck', color: '#2f855a', role: 'Legal' },
+  ];
+
+  return (
+    &lt;ul style={{ listStyle: 'none', padding: 0 }}&gt;
+      {reviewers.map((reviewer) =&gt; (
+        &lt;ReviewerRow
+          key={reviewer.id}
+          name={reviewer.name}
+          color={reviewer.color}
+          role={reviewer.role}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</template></div>
+<p><code>Avatar</code> knows nothing about reviewers. <code>ReviewerRow</code> knows nothing about the list. Each layer only knows its own props.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="composition-and-children">Composition and <code>children</code><a class="heading-anchor" href="#composition-and-children" aria-label="Link to this section">#</a></h3>
+<p>Anything you nest inside a component's tags arrives as the <code>children</code> prop.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">Card</span><span class="tok-punct">(</span><span class="tok-punct">{</span> title<span class="tok-punct">,</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span>
+      <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ccc'</span><span class="tok-punct">,</span> borderRadius<span class="tok-punct">:</span> <span class="tok-number">8</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">16</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h3</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">BillingPage</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;Card</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Current plan&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Team</span> — $49 <span class="tok-punct">/</span> month<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Change</span> plan<span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/Card</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">function Card({ title, children }) {
+  return (
+    &lt;section
+      style={{ border: '1px solid #ccc', borderRadius: 8, padding: 16 }}
+    &gt;
+      &lt;h3 style={{ marginTop: 0 }}&gt;{title}&lt;/h3&gt;
+      {children}
+    &lt;/section&gt;
+  );
+}
+
+export default function BillingPage() {
+  return (
+    &lt;Card title=&quot;Current plan&quot;&gt;
+      &lt;p&gt;Team — $49 / month&lt;/p&gt;
+      &lt;button type=&quot;button&quot;&gt;Change plan&lt;/button&gt;
+    &lt;/Card&gt;
+  );
+}</template></div>
+<p><code>Card</code> never mentions buttons or paragraphs. It owns the frame; the caller owns the contents. This is the single most useful pattern in React, and it is how you avoid deep prop chains. <a href="../patterns/composition.html">Composition</a> covers slots, layout components and the &quot;pass an element, not a flag&quot; rule in depth.</p>
+<h3 id="naming-and-file-conventions">Naming and file conventions<a class="heading-anchor" href="#naming-and-file-conventions" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Component names are <code>PascalCase</code>. Lowercase tags compile to DOM elements, so <code>&lt;userCard /&gt;</code> renders a literal <code>&lt;userCard&gt;</code> tag.</li>
+<li>One primary component per file, named after the file. <code>ReviewerRow.jsx</code> exports <code>ReviewerRow</code>.</li>
+<li>File names in this documentation's own source are kebab-case; component files in an app are conventionally <code>PascalCase.jsx</code> or <code>PascalCase.tsx</code>. Pick one convention per repo and enforce it with a lint rule.</li>
+<li>Small helper components used only by one parent can live in the same file, below the component that uses them.</li>
+<li>Prefer named exports. They keep the name stable across the codebase and make auto-import reliable; a <code>default</code> export can be imported under any name, which is how <code>Card</code> becomes <code>Panel</code> in one file and <code>Box</code> in another.</li>
+</ul>
+<h3 id="purity-the-rule-that-everything-else-depends-on">Purity: the rule that everything else depends on<a class="heading-anchor" href="#purity-the-rule-that-everything-else-depends-on" aria-label="Link to this section">#</a></h3>
+<p>A component must be a pure function of its props and state <strong>during render</strong>. Given the same props and state, it returns the same output and changes nothing outside itself.</p>
+<p>Concretely, during render you must not:</p>
+<ul>
+<li>mutate variables that existed before the render, including props, state, and module-level objects</li>
+<li>write to the DOM, <code>document.title</code>, <code>localStorage</code>, or a cache</li>
+<li>call a state setter of another component</li>
+<li>read a value that changes on its own, such as <code>Date.now()</code> or <code>Math.random()</code>, if the output must be stable</li>
+</ul>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">let</span> renderCount <span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">BadCounter</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  renderCount <span class="tok-punct">+</span><span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span> <span class="tok-comment">// Impure: mutates a module variable during render.</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Rendered</span> <span class="tok-punct">{</span>renderCount<span class="tok-punct">}</span> times<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Side effects belong in event handlers (which run in response to a user action, not during render) or, for synchronization with an external system, in <a href="../hooks/use-effect.html"><code>useEffect</code></a>.</p>
+<h3 id="why-purity-matters">Why purity matters<a class="heading-anchor" href="#why-purity-matters" aria-label="Link to this section">#</a></h3>
+<p>React does not promise to render your component exactly once per update.</p>
+<p><strong>Concurrent rendering.</strong> React may start rendering, pause to handle a more urgent update, throw the partial work away, and start again. Anything your component did on the abandoned attempt still happened. If that was &quot;increment a counter&quot; or &quot;push to an array&quot;, the state is now wrong in a way that only shows up under load.</p>
+<p><strong>Strict Mode.</strong> In development, React deliberately calls your component body twice so impure code becomes obvious immediately instead of in production. See <a href="./strict-mode.html">Strict Mode</a>.</p>
+<p><strong>Memoization.</strong> React — and the <a href="../performance/react-compiler.html">React Compiler</a> — may skip re-rendering a component whose inputs did not change. That is only safe if the output depended on nothing but those inputs.</p>
+<p><strong><code>&lt;Activity&gt;</code> and Suspense.</strong> Both can render a subtree that is not currently visible, or unmount and later restore one. Pure components tolerate this; impure ones leak.</p>
+<p>Purity is not a style preference. It is the precondition for every performance feature React has.</p>
+<h3 id="rendering-nothing">Rendering nothing<a class="heading-anchor" href="#rendering-nothing" aria-label="Link to this section">#</a></h3>
+<p>Returning <code>null</code> renders nothing and is a normal, supported result. The component still mounts, still holds state, and still runs its Effects.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Banner</span><span class="tok-punct">(</span><span class="tok-punct">{</span> message <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>message<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-literal">null</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;div</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;status&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>message<span class="tok-punct">}</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="props-with-defaults">Props with defaults<a class="heading-anchor" href="#props-with-defaults" aria-label="Link to this section">#</a></h3>
+<p>Use ordinary JavaScript default parameters:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Button</span><span class="tok-punct">(</span><span class="tok-punct">{</span> variant <span class="tok-punct">=</span> <span class="tok-string">'secondary'</span><span class="tok-punct">,</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`btn btn-</span><span class="tok-punct">${</span>variant<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<div class="callout callout-legacy" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Legacy</p><div class="callout-body"><p>React 19 removed <code>defaultProps</code> for function components. Default parameters are the replacement and have been the recommended approach for years — they are plain JavaScript, so type inference and editors understand them. <code>propTypes</code> was removed at the same time and is now silently ignored; use TypeScript for prop validation instead. See <a href="../migration/removed-apis.html">removed APIs</a>.</p>
+</div></div>
+<h3 id="typing-a-component">Typing a component<a class="heading-anchor" href="#typing-a-component" aria-label="Link to this section">#</a></h3>
+<p>TypeScript replaces the runtime prop checks React used to provide, and catches mistakes before the code runs:</p>
+<div class="code-block" data-lang="tsx"><div class="code-head"><span class="code-lang">tsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-tsx"><span class="tok-keyword">type</span> <span class="tok-type">StatusPillProps</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  status<span class="tok-punct">:</span> <span class="tok-string">'draft'</span> <span class="tok-punct">|</span> <span class="tok-string">'review'</span> <span class="tok-punct">|</span> <span class="tok-string">'published'</span><span class="tok-punct">;</span>
+  compact<span class="tok-punct">?</span><span class="tok-punct">:</span> <span class="tok-type">boolean</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">StatusPill</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">,</span> compact <span class="tok-punct">=</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-type">StatusPillProps</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;span</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span>compact <span class="tok-punct">?</span> <span class="tok-string">'pill pill-sm'</span> <span class="tok-punct">:</span> <span class="tok-string">'pill'</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>status<span class="tok-punct">}</span><span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><a href="../typescript/typing-props.html">Typing props</a> goes further, including <code>children</code> and generic components.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>A component whose only job is layout, with two element-shaped props and no knowledge of what goes in them:</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">SplitPane</span><span class="tok-punct">(</span><span class="tok-punct">{</span> label<span class="tok-punct">,</span> primary<span class="tok-punct">,</span> secondary <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h4</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> margin<span class="tok-punct">:</span> <span class="tok-string">'0 0 8px'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>label<span class="tok-punct">}</span><span class="tok-tag">&lt;/h4</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'flex'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">12</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> flex<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ddd'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">10</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>primary<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;aside</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> flex<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ddd'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">10</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>secondary<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/aside</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ArticleBody</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">React</span> components are functions that <span class="tok-keyword">return</span> elements<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">TableOfContents</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> paddingLeft<span class="tok-punct">:</span> <span class="tok-number">18</span><span class="tok-punct">,</span> margin<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-type">Overview</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-type">Purity</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">DocsPage</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;SplitPane</span>
+      <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Docs&quot;</span>
+      <span class="tok-attr">primary</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;ArticleBody</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span>
+      <span class="tok-attr">secondary</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;TableOfContents</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">function SplitPane({ label, primary, secondary }) {
+  return (
+    &lt;div&gt;
+      &lt;h4 style={{ margin: '0 0 8px' }}&gt;{label}&lt;/h4&gt;
+      &lt;div style={{ display: 'flex', gap: 12 }}&gt;
+        &lt;div style={{ flex: 2, border: '1px solid #ddd', padding: 10 }}&gt;
+          {primary}
+        &lt;/div&gt;
+        &lt;aside style={{ flex: 1, border: '1px solid #ddd', padding: 10 }}&gt;
+          {secondary}
+        &lt;/aside&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+function ArticleBody() {
+  return &lt;p&gt;React components are functions that return elements.&lt;/p&gt;;
+}
+
+function TableOfContents() {
+  return (
+    &lt;ul style={{ paddingLeft: 18, margin: 0 }}&gt;
+      &lt;li&gt;Overview&lt;/li&gt;
+      &lt;li&gt;Purity&lt;/li&gt;
+    &lt;/ul&gt;
+  );
+}
+
+export default function DocsPage() {
+  return (
+    &lt;SplitPane
+      label=&quot;Docs&quot;
+      primary={&lt;ArticleBody /&gt;}
+      secondary={&lt;TableOfContents /&gt;}
+    /&gt;
+  );
+}</template></div>
+<p><code>SplitPane</code> can be reused for a settings page or a dashboard without changing a line, because it never learned what an article is.</p>
+<h3 id="class-components">Class components<a class="heading-anchor" href="#class-components" aria-label="Link to this section">#</a></h3>
+<div class="callout callout-legacy" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Legacy</p><div class="callout-body"><p>Class components still render in React 19 and will keep working, but they are not the way to write new code. They cannot use hooks, they carry the <code>this</code>-binding and lifecycle-method complexity that hooks were designed to remove, and several React 19 features — <code>ref</code> as a prop, Actions, <code>use()</code> — are function-component features. The one place a class is still required is an <a href="../patterns/error-boundaries.html">error boundary</a>, because <code>componentDidCatch</code> has no hook equivalent.</p>
+</div></div>
+<div class="code-block" data-lang="tsx"><div class="code-head"><span class="code-lang">tsx</span><span class="code-badge code-badge-legacy">legacy</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-tsx"><span class="tok-comment">// Pre-hooks style. Do not write new components this way.</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-type">Component</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">type</span> <span class="tok-type">ClockProps</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> label<span class="tok-punct">:</span> <span class="tok-type">string</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-keyword">type</span> <span class="tok-type">ClockState</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> now<span class="tok-punct">:</span> <span class="tok-type">Date</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-type">Clock</span> <span class="tok-keyword">extends</span> <span class="tok-type">Component</span><span class="tok-tag">&lt;ClockProps</span><span class="tok-punct">,</span> <span class="tok-attr">ClockState</span><span class="tok-tag">&gt;</span> <span class="tok-punct">{</span>
+  intervalId<span class="tok-punct">:</span> <span class="tok-type">number</span> <span class="tok-punct">|</span> <span class="tok-literal">undefined</span><span class="tok-punct">;</span>
+  state<span class="tok-punct">:</span> <span class="tok-type">ClockState</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> now<span class="tok-punct">:</span> <span class="tok-keyword">new</span> <span class="tok-type">Date</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">componentDidMount</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span>intervalId <span class="tok-punct">=</span> window<span class="tok-punct">.</span><span class="tok-fn">setInterval</span><span class="tok-punct">(</span>
+      <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-fn">setState</span><span class="tok-punct">(</span><span class="tok-punct">{</span> now<span class="tok-punct">:</span> <span class="tok-keyword">new</span> <span class="tok-type">Date</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-number">1000</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-fn">componentWillUnmount</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    window<span class="tok-punct">.</span><span class="tok-fn">clearInterval</span><span class="tok-punct">(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span>intervalId<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-fn">render</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+      <span class="tok-tag">&lt;time</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span><span class="tok-keyword">this</span><span class="tok-punct">.</span>props<span class="tok-punct">.</span>label<span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-punct">{</span><span class="tok-keyword">this</span><span class="tok-punct">.</span>state<span class="tok-punct">.</span>now<span class="tok-punct">.</span><span class="tok-fn">toLocaleTimeString</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/time</span><span class="tok-tag">&gt;</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The function equivalent uses <a href="../hooks/use-state.html"><code>useState</code></a> and <a href="../hooks/use-effect.html"><code>useEffect</code></a>, with the cleanup function replacing <code>componentWillUnmount</code>. <a href="../migration/legacy-codebases.html">Legacy codebases</a> walks through converting classes incrementally.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Defining a component inside another component.</strong> The child's type identity changes every render, so React remounts it and its state is lost. Move it to the module top level.</p>
+<p><strong>Lowercase component names.</strong> <code>&lt;card /&gt;</code> becomes the DOM tag <code>&quot;card&quot;</code>, renders nothing useful, and produces no error you would recognize.</p>
+<p><strong>Doing work during render that should be in an event handler.</strong> Sending analytics, writing to storage, or mutating a cache during render runs on every render attempt, including the ones React throws away.</p>
+<p><strong>Storing derived data in state.</strong> If a value can be computed from props or other state, compute it during render. See <a href="./state.html#common-mistakes">state</a>.</p>
+<p><strong>Mutating props.</strong> Props are the parent's data. Copy before changing: <code>const next = { ...user, name };</code>.</p>
+<p><strong>Splitting components by file size rather than by responsibility.</strong> A 300-line component with one job is easier to work with than five components that only make sense together.</p>
+<p><strong>Assuming the component runs once.</strong> It runs whenever React needs its output — which, in development under Strict Mode, is at least twice per update.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./props.html">Props</a> — how data reaches a component and why it is read-only.</li>
+<li><a href="./state.html">State</a> — the memory a component keeps between renders.</li>
+<li><a href="./rendering.html">Rendering</a> — when React calls your component and what it does with the result.</li>
+<li><a href="./strict-mode.html">Strict Mode</a> — the development check that finds impure components.</li>
+<li><a href="../patterns/composition.html">Composition</a> — <code>children</code>, slots, and avoiding prop drilling.</li>
+<li><a href="../getting-started/your-first-component.html">Your first component</a> — a guided walkthrough if this is your first one.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../core-concepts/jsx.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">JSX</span></a><a class="pager-link pager-next" href="../core-concepts/props.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Props</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#composition-and-children">Composition and children</a></li><li class="toc-h3"><a href="#naming-and-file-conventions">Naming and file conventions</a></li><li class="toc-h3"><a href="#purity-the-rule-that-everything-else-depends-on">Purity: the rule that everything else depends on</a></li><li class="toc-h3"><a href="#why-purity-matters">Why purity matters</a></li><li class="toc-h3"><a href="#rendering-nothing">Rendering nothing</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#props-with-defaults">Props with defaults</a></li><li class="toc-h3"><a href="#typing-a-component">Typing a component</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h3"><a href="#class-components">Class components</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

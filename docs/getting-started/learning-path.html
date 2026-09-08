@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning path · React 19 Docs</title>
+<meta name="description" content="An ordered route through this site, from first component to production React 19.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Learning path · React 19 Docs">
+<meta property="og:description" content="An ordered route through this site, from first component to production React 19.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html" aria-current="page"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#getting-started">Getting Started</a></li><li><span aria-current="page">Learning path</span></li></ol><header class="page-header"><h1 class="page-title">Learning path</h1><p class="page-description">An ordered route through this site, from first component to production React 19.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><p>Read in this order and each page assumes only what came before it. Skipping ahead is fine once you know what you are looking for, but the ordering is not arbitrary: most confusion about hooks traces back to a gap in Stage 1, and most confusion about performance traces back to a gap in Stage 2.</p>
+<p>Five stages, roughly a week each if React is new to you.</p>
+<h2 id="stage-0-orientation">Stage 0 — Orientation<a class="heading-anchor" href="#stage-0-orientation" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./introduction.html">Introduction to React</a> — what React is, the UI-as-a-function-of-state model, and how reconciliation works. Start here even if you have used React before; the React 19 framing has changed.</li>
+<li><a href="./installation.html">Installation</a> — a running dev server on React 19.2.8, with the Hooks linter and DevTools installed. Do not skip the linter.</li>
+<li><a href="./your-first-component.html">Your first component</a> — markup, props, state, an event handler, a list. After this you can build a small screen.</li>
+<li><a href="./thinking-in-react.html">Thinking in React</a> — the five-step process from a design to a component tree. This is the page you will re-read most often.</li>
+</ul>
+<h2 id="stage-1-foundations">Stage 1 — Foundations<a class="heading-anchor" href="#stage-1-foundations" aria-label="Link to this section">#</a></h2>
+<p>Everything here is mandatory. These nine pages are the vocabulary the rest of the site uses without explanation.</p>
+<ul>
+<li><a href="../core-concepts/jsx.html">JSX</a> — what the markup compiles to, and the rules (one root, <code>className</code>, braces for expressions).</li>
+<li><a href="../core-concepts/components.html">Components</a> — the unit of composition, and where to draw boundaries.</li>
+<li><a href="../core-concepts/props.html">Props</a> — data down, including <code>children</code> and prop spreading. After this you can build reusable components.</li>
+<li><a href="../core-concepts/state.html">State</a> — what belongs in state, why it is a snapshot per render, and why you never mutate it.</li>
+<li><a href="../core-concepts/rendering.html">Rendering</a> — trigger, render, commit. Read this before you form any opinion about React performance.</li>
+<li><a href="../core-concepts/conditional-rendering.html">Conditional rendering</a> — <code>&amp;&amp;</code>, ternaries, and the falsy-value trap that renders a stray <code>0</code>.</li>
+<li><a href="../core-concepts/lists-and-keys.html">Lists and keys</a> — why <code>key</code> exists and how a bad key corrupts component state.</li>
+<li><a href="../core-concepts/events.html">Events</a> — handlers, the synthetic event, and why you pass a function rather than call one.</li>
+<li><a href="../core-concepts/strict-mode.html">StrictMode</a> — why development double-invokes your components, and why that is a feature.</li>
+</ul>
+<p>Then the two hook pages that everything else builds on:</p>
+<ul>
+<li><a href="../hooks/rules-of-hooks.html">Rules of Hooks</a> — top level only, same order every render. Understand the reason, not only the rule.</li>
+<li><a href="../hooks/use-state.html">useState</a> — the full API: updater functions, lazy initializers, and state as a per-render snapshot.</li>
+</ul>
+<h2 id="stage-2-state-and-effects">Stage 2 — State and Effects<a class="heading-anchor" href="#stage-2-state-and-effects" aria-label="Link to this section">#</a></h2>
+<p>This is where most people get stuck, and where the biggest wins are. The theme: <strong>most things are not state, and most synchronization is not an Effect.</strong></p>
+<ul>
+<li><a href="../hooks/use-reducer.html">useReducer</a> — for state whose transitions are worth naming, and where several values change together.</li>
+<li><a href="../hooks/use-ref.html">useRef</a> — a value that survives renders without causing one. The escape hatch from the render cycle.</li>
+<li><a href="../patterns/refs-and-dom.html">Refs and the DOM</a> — reading and imperatively controlling DOM nodes, with <code>ref</code> as an ordinary prop in React 19.</li>
+<li><a href="../hooks/use-effect.html">useEffect</a> — synchronizing with systems outside React. Read the &quot;when not to use it&quot; section twice.</li>
+<li><a href="../hooks/use-effect-event.html">useEffectEvent</a> — reading the latest props inside an Effect without re-running it. New in 19.2, and it removes most dependency-array pain.</li>
+<li><a href="../hooks/use-layout-effect.html">useLayoutEffect</a> — measuring the DOM before the browser paints, and why it is a last resort.</li>
+<li><a href="../hooks/use-imperative-handle.html">useImperativeHandle</a> — exposing a narrow imperative API from a component. Rare, and that is correct.</li>
+<li><a href="../hooks/use-id.html">useId</a> — stable unique ids for accessible form markup, safe under server rendering.</li>
+<li><a href="../hooks/use-debug-value.html">useDebugValue</a> — labeling custom hooks in DevTools.</li>
+<li><a href="../hooks/custom-hooks.html">Custom hooks</a> — extracting stateful logic. After this, your components stop growing.</li>
+</ul>
+<p>Then how state travels between components:</p>
+<ul>
+<li><a href="../state-management/lifting-state-up.html">Lifting state up</a> — the lowest-common-ancestor rule, worked properly.</li>
+<li><a href="../hooks/use-context.html">useContext</a> — reading context, and the re-render behavior that surprises people.</li>
+<li><a href="../state-management/context.html">Context</a> — when context beats prop drilling and when it becomes a performance problem.</li>
+<li><a href="../state-management/reducers-and-context.html">Reducers and context</a> — the pattern that carries most apps to a surprising size without a library.</li>
+<li><a href="../state-management/external-stores.html">External stores</a> — Zustand, Redux, or your own, and why they exist.</li>
+<li><a href="../hooks/use-sync-external-store.html">useSyncExternalStore</a> — the correct way to subscribe to anything outside React, tear-free under concurrent rendering.</li>
+<li><a href="../state-management/choosing-an-approach.html">Choosing an approach</a> — a decision table for local state, context, and stores. Read it before adding a dependency.</li>
+</ul>
+<p>And the composition patterns that keep the tree manageable:</p>
+<ul>
+<li><a href="../patterns/composition.html">Composition</a> — <code>children</code>, slots, and why you rarely need inheritance or a render prop.</li>
+<li><a href="../patterns/controlled-inputs.html">Controlled inputs</a> — value down, change up, and when uncontrolled is the better answer.</li>
+<li><a href="../patterns/forms-and-actions.html">Forms and Actions</a> — React 19 form Actions, which replace most hand-rolled submit handlers.</li>
+<li><a href="../hooks/use-action-state.html">useActionState</a> — pending state, errors, and the returned result of an Action, in one hook.</li>
+<li><a href="../hooks/use-form-status.html">useFormStatus</a> — a submit button that knows the parent form is pending, without prop drilling.</li>
+<li><a href="../hooks/use-optimistic.html">useOptimistic</a> — showing the expected result before the server confirms it.</li>
+<li><a href="../patterns/error-boundaries.html">Error boundaries</a> — the one place a class component is still required, plus the React 19 root error callbacks.</li>
+<li><a href="../patterns/portals.html">Portals</a> — rendering into a different DOM node for modals and tooltips, without leaving the React tree.</li>
+<li><a href="../patterns/document-metadata.html">Document metadata</a> — <code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code> and stylesheets rendered from components and hoisted to <code>&lt;head&gt;</code>. New in 19.0.</li>
+</ul>
+<h2 id="stage-3-data">Stage 3 — Data<a class="heading-anchor" href="#stage-3-data" aria-label="Link to this section">#</a></h2>
+<p>You now know enough to fetch things without creating a race condition.</p>
+<ul>
+<li><a href="../data-fetching/overview.html">Data fetching overview</a> — the four strategies and how to choose between them.</li>
+<li><a href="../data-fetching/fetching-in-effects.html">Fetching in Effects</a> — how to do it correctly (cleanup, ignore flags, race conditions) and why it is the weakest option.</li>
+<li><a href="../hooks/use.html">use</a> — reading a promise or context during render, callable conditionally. New in 19.0 and unlike every other hook.</li>
+<li><a href="../data-fetching/use-with-promises.html">use with promises</a> — suspending on data, and where the promise must come from.</li>
+<li><a href="../data-fetching/suspense.html">Suspense</a> — declarative loading states, boundaries, and what actually triggers one.</li>
+<li><a href="../data-fetching/caching.html">Caching</a> — why a promise created during render is a bug, and what caches it correctly.</li>
+<li><a href="../data-fetching/libraries.html">Data libraries</a> — TanStack Query, RTK Query, and framework loaders. After this you can pick one on purpose.</li>
+</ul>
+<h2 id="stage-4-performance-and-server-react">Stage 4 — Performance and Server React<a class="heading-anchor" href="#stage-4-performance-and-server-react" aria-label="Link to this section">#</a></h2>
+<p>Do not start here. Performance work without Stage 1 produces memoization that costs more than it saves.</p>
+<ul>
+<li><a href="../performance/overview.html">Performance overview</a> — measure first; the common causes of slow React apps, in order of frequency.</li>
+<li><a href="../performance/profiling.html">Profiling</a> — the DevTools Profiler and the React 19.2 Performance Tracks in Chrome. Learn to read a flame graph before changing code.</li>
+<li><a href="../performance/react-compiler.html">React Compiler</a> — v1.0 memoizes for you. Read this before the memoization page, because it changes the advice.</li>
+<li><a href="../hooks/use-memo.html">useMemo</a> — caching an expensive computation, and how rarely one is expensive.</li>
+<li><a href="../hooks/use-callback.html">useCallback</a> — a stable function identity, and the only situations where that matters.</li>
+<li><a href="../performance/memoization.html">Memoization</a> — <code>memo</code>, <code>useMemo</code>, <code>useCallback</code> together, with the cost of each.</li>
+<li><a href="../hooks/use-transition.html">useTransition</a> — marking updates as non-urgent so typing stays responsive.</li>
+<li><a href="../hooks/use-deferred-value.html">useDeferredValue</a> — deferring an expensive subtree, with the <code>initialValue</code> option added in 19.0.</li>
+<li><a href="../performance/code-splitting.html">Code splitting</a> — <code>lazy</code> and <code>Suspense</code>, and where the split points belong.</li>
+<li><a href="../performance/activity.html">Activity</a> — <code>&lt;Activity /&gt;</code> keeps a hidden subtree's state and DOM alive. New in 19.2, and it replaces several hacks.</li>
+<li><a href="../performance/lists-and-virtualization.html">Lists and virtualization</a> — when 10,000 rows need a windowing library.</li>
+</ul>
+<p>Then React on the server:</p>
+<ul>
+<li><a href="../server-react/overview.html">Server React overview</a> — the map: SSR, streaming, static generation, and Server Components are four different things.</li>
+<li><a href="../server-react/server-components.html">Server Components</a> — components that never ship to the browser. Stable in 19.0.</li>
+<li><a href="../server-react/directives.html">Directives</a> — what <code>&quot;use client&quot;</code> and <code>&quot;use server&quot;</code> actually mark, and where the boundary falls.</li>
+<li><a href="../server-react/server-functions.html">Server Functions</a> — calling the server from a client component, and how Actions build on this.</li>
+<li><a href="../server-react/ssr-and-hydration.html">SSR and hydration</a> — <code>hydrateRoot</code>, hydration mismatches, and how to debug one.</li>
+<li><a href="../server-react/streaming.html">Streaming</a> — sending HTML progressively, with Suspense boundaries as the flush points.</li>
+<li><a href="../server-react/static-generation.html">Static generation</a> — <code>prerender</code>, and the partial pre-rendering <code>postponed</code> state added in 19.2.</li>
+</ul>
+<h2 id="stage-5-production">Stage 5 — Production<a class="heading-anchor" href="#stage-5-production" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../typescript/setup.html">TypeScript setup</a> — <code>tsconfig</code>, <code>@types/react</code> 19, and the version-matching rule.</li>
+<li><a href="../typescript/typing-props.html">Typing props</a> — the props type, discriminated unions, and when to stop being clever.</li>
+<li><a href="../typescript/typing-children.html">Typing children</a> — <code>ReactNode</code> versus <code>ReactElement</code>, and why <code>children</code> is no longer implicit in React 19.</li>
+<li><a href="../typescript/typing-hooks.html">Typing hooks</a> — <code>useState</code> generics, ref types, and typing a reducer.</li>
+<li><a href="../typescript/typing-events.html">Typing events</a> — the event types you actually need and where to find the rest.</li>
+<li><a href="../typescript/generic-components.html">Generic components</a> — a typed <code>&lt;List&gt;</code> that infers its item type.</li>
+<li><a href="../accessibility/semantics.html">Semantics</a> — the right element beats any ARIA attribute. The cheapest accessibility win there is.</li>
+<li><a href="../accessibility/focus-management.html">Focus management</a> — moving focus on route changes and in dialogs, with refs.</li>
+<li><a href="../accessibility/announcements.html">Announcements</a> — live regions for content that changes without a page load.</li>
+<li><a href="../accessibility/forms-accessibility.html">Forms accessibility</a> — labels, error association, and validation messaging.</li>
+<li><a href="../testing/setup.html">Testing setup</a> — Vitest or Jest with the jsdom environment, configured for React 19.</li>
+<li><a href="../testing/testing-library.html">Testing Library</a> — queries in priority order, and testing behavior rather than implementation.</li>
+<li><a href="../testing/act-and-async.html">act and async</a> — <code>act</code> now imports from <code>react</code>, plus how to wait for async updates without flakiness.</li>
+<li><a href="../testing/user-events.html">User events</a> — simulating real interaction rather than firing synthetic events.</li>
+<li><a href="../ecosystem/routing.html">Routing</a> — React Router and Next.js App Router, and how each handles data loading.</li>
+<li><a href="../ecosystem/styling.html">Styling</a> — CSS modules, utility CSS, and CSS-in-JS under Server Components.</li>
+<li><a href="../ecosystem/forms.html">Forms</a> — React Hook Form and friends, and when React 19 Actions make them unnecessary.</li>
+<li><a href="../ecosystem/data-libraries.html">Data libraries</a> — choosing a client cache and how it interacts with Suspense.</li>
+<li><a href="../ecosystem/build-tooling.html">Build tooling</a> — Vite configuration, environment variables, and bundle analysis.</li>
+<li><a href="../ecosystem/redux.html">Redux</a> — Redux Toolkit and RTK Query, with an honest account of when to use them.</li>
+<li><a href="../reference/troubleshooting.html">Troubleshooting</a> — the errors you will hit, and what each one actually means.</li>
+</ul>
+<h2 id="stage-6-maintaining-older-code">Stage 6 — Maintaining older code<a class="heading-anchor" href="#stage-6-maintaining-older-code" aria-label="Link to this section">#</a></h2>
+<p>Read these when you meet a codebase older than you.</p>
+<ul>
+<li><a href="../migration/react-18-to-19.html">React 18 to 19</a> — the upgrade, in order, with the codemods.</li>
+<li><a href="../migration/removed-apis.html">Removed APIs</a> — what React 19 deleted and the replacement for each.</li>
+<li><a href="../migration/deprecated-apis.html">Deprecated APIs</a> — what still works but should not appear in new code.</li>
+<li><a href="../migration/legacy-codebases.html">Legacy codebases</a> — class components, older patterns, and incremental modernization.</li>
+<li><a href="../migration/legacy-archive.html">Legacy archive</a> — the previous version of this documentation, kept for reference.</li>
+</ul>
+<h2 id="reference">Reference<a class="heading-anchor" href="#reference" aria-label="Link to this section">#</a></h2>
+<p>Not reading material. Bookmark them.</p>
+<ul>
+<li><a href="../reference/hooks-reference.html">Hooks reference</a> — every hook, its signature, and one line on when to reach for it.</li>
+<li><a href="../reference/built-in-components.html">Built-in components</a> — <code>&lt;Suspense&gt;</code>, <code>&lt;StrictMode&gt;</code>, <code>&lt;Profiler&gt;</code>, <code>&lt;Activity&gt;</code>, <code>&lt;Fragment&gt;</code>.</li>
+<li><a href="../reference/cheat-sheet.html">Cheat sheet</a> — the syntax you will forget, on one page.</li>
+</ul>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p>Mistakes about <em>learning</em> React, rather than about writing it.</p>
+<ul>
+<li><strong>Learning class components first.</strong> They still work, and error boundaries still require one, but every current API, example, and hiring conversation assumes function components. Start with hooks and meet classes in <a href="../migration/legacy-codebases.html">Legacy codebases</a>.</li>
+<li><strong>Reaching for Redux on day two.</strong> Most apps never need a global store. Work through <a href="../state-management/lifting-state-up.html">Lifting state up</a> and <a href="../state-management/reducers-and-context.html">Reducers and context</a> first, then read <a href="../state-management/choosing-an-approach.html">Choosing an approach</a> and decide with evidence.</li>
+<li><strong>Skipping the Rules of Hooks</strong> because the code appears to work. It works until a conditional early return changes the hook order. Install <code>eslint-plugin-react-hooks</code> and read <a href="../hooks/rules-of-hooks.html">Rules of Hooks</a> properly.</li>
+<li><strong>Treating <code>useEffect</code> as the way to do anything after a render.</strong> Most Effects in a beginner codebase should be derived values, event handlers, or nothing at all. <a href="../hooks/use-effect.html">useEffect</a> says when not to use it.</li>
+<li><strong>Memoizing before profiling.</strong> Wrapping every value in <code>useMemo</code> adds cost and hides the real problem. Read <a href="../performance/overview.html">Performance overview</a> and let the <a href="../performance/react-compiler.html">React Compiler</a> do most of it.</li>
+<li><strong>Following React 18 tutorials without checking.</strong> A large fraction of published React material predates 19.0 and teaches removed API. <a href="../migration/removed-apis.html">Removed APIs</a> is the filter.</li>
+<li><strong>Turning off StrictMode</strong> to silence a double-render warning, rather than fixing the impure render it found. See <a href="../core-concepts/strict-mode.html">StrictMode</a>.</li>
+<li><strong>Learning Server Components before client React.</strong> They are a deployment and data-flow model layered on top of everything in Stages 1 to 3. Out of order, they are incomprehensible.</li>
+</ul>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./introduction.html">Introduction to React</a> — the mental model this path builds on.</li>
+<li><a href="./thinking-in-react.html">Thinking in React</a> — the process to apply on every feature.</li>
+<li><a href="../reference/cheat-sheet.html">Cheat sheet</a> — the quick-reference companion to this path.</li>
+<li><a href="../reference/troubleshooting.html">Troubleshooting</a> — when something breaks mid-lesson.</li>
+<li><a href="../migration/react-18-to-19.html">React 18 to 19</a> — if you are arriving with existing React knowledge.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../getting-started/thinking-in-react.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Thinking in React</span></a><a class="pager-link pager-next" href="../core-concepts/jsx.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">JSX</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#stage-0-orientation">Stage 0 — Orientation</a></li><li class="toc-h2"><a href="#stage-1-foundations">Stage 1 — Foundations</a></li><li class="toc-h2"><a href="#stage-2-state-and-effects">Stage 2 — State and Effects</a></li><li class="toc-h2"><a href="#stage-3-data">Stage 3 — Data</a></li><li class="toc-h2"><a href="#stage-4-performance-and-server-react">Stage 4 — Performance and Server React</a></li><li class="toc-h2"><a href="#stage-5-production">Stage 5 — Production</a></li><li class="toc-h2"><a href="#stage-6-maintaining-older-code">Stage 6 — Maintaining older code</a></li><li class="toc-h2"><a href="#reference">Reference</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

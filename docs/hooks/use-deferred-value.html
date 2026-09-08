@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>useDeferredValue · React 19 Docs</title>
+<meta name="description" content="Show a stale value while a new one renders in the background.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="useDeferredValue · React 19 Docs">
+<meta property="og:description" content="Show a stale value while a new one renders in the background.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html" aria-current="page"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#hooks">Hooks</a></li><li><span aria-current="page">useDeferredValue</span></li></ol><header class="page-header"><h1 class="page-title">useDeferredValue</h1><p class="page-description">Show a stale value while a new one renders in the background.</p><div class="badges"><span class="badge badge-current">Current</span><span class="badge badge-since">React 19.0+</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p><code>useDeferredValue</code> gives you a lagging copy of a value so an expensive subtree can render at a lower priority.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">const deferredValue = useDeferredValue(value, initialValue?)</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Parameter</th><th>Meaning</th></tr></thead>
+<tbody><tr><td><code>value</code></td><td>The value to defer. Any type.</td></tr><tr><td><code>initialValue?</code></td><td>What to return on the <strong>initial</strong> render. <strong>Added in 19.0.</strong> Omit it and the initial render is not deferred at all.</td></tr></tbody></table></div>
+<p>On an update it returns the <strong>previous</strong> value first, renders that immediately, then re-renders in the background with the new value. If the value changes again mid-flight, the background render is abandoned and restarted.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p><a href="./use-transition.html"><code>useTransition</code></a> requires you to wrap the <code>set</code> call. That only works when you own the setter.</p>
+<p>You often do not. The value arrives as a prop, or comes out of a custom hook, a router, or a form library. You cannot wrap an update you never make. <code>useDeferredValue</code> solves the same problem from the other end: instead of marking the update non-urgent, you mark the <strong>value</strong> as one that is allowed to lag.</p>
+<p>It also expresses something a transition cannot: &quot;keep showing the old results while the new ones are computed.&quot; That stale-content behavior is the entire point of search-as-you-type.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Search-as-you-type over an expensive list.</strong> The input updates on every keystroke; the results trail behind and stay interactive.</li>
+<li><strong>A value you do not control.</strong> A prop, a context value, a hook's return value.</li>
+<li><strong>Keeping old content visible across a Suspense boundary.</strong> If the background render suspends, React shows the previous deferred value instead of the fallback — no spinner flash between results.</li>
+<li><strong>Signalling staleness.</strong> Compare <code>value !== deferredValue</code> to dim the stale UI.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>To make the work cheaper.</strong> It does not. The same filtering, the same sorting, the same rendering all still happen — only off the urgent path, and possibly <em>more</em> than once, since interrupted renders restart. It buys responsiveness, not throughput.</li>
+<li><strong>Without <code>memo</code> on the expensive child.</strong> This is the most important constraint on the page. If the child re-renders anyway because its parent did, deferring the value changes nothing.</li>
+<li><strong>To reduce network requests.</strong> It has no effect on fetching. If you want fewer requests, debounce the request, not the render.</li>
+<li><strong>When you own the setter and want a pending flag.</strong> <code>useTransition</code> gives you <code>isPending</code> directly.</li>
+<li><strong>On a value that is a new object every render.</strong> A fresh <code>{ ... }</code> literal created during render is never equal to the deferred copy, so React spins on background re-renders forever. Defer a primitive, or an object created outside rendering.</li>
+<li><strong>When the work is trivial.</strong> A list of twelve items does not need this.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>Typing stays at full speed while an 8,000-item filter renders behind it.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> packages <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">8000</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+  name<span class="tok-punct">:</span> <span class="tok-string">`@acme/module-</span><span class="tok-punct">${</span>index<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+  weeklyDownloads<span class="tok-punct">:</span> <span class="tok-punct">(</span>index <span class="tok-punct">*</span> <span class="tok-number">977</span><span class="tok-punct">)</span> <span class="tok-punct">%</span> <span class="tok-number">90000</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">PackageResults</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">PackageResults</span><span class="tok-punct">(</span><span class="tok-punct">{</span> query <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> needle <span class="tok-punct">=</span> query<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> matches <span class="tok-punct">=</span> needle
+    <span class="tok-punct">?</span> packages<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>pkg <span class="tok-keyword">=&gt;</span> pkg<span class="tok-punct">.</span>name<span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>needle<span class="tok-punct">)</span><span class="tok-punct">)</span>
+    <span class="tok-punct">:</span> packages<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">160</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>matches<span class="tok-punct">.</span><span class="tok-fn">slice</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">,</span> <span class="tok-number">100</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span>pkg <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>pkg<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>pkg<span class="tok-punct">.</span>name<span class="tok-punct">}</span> — <span class="tok-punct">{</span>pkg<span class="tok-punct">.</span>weeklyDownloads<span class="tok-punct">.</span><span class="tok-fn">toLocaleString</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">}</span> downloads
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">PackageSearch</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> deferredQuery <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>query<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> isStale <span class="tok-punct">=</span> query <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> deferredQuery<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Filter packages&quot;</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;div</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+          opacity<span class="tok-punct">:</span> isStale <span class="tok-punct">?</span> <span class="tok-number">0.5</span> <span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span>
+          transition<span class="tok-punct">:</span> <span class="tok-string">'opacity 0.15s linear'</span><span class="tok-punct">,</span>
+        <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;PackageResults</span> <span class="tok-attr">query</span><span class="tok-punct">=</span><span class="tok-punct">{</span>deferredQuery<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { memo, useDeferredValue, useState } from 'react';
+
+const packages = Array.from({ length: 8000 }, (_, index) =&gt; ({
+  id: index,
+  name: `@acme/module-${index}`,
+  weeklyDownloads: (index * 977) % 90000,
+}));
+
+const PackageResults = memo(function PackageResults({ query }) {
+  const needle = query.trim().toLowerCase();
+  const matches = needle
+    ? packages.filter(pkg =&gt; pkg.name.includes(needle))
+    : packages;
+
+  return (
+    &lt;ul style={{ maxHeight: 160, overflow: 'auto' }}&gt;
+      {matches.slice(0, 100).map(pkg =&gt; (
+        &lt;li key={pkg.id}&gt;
+          {pkg.name} — {pkg.weeklyDownloads.toLocaleString()} downloads
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+});
+
+export default function PackageSearch() {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+  const isStale = query !== deferredQuery;
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={query}
+        onChange={event =&gt; setQuery(event.target.value)}
+        placeholder=&quot;Filter packages&quot;
+      /&gt;
+      &lt;div
+        style={{
+          opacity: isStale ? 0.5 : 1,
+          transition: 'opacity 0.15s linear',
+        }}
+      &gt;
+        &lt;PackageResults query={deferredQuery} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Three things are load-bearing here:</p>
+<ol>
+<li>The <code>&lt;input&gt;</code> reads <code>query</code>, never <code>deferredQuery</code> — otherwise typing lags.</li>
+<li><code>PackageResults</code> is wrapped in <code>memo</code>, so React can skip it entirely while <code>deferredQuery</code> is unchanged.</li>
+<li><code>isStale</code> is derived by comparing the two, not from a flag React gives you.</li>
+</ol>
+<p>Remove the <code>memo</code> and the optimization evaporates: <code>PackageSearch</code> re-renders on every keystroke, and a non-memoized child re-renders with it.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="across-re-renders">Across re-renders<a class="heading-anchor" href="#across-re-renders" aria-label="Link to this section">#</a></h3>
+<p>When <code>value</code> changes, React does two renders:</p>
+<ol>
+<li>An <strong>urgent</strong> render that returns the <em>old</em> <code>deferredValue</code>. This is the one that paints. The input shows the new character; the list still shows the old results.</li>
+<li>A <strong>background</strong> render at transition priority that returns the new value.</li>
+</ol>
+<p>The background render is fully interruptible. Type another character before it finishes and React throws the partial work away and starts again with the newest value. There is no fixed delay and no timer — React starts the background render as soon as the urgent one commits, and adapts to how fast the device actually is.</p>
+<p>On the <strong>initial</strong> render there is nothing to be stale, so <code>deferredValue</code> equals <code>value</code> — unless you pass <code>initialValue</code>.</p>
+<h3 id="initialvalue-react-190"><code>initialValue</code> (React 19.0+)<a class="heading-anchor" href="#initialvalue-react-190" aria-label="Link to this section">#</a></h3>
+<p>Added in <strong>19.0</strong>. It gives the initial render something cheap to show, then immediately schedules a background render with the real value.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">HeavyChart</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">HeavyChart</span><span class="tok-punct">(</span><span class="tok-punct">{</span> range <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>range <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Preparing</span> chart…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">const</span> bars <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">for</span> <span class="tok-punct">(</span><span class="tok-keyword">let</span> index <span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">;</span> index <span class="tok-punct">&lt;</span> <span class="tok-number">400</span><span class="tok-punct">;</span> index<span class="tok-punct">+</span><span class="tok-punct">+</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    bars<span class="tok-punct">.</span><span class="tok-fn">push</span><span class="tok-punct">(</span>
+      <span class="tok-tag">&lt;span</span>
+        <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>index<span class="tok-punct">}</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+          display<span class="tok-punct">:</span> <span class="tok-string">'inline-block'</span><span class="tok-punct">,</span>
+          width<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span>
+          height<span class="tok-punct">:</span> <span class="tok-number">4</span> <span class="tok-punct">+</span> <span class="tok-punct">(</span><span class="tok-punct">(</span>index <span class="tok-punct">*</span> <span class="tok-number">13</span><span class="tok-punct">)</span> <span class="tok-punct">%</span> <span class="tok-number">40</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+          background<span class="tok-punct">:</span> <span class="tok-string">'currentColor'</span><span class="tok-punct">,</span>
+        <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Range</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>range<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>bars<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Dashboard</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>range<span class="tok-punct">,</span> setRange<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'last-30-days'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-comment">// First paint renders the '' branch; the real chart follows in the background.</span>
+  <span class="tok-keyword">const</span> deferredRange <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>range<span class="tok-punct">,</span> <span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setRange</span><span class="tok-punct">(</span><span class="tok-string">'last-7-days'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-number">7</span> days<span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setRange</span><span class="tok-punct">(</span><span class="tok-string">'last-30-days'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-number">30</span> days<span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;HeavyChart</span> <span class="tok-attr">range</span><span class="tok-punct">=</span><span class="tok-punct">{</span>deferredRange<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { memo, useDeferredValue, useState } from 'react';
+
+const HeavyChart = memo(function HeavyChart({ range }) {
+  if (range === '') {
+    return &lt;p&gt;Preparing chart…&lt;/p&gt;;
+  }
+  const bars = [];
+  for (let index = 0; index &lt; 400; index++) {
+    bars.push(
+      &lt;span
+        key={index}
+        style={{
+          display: 'inline-block',
+          width: 2,
+          height: 4 + ((index * 13) % 40),
+          background: 'currentColor',
+        }}
+      /&gt;
+    );
+  }
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Range: {range}&lt;/p&gt;
+      {bars}
+    &lt;/div&gt;
+  );
+});
+
+export default function Dashboard() {
+  const [range, setRange] = useState('last-30-days');
+  // First paint renders the '' branch; the real chart follows in the background.
+  const deferredRange = useDeferredValue(range, '');
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setRange('last-7-days')}&gt;7 days&lt;/button&gt;
+      &lt;button onClick={() =&gt; setRange('last-30-days')}&gt;30 days&lt;/button&gt;
+      &lt;HeavyChart range={deferredRange} /&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Without <code>initialValue</code>, the first paint would be blocked by the chart. With it, the shell appears immediately.</p>
+<h3 id="suspense">Suspense<a class="heading-anchor" href="#suspense" aria-label="Link to this section">#</a></h3>
+<p><code>useDeferredValue</code> is integrated with <code>&lt;Suspense&gt;</code>. If the background render suspends — because a child reads a promise it has not resolved yet — React does <strong>not</strong> swap in the fallback. It keeps showing the previous deferred value until the new one is ready.</p>
+<p>That is why search results built on Suspense feel continuous rather than flickering through a spinner on every keystroke.</p>
+<p>Note the ordering: Effects from the background render only fire once that render is committed to the screen.</p>
+<h3 id="strictmode">StrictMode<a class="heading-anchor" href="#strictmode" aria-label="Link to this section">#</a></h3>
+<p>StrictMode double-invokes render functions in development, so an expensive child rendered from a deferred value runs its render body twice per render pass. That makes an already-slow component look twice as slow in dev — a real effect of the check, not of <code>useDeferredValue</code>.</p>
+<p>It is also a purity check on the background render. Any impurity in the component receiving <code>deferredValue</code> shows up here, which matters because background renders are the ones React discards most often.</p>
+<h3 id="concurrent-rendering">Concurrent rendering<a class="heading-anchor" href="#concurrent-rendering" aria-label="Link to this section">#</a></h3>
+<p>This hook is a thin wrapper over the same lane mechanism as transitions. Two consequences follow.</p>
+<p>First, an update that is already inside a transition does not get deferred again: <code>useDeferredValue</code> returns the new value immediately and spawns no background render. There is nothing to gain — the update is already low-priority.</p>
+<p>Second, the background render can be started, abandoned, and restarted many times while a user types. Everything it touches must be pure. This is the most common way an impure component that &quot;worked fine&quot; starts producing nonsense.</p>
+<h3 id="usedeferredvalue-vs-usetransition-vs-debouncing"><code>useDeferredValue</code> vs <code>useTransition</code> vs debouncing<a class="heading-anchor" href="#usedeferredvalue-vs-usetransition-vs-debouncing" aria-label="Link to this section">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>useDeferredValue</code></th><th><code>useTransition</code></th><th>Debounce / throttle</th></tr></thead>
+<tbody><tr><td>You wrap</td><td>The value</td><td>The <code>set</code> call</td><td>The event</td></tr><tr><td>Needs the setter</td><td>No</td><td>Yes</td><td>No</td></tr><tr><td>Delay</td><td>None; adapts to the device</td><td>None</td><td>A fixed number you guessed</td></tr><tr><td>Interruptible</td><td>Yes</td><td>Yes</td><td>No — once it fires, it blocks</td></tr><tr><td>Pending signal</td><td><code>value !== deferredValue</code></td><td><code>isPending</code></td><td>Your own state</td></tr><tr><td>Reduces network calls</td><td>No</td><td>No</td><td>Yes</td></tr></tbody></table></div>
+<p>Debouncing is still the right tool for cutting down <em>requests</em>. It is the wrong tool for cutting down <em>renders</em>, because the render it eventually triggers is still blocking.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="deferring-a-prop-you-did-not-create">Deferring a prop you did not create<a class="heading-anchor" href="#deferring-a-prop-you-did-not-create" aria-label="Link to this section">#</a></h3>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useDeferredValue</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">Preview</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">Preview</span><span class="tok-punct">(</span><span class="tok-punct">{</span> markdown <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;pre</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>markdown<span class="tok-punct">}</span><span class="tok-tag">&lt;/pre</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">EditorPane</span><span class="tok-punct">(</span><span class="tok-punct">{</span> markdown <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// `markdown` arrives as a prop — there is no setter to wrap.</span>
+  <span class="tok-keyword">const</span> deferredMarkdown <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>markdown<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;Preview</span> <span class="tok-attr">markdown</span><span class="tok-punct">=</span><span class="tok-punct">{</span>deferredMarkdown<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h3 id="deferring-a-primitive-not-an-object">Deferring a primitive, not an object<a class="heading-anchor" href="#deferring-a-primitive-not-an-object" aria-label="Link to this section">#</a></h3>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">,</span> <span class="tok-fn">useMemo</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">Chart</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">Chart</span><span class="tok-punct">(</span><span class="tok-punct">{</span> options <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>options<span class="tok-punct">.</span>metric<span class="tok-punct">}</span> over <span class="tok-punct">{</span>options<span class="tok-punct">.</span>days<span class="tok-punct">}</span> days<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Analytics</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>days<span class="tok-punct">,</span> setDays<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">30</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> deferredDays <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>days<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// Build the object from the deferred primitive, not the other way round.</span>
+  <span class="tok-keyword">const</span> options <span class="tok-punct">=</span> <span class="tok-fn">useMemo</span><span class="tok-punct">(</span>
+    <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span> metric<span class="tok-punct">:</span> <span class="tok-string">'sessions'</span><span class="tok-punct">,</span> days<span class="tok-punct">:</span> deferredDays <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-punct">[</span>deferredDays<span class="tok-punct">]</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setDays</span><span class="tok-punct">(</span>d <span class="tok-keyword">=&gt;</span> d <span class="tok-punct">+</span> <span class="tok-number">30</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Days</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>days<span class="tok-punct">}</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;Chart</span> <span class="tok-attr">options</span><span class="tok-punct">=</span><span class="tok-punct">{</span>options<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Deferring <code>options</code> itself would fail: a new object literal each render is never <code>Object.is</code>-equal to the deferred copy, so React would schedule a background render forever.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Deferred value plus <code>memo</code> plus <code>useMemo</code> — the full stack, with a visible staleness indicator and a count of how many rows survived the filter.</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">,</span> <span class="tok-fn">useMemo</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> incidents <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">12000</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+  service<span class="tok-punct">:</span> <span class="tok-string">`service-</span><span class="tok-punct">${</span>index <span class="tok-punct">%</span> <span class="tok-number">40</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+  severity<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">'low'</span><span class="tok-punct">,</span> <span class="tok-string">'medium'</span><span class="tok-punct">,</span> <span class="tok-string">'high'</span><span class="tok-punct">]</span><span class="tok-punct">[</span>index <span class="tok-punct">%</span> <span class="tok-number">3</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+  summary<span class="tok-punct">:</span> <span class="tok-string">`Latency spike in shard </span><span class="tok-punct">${</span>index <span class="tok-punct">%</span> <span class="tok-number">97</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">IncidentTable</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">IncidentTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> query<span class="tok-punct">,</span> severity <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> rows <span class="tok-punct">=</span> <span class="tok-fn">useMemo</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> needle <span class="tok-punct">=</span> query<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">return</span> incidents<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>
+      incident <span class="tok-keyword">=&gt;</span>
+        <span class="tok-punct">(</span>severity <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'all'</span> <span class="tok-punct">|</span><span class="tok-punct">|</span> incident<span class="tok-punct">.</span>severity <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> severity<span class="tok-punct">)</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span>
+        <span class="tok-punct">(</span>needle <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span> <span class="tok-punct">|</span><span class="tok-punct">|</span>
+          incident<span class="tok-punct">.</span>service<span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>needle<span class="tok-punct">)</span> <span class="tok-punct">|</span><span class="tok-punct">|</span>
+          incident<span class="tok-punct">.</span>summary<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>needle<span class="tok-punct">)</span><span class="tok-punct">)</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> severity<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>rows<span class="tok-punct">.</span>length<span class="tok-punct">}</span> matching incidents<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">160</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>rows<span class="tok-punct">.</span><span class="tok-fn">slice</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">,</span> <span class="tok-number">60</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span>incident <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>incident<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-punct">[</span><span class="tok-punct">{</span>incident<span class="tok-punct">.</span>severity<span class="tok-punct">}</span><span class="tok-punct">]</span> <span class="tok-punct">{</span>incident<span class="tok-punct">.</span>service<span class="tok-punct">}</span> — <span class="tok-punct">{</span>incident<span class="tok-punct">.</span>summary<span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">IncidentSearch</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>severity<span class="tok-punct">,</span> setSeverity<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'all'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> deferredQuery <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>query<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> isStale <span class="tok-punct">=</span> query <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> deferredQuery<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Filter incidents&quot;</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;select</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>severity<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setSeverity</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;all&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">All</span> severities<span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;low&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Low</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;medium&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Medium</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;high&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">High</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> opacity<span class="tok-punct">:</span> isStale <span class="tok-punct">?</span> <span class="tok-number">0.5</span> <span class="tok-punct">:</span> <span class="tok-number">1</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;IncidentTable</span> <span class="tok-attr">query</span><span class="tok-punct">=</span><span class="tok-punct">{</span>deferredQuery<span class="tok-punct">}</span> <span class="tok-attr">severity</span><span class="tok-punct">=</span><span class="tok-punct">{</span>severity<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { memo, useDeferredValue, useMemo, useState } from 'react';
+
+const incidents = Array.from({ length: 12000 }, (_, index) =&gt; ({
+  id: index,
+  service: `service-${index % 40}`,
+  severity: ['low', 'medium', 'high'][index % 3],
+  summary: `Latency spike in shard ${index % 97}`,
+}));
+
+const IncidentTable = memo(function IncidentTable({ query, severity }) {
+  const rows = useMemo(() =&gt; {
+    const needle = query.trim().toLowerCase();
+    return incidents.filter(
+      incident =&gt;
+        (severity === 'all' || incident.severity === severity) &amp;&amp;
+        (needle === '' ||
+          incident.service.includes(needle) ||
+          incident.summary.toLowerCase().includes(needle))
+    );
+  }, [query, severity]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{rows.length} matching incidents&lt;/p&gt;
+      &lt;ul style={{ maxHeight: 160, overflow: 'auto' }}&gt;
+        {rows.slice(0, 60).map(incident =&gt; (
+          &lt;li key={incident.id}&gt;
+            [{incident.severity}] {incident.service} — {incident.summary}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+});
+
+export default function IncidentSearch() {
+  const [query, setQuery] = useState('');
+  const [severity, setSeverity] = useState('all');
+  const deferredQuery = useDeferredValue(query);
+  const isStale = query !== deferredQuery;
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={query}
+        onChange={event =&gt; setQuery(event.target.value)}
+        placeholder=&quot;Filter incidents&quot;
+      /&gt;
+      &lt;select value={severity} onChange={event =&gt; setSeverity(event.target.value)}&gt;
+        &lt;option value=&quot;all&quot;&gt;All severities&lt;/option&gt;
+        &lt;option value=&quot;low&quot;&gt;Low&lt;/option&gt;
+        &lt;option value=&quot;medium&quot;&gt;Medium&lt;/option&gt;
+        &lt;option value=&quot;high&quot;&gt;High&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;div style={{ opacity: isStale ? 0.5 : 1 }}&gt;
+        &lt;IncidentTable query={deferredQuery} severity={severity} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p><code>severity</code> is <em>not</em> deferred: changing a select is a deliberate, one-off action where the user expects an immediate answer. Only the per-keystroke value gets the stale treatment. Deferring everything is as unhelpful as deferring nothing.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Forgetting <code>memo</code> on the child.</strong> The single most common failure. Without it the child re-renders on every parent render and nothing is deferred in practice.</p>
+<p><strong>Binding the input to the deferred value.</strong> <code>&lt;input value={deferredQuery}&gt;</code> makes typing feel broken. The input reads the urgent value; only the expensive consumer reads the deferred one.</p>
+<p><strong>Deferring an object created during render.</strong> <code>useDeferredValue({ query })</code> creates a new object each render, so React never settles. Defer a primitive and build the object downstream.</p>
+<p><strong>Expecting fewer network requests.</strong> If the child fetches on every <code>query</code> change, deferring the value only changes <em>when</em> the fetch fires, not how often. Debounce the request.</p>
+<p><strong>Expecting the work to get faster.</strong> The filter still runs. Interrupted background renders mean it may run more times than before. The win is that the main thread stays free between chunks.</p>
+<p><strong>Using it inside an existing transition.</strong> No extra deferral happens — React returns the new value straight away. Pick one mechanism.</p>
+<p><strong>Skipping the staleness indicator.</strong> Without a visual cue, stale results look like a bug. <code>value !== deferredValue</code> costs one line.</p>
+<p><strong>Reaching for it before profiling.</strong> If the child renders in two milliseconds, this hook adds coordination overhead and no benefit. Measure first.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./use-transition.html">useTransition</a> — the same prioritization when you own the <code>set</code> function and want <code>isPending</code>.</li>
+<li><a href="../performance/memoization.html">Memoization</a> — <code>memo</code>, without which this hook does nothing.</li>
+<li><a href="./use-memo.html">useMemo</a> — avoid recomputing the derived data the deferred value feeds.</li>
+<li><a href="../data-fetching/suspense.html">Suspense</a> — why a deferred render shows stale content instead of a fallback.</li>
+<li><a href="../performance/lists-and-virtualization.html">Lists and virtualization</a> — when the real fix is rendering fewer rows.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../hooks/use-transition.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">useTransition</span></a><a class="pager-link pager-next" href="../hooks/use-id.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">useId</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#across-re-renders">Across re-renders</a></li><li class="toc-h3"><a href="#initialvalue-react-190">initialValue (React 19.0+)</a></li><li class="toc-h3"><a href="#suspense">Suspense</a></li><li class="toc-h3"><a href="#strictmode">StrictMode</a></li><li class="toc-h3"><a href="#concurrent-rendering">Concurrent rendering</a></li><li class="toc-h3"><a href="#usedeferredvalue-vs-usetransition-vs-debouncing">useDeferredValue vs useTransition vs debouncing</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#deferring-a-prop-you-did-not-create">Deferring a prop you did not create</a></li><li class="toc-h3"><a href="#deferring-a-primitive-not-an-object">Deferring a primitive, not an object</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus management · React 19 Docs</title>
+<meta name="description" content="Focus lives in the DOM, not in React state, so moving it after a change is your job.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Focus management · React 19 Docs">
+<meta property="og:description" content="Focus lives in the DOM, not in React state, so moving it after a change is your job.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html" aria-current="page"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#accessibility">Accessibility</a></li><li><span aria-current="page">Focus management</span></li></ol><header class="page-header"><h1 class="page-title">Focus management</h1><p class="page-description">Focus lives in the DOM, not in React state, so moving it after a change is your job.</p><div class="badges"><span class="badge badge-current">Current</span><span class="badge badge-since">React 19.0+</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>Exactly one element in a document has focus. It decides where keystrokes go, what a screen reader reads next, and what the user perceives as &quot;here&quot;.</p>
+<p>React renders elements. It does not decide which one is focused. When you replace the contents of a page, open a panel, or unmount the element that had focus, focus falls back to <code>&lt;body&gt;</code> — the top of the document, with no context.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>Focus is state that lives in the DOM and can only ever have one value across the whole page. React state is local and holds many values at once. The two models do not compose, which is why React owns one and leaves the other to you. Any change that removes or replaces the focused element is a change you have to finish by hand.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Move focus deliberately when the user's context changes and they did not move it themselves:</p>
+<ul>
+<li>A dialog, drawer or popover opens — and again when it closes.</li>
+<li>A client-side route change swaps the main content.</li>
+<li>A step in a wizard replaces the previous step.</li>
+<li>An element that had focus is deleted (a removed row, a dismissed toast).</li>
+<li>A submit fails and there is an error the user has to act on.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Do not move focus for something the user did not initiate. Taking focus while someone is typing loses keystrokes and disorients screen reader users.</p>
+<p>Do not use focus to announce something: if nothing needs to be operated, use a live region — see <a href="./announcements.html">Announcements</a>. And do not put <code>autoFocus</code> on the first field of every page; on a page that also has a heading and navigation, it drops the user past all of it.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>The browser already knows how to run a modal. <code>showModal()</code> puts the dialog in the top layer, moves focus into it, makes everything behind it inert, traps Tab, closes on Escape, and returns focus to the element that opened it. Open the dialog below, then press Tab repeatedly, or press Escape.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useRef</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">DeleteInvoiceDialog</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> dialogRef <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>outcome<span class="tok-punct">,</span> setOutcome<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'No action yet.'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> fontFamily<span class="tok-punct">:</span> <span class="tok-string">'system-ui'</span><span class="tok-punct">,</span> lineHeight<span class="tok-punct">:</span> <span class="tok-number">1.6</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> dialogRef<span class="tok-punct">.</span>current<span class="tok-punct">.</span><span class="tok-fn">showModal</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Delete</span> invoice <span class="tok-number">4021</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span> <span class="tok-attr">aria-live</span><span class="tok-punct">=</span><span class="tok-string">&quot;polite&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>outcome<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;dialog</span>
+        <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>dialogRef<span class="tok-punct">}</span>
+        <span class="tok-attr">aria-labelledby</span><span class="tok-punct">=</span><span class="tok-string">&quot;delete-invoice-heading&quot;</span>
+        <span class="tok-attr">onClose</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">const</span> value <span class="tok-punct">=</span> event<span class="tok-punct">.</span>currentTarget<span class="tok-punct">.</span>returnValue<span class="tok-punct">;</span>
+          <span class="tok-fn">setOutcome</span><span class="tok-punct">(</span>value <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'delete'</span> <span class="tok-punct">?</span> <span class="tok-string">'Invoice deleted.'</span> <span class="tok-punct">:</span> <span class="tok-string">'Canceled.'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span><span class="tok-punct">}</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #999'</span><span class="tok-punct">,</span> borderRadius<span class="tok-punct">:</span> <span class="tok-number">8</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-string">'1rem'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h2</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;delete-invoice-heading&quot;</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">,</span> fontSize<span class="tok-punct">:</span> <span class="tok-string">'1.1rem'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Delete</span> invoice <span class="tok-number">4021</span><span class="tok-punct">?</span>
+        <span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">This</span> cannot be undone<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span><span class="tok-comment">/* method=&quot;dialog&quot; closes the dialog and records the button's value. */</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;form</span> <span class="tok-attr">method</span><span class="tok-punct">=</span><span class="tok-string">&quot;dialog&quot;</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'flex'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-string">'0.5rem'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;button</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;cancel&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Cancel</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;button</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;delete&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Delete</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/dialog</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useRef, useState } from 'react';
+
+export default function DeleteInvoiceDialog() {
+  const dialogRef = useRef(null);
+  const [outcome, setOutcome] = useState('No action yet.');
+
+  return (
+    &lt;div style={{ fontFamily: 'system-ui', lineHeight: 1.6 }}&gt;
+      &lt;button type=&quot;button&quot; onClick={() =&gt; dialogRef.current.showModal()}&gt;
+        Delete invoice 4021
+      &lt;/button&gt;
+      &lt;p aria-live=&quot;polite&quot;&gt;{outcome}&lt;/p&gt;
+
+      &lt;dialog
+        ref={dialogRef}
+        aria-labelledby=&quot;delete-invoice-heading&quot;
+        onClose={event =&gt; {
+          const value = event.currentTarget.returnValue;
+          setOutcome(value === 'delete' ? 'Invoice deleted.' : 'Canceled.');
+        }}
+        style={{ border: '1px solid #999', borderRadius: 8, padding: '1rem' }}
+      &gt;
+        &lt;h2 id=&quot;delete-invoice-heading&quot; style={{ marginTop: 0, fontSize: '1.1rem' }}&gt;
+          Delete invoice 4021?
+        &lt;/h2&gt;
+        &lt;p&gt;This cannot be undone.&lt;/p&gt;
+        {/* method=&quot;dialog&quot; closes the dialog and records the button's value. */}
+        &lt;form method=&quot;dialog&quot; style={{ display: 'flex', gap: '0.5rem' }}&gt;
+          &lt;button value=&quot;cancel&quot;&gt;Cancel&lt;/button&gt;
+          &lt;button value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/dialog&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>React's DOM types expose the dialog's <code>close</code> event as <code>onClose</code> and Escape as <code>onCancel</code>.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>In 2026 the native <code>&lt;dialog&gt;</code> with <code>showModal()</code> is the right default for modals. Reach for a hand-built trap only when you need something <code>&lt;dialog&gt;</code> cannot do.</p>
+</div></div>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="moving-focus-with-a-ref">Moving focus with a ref<a class="heading-anchor" href="#moving-focus-with-a-ref" aria-label="Link to this section">#</a></h3>
+<p>Get a DOM node, call <code>focus()</code> on it. The node has to exist first, so the call belongs in an Effect or an event handler — never during render.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useRef</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> titles <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">'Shipping address'</span><span class="tok-punct">,</span> <span class="tok-string">'Payment'</span><span class="tok-punct">,</span> <span class="tok-string">'Review order'</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// Programmatic focus on a non-interactive element needs tabIndex={-1}:</span>
+<span class="tok-comment">// focusable by script, still out of the tab order.</span>
+<span class="tok-keyword">function</span> <span class="tok-type">StepHeading</span><span class="tok-punct">(</span><span class="tok-punct">{</span> title<span class="tok-punct">,</span> ref <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;h2</span> <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>ref<span class="tok-punct">}</span> <span class="tok-attr">tabIndex</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">-</span><span class="tok-number">1</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Checkout</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>step<span class="tok-punct">,</span> setStep<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> headingRef <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    headingRef<span class="tok-punct">.</span>current<span class="tok-punct">.</span><span class="tok-fn">focus</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>step<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;StepHeading</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-punct">{</span>titles<span class="tok-punct">[</span>step<span class="tok-punct">]</span><span class="tok-punct">}</span> <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>headingRef<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setStep</span><span class="tok-punct">(</span>s <span class="tok-keyword">=&gt;</span> <span class="tok-type">Math</span><span class="tok-punct">.</span><span class="tok-fn">min</span><span class="tok-punct">(</span>s <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Continue</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Focusing the heading rather than the first input is deliberate: the user hears the name of the step they landed on, then tabs into the fields.</p>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p>Before React 19 you needed <code>forwardRef</code> to pass a ref into <code>StepHeading</code>. Since <strong>19.0</strong>, <code>ref</code> is an ordinary prop on function components.</p>
+</div></div>
+<h3 id="focus-on-mount-with-a-ref-callback">Focus on mount with a ref callback<a class="heading-anchor" href="#focus-on-mount-with-a-ref-callback" aria-label="Link to this section">#</a></h3>
+<p>A ref callback runs when the node attaches. Since <strong>19.0</strong> it may return a cleanup function that React calls when the node detaches, replacing the old &quot;called again with <code>null</code>&quot; convention.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">RenameField</span><span class="tok-punct">(</span><span class="tok-punct">{</span> name<span class="tok-punct">,</span> onChange <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;input</span>
+      <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span>
+      <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-fn">onChange</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>currentTarget<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>node <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        node<span class="tok-punct">.</span><span class="tok-fn">focus</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        node<span class="tok-punct">.</span><span class="tok-fn">select</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-comment">// Runs when the input is removed. Undo whatever the setup did.</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> node<span class="tok-punct">.</span><span class="tok-fn">blur</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>If you return nothing, React still calls the callback again with <code>null</code> on detach. That fallback is documented as going away in a future version, so return a cleanup in new code.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>An inline arrow is a new ref callback on every render, so React detaches and re-attaches the ref each time — re-running <code>focus()</code> and <code>select()</code>. If that matters, hoist the callback with <code>useCallback</code>, or focus from an Effect keyed on what should trigger it.</p>
+</div></div>
+<h3 id="useeffect-or-uselayouteffect"><code>useEffect</code> or <code>useLayoutEffect</code><a class="heading-anchor" href="#useeffect-or-uselayouteffect" aria-label="Link to this section">#</a></h3>
+<p>Both run after the DOM is committed, so both can focus. <code>useEffect</code> runs after the browser paints; <code>useLayoutEffect</code> runs before it and blocks the paint. Prefer <code>useEffect</code>, and reach for <code>useLayoutEffect</code> only when focusing after paint produces a visible jump — a panel that scrolls into view as it takes focus.</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>useEffect</code></th><th><code>useLayoutEffect</code></th></tr></thead>
+<tbody><tr><td>Runs</td><td>After paint</td><td>Before paint</td></tr><tr><td>Blocks paint</td><td>No</td><td>Yes</td></tr><tr><td>Use for focus when</td><td>Almost always</td><td>A focus-driven scroll would otherwise flash</td></tr></tbody></table></div>
+<h3 id="what-a-focus-trap-actually-requires">What a focus trap actually requires<a class="heading-anchor" href="#what-a-focus-trap-actually-requires" aria-label="Link to this section">#</a></h3>
+<p>If you build one yourself, this is the complete list. Miss an item and keyboard users get stuck:</p>
+<ol>
+<li><strong>Initial focus</strong> moves into the dialog on open — the heading, the first control, or the safest button when the action is destructive.</li>
+<li><strong>Tab wraps</strong> from the last tabbable element to the first.</li>
+<li><strong>Shift+Tab wraps</strong> from the first tabbable element to the last.</li>
+<li><strong>Escape closes</strong> it. If several are open, only the topmost closes.</li>
+<li><strong>The background is inert.</strong> <code>inert</code> removes it from the accessibility tree <em>and</em> the tab order. <code>aria-hidden=&quot;true&quot;</code> only does the first, so focus can still land somewhere the user cannot perceive.</li>
+<li><strong>Focus returns</strong> to the element that opened the dialog, and to a sensible fallback if that element no longer exists.</li>
+<li><code>role=&quot;dialog&quot;</code> (or the <code>&lt;dialog&gt;</code> element), <code>aria-modal=&quot;true&quot;</code>, and <code>aria-labelledby</code> pointing at the visible title.</li>
+</ol>
+<p>The hard part is items 2 and 3. &quot;Tabbable&quot; is not a selector you write once: it depends on <code>tabindex</code>, <code>disabled</code>, <code>hidden</code>, <code>inert</code>, <code>display: none</code> on an ancestor, <code>visibility: hidden</code>, whether a radio is the checked member of its group, and browser quirks around <code>&lt;summary&gt;</code> and iframes. That is the argument for <code>&lt;dialog&gt;</code> — the browser already owns the definition.</p>
+<div class="callout callout-tip" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Tip</p><div class="callout-body"><p>If <code>&lt;dialog&gt;</code> will not do — an animated drawer, a design that must render in place — use a maintained library rather than writing the trap yourself.</p>
+</div></div>
+<h3 id="roving-tabindex">Roving tabindex<a class="heading-anchor" href="#roving-tabindex" aria-label="Link to this section">#</a></h3>
+<p>A composite widget — toolbar, tab list, menu, listbox — is <strong>one</strong> stop in the tab sequence, not one per item. Twelve toolbar buttons at twelve tab stops means twelve Tab presses to get past a strip the user did not want.</p>
+<ul>
+<li>The active item has <code>tabIndex={0}</code>. Every other item has <code>tabIndex={-1}</code>.</li>
+<li>Tab enters the widget onto the active item; Tab again leaves it.</li>
+<li>Arrow keys move: set the new item's <code>tabIndex</code> to <code>0</code>, the old one's to <code>-1</code>, and call <code>focus()</code> on the new one. Home and End jump to the ends.</li>
+</ul>
+<p>The alternative is <code>aria-activedescendant</code>: DOM focus stays on the container, which carries <code>tabIndex={0}</code> and points at the active child's <code>id</code>. Use it when focus must stay in a text input while a list below is navigated — a combobox. Use roving tabindex everywhere else, because real focus means the browser scrolls the active item into view for you.</p>
+<h3 id="skip-links">Skip links<a class="heading-anchor" href="#skip-links" aria-label="Link to this section">#</a></h3>
+<p>Render <code>&lt;a href=&quot;#main-content&quot;&gt;Skip to main content&lt;/a&gt;</code> as the first focusable element in the app shell, ahead of the navigation, with <code>&lt;main id=&quot;main-content&quot; tabIndex={-1}&gt;</code> as its target. Without it a keyboard user tabs through the whole navigation on every page.</p>
+<p>The link may be visually hidden until it receives focus, but it must become visible then. <code>tabIndex={-1}</code> on the target makes browsers move focus there rather than only scrolling to it.</p>
+<h3 id="never-remove-the-focus-outline">Never remove the focus outline<a class="heading-anchor" href="#never-remove-the-focus-outline" aria-label="Link to this section">#</a></h3>
+<p><code>outline: none</code> with no replacement makes the page unusable by keyboard. If the default ring clashes with your design, replace it:</p>
+<div class="code-block" data-lang="css"><div class="code-head"><span class="code-lang">css</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-css"><span class="tok-comment">/* Matches when the browser judges a focus ring is warranted: keyboard
+   navigation and script-moved focus, but not a mouse click. */</span>
+:focus-visible <span class="tok-punct">{</span>
+  <span class="tok-attr">outline</span><span class="tok-punct">:</span> 2px solid #0b5fff<span class="tok-punct">;</span>
+  <span class="tok-attr">outline-offset</span><span class="tok-punct">:</span> 2px<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><code>:focus-visible</code> is why the old &quot;the outline looks bad on click&quot; argument no longer applies. Keep the indicator at 3:1 contrast or better.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="route-changes-in-a-single-page-app">Route changes in a single-page app<a class="heading-anchor" href="#route-changes-in-a-single-page-app" aria-label="Link to this section">#</a></h3>
+<p>A client-side navigation replaces the content with no document load, so the browser does nothing: focus stays on the link the user activated, which is often now unmounted.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useRef</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">RouteHeading</span><span class="tok-punct">(</span><span class="tok-punct">{</span> pathname <span class="tok-punct">=</span> <span class="tok-string">'/orders'</span><span class="tok-punct">,</span> title <span class="tok-punct">=</span> <span class="tok-string">'Your orders'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> headingRef <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> isFirstRender <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-comment">// Do not take focus on the initial load — the user has not navigated yet.</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>isFirstRender<span class="tok-punct">.</span>current<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      isFirstRender<span class="tok-punct">.</span>current <span class="tok-punct">=</span> <span class="tok-literal">false</span><span class="tok-punct">;</span>
+      <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+    headingRef<span class="tok-punct">.</span>current<span class="tok-punct">.</span><span class="tok-fn">focus</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>pathname<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;h1</span> <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>headingRef<span class="tok-punct">}</span> <span class="tok-attr">tabIndex</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">-</span><span class="tok-number">1</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/h1</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Focus the page's <code>&lt;h1&gt;</code>, not <code>&lt;main&gt;</code>. Focusing a landmark makes some screen readers read the whole region.</p>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p>In StrictMode, development builds mount, unmount and remount components, so this Effect runs an extra time. That is an artifact of the double-invoke, not a bug in the pattern.</p>
+</div></div>
+<h3 id="restoring-focus-after-a-deletion">Restoring focus after a deletion<a class="heading-anchor" href="#restoring-focus-after-a-deletion" aria-label="Link to this section">#</a></h3>
+<p>When the focused element is about to disappear, choose its successor <em>before</em> the removal, while both nodes are still mounted. Store the row nodes in a <code>Map</code> keyed by id — a ref callback with a cleanup is the tool — then focus the next row, the previous one, or a summary line with <code>tabIndex={-1}</code> when the list empties. Afterwards, the node you want is already unmounted.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>A toolbar with roving tabindex. Tab into it once, then use the arrow keys.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useRef</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> tools <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-string">'bold'</span><span class="tok-punct">,</span> label<span class="tok-punct">:</span> <span class="tok-string">'Bold'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-string">'italic'</span><span class="tok-punct">,</span> label<span class="tok-punct">:</span> <span class="tok-string">'Italic'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-string">'code'</span><span class="tok-punct">,</span> label<span class="tok-punct">:</span> <span class="tok-string">'Code'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">FormattingToolbar</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>activeIndex<span class="tok-punct">,</span> setActiveIndex<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>pressed<span class="tok-punct">,</span> setPressed<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-punct">{</span><span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> buttons <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-keyword">new</span> <span class="tok-type">Map</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">moveTo</span><span class="tok-punct">(</span>index<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> next <span class="tok-punct">=</span> <span class="tok-punct">(</span>index <span class="tok-punct">+</span> tools<span class="tok-punct">.</span>length<span class="tok-punct">)</span> <span class="tok-punct">%</span> tools<span class="tok-punct">.</span>length<span class="tok-punct">;</span>
+    <span class="tok-fn">setActiveIndex</span><span class="tok-punct">(</span>next<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    buttons<span class="tok-punct">.</span>current<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span>tools<span class="tok-punct">[</span>next<span class="tok-punct">]</span><span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">focus</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleKeyDown</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> moves <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+      <span class="tok-type">ArrowRight</span><span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">moveTo</span><span class="tok-punct">(</span>activeIndex <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-type">ArrowLeft</span><span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">moveTo</span><span class="tok-punct">(</span>activeIndex <span class="tok-punct">-</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-type">Home</span><span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">moveTo</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-type">End</span><span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">moveTo</span><span class="tok-punct">(</span>tools<span class="tok-punct">.</span>length <span class="tok-punct">-</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">const</span> move <span class="tok-punct">=</span> moves<span class="tok-punct">[</span>event<span class="tok-punct">.</span>key<span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>move<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      event<span class="tok-punct">.</span><span class="tok-fn">preventDefault</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-fn">move</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> fontFamily<span class="tok-punct">:</span> <span class="tok-string">'system-ui'</span><span class="tok-punct">,</span> lineHeight<span class="tok-punct">:</span> <span class="tok-number">1.6</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Press</span> <span class="tok-tag">&lt;kbd</span><span class="tok-tag">&gt;</span><span class="tok-type">Tab</span><span class="tok-tag">&lt;/kbd</span><span class="tok-tag">&gt;</span> to enter the toolbar<span class="tok-punct">,</span> then <span class="tok-tag">&lt;kbd</span><span class="tok-tag">&gt;</span>←<span class="tok-tag">&lt;/kbd</span><span class="tok-tag">&gt;</span> and<span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;kbd</span><span class="tok-tag">&gt;</span>→<span class="tok-tag">&lt;/kbd</span><span class="tok-tag">&gt;</span><span class="tok-punct">.</span> <span class="tok-type">One</span> <span class="tok-type">Tab</span> press moves past every button<span class="tok-punct">.</span>
+      <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span>
+        <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;toolbar&quot;</span>
+        <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Text formatting&quot;</span>
+        <span class="tok-attr">aria-orientation</span><span class="tok-punct">=</span><span class="tok-string">&quot;horizontal&quot;</span>
+        <span class="tok-attr">onKeyDown</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleKeyDown<span class="tok-punct">}</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'flex'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-string">'0.25rem'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>tools<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>tool<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;button</span>
+            <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">}</span>
+            <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span>
+            <span class="tok-attr">tabIndex</span><span class="tok-punct">=</span><span class="tok-punct">{</span>index <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> activeIndex <span class="tok-punct">?</span> <span class="tok-number">0</span> <span class="tok-punct">:</span> <span class="tok-punct">-</span><span class="tok-number">1</span><span class="tok-punct">}</span>
+            <span class="tok-attr">aria-pressed</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-type">Boolean</span><span class="tok-punct">(</span>pressed<span class="tok-punct">[</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+            <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setPressed</span><span class="tok-punct">(</span>p <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>p<span class="tok-punct">,</span> <span class="tok-punct">[</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">]</span><span class="tok-punct">:</span> <span class="tok-punct">!</span>p<span class="tok-punct">[</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">]</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+            <span class="tok-attr">onFocus</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setActiveIndex</span><span class="tok-punct">(</span>index<span class="tok-punct">)</span><span class="tok-punct">}</span>
+            <span class="tok-attr">ref</span><span class="tok-punct">=</span><span class="tok-punct">{</span>node <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+              <span class="tok-keyword">const</span> map <span class="tok-punct">=</span> buttons<span class="tok-punct">.</span>current<span class="tok-punct">;</span>
+              map<span class="tok-punct">.</span><span class="tok-keyword">set</span><span class="tok-punct">(</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">,</span> node<span class="tok-punct">)</span><span class="tok-punct">;</span>
+              <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+                map<span class="tok-punct">.</span><span class="tok-keyword">delete</span><span class="tok-punct">(</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">;</span>
+              <span class="tok-punct">}</span><span class="tok-punct">;</span>
+            <span class="tok-punct">}</span><span class="tok-punct">}</span>
+            <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> padding<span class="tok-punct">:</span> <span class="tok-string">'0.35rem 0.75rem'</span><span class="tok-punct">,</span> fontWeight<span class="tok-punct">:</span> pressed<span class="tok-punct">[</span>tool<span class="tok-punct">.</span>id<span class="tok-punct">]</span> <span class="tok-punct">?</span> <span class="tok-number">700</span> <span class="tok-punct">:</span> <span class="tok-number">400</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+          <span class="tok-tag">&gt;</span>
+            <span class="tok-punct">{</span>tool<span class="tok-punct">.</span>label<span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Active</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>tools<span class="tok-punct">[</span>activeIndex<span class="tok-punct">]</span><span class="tok-punct">.</span>label<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useRef, useState } from 'react';
+
+const tools = [
+  { id: 'bold', label: 'Bold' },
+  { id: 'italic', label: 'Italic' },
+  { id: 'code', label: 'Code' },
+];
+
+export default function FormattingToolbar() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [pressed, setPressed] = useState({});
+  const buttons = useRef(new Map());
+
+  function moveTo(index) {
+    const next = (index + tools.length) % tools.length;
+    setActiveIndex(next);
+    buttons.current.get(tools[next].id).focus();
+  }
+
+  function handleKeyDown(event) {
+    const moves = {
+      ArrowRight: () =&gt; moveTo(activeIndex + 1),
+      ArrowLeft: () =&gt; moveTo(activeIndex - 1),
+      Home: () =&gt; moveTo(0),
+      End: () =&gt; moveTo(tools.length - 1),
+    };
+    const move = moves[event.key];
+    if (move) {
+      event.preventDefault();
+      move();
+    }
+  }
+
+  return (
+    &lt;div style={{ fontFamily: 'system-ui', lineHeight: 1.6 }}&gt;
+      &lt;p&gt;
+        Press &lt;kbd&gt;Tab&lt;/kbd&gt; to enter the toolbar, then &lt;kbd&gt;←&lt;/kbd&gt; and{' '}
+        &lt;kbd&gt;→&lt;/kbd&gt;. One Tab press moves past every button.
+      &lt;/p&gt;
+      &lt;div
+        role=&quot;toolbar&quot;
+        aria-label=&quot;Text formatting&quot;
+        aria-orientation=&quot;horizontal&quot;
+        onKeyDown={handleKeyDown}
+        style={{ display: 'flex', gap: '0.25rem' }}
+      &gt;
+        {tools.map((tool, index) =&gt; (
+          &lt;button
+            key={tool.id}
+            type=&quot;button&quot;
+            tabIndex={index === activeIndex ? 0 : -1}
+            aria-pressed={Boolean(pressed[tool.id])}
+            onClick={() =&gt; setPressed(p =&gt; ({ ...p, [tool.id]: !p[tool.id] }))}
+            onFocus={() =&gt; setActiveIndex(index)}
+            ref={node =&gt; {
+              const map = buttons.current;
+              map.set(tool.id, node);
+              return () =&gt; {
+                map.delete(tool.id);
+              };
+            }}
+            style={{ padding: '0.35rem 0.75rem', fontWeight: pressed[tool.id] ? 700 : 400 }}
+          &gt;
+            {tool.label}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;p&gt;Active: {tools[activeIndex].label}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p><code>aria-pressed</code> carries the toggle state, which is why these are buttons and not checkboxes. <code>onFocus</code> keeps <code>activeIndex</code> correct when someone clicks instead of arrowing, and the ref cleanup keeps the <code>Map</code> free of detached nodes.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Calling <code>focus()</code> during render.</strong> The node does not exist yet, and render must stay side-effect free. Focus in an Effect or an event handler — and give that Effect a dependency array, or it re-runs on every render and pulls focus back while the user is typing.</p>
+<p><strong><code>aria-hidden=&quot;true&quot;</code> on the page behind a modal.</strong> It hides the content but leaves it in the tab order, so Tab walks focus somewhere the user cannot hear. Use <code>inert</code>, which React's DOM types accept as a boolean prop.</p>
+<p><strong>Not restoring focus on close.</strong> Focus falls to <code>&lt;body&gt;</code> and the user restarts from the top of the document. Save the trigger before opening, or use <code>&lt;dialog&gt;</code>, which does it for you.</p>
+<p><strong>Twelve tab stops in a toolbar.</strong> Every item at <code>tabIndex={0}</code> turns a widget into an obstacle. One tab stop plus arrow keys. And <code>tabIndex={1}</code> or higher reorders the whole document's tab sequence, not only your component — the only values you need are <code>0</code> and <code>-1</code>.</p>
+<p><strong>Expecting <code>autoFocus</code> inside a closed dialog to work.</strong> React focuses the element on mount, and a dialog that mounts closed has passed that moment. Let <code>showModal()</code> pick the first focusable element, or focus after opening.</p>
+<p><strong><code>outline: none</code> in a CSS reset.</strong> Replace it with a <code>:focus-visible</code> rule in the same commit, or keyboard users lose the page.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./semantics.html">Semantics</a> — which elements are focusable before you write any focus code.</li>
+<li><a href="./announcements.html">Announcements</a> — for changes that should be heard without moving focus.</li>
+<li><a href="../hooks/use-ref.html">useRef</a> — ref objects and ref callbacks in full.</li>
+<li><a href="../hooks/use-layout-effect.html">useLayoutEffect</a> — when running before paint is worth the cost.</li>
+<li><a href="../patterns/refs-and-dom.html">Refs and the DOM</a> — reaching for DOM nodes from React.</li>
+<li><a href="../ecosystem/routing.html">Routing</a> — where the route-change focus hook belongs.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../accessibility/semantics.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Semantics</span></a><a class="pager-link pager-next" href="../accessibility/announcements.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Announcements</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#moving-focus-with-a-ref">Moving focus with a ref</a></li><li class="toc-h3"><a href="#focus-on-mount-with-a-ref-callback">Focus on mount with a ref callback</a></li><li class="toc-h3"><a href="#useeffect-or-uselayouteffect">useEffect or useLayoutEffect</a></li><li class="toc-h3"><a href="#what-a-focus-trap-actually-requires">What a focus trap actually requires</a></li><li class="toc-h3"><a href="#roving-tabindex">Roving tabindex</a></li><li class="toc-h3"><a href="#skip-links">Skip links</a></li><li class="toc-h3"><a href="#never-remove-the-focus-outline">Never remove the focus outline</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#route-changes-in-a-single-page-app">Route changes in a single-page app</a></li><li class="toc-h3"><a href="#restoring-focus-after-a-deletion">Restoring focus after a deletion</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

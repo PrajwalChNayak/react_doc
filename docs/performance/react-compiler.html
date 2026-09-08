@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>React Compiler · React 19 Docs</title>
+<meta name="description" content="A build-time optimizer that memoizes your components and values so you do not have to.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="React Compiler · React 19 Docs">
+<meta property="og:description" content="A build-time optimizer that memoizes your components and values so you do not have to.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html" aria-current="page"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#performance">Performance</a></li><li><span aria-current="page">React Compiler</span></li></ol><header class="page-header"><h1 class="page-title">React Compiler</h1><p class="page-description">A build-time optimizer that memoizes your components and values so you do not have to.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>React Compiler is a build-time tool that reads your components and inserts memoization for you. <strong>Version 1.0 was released on 7 October 2025.</strong> With it enabled, the vast majority of hand-written <code>useMemo</code>, <code>useCallback</code> and <code>memo</code> becomes unnecessary — you write plain code and the compiler produces the optimized output.</p>
+<p>It is a Babel plugin, so it runs in your build, not at runtime. The output is ordinary JavaScript. There is no new API to learn and no runtime to ship.</p>
+<p>It supports React 17, 18 and 19, and works best on React 19.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Adopt the compiler before you write another <code>useMemo</code>. It removes an entire category of code — and an entire category of stale-dependency bugs — from your codebase.</p>
+</div></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>Manual memoization is tedious, error-prone, and invisible when it breaks.</p>
+<p>You have to decide <em>which</em> values need <code>useMemo</code>, keep every dependency array correct as the component evolves, and remember that wrapping a child in <code>memo</code> achieves nothing if the parent passes it a fresh object literal. Get any of it wrong and nothing crashes — you get a silent performance regression that only a profiler will find.</p>
+<p>Worse, the code is noise. A component with five <code>useCallback</code> wrappers is harder to read than the same component without them, and the wrappers describe machine concerns, not product logic.</p>
+<p>The compiler does this analysis mechanically, on every component, every build, and never forgets a dependency.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Treat it as the project default rather than a targeted optimization. It applies to every component you write, and the benefit compounds as the codebase grows.</p>
+<h3 id="what-it-optimizes">What it optimizes<a class="heading-anchor" href="#what-it-optimizes" aria-label="Link to this section">#</a></h3>
+<p>It targets two costs:</p>
+<ul>
+<li><strong>Cascading re-renders.</strong> Re-rendering a parent re-renders its whole subtree, even components whose props did not change. The compiler memoizes those subtrees so React can skip them.</li>
+<li><strong>Expensive recomputation.</strong> A costly calculation inside a component body runs on every render. The compiler caches the result and reuses it while its inputs are unchanged.</li>
+</ul>
+<p>It infers this from your code, so it can memoize things you would not have bothered to memoize by hand — individual JSX elements, intermediate values, props objects — at a granularity that is impractical to maintain manually.</p>
+<h3 id="what-it-requires">What it requires<a class="heading-anchor" href="#what-it-requires" aria-label="Link to this section">#</a></h3>
+<p>Your code has to follow the <a href="../hooks/rules-of-hooks.html">Rules of React</a>: render functions are pure, props and state are not mutated, and hooks are called unconditionally at the top level.</p>
+<p>The compiler's stance on code it cannot verify is conservative. From the docs:</p>
+<blockquote>
+<p>React Compiler is designed to handle code that follows the Rules of React. When it encounters code that might break these rules, it safely skips optimization rather than risk changing your app's behavior.</p>
+</blockquote>
+<p>So a rule violation costs you an optimization, not a crash. The residual risk is the reverse case: code that violates the rules in a way subtle enough that the compiler did not notice, and compiled anyway. That is what the ESLint rules are for.</p>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>There is no class of application that should avoid the compiler. What there is, is a set of problems people expect it to solve and it does not.</p>
+<h3 id="what-it-does-not-do">What it does not do<a class="heading-anchor" href="#what-it-does-not-do" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><strong>Fix a slow algorithm.</strong> An O(n²) loop memoized is still an O(n²) loop the first time and after every input change. Fix the algorithm.</li>
+<li><strong>Reduce bundle size.</strong> It adds a small amount of code, if anything. Bundle size is a <a href="./code-splitting.html">code splitting</a> problem.</li>
+<li><strong>Remove the need for virtualization.</strong> Rendering 10,000 DOM nodes is expensive no matter how well the render is cached. See <a href="./lists-and-virtualization.html">lists and virtualization</a>.</li>
+<li><strong>Replace <code>useSyncExternalStore</code>.</strong> Subscribing to a store outside React is a correctness concern, not a memoization concern.</li>
+<li><strong>Replace transitions.</strong> <code>useTransition</code> and <code>useDeferredValue</code> change <em>when</em> work happens and whether it blocks. The compiler only changes how often work repeats.</li>
+<li><strong>Rescue code that breaks the Rules of React.</strong> It skips what it cannot prove safe, so impure components stay unoptimized.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<h3 id="turn-on-the-eslint-rules-first">Turn on the ESLint rules first<a class="heading-anchor" href="#turn-on-the-eslint-rules-first" aria-label="Link to this section">#</a></h3>
+<p><code>eslint-plugin-react-hooks</code> ships the compiler-powered rules. Turn them on before you turn on the compiler — you get the diagnostics with none of the build changes, and every violation you fix is a component the compiler will be able to optimize later.</p>
+<div class="code-block" data-lang="bash"><div class="code-head"><span class="code-lang">bash</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-bash"><span class="tok-fn">npm</span> install<span class="tok-attr"> -D</span> eslint-plugin-react-hooks@latest</code></pre></div>
+<p>In <strong>v7</strong> (the current major) the compiler rules are enabled by default in <code>reactHooks.configs.recommended</code>; <code>recommended-latest</code> adds the experimental ones on top. v7 is flat-config only — it removed the <code>recommended-legacy</code> and <code>flat/recommended</code> configs that v6 had.</p>
+<h3 id="install-the-plugin">Install the plugin<a class="heading-anchor" href="#install-the-plugin" aria-label="Link to this section">#</a></h3>
+<div class="code-block" data-lang="bash"><div class="code-head"><span class="code-lang">bash</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-bash"><span class="tok-fn">npm</span> install<span class="tok-attr"> -D</span> babel-plugin-react-compiler@latest</code></pre></div>
+<p>Then wire it into your build. <strong>The plugin must run first</strong>, before other Babel plugins, because it needs to see your source before anything transforms it.</p>
+<div class="tabs" id="tabs-0"><div class="tabs-list" role="tablist"><button type="button" role="tab" class="tab is-active" id="tabs-0-t0" aria-controls="tabs-0-p0" aria-selected="true">Babel</button><button type="button" role="tab" class="tab" id="tabs-0-t1" aria-controls="tabs-0-p1" aria-selected="false" tabindex="-1">Vite</button><button type="button" role="tab" class="tab" id="tabs-0-t2" aria-controls="tabs-0-p2" aria-selected="false" tabindex="-1">Next.js</button></div><div class="tabs-panels"><div class="tab-panel" role="tabpanel" id="tabs-0-p0" aria-labelledby="tabs-0-t0"><div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// babel.config.js</span>
+module<span class="tok-punct">.</span>exports <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-string">'babel-plugin-react-compiler'</span><span class="tok-punct">,</span> <span class="tok-comment">// must run first!</span>
+    <span class="tok-comment">// ... other plugins</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span></code></pre></div>
+</div><div class="tab-panel" role="tabpanel" id="tabs-0-p1" aria-labelledby="tabs-0-t1" hidden><div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// vite.config.js — Vite 6.0.0+</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> defineConfig <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'vite'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> react<span class="tok-punct">,</span> <span class="tok-punct">{</span> reactCompilerPreset <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'@vitejs/plugin-react'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> babel <span class="tok-keyword">from</span> <span class="tok-string">'@rolldown/plugin-babel'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-fn">defineConfig</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-fn">react</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-fn">babel</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+      presets<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-fn">reactCompilerPreset</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span></code></pre></div>
+</div><div class="tab-panel" role="tabpanel" id="tabs-0-p2" aria-labelledby="tabs-0-t2" hidden><div class="code-block" data-lang="bash"><div class="code-head"><span class="code-lang">bash</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-bash"><span class="tok-comment"># Next.js exposes the compiler through its own config.</span>
+<span class="tok-comment"># See the reactCompiler option in the Next.js docs.</span></code></pre></div>
+</div></div></div>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>Build tooling around the compiler is still moving. Check <a href="https://react.dev/learn/react-compiler/installation" target="_blank" rel="noopener noreferrer">react.dev/learn/react-compiler/installation</a> for the current wiring before copying a config from anywhere — including from this page.</p>
+</div></div>
+<h3 id="the-code-you-get-to-write">The code you get to write<a class="heading-anchor" href="#the-code-you-get-to-write" aria-label="Link to this section">#</a></h3>
+<p>No <code>memo</code>, no <code>useMemo</code>, no <code>useCallback</code> — and the filtered list is not recomputed on every unrelated re-render, because the compiler caches it.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ALL_TICKETS</span> <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">400</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+  title<span class="tok-punct">:</span> <span class="tok-string">`Ticket #</span><span class="tok-punct">${</span><span class="tok-number">1000</span> <span class="tok-punct">+</span> index<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+  priority<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">'low'</span><span class="tok-punct">,</span> <span class="tok-string">'normal'</span><span class="tok-punct">,</span> <span class="tok-string">'high'</span><span class="tok-punct">]</span><span class="tok-punct">[</span>index <span class="tok-punct">%</span> <span class="tok-number">3</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">TicketList</span><span class="tok-punct">(</span><span class="tok-punct">{</span> tickets <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">140</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span><span class="tok-punct">,</span> margin<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>tickets<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>ticket<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>ticket<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>ticket<span class="tok-punct">.</span>title<span class="tok-punct">}</span> — <span class="tok-punct">{</span>ticket<span class="tok-punct">.</span>priority<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">TicketBoard</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>priority<span class="tok-punct">,</span> setPriority<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'high'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>refreshCount<span class="tok-punct">,</span> setRefreshCount<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// Plain code. With the compiler, this is memoized on `priority`.</span>
+  <span class="tok-keyword">const</span> visible <span class="tok-punct">=</span> <span class="tok-type">ALL_TICKETS</span><span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>ticket<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> ticket<span class="tok-punct">.</span>priority <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> priority<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Priority</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;select</span>
+          <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>priority<span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setPriority</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;low&quot;</span><span class="tok-tag">&gt;</span>low<span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;normal&quot;</span><span class="tok-tag">&gt;</span>normal<span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;high&quot;</span><span class="tok-tag">&gt;</span>high<span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setRefreshCount</span><span class="tok-punct">(</span><span class="tok-punct">(</span>n<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> n <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Unrelated</span> state <span class="tok-fn">change</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>refreshCount<span class="tok-punct">}</span><span class="tok-punct">)</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>visible<span class="tok-punct">.</span>length<span class="tok-punct">}</span> tickets<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;TicketList</span> <span class="tok-attr">tickets</span><span class="tok-punct">=</span><span class="tok-punct">{</span>visible<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+const ALL_TICKETS = Array.from({ length: 400 }, (_, index) =&gt; ({
+  id: index,
+  title: `Ticket #${1000 + index}`,
+  priority: ['low', 'normal', 'high'][index % 3],
+}));
+
+function TicketList({ tickets }) {
+  return (
+    &lt;ul style={{ maxHeight: 140, overflow: 'auto', margin: 0 }}&gt;
+      {tickets.map((ticket) =&gt; (
+        &lt;li key={ticket.id}&gt;
+          {ticket.title} — {ticket.priority}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+export default function TicketBoard() {
+  const [priority, setPriority] = useState('high');
+  const [refreshCount, setRefreshCount] = useState(0);
+
+  // Plain code. With the compiler, this is memoized on `priority`.
+  const visible = ALL_TICKETS.filter((ticket) =&gt; ticket.priority === priority);
+
+  return (
+    &lt;div&gt;
+      &lt;label&gt;
+        Priority{' '}
+        &lt;select
+          value={priority}
+          onChange={(event) =&gt; setPriority(event.target.value)}
+        &gt;
+          &lt;option value=&quot;low&quot;&gt;low&lt;/option&gt;
+          &lt;option value=&quot;normal&quot;&gt;normal&lt;/option&gt;
+          &lt;option value=&quot;high&quot;&gt;high&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/label&gt;{' '}
+      &lt;button onClick={() =&gt; setRefreshCount((n) =&gt; n + 1)}&gt;
+        Unrelated state change ({refreshCount})
+      &lt;/button&gt;
+      &lt;p&gt;{visible.length} tickets&lt;/p&gt;
+      &lt;TicketList tickets={visible} /&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p>The preview above runs uncompiled React 19.2.8 in a sandbox — no build step, so no compiler. It shows the <em>source shape</em> the compiler lets you write, not the optimized output.</p>
+</div></div>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p>The compiler builds a model of the data flow inside each component: which values depend on which, which are stable across renders, and which JSX elements depend on which values. It then emits code that stores those values in a cache attached to the component instance and reuses them while their inputs are unchanged.</p>
+<p>Two consequences follow.</p>
+<p><strong>It memoizes at a finer grain than you would.</strong> A single component can end up with a dozen independently cached slots — a formatted string here, a JSX subtree there. Nobody writes that by hand.</p>
+<p><strong>It reasons about the whole function.</strong> A mutation anywhere in the render path can make a value uncacheable, and the compiler will notice and skip it rather than produce wrong output.</p>
+<h3 id="checking-whether-a-component-was-optimized">Checking whether a component was optimized<a class="heading-anchor" href="#checking-whether-a-component-was-optimized" aria-label="Link to this section">#</a></h3>
+<p>Open React DevTools and look at the component in the tree. Compiled components carry a <strong>✨ badge</strong>. No badge means the compiler skipped it — usually a Rules of React violation, or a <code>&quot;use no memo&quot;</code> you forgot to remove.</p>
+<p>This is also the verification step after fixing a bail-out: remove the <code>&quot;use no memo&quot;</code>, rebuild, and confirm the badge appears.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="incremental-adoption">Incremental adoption<a class="heading-anchor" href="#incremental-adoption" aria-label="Link to this section">#</a></h3>
+<p>Three supported strategies, from coarsest to finest.</p>
+<p><strong>Directory allowlist.</strong> Use Babel's <code>overrides</code> to compile one part of the tree and expand outwards.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// babel.config.js</span>
+module<span class="tok-punct">.</span>exports <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-comment">// Global plugins that apply to all files</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+  overrides<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">{</span>
+      test<span class="tok-punct">:</span> <span class="tok-string">'./src/modern/**/*.{js,jsx,ts,tsx}'</span><span class="tok-punct">,</span>
+      plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">'babel-plugin-react-compiler'</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span></code></pre></div>
+<p><strong>Opt in per function with <code>&quot;use memo&quot;</code>.</strong> Set <code>compilationMode: 'annotation'</code> and nothing is compiled unless it says so.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// babel.config.js</span>
+module<span class="tok-punct">.</span>exports <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">[</span><span class="tok-string">'babel-plugin-react-compiler'</span><span class="tok-punct">,</span> <span class="tok-punct">{</span>
+      compilationMode<span class="tok-punct">:</span> <span class="tok-string">'annotation'</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span></code></pre></div>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">TodoList</span><span class="tok-punct">(</span><span class="tok-punct">{</span> todos <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-string">&quot;use memo&quot;</span><span class="tok-punct">;</span> <span class="tok-comment">// Opt this component into compilation</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>todos<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>todo<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>todo<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>todo<span class="tok-punct">.</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><strong>Runtime gating.</strong> The <code>gating</code> option compiles both versions and picks one behind a feature flag, so you can roll the compiler out to a percentage of traffic and compare field metrics.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// babel.config.js</span>
+module<span class="tok-punct">.</span>exports <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">[</span><span class="tok-string">'babel-plugin-react-compiler'</span><span class="tok-punct">,</span> <span class="tok-punct">{</span>
+      gating<span class="tok-punct">:</span> <span class="tok-punct">{</span>
+        source<span class="tok-punct">:</span> <span class="tok-string">'ReactCompilerFeatureFlags'</span><span class="tok-punct">,</span>
+        importSpecifierName<span class="tok-punct">:</span> <span class="tok-string">'isCompilerEnabled'</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span></code></pre></div>
+<p>The escape hatch in the other direction is <code>&quot;use no memo&quot;</code>, which excludes a single function from compilation. Treat it as temporary: it marks a component you have not fixed yet, not a design decision.</p>
+<h3 id="delete-manual-memoization-as-you-migrate-not-before">Delete manual memoization as you migrate, not before<a class="heading-anchor" href="#delete-manual-memoization-as-you-migrate-not-before" aria-label="Link to this section">#</a></h3>
+<p>Existing <code>useMemo</code> and <code>useCallback</code> calls keep working alongside compiled output. Remove them component by component once the ✨ badge confirms the compiler took over, so a regression is attributable to one change.</p>
+<h3 id="keep-the-memoization-that-is-a-semantic-guarantee">Keep the memoization that is a semantic guarantee<a class="heading-anchor" href="#keep-the-memoization-that-is-a-semantic-guarantee" aria-label="Link to this section">#</a></h3>
+<p>If a downstream Effect depends on referential identity for correctness, an explicit <code>useMemo</code> documents that requirement. Prefer restructuring so the correctness does not hinge on identity at all — see <a href="../hooks/use-effect-event.html">useEffectEvent</a>.</p>
+<h3 id="treat-a-missing-badge-as-a-lint-finding">Treat a missing badge as a lint finding<a class="heading-anchor" href="#treat-a-missing-badge-as-a-lint-finding" aria-label="Link to this section">#</a></h3>
+<p>A component the compiler skips is usually a component with a purity bug. The performance loss is the least interesting part of that.</p>
+<h3 id="do-not-gate-your-architecture-on-it">Do not gate your architecture on it<a class="heading-anchor" href="#do-not-gate-your-architecture-on-it" aria-label="Link to this section">#</a></h3>
+<p>The compiler is an optimization pass. Component boundaries, state placement, and where data is fetched matter more and are unaffected by it.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Expecting it to fix a bundle-size or data-fetching problem.</strong> It changes how often your components re-render. That is all. If the profile shows four seconds of network and 8 ms of render, the compiler has nothing to give you.</p>
+<p><strong>Mutating props or state during render and blaming the compiler.</strong> Pushing to an array you received as a prop, or assigning to <code>state.field</code> before calling the setter, breaks the Rules of React. Uncompiled React tolerates it by accident; the compiler is where it starts to matter.</p>
+<p><strong>Leaving <code>&quot;use no memo&quot;</code> in the codebase permanently.</strong> It is a debugging marker. Every one left behind is a component running unoptimized forever, with no warning.</p>
+<p><strong>Installing the plugin last in the Babel chain.</strong> It has to run first. Placed after a transform that has already rewritten your JSX, it cannot analyze the code.</p>
+<p><strong>Assuming compiled means fast.</strong> The ✨ badge means &quot;cached&quot;, not &quot;cheap&quot;. A component that renders 5,000 rows is slow on its first render and slow every time its data changes, badge or not.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./memoization.html">Memoization</a> — what <code>memo</code>, <code>useMemo</code> and <code>useCallback</code> actually do, for the code the compiler has not reached yet.</li>
+<li><a href="../hooks/rules-of-hooks.html">Rules of Hooks</a> — the constraints the compiler relies on.</li>
+<li><a href="./overview.html">Performance overview</a> — deciding whether render work is even your problem.</li>
+<li><a href="./profiling.html">Profiling</a> — confirming the compiler moved a real number.</li>
+<li><a href="../ecosystem/build-tooling.html">Build tooling</a> — where the Babel plugin fits into your pipeline.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../performance/overview.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Performance overview</span></a><a class="pager-link pager-next" href="../performance/memoization.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Memoization</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h3"><a href="#what-it-optimizes">What it optimizes</a></li><li class="toc-h3"><a href="#what-it-requires">What it requires</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h3"><a href="#what-it-does-not-do">What it does not do</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h3"><a href="#turn-on-the-eslint-rules-first">Turn on the ESLint rules first</a></li><li class="toc-h3"><a href="#install-the-plugin">Install the plugin</a></li><li class="toc-h3"><a href="#the-code-you-get-to-write">The code you get to write</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#checking-whether-a-component-was-optimized">Checking whether a component was optimized</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#incremental-adoption">Incremental adoption</a></li><li class="toc-h3"><a href="#delete-manual-memoization-as-you-migrate-not-before">Delete manual memoization as you migrate, not before</a></li><li class="toc-h3"><a href="#keep-the-memoization-that-is-a-semantic-guarantee">Keep the memoization that is a semantic guarantee</a></li><li class="toc-h3"><a href="#treat-a-missing-badge-as-a-lint-finding">Treat a missing badge as a lint finding</a></li><li class="toc-h3"><a href="#do-not-gate-your-architecture-on-it">Do not gate your architecture on it</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

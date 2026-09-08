@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>useTransition · React 19 Docs</title>
+<meta name="description" content="Mark a state update as non-urgent so React can interrupt it and keep the UI responsive.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="useTransition · React 19 Docs">
+<meta property="og:description" content="Mark a state update as non-urgent so React can interrupt it and keep the UI responsive.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html" aria-current="page"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#hooks">Hooks</a></li><li><span aria-current="page">useTransition</span></li></ol><header class="page-header"><h1 class="page-title">useTransition</h1><p class="page-description">Mark a state update as non-urgent so React can interrupt it and keep the UI responsive.</p><div class="badges"><span class="badge badge-current">Current</span><span class="badge badge-since">React 19.0+</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p><code>useTransition</code> lets you tell React that an update is not urgent.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">const [isPending, startTransition] = useTransition()</code></pre></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Returned</th><th>Meaning</th></tr></thead>
+<tbody><tr><td><code>isPending</code></td><td><code>true</code> while a transition started by this hook is still rendering.</td></tr><tr><td><code>startTransition(action)</code></td><td>Calls <code>action</code> immediately; every state update made while it runs is marked as a transition.</td></tr></tbody></table></div>
+<p><code>startTransition</code> returns <code>undefined</code> and has a <strong>stable identity</strong>, so it never needs to appear in a dependency array.</p>
+<p>React can interrupt a transition render, throw the partial work away, and start over when something more urgent arrives — a keystroke, a click, a hover. Urgent updates stay instant; the expensive one catches up.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>React 18 introduced concurrent rendering, which made it possible to render in interruptible chunks. But React cannot guess which of your updates the user is waiting on.</p>
+<p>Consider a tab bar where one tab renders a 5,000-row table. Click it and the click feels dead: React renders the whole table synchronously before the browser can repaint, so the tab does not even appear pressed. There is no bug to fix — the work genuinely takes that long.</p>
+<p><code>startTransition</code> is how you say &quot;the table is not urgent.&quot; React renders the pressed state right away, then renders the table in the background where a new click can interrupt it.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Switching a view that is expensive to render: tabs, routes, filters over a large list.</li>
+<li>Keeping a text input responsive while something heavy re-renders in response to it.</li>
+<li>Running an async submit — a form action, a mutation — and getting a <code>pending</code> flag for free. Since <strong>19.0</strong> this is the basis of <a href="../patterns/forms-and-actions.html">Actions</a>.</li>
+<li>Deferring an update triggered by a state setter you own.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Controlled text inputs.</strong> The input's own <code>value</code> update must be urgent, or characters appear late or out of order. Defer what the input <em>drives</em>, not the input itself.</li>
+<li><strong>When you do not own the <code>set</code> function.</strong> You can only wrap an update if you can call the setter inside the callback. If you are reacting to a prop or a value from a custom hook, use <a href="./use-deferred-value.html"><code>useDeferredValue</code></a>.</li>
+<li><strong>When the work is slow because of the network, not rendering.</strong> A transition reprioritizes rendering. Fetching stays exactly as slow. Reach for <a href="../data-fetching/suspense.html">Suspense</a> instead.</li>
+<li><strong>When the update is genuinely urgent.</strong> Marking everything as a transition is the same as marking nothing.</li>
+<li><strong>Outside a component</strong>, where hooks are illegal — import the standalone <code>startTransition</code> from <code>react</code> instead. You lose <code>isPending</code>.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>A tab switch where one tab is expensive. Without the transition, the tab button does not visibly change until the slow panel has finished rendering.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">SlowPanel</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">SlowPanel</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> rows <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">for</span> <span class="tok-punct">(</span><span class="tok-keyword">let</span> index <span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">;</span> index <span class="tok-punct">&lt;</span> <span class="tok-number">1500</span><span class="tok-punct">;</span> index<span class="tok-punct">+</span><span class="tok-punct">+</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    rows<span class="tok-punct">.</span><span class="tok-fn">push</span><span class="tok-punct">(</span><span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>index<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Line</span> item <span class="tok-punct">{</span>index<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">160</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>rows<span class="tok-punct">}</span><span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ReportTabs</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tab<span class="tok-punct">,</span> setTab<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'summary'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">selectTab</span><span class="tok-punct">(</span>nextTab<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">setTab</span><span class="tok-punct">(</span>nextTab<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">selectTab</span><span class="tok-punct">(</span><span class="tok-string">'summary'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Summary</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">selectTab</span><span class="tok-punct">(</span><span class="tok-string">'details'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Details</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>isPending <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;span</span><span class="tok-tag">&gt;</span> <span class="tok-type">Loading</span>…<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> opacity<span class="tok-punct">:</span> isPending <span class="tok-punct">?</span> <span class="tok-number">0.6</span> <span class="tok-punct">:</span> <span class="tok-number">1</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>tab <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'summary'</span> <span class="tok-punct">?</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Everything</span> <span class="tok-keyword">is</span> on track<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span> <span class="tok-punct">:</span> <span class="tok-tag">&lt;SlowPanel</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { memo, useState, useTransition } from 'react';
+
+const SlowPanel = memo(function SlowPanel() {
+  const rows = [];
+  for (let index = 0; index &lt; 1500; index++) {
+    rows.push(&lt;li key={index}&gt;Line item {index}&lt;/li&gt;);
+  }
+  return &lt;ul style={{ maxHeight: 160, overflow: 'auto' }}&gt;{rows}&lt;/ul&gt;;
+});
+
+export default function ReportTabs() {
+  const [tab, setTab] = useState('summary');
+  const [isPending, startTransition] = useTransition();
+
+  function selectTab(nextTab) {
+    startTransition(() =&gt; {
+      setTab(nextTab);
+    });
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; selectTab('summary')}&gt;Summary&lt;/button&gt;
+      &lt;button onClick={() =&gt; selectTab('details')}&gt;Details&lt;/button&gt;
+      {isPending &amp;&amp; &lt;span&gt; Loading…&lt;/span&gt;}
+      &lt;div style={{ opacity: isPending ? 0.6 : 1 }}&gt;
+        {tab === 'summary' ? &lt;p&gt;Everything is on track.&lt;/p&gt; : &lt;SlowPanel /&gt;}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>The button's active state and the <code>Loading…</code> indicator paint immediately. The 1,500 rows render at transition priority, and clicking back to <strong>Summary</strong> mid-render abandons that work rather than queueing behind it.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="across-re-renders">Across re-renders<a class="heading-anchor" href="#across-re-renders" aria-label="Link to this section">#</a></h3>
+<p><code>startTransition</code> calls your function <strong>synchronously and immediately</strong>. It is not a <code>setTimeout</code>. React sets an internal priority flag, runs your callback, and clears the flag when the callback returns. Every <code>setState</code> that happens while the flag is set is tagged as a transition.</p>
+<p>This gives the rule that trips everyone up:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Scheduler</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>status<span class="tok-punct">,</span> setStatus<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'idle'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span><span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleClick</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        <span class="tok-comment">// NOT a transition: the flag was cleared long before this ran.</span>
+        <span class="tok-fn">setStatus</span><span class="tok-punct">(</span><span class="tok-string">'done'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-number">1000</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleClick<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Status</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>status<span class="tok-punct">}</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The update must happen <strong>inside the callback, synchronously</strong>. Anything that escapes to a later task — a timer, a <code>.then()</code>, a callback from a library — runs after the flag is gone.</p>
+<p>While a transition is pending, React keeps the current UI on screen. It does not unmount the old content or show a fallback for it, which is exactly why a <code>memo</code> boundary matters: the parts that did not change should not re-render at transition priority either.</p>
+<p>If a second transition starts before the first finishes, React abandons the first. Multiple concurrent transitions are batched together.</p>
+<h3 id="async-transitions-and-actions-react-190">Async transitions and Actions (React 19.0+)<a class="heading-anchor" href="#async-transitions-and-actions-react-190" aria-label="Link to this section">#</a></h3>
+<p>Since <strong>19.0</strong> the function passed to <code>startTransition</code> may be <code>async</code>. React keeps <code>isPending</code> <code>true</code> until the async function settles, which is what makes <code>useActionState</code>, <code>useFormStatus</code>, and <code>useOptimistic</code> possible.</p>
+<p>The rule about synchronous updates still holds, and this is the trap: <strong>state updates after an <code>await</code> are no longer inside the transition.</strong> You must wrap them in a second <code>startTransition</code>.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">async</span> <span class="tok-keyword">function</span> <span class="tok-fn">saveProfile</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">{</span> ok<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span> name <span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ProfileForm</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>name<span class="tok-punct">,</span> setName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>savedName<span class="tok-punct">,</span> setSavedName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleSubmit</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    event<span class="tok-punct">.</span><span class="tok-fn">preventDefault</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-keyword">async</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">const</span> result <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-fn">saveProfile</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-comment">// The transition scope ended at the await.</span>
+      <span class="tok-comment">// Wrap the update to put it back.</span>
+      <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        <span class="tok-fn">setSavedName</span><span class="tok-punct">(</span>result<span class="tok-punct">.</span>name<span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span> <span class="tok-attr">onSubmit</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleSubmit<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>e <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setName</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;submit&quot;</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>isPending<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>isPending <span class="tok-punct">?</span> <span class="tok-string">'Saving…'</span> <span class="tok-punct">:</span> <span class="tok-string">'Save'</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Saved</span> <span class="tok-keyword">as</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>savedName <span class="tok-punct">|</span><span class="tok-punct">|</span> <span class="tok-string">'—'</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>React's documentation calls this a known limitation intended to be fixed later. Until then, wrap every post-<code>await</code> update.</p>
+<h3 id="errors">Errors<a class="heading-anchor" href="#errors" aria-label="Link to this section">#</a></h3>
+<p>An error thrown inside the function you pass to <code>startTransition</code> is caught by the nearest <a href="../patterns/error-boundaries.html">error boundary</a>. It does not become an unhandled rejection, and there is no <code>try</code>/<code>catch</code> built into the hook.</p>
+<p>If you want to show an inline message instead of a fallback UI, catch the error yourself and put it in state — remembering to wrap that <code>setState</code> in a nested <code>startTransition</code> when it comes after an <code>await</code>. For form submissions, <a href="./use-action-state.html"><code>useActionState</code></a> does this for you and hands back the error as part of the state.</p>
+<h3 id="strictmode">StrictMode<a class="heading-anchor" href="#strictmode" aria-label="Link to this section">#</a></h3>
+<p>StrictMode's double-invoke applies to your component's render function, not to the transition callback — that runs in an event handler, which React does not double-invoke.</p>
+<p>What you will notice is that a transition render, like any render, happens twice in development. If the callback itself is impure — mutating a module-level array, say — the double render surfaces it. Keep the callback to state updates.</p>
+<h3 id="concurrent-rendering">Concurrent rendering<a class="heading-anchor" href="#concurrent-rendering" aria-label="Link to this section">#</a></h3>
+<p>This hook <em>is</em> the public API for concurrent rendering. Marking an update as a transition puts it on a lower-priority lane, where React will:</p>
+<ul>
+<li>yield to the browser between chunks of work, so input and paint are not blocked;</li>
+<li>discard the work entirely if a higher-priority update arrives;</li>
+<li>restart from scratch with the newest state.</li>
+</ul>
+<p>Because a transition render can be discarded, everything it touches must be pure. Impure render logic that &quot;worked&quot; in React 17 fails here in ways that look random.</p>
+<p>Transitions also change Suspense behavior: if a component suspends during a transition, React keeps showing the existing content instead of replacing it with a fallback. That is what makes navigation feel continuous rather than flashing a spinner.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="usetransition-vs-usedeferredvalue"><code>useTransition</code> vs <code>useDeferredValue</code><a class="heading-anchor" href="#usetransition-vs-usedeferredvalue" aria-label="Link to this section">#</a></h3>
+<p>Both keep the UI responsive by splitting urgent from non-urgent work. They differ in what you wrap.</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>useTransition</code></th><th><code>useDeferredValue</code></th></tr></thead>
+<tbody><tr><td>You wrap</td><td>The <strong>update</strong> (the <code>set</code> call)</td><td>The <strong>value</strong></td></tr><tr><td>Requires</td><td>Access to the <code>set</code> function</td><td>Nothing — works on props too</td></tr><tr><td>Gives you</td><td><code>isPending</code></td><td>Compare <code>value !== deferredValue</code> yourself</td></tr><tr><td>Renders</td><td>New state, at low priority</td><td>The <strong>old</strong> value, then the new one</td></tr><tr><td>Typical use</td><td>Tab and route switches, form submits</td><td>Search-as-you-type, filtering a heavy list</td></tr><tr><td>Async callbacks</td><td>Supported since 19.0</td><td>Not applicable</td></tr></tbody></table></div>
+<p>They compose: a value that is updated inside a transition is returned by <code>useDeferredValue</code> immediately, without a second deferred render.</p>
+<h3 id="standalone-starttransition">Standalone <code>startTransition</code><a class="heading-anchor" href="#standalone-starttransition" aria-label="Link to this section">#</a></h3>
+<p>Outside a component — in a router, a store, a data library — import it directly.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> startTransition <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// Hooks are illegal here, but the prioritization is identical.</span>
+<span class="tok-comment">// The trade-off: no isPending flag.</span>
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">navigate</span><span class="tok-punct">(</span>path<span class="tok-punct">,</span> setRoute<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setRoute</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h3 id="showing-pending-state-without-blocking">Showing pending state without blocking<a class="heading-anchor" href="#showing-pending-state-without-blocking" aria-label="Link to this section">#</a></h3>
+<p>Prefer dimming existing content over replacing it with a spinner. The user keeps their context, and the transition can be interrupted without a flash.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">FilterBar</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>filter<span class="tok-punct">,</span> setFilter<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'all'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span>
+      <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+        opacity<span class="tok-punct">:</span> isPending <span class="tok-punct">?</span> <span class="tok-number">0.6</span> <span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span>
+        transition<span class="tok-punct">:</span> <span class="tok-string">'opacity 0.15s linear'</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setFilter</span><span class="tok-punct">(</span><span class="tok-string">'all'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">All</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setFilter</span><span class="tok-punct">(</span><span class="tok-string">'open'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Open</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Filter</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>filter<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>A search box where typing stays urgent and the results render at transition priority. The input is <em>never</em> wrapped — only the update it triggers.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> memo<span class="tok-punct">,</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> docs <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">6000</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+  title<span class="tok-punct">:</span> <span class="tok-string">`Guide </span><span class="tok-punct">${</span>index<span class="tok-punct">}</span><span class="tok-string">: </span><span class="tok-punct">${</span>index <span class="tok-punct">%</span> <span class="tok-number">2</span> <span class="tok-punct">?</span> <span class="tok-string">'rendering'</span> <span class="tok-punct">:</span> <span class="tok-string">'state management'</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ResultList</span> <span class="tok-punct">=</span> <span class="tok-fn">memo</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-type">ResultList</span><span class="tok-punct">(</span><span class="tok-punct">{</span> query <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>query<span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Type</span> to search <span class="tok-punct">{</span>docs<span class="tok-punct">.</span>length<span class="tok-punct">}</span> documents<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> matches <span class="tok-punct">=</span> docs<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>doc <span class="tok-keyword">=&gt;</span>
+    doc<span class="tok-punct">.</span>title<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>query<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">160</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>matches<span class="tok-punct">.</span><span class="tok-fn">slice</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">,</span> <span class="tok-number">200</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span>doc <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>doc<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>doc<span class="tok-punct">.</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">DocSearch</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>text<span class="tok-punct">,</span> setText<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleChange</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> next <span class="tok-punct">=</span> event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">;</span>
+    <span class="tok-comment">// Urgent: the input must show the character now.</span>
+    <span class="tok-fn">setText</span><span class="tok-punct">(</span>next<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-comment">// Non-urgent: the results can lag behind.</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>next<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>text<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleChange<span class="tok-punct">}</span> <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search docs&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-punct">{</span>isPending <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;span</span><span class="tok-tag">&gt;</span> updating…<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;ResultList</span> <span class="tok-attr">query</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { memo, useState, useTransition } from 'react';
+
+const docs = Array.from({ length: 6000 }, (_, index) =&gt; ({
+  id: index,
+  title: `Guide ${index}: ${index % 2 ? 'rendering' : 'state management'}`,
+}));
+
+const ResultList = memo(function ResultList({ query }) {
+  if (!query) return &lt;p&gt;Type to search {docs.length} documents.&lt;/p&gt;;
+  const matches = docs.filter(doc =&gt;
+    doc.title.toLowerCase().includes(query.toLowerCase())
+  );
+  return (
+    &lt;ul style={{ maxHeight: 160, overflow: 'auto' }}&gt;
+      {matches.slice(0, 200).map(doc =&gt; (
+        &lt;li key={doc.id}&gt;{doc.title}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+});
+
+export default function DocSearch() {
+  const [text, setText] = useState('');
+  const [query, setQuery] = useState('');
+  const [isPending, startTransition] = useTransition();
+
+  function handleChange(event) {
+    const next = event.target.value;
+    // Urgent: the input must show the character now.
+    setText(next);
+    // Non-urgent: the results can lag behind.
+    startTransition(() =&gt; {
+      setQuery(next);
+    });
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input value={text} onChange={handleChange} placeholder=&quot;Search docs&quot; /&gt;
+      {isPending &amp;&amp; &lt;span&gt; updating…&lt;/span&gt;}
+      &lt;ResultList query={query} /&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Two pieces of state on purpose: <code>text</code> drives the input at urgent priority, <code>query</code> drives the results at transition priority. Collapsing them into one would either make the input laggy or the results eager.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Wrapping a controlled input's own state.</strong> <code>startTransition(() =&gt; setText(e.target.value))</code> makes typing feel broken — React explicitly does not support using transitions to control text inputs. Keep two pieces of state, as above.</p>
+<p><strong>Updating state after an <code>await</code> without re-wrapping.</strong> The update runs at normal priority, <code>isPending</code> may already be <code>false</code>, and the interruption guarantee is gone. Nest a <code>startTransition</code>.</p>
+<p><strong>Updating state inside a timer or a <code>.then()</code> callback.</strong> Same failure, same cause: the transition scope ends when the callback returns.</p>
+<p><strong>Expecting <code>startTransition</code> to defer execution.</strong> It runs your function synchronously and immediately. It changes the priority of the <em>renders</em> those updates cause, not when the callback runs.</p>
+<p><strong>Expecting it to speed up data fetching.</strong> A transition cannot make a request return faster. Use it with Suspense so the old content stays visible while the new data loads.</p>
+<p><strong>Forgetting an error boundary.</strong> Errors thrown inside the callback propagate to the nearest boundary. Without one, an async action failure takes down the tree.</p>
+<p><strong>Relying on <code>isPending</code> across unrelated updates.</strong> Each <code>useTransition</code> call tracks only the transitions started by its own <code>startTransition</code>. Two features in one component need two hooks.</p>
+<p><strong>Adding <code>startTransition</code> to a dependency array.</strong> Harmless but noise — its identity is stable by contract.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./use-deferred-value.html">useDeferredValue</a> — the same goal when you cannot reach the <code>set</code> function.</li>
+<li><a href="./use-action-state.html">useActionState</a> — async transitions packaged for forms, with pending and error state built in.</li>
+<li><a href="../patterns/forms-and-actions.html">Forms and Actions</a> — the React 19 form model built on async transitions.</li>
+<li><a href="./use-optimistic.html">useOptimistic</a> — show the expected result while an async transition is pending.</li>
+<li><a href="../data-fetching/suspense.html">Suspense</a> — why a transition keeps old content visible instead of showing a fallback.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../hooks/use-callback.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">useCallback</span></a><a class="pager-link pager-next" href="../hooks/use-deferred-value.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">useDeferredValue</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#across-re-renders">Across re-renders</a></li><li class="toc-h3"><a href="#async-transitions-and-actions-react-190">Async transitions and Actions (React 19.0+)</a></li><li class="toc-h3"><a href="#errors">Errors</a></li><li class="toc-h3"><a href="#strictmode">StrictMode</a></li><li class="toc-h3"><a href="#concurrent-rendering">Concurrent rendering</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#usetransition-vs-usedeferredvalue">useTransition vs useDeferredValue</a></li><li class="toc-h3"><a href="#standalone-starttransition">Standalone startTransition</a></li><li class="toc-h3"><a href="#showing-pending-state-without-blocking">Showing pending state without blocking</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

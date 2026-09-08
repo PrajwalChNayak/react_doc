@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reducers and context · React 19 Docs</title>
+<meta name="description" content="Combine useReducer with a state context and a dispatch context to share complex state across a subtree.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Reducers and context · React 19 Docs">
+<meta property="og:description" content="Combine useReducer with a state context and a dispatch context to share complex state across a subtree.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html" aria-current="page"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#state-management">State Management</a></li><li><span aria-current="page">Reducers and context</span></li></ol><header class="page-header"><h1 class="page-title">Reducers and context</h1><p class="page-description">Combine useReducer with a state context and a dispatch context to share complex state across a subtree.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p><code>useReducer</code> puts all of a feature's state transitions in one pure function. Context makes that state and its <code>dispatch</code> reachable from anywhere in a subtree. Together they are React's built-in answer to &quot;shared state with real rules&quot; — no dependencies, no bundle cost.</p>
+<p>The pattern has a specific shape:</p>
+<ol>
+<li>One reducer that owns every transition.</li>
+<li>One provider that calls <code>useReducer</code> and renders <strong>two</strong> contexts: state and dispatch.</li>
+<li>Two custom hooks that read them and throw if the provider is missing.</li>
+</ol>
+<p>The two-context split is the whole point. <code>dispatch</code> never changes identity, so components that only dispatch never re-render when the state changes.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>A feature with a dozen <code>useState</code> calls scattered across five components has no single place to answer &quot;what can happen here?&quot;. Transitions are implicit, invariants are unenforced, and every new interaction touches several files.</p>
+<p>A reducer inverts that. Every change is a named action, every transition is a <code>case</code>, and the whole state machine fits on one screen. Adding &quot;undo&quot; or &quot;restore from a URL&quot; becomes tractable because the state is one serializable object with one entry point.</p>
+<p>Context solves the second half: the reducer's output has to reach components that are not adjacent to it, and without it you drill both <code>state</code> and <code>dispatch</code> through every layer.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Reach for a reducer when the <em>transitions</em> are complex, not when the <em>state</em> is large. Three booleans that must never be true at once want a reducer. A hundred independent form fields do not.</p>
+</div></div>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>The next state depends on the previous state in non-obvious ways.</li>
+<li>Several fields must change together to stay consistent.</li>
+<li>The same set of actions is triggered from components in different subtrees.</li>
+<li>You want the transitions testable in isolation — a reducer is a pure function, so a test is <code>expect(reducer(before, action)).toEqual(after)</code>, no rendering.</li>
+<li>The state is genuinely client state: a wizard, a cart, an editor's document, a filter panel, a multi-step form.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p><strong>When one component owns the state.</strong> Use <code>useReducer</code> without context. The context layer only earns its keep when non-adjacent components need access.</p>
+<p><strong>When the state changes many times a second.</strong> Every state consumer re-renders on every dispatch, with no selector to narrow it. A canvas editor tracking pointer movement will feel it.</p>
+<p><strong>When you need selectors, middleware, devtools or async orchestration.</strong> This is the honest ceiling of the pattern, and it is worth stating plainly: once you start writing a <code>useSelector</code>-like helper, a middleware chain, an action log, or a thunk runner, you are building a worse Redux. Use a real store instead — see <a href="./external-stores.html">External stores</a> and <a href="../ecosystem/redux.html">Redux</a>.</p>
+<p><strong>When the state is server data.</strong> A reducer holding <code>{ status, data, error }</code> for a fetch is a cache with no invalidation strategy. See <a href="./choosing-an-approach.html">Choosing an approach</a>.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>A task list. The reducer owns all three transitions; the provider publishes state and dispatch separately; <code>AddTask</code> dispatches without subscribing to the list.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span>
+  createContext<span class="tok-punct">,</span>
+  <span class="tok-fn">useContext</span><span class="tok-punct">,</span>
+  <span class="tok-fn">useReducer</span><span class="tok-punct">,</span>
+  <span class="tok-fn">useRef</span><span class="tok-punct">,</span>
+  <span class="tok-fn">useState</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">TasksContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-keyword">const</span> <span class="tok-type">TasksDispatchContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">tasksReducer</span><span class="tok-punct">(</span>tasks<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'added'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>tasks<span class="tok-punct">,</span> <span class="tok-punct">{</span> id<span class="tok-punct">:</span> action<span class="tok-punct">.</span>id<span class="tok-punct">,</span> title<span class="tok-punct">:</span> action<span class="tok-punct">.</span>title<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'toggled'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+        task<span class="tok-punct">.</span>id <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>task<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done <span class="tok-punct">}</span> <span class="tok-punct">:</span> task<span class="tok-punct">,</span>
+      <span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'deleted'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> task<span class="tok-punct">.</span>id <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">INITIAL_TASKS</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> title<span class="tok-punct">:</span> <span class="tok-string">'Read the reducer docs'</span><span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">true</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> title<span class="tok-punct">:</span> <span class="tok-string">'Split state and dispatch contexts'</span><span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">TasksProvider</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tasks<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>tasksReducer<span class="tok-punct">,</span> <span class="tok-type">INITIAL_TASKS</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;TasksDispatchContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>dispatch<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;TasksContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>tasks<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>children<span class="tok-punct">}</span><span class="tok-tag">&lt;/TasksContext</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/TasksDispatchContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">useTasks</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> tasks <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">TasksContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>tasks <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useTasks must be used inside &lt;TasksProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> tasks<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">useTasksDispatch</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> dispatch <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">TasksDispatchContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>dispatch <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useTasksDispatch must be used inside &lt;TasksProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> dispatch<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">AddTask</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> dispatch <span class="tok-punct">=</span> <span class="tok-fn">useTasksDispatch</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>title<span class="tok-punct">,</span> setTitle<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> nextId <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleSubmit</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    event<span class="tok-punct">.</span><span class="tok-fn">preventDefault</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>title<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+    nextId<span class="tok-punct">.</span>current <span class="tok-punct">+</span><span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+    <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'added'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> nextId<span class="tok-punct">.</span>current<span class="tok-punct">,</span> title<span class="tok-punct">:</span> title<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setTitle</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span> <span class="tok-attr">onSubmit</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleSubmit<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setTitle</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;New task&quot;</span>
+        <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;New task&quot;</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;submit&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Add</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">TaskList</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> tasks <span class="tok-punct">=</span> <span class="tok-fn">useTasks</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> dispatch <span class="tok-punct">=</span> <span class="tok-fn">useTasksDispatch</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;input</span>
+              <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span>
+              <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>done<span class="tok-punct">}</span>
+              <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'toggled'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> task<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+            <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+            <span class="tok-punct">{</span>task<span class="tok-punct">.</span>done <span class="tok-punct">?</span> <span class="tok-tag">&lt;s</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/s</span><span class="tok-tag">&gt;</span> <span class="tok-punct">:</span> task<span class="tok-punct">.</span>title<span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'deleted'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> task<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-type">Delete</span>
+          <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">RemainingCount</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> tasks <span class="tok-punct">=</span> <span class="tok-fn">useTasks</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> remaining <span class="tok-punct">=</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done<span class="tok-punct">)</span><span class="tok-punct">.</span>length<span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>remaining<span class="tok-punct">}</span> remaining<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">TaskApp</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;TasksProvider</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;AddTask</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;TaskList</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;RemainingCount</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/TasksProvider</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import {
+  createContext,
+  useContext,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
+
+const TasksContext = createContext(null);
+const TasksDispatchContext = createContext(null);
+
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added':
+      return [...tasks, { id: action.id, title: action.title, done: false }];
+    case 'toggled':
+      return tasks.map((task) =&gt;
+        task.id === action.id ? { ...task, done: !task.done } : task,
+      );
+    case 'deleted':
+      return tasks.filter((task) =&gt; task.id !== action.id);
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+const INITIAL_TASKS = [
+  { id: 1, title: 'Read the reducer docs', done: true },
+  { id: 2, title: 'Split state and dispatch contexts', done: false },
+];
+
+function TasksProvider({ children }) {
+  const [tasks, dispatch] = useReducer(tasksReducer, INITIAL_TASKS);
+
+  return (
+    &lt;TasksDispatchContext value={dispatch}&gt;
+      &lt;TasksContext value={tasks}&gt;{children}&lt;/TasksContext&gt;
+    &lt;/TasksDispatchContext&gt;
+  );
+}
+
+function useTasks() {
+  const tasks = useContext(TasksContext);
+  if (tasks === null) {
+    throw new Error('useTasks must be used inside &lt;TasksProvider&gt;');
+  }
+  return tasks;
+}
+
+function useTasksDispatch() {
+  const dispatch = useContext(TasksDispatchContext);
+  if (dispatch === null) {
+    throw new Error('useTasksDispatch must be used inside &lt;TasksProvider&gt;');
+  }
+  return dispatch;
+}
+
+function AddTask() {
+  const dispatch = useTasksDispatch();
+  const [title, setTitle] = useState('');
+  const nextId = useRef(100);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (title.trim() === '') return;
+    nextId.current += 1;
+    dispatch({ type: 'added', id: nextId.current, title: title.trim() });
+    setTitle('');
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        value={title}
+        onChange={(event) =&gt; setTitle(event.target.value)}
+        placeholder=&quot;New task&quot;
+        aria-label=&quot;New task&quot;
+      /&gt;
+      &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+function TaskList() {
+  const tasks = useTasks();
+  const dispatch = useTasksDispatch();
+
+  return (
+    &lt;ul&gt;
+      {tasks.map((task) =&gt; (
+        &lt;li key={task.id}&gt;
+          &lt;label&gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+              checked={task.done}
+              onChange={() =&gt; dispatch({ type: 'toggled', id: task.id })}
+            /&gt;{' '}
+            {task.done ? &lt;s&gt;{task.title}&lt;/s&gt; : task.title}
+          &lt;/label&gt;{' '}
+          &lt;button onClick={() =&gt; dispatch({ type: 'deleted', id: task.id })}&gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+function RemainingCount() {
+  const tasks = useTasks();
+  const remaining = tasks.filter((task) =&gt; !task.done).length;
+  return &lt;p&gt;{remaining} remaining&lt;/p&gt;;
+}
+
+export default function TaskApp() {
+  return (
+    &lt;TasksProvider&gt;
+      &lt;AddTask /&gt;
+      &lt;TaskList /&gt;
+      &lt;RemainingCount /&gt;
+    &lt;/TasksProvider&gt;
+  );
+}</template></div>
+<p><code>RemainingCount</code> derives its number during render. Storing a <code>remaining</code> field in the reducer would be a second source of truth that every action has to remember to update.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p><code>useReducer(reducer, initialState)</code> returns the current state and a <code>dispatch</code> function. Calling <code>dispatch(action)</code> schedules a re-render; React then calls <code>reducer(currentState, action)</code> to produce the next state.</p>
+<p>Three properties make the pattern work:</p>
+<p><strong><code>dispatch</code> is stable.</strong> React guarantees its identity does not change between renders, so it is safe as a dependency and safe to put in its own context without memoization.</p>
+<p><strong>The reducer must be pure.</strong> It takes state and action, returns new state, touches nothing else. No fetches, no <code>Math.random()</code>, no mutation of the previous state. In development <a href="../core-concepts/strict-mode.html">StrictMode</a> calls your reducer twice with the same arguments to surface impurity; a pure reducer produces the same result both times and you notice nothing.</p>
+<p><strong>Immutability is required.</strong> Returning the same array after <code>tasks.push(...)</code> gives React the same identity, and it skips the re-render. Always return a new object or array.</p>
+<h3 id="why-two-contexts">Why two contexts<a class="heading-anchor" href="#why-two-contexts" aria-label="Link to this section">#</a></h3>
+<p>If state and dispatch share one context, its value is an object that changes identity every time the state changes, so every consumer re-renders — including components that only ever dispatch.</p>
+<p>Split them and the picture changes:</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Single context</th><th>State + dispatch contexts</th></tr></thead>
+<tbody><tr><td>Value identity</td><td>New on every state change</td><td>State changes; dispatch never does</td></tr><tr><td>Dispatch-only components</td><td>Re-render on every action</td><td>Never re-render</td></tr><tr><td>Provider code</td><td>Needs <code>useMemo</code> on the value</td><td>No memoization needed</td></tr><tr><td>Consumer code</td><td>One hook</td><td>Two hooks; take only what you need</td></tr></tbody></table></div>
+<p><code>AddTask</code> in the example above reads only <code>TasksDispatchContext</code>. Adding a thousand tasks does not re-render it.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>The split narrows re-renders to <em>state consumers</em>, not to <em>the parts of state they use</em>. <code>RemainingCount</code> re-renders when a task's title is edited, because it subscribes to the whole array. Context has no selector. If that matters, you have outgrown the pattern.</p>
+</div></div>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="action-creators-instead-of-raw-objects">Action creators instead of raw objects<a class="heading-anchor" href="#action-creators-instead-of-raw-objects" aria-label="Link to this section">#</a></h3>
+<p>Dispatching <code>{ type: 'added', id, title }</code> from twelve components spreads the action shape across the codebase. Export helpers from the provider module — <code>addTask(title)</code>, <code>toggleTask(id)</code> — and keep the object literals in one file.</p>
+<h3 id="scope-the-provider-and-keep-one-reducer-per-feature">Scope the provider, and keep one reducer per feature<a class="heading-anchor" href="#scope-the-provider-and-keep-one-reducer-per-feature" aria-label="Link to this section">#</a></h3>
+<p>Render <code>&lt;TasksProvider&gt;</code> around the tasks feature, not around the whole app. A narrower provider means fewer consumers, fewer re-renders, and state that unmounts with the feature. One giant <code>appReducer</code> recreates the mega-context problem: any action re-renders every consumer.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>The same store with typed actions. The discriminated union plus the <code>never</code> check in the <code>default</code> branch means adding a new action type to <code>TaskAction</code> and forgetting to handle it is a compile error, not a runtime one.</p>
+<div class="code-block" data-lang="tsx"><div class="code-head"><span class="code-lang">tsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-tsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-keyword">type</span> <span class="tok-punct">{</span> <span class="tok-type">Dispatch</span><span class="tok-punct">,</span> <span class="tok-type">ReactNode</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">type</span> <span class="tok-type">Task</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> <span class="tok-type">number</span><span class="tok-punct">;</span>
+  title<span class="tok-punct">:</span> <span class="tok-type">string</span><span class="tok-punct">;</span>
+  done<span class="tok-punct">:</span> <span class="tok-type">boolean</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">type</span> <span class="tok-type">TaskAction</span> <span class="tok-punct">=</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'added'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span><span class="tok-punct">;</span> title<span class="tok-punct">:</span> <span class="tok-type">string</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'toggled'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'deleted'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">tasksReducer</span><span class="tok-punct">(</span>tasks<span class="tok-punct">:</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">,</span> action<span class="tok-punct">:</span> <span class="tok-type">TaskAction</span><span class="tok-punct">)</span><span class="tok-punct">:</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'added'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>tasks<span class="tok-punct">,</span> <span class="tok-punct">{</span> id<span class="tok-punct">:</span> action<span class="tok-punct">.</span>id<span class="tok-punct">,</span> title<span class="tok-punct">:</span> action<span class="tok-punct">.</span>title<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'toggled'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+        task<span class="tok-punct">.</span>id <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>task<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done <span class="tok-punct">}</span> <span class="tok-punct">:</span> task<span class="tok-punct">,</span>
+      <span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'deleted'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> task<span class="tok-punct">.</span>id <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+      <span class="tok-comment">// Exhaustiveness check: `action` is `never` if every case is handled.</span>
+      <span class="tok-keyword">const</span> unhandled<span class="tok-punct">:</span> <span class="tok-type">never</span> <span class="tok-punct">=</span> action<span class="tok-punct">;</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unhandled task action: </span><span class="tok-punct">${</span><span class="tok-type">JSON</span><span class="tok-punct">.</span><span class="tok-fn">stringify</span><span class="tok-punct">(</span>unhandled<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">TasksContext</span> <span class="tok-punct">=</span> createContext<span class="tok-tag">&lt;Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span> <span class="tok-punct">|</span> <span class="tok-attr">null</span><span class="tok-tag">&gt;</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-keyword">const</span> <span class="tok-type">TasksDispatchContext</span> <span class="tok-punct">=</span> createContext<span class="tok-tag">&lt;Dispatch</span><span class="tok-punct">&lt;</span><span class="tok-attr">TaskAction</span><span class="tok-tag">&gt;</span> <span class="tok-punct">|</span> <span class="tok-literal">null</span><span class="tok-punct">&gt;</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">TasksProvider</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-punct">{</span> children<span class="tok-punct">:</span> <span class="tok-type">ReactNode</span> <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tasks<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>tasksReducer<span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;TasksDispatchContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>dispatch<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;TasksContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>tasks<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>children<span class="tok-punct">}</span><span class="tok-tag">&lt;/TasksContext</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/TasksDispatchContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">useTasks</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">:</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> tasks <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">TasksContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>tasks <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useTasks must be used inside &lt;TasksProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> tasks<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">useTasksDispatch</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">:</span> <span class="tok-type">Dispatch</span><span class="tok-tag">&lt;TaskAction</span><span class="tok-tag">&gt;</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> dispatch <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">TasksDispatchContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>dispatch <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useTasksDispatch must be used inside &lt;TasksProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> dispatch<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Because both contexts default to <code>null</code>, the hooks distinguish &quot;no provider&quot; from &quot;empty task list&quot;, and their return types are non-nullable for callers.</p>
+<h3 id="async-work-belongs-outside-the-reducer">Async work belongs outside the reducer<a class="heading-anchor" href="#async-work-belongs-outside-the-reducer" aria-label="Link to this section">#</a></h3>
+<p>Reducers are pure, so a reducer cannot fetch. Do the async work in the event handler or an Action, then dispatch the result:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">SaveButton</span><span class="tok-punct">(</span><span class="tok-punct">{</span> task<span class="tok-punct">,</span> dispatch <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleSave</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-keyword">async</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">const</span> saved <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">'/api/tasks'</span><span class="tok-punct">,</span> <span class="tok-punct">{</span>
+        method<span class="tok-punct">:</span> <span class="tok-string">'POST'</span><span class="tok-punct">,</span>
+        body<span class="tok-punct">:</span> <span class="tok-type">JSON</span><span class="tok-punct">.</span><span class="tok-fn">stringify</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span><span class="tok-punct">(</span>response<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> response<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+      <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'saved'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> saved<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleSave<span class="tok-punct">}</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>isPending<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>isPending <span class="tok-punct">?</span> <span class="tok-string">'Saving…'</span> <span class="tok-punct">:</span> <span class="tok-string">'Save'</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Once several such flows need to coordinate — retries, cancellation, request deduplication, optimistic rollback across screens — the reducer stops being the right home for them. That is the signal to move to a store with middleware, or to a server-state library.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Mutating the state argument.</strong> <code>tasks.push(newTask); return tasks;</code> returns the same identity, so React bails out and the UI does not update. Return a new array.</p>
+<p><strong>Side effects inside the reducer.</strong> Logging to an analytics endpoint, writing to <code>localStorage</code>, or reading <code>Date.now()</code> makes the reducer impure. StrictMode double-invocation will make those effects happen twice in development, which is the warning, not the bug.</p>
+<p><strong>One context for state and dispatch.</strong> Every dispatch-only component re-renders on every action. Split them.</p>
+<p><strong>Memoizing <code>dispatch</code>.</strong> It is already stable. Wrapping it in <code>useCallback</code> or <code>useMemo</code> adds noise and no benefit.</p>
+<p><strong>Storing derived data in the reducer.</strong> <code>completedCount</code>, <code>filteredTasks</code> and <code>isEmpty</code> are computed from <code>tasks</code>. Every action would have to keep them in sync, and one day one of them will not.</p>
+<p><strong>A provider at the app root for feature state.</strong> It makes the state global, keeps it alive after the feature unmounts, and widens the re-render blast radius. Render the provider where the feature lives.</p>
+<p><strong>Growing it into a framework.</strong> Selector helpers, a middleware array, an action history, a thunk runner — each addition is reasonable and the sum is an untested, undocumented state library. Adopt a real one at that point.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../hooks/use-reducer.html">useReducer</a> — the hook's full reference, including lazy initialization.</li>
+<li><a href="./context.html">Context</a> — the re-render model that makes the two-context split necessary.</li>
+<li><a href="./external-stores.html">External stores</a> — where to go when you need selectors or middleware.</li>
+<li><a href="../ecosystem/redux.html">Redux</a> — the mature version of this pattern, with devtools and RTK Query.</li>
+<li><a href="./choosing-an-approach.html">Choosing an approach</a> — how this fits the ladder.</li>
+<li><a href="../hooks/use-transition.html">useTransition</a> — running the async half of an action without blocking the UI.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../state-management/context.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Context</span></a><a class="pager-link pager-next" href="../state-management/external-stores.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">External stores</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#why-two-contexts">Why two contexts</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#action-creators-instead-of-raw-objects">Action creators instead of raw objects</a></li><li class="toc-h3"><a href="#scope-the-provider-and-keep-one-reducer-per-feature">Scope the provider, and keep one reducer per feature</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h3"><a href="#async-work-belongs-outside-the-reducer">Async work belongs outside the reducer</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

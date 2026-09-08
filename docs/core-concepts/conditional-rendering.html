@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditional rendering · React 19 Docs</title>
+<meta name="description" content="Choosing what to render with if, ternaries and logical AND, and what happens to state when a branch disappears.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Conditional rendering · React 19 Docs">
+<meta property="og:description" content="Choosing what to render with if, ternaries and logical AND, and what happens to state when a branch disappears.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html" aria-current="page"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#core-concepts">Core Concepts</a></li><li><span aria-current="page">Conditional rendering</span></li></ol><header class="page-header"><h1 class="page-title">Conditional rendering</h1><p class="page-description">Choosing what to render with if, ternaries and logical AND, and what happens to state when a branch disappears.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>React has no template directives — no <code>v-if</code>, no <code>*ngIf</code>, no <code>{{#if}}</code>. JSX is JavaScript, so you branch with the language: <code>if</code>, the ternary operator, <code>&amp;&amp;</code>, and early returns.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">DeliveryStatus</span><span class="tok-punct">(</span><span class="tok-punct">{</span> delivered <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>delivered<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Delivered</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">In</span> transit<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Whatever your branch produces gets rendered. <code>null</code>, <code>undefined</code>, <code>true</code> and <code>false</code> render nothing, which is what makes the shorter forms work.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>There is nothing to invent. A component returns a value; conditionals choose the value. The consequence is that everything you know about JavaScript conditions applies, including the type coercion rules that cause the one real trap on this page.</p>
+<p>The second thing worth understanding is what conditionals do to the tree. Rendering <code>null</code> instead of a component <strong>unmounts</strong> it: its state is destroyed and its Effects are cleaned up. Conditional rendering is not a visibility switch.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Use conditional rendering when the branches are genuinely different UI, or when the hidden branch should be forgotten: a modal that starts fresh each time, an error message, a route that is not active.</p>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Do not use it as a way to hide something you want to keep. Tabs that should remember their scroll position and form drafts, a details panel the user toggles constantly, a route you expect them to come back to — those want <a href="../performance/activity.html"><code>&lt;Activity mode=&quot;hidden&quot;&gt;</code></a>, which preserves state and DOM.</p>
+<p>Do not use CSS <code>display: none</code> for this either. The DOM stays, but the Effects keep running: timers keep firing, subscriptions stay open, and an off-screen component keeps doing work.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">InboxHeader</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>unread<span class="tok-punct">,</span> setUnread<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setUnread</span><span class="tok-punct">(</span><span class="tok-punct">(</span>n<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> n <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Receive</span> a message
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setUnread</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Mark</span> all read
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* Correct: an explicit boolean. */</span><span class="tok-punct">}</span>
+      <span class="tok-punct">{</span>unread <span class="tok-punct">&gt;</span> <span class="tok-number">0</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">You</span> have <span class="tok-punct">{</span>unread<span class="tok-punct">}</span> unread messages<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* Wrong: renders a bare 0 when the count is zero. */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Buggy</span> version<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-punct">{</span>unread <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;b</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>unread<span class="tok-punct">}</span> unread<span class="tok-tag">&lt;/b</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+export default function InboxHeader() {
+  const [unread, setUnread] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;button type=&quot;button&quot; onClick={() =&gt; setUnread((n) =&gt; n + 1)}&gt;
+        Receive a message
+      &lt;/button&gt;
+      &lt;button type=&quot;button&quot; onClick={() =&gt; setUnread(0)}&gt;
+        Mark all read
+      &lt;/button&gt;
+
+      {/* Correct: an explicit boolean. */}
+      {unread &gt; 0 &amp;&amp; &lt;p&gt;You have {unread} unread messages.&lt;/p&gt;}
+
+      {/* Wrong: renders a bare 0 when the count is zero. */}
+      &lt;p&gt;Buggy version: [{unread &amp;&amp; &lt;b&gt;{unread} unread&lt;/b&gt;}]&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Press &quot;Mark all read&quot; and the second line shows a stray <code>0</code>.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="if-and-early-returns"><code>if</code> and early returns<a class="heading-anchor" href="#if-and-early-returns" aria-label="Link to this section">#</a></h3>
+<p>The clearest form when the branches are whole components:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">OrderPanel</span><span class="tok-punct">(</span><span class="tok-punct">{</span> order<span class="tok-punct">,</span> error <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>error<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;alert&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>error<span class="tok-punct">.</span>message<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>order<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span><span class="tok-type">Order</span> <span class="tok-punct">{</span>order<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>order<span class="tok-punct">.</span>itemCount<span class="tok-punct">}</span> items<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Early returns keep the happy path unindented. Note that hooks must still be called before any early return — see <a href="../hooks/rules-of-hooks.html">rules of hooks</a>.</p>
+<h3 id="returning-null">Returning <code>null</code><a class="heading-anchor" href="#returning-null" aria-label="Link to this section">#</a></h3>
+<p><code>return null</code> renders nothing. The component still mounts and keeps its state, so this is different from the parent not rendering it at all.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Banner</span><span class="tok-punct">(</span><span class="tok-punct">{</span> message <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>message<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-literal">null</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;div</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;status&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>message<span class="tok-punct">}</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Prefer letting the parent decide (<code>{message &amp;&amp; &lt;Banner message={message} /&gt;}</code>) when the component should not exist, and <code>return null</code> when the component owns the decision and may need to keep state across the empty period.</p>
+<h3 id="the-ternary-operator">The ternary operator<a class="heading-anchor" href="#the-ternary-operator" aria-label="Link to this section">#</a></h3>
+<p>Inside JSX you need an expression, so <code>if</code> is unavailable and the ternary takes over:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">SaveButton</span><span class="tok-punct">(</span><span class="tok-punct">{</span> saving <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>saving<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>saving <span class="tok-punct">?</span> <span class="tok-string">'Saving…'</span> <span class="tok-punct">:</span> <span class="tok-string">'Save'</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Ternaries are excellent for one small difference and terrible when nested. Two levels of nesting is the point to extract a variable or a component.</p>
+<h3 id="logical-and-and-the-0-trap">Logical AND, and the <code>0</code> trap<a class="heading-anchor" href="#logical-and-and-the-0-trap" aria-label="Link to this section">#</a></h3>
+<p><code>a &amp;&amp; b</code> evaluates to <code>b</code> when <code>a</code> is truthy, and to <strong><code>a</code></strong> when it is not. React renders <code>false</code> as nothing — but <code>0</code> is falsy <em>and</em> renders as the text <code>0</code>.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">CartSummary</span><span class="tok-punct">(</span><span class="tok-punct">{</span> items <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span><span class="tok-comment">/* Renders &quot;0&quot; when the cart is empty. */</span><span class="tok-punct">}</span>
+      <span class="tok-punct">{</span>items<span class="tok-punct">.</span>length <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>items<span class="tok-punct">.</span>length<span class="tok-punct">}</span> items<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* Correct. */</span><span class="tok-punct">}</span>
+      <span class="tok-punct">{</span>items<span class="tok-punct">.</span>length <span class="tok-punct">&gt;</span> <span class="tok-number">0</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>items<span class="tok-punct">.</span>length<span class="tok-punct">}</span> items<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The same applies to empty strings, which render as nothing but still make the expression fall through unhelpfully. Always put a real boolean on the left: <code>count &gt; 0</code>, <code>Boolean(value)</code>, <code>list.length !== 0</code>.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>This is the most reported &quot;React rendered a random zero&quot; bug. If a stray <code>0</code> appears in your UI, search for <code>&amp;&amp;</code> with a number on its left.</p>
+</div></div>
+<h3 id="extracting-a-variable">Extracting a variable<a class="heading-anchor" href="#extracting-a-variable" aria-label="Link to this section">#</a></h3>
+<p>When a branch grows past a line or two, pull it out above the <code>return</code>. The JSX stays readable and the logic reads top to bottom:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ExportRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">,</span> fileName<span class="tok-punct">,</span> onRetry <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">let</span> statusNode<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'running'</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    statusNode <span class="tok-punct">=</span> <span class="tok-tag">&lt;progress</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`Exporting </span><span class="tok-punct">${</span>fileName<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">else</span> <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'failed'</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    statusNode <span class="tok-punct">=</span> <span class="tok-punct">(</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>onRetry<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Retry</span> <span class="tok-keyword">export</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">else</span> <span class="tok-punct">{</span>
+    statusNode <span class="tok-punct">=</span> <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`/exports/</span><span class="tok-punct">${</span>fileName<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Download</span><span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;span</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>fileName<span class="tok-punct">}</span><span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>statusNode<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Elements are values. Assigning them to variables, putting them in arrays, and passing them as props are all normal.</p>
+<h3 id="conditional-rendering-unmounts-state">Conditional rendering unmounts state<a class="heading-anchor" href="#conditional-rendering-unmounts-state" aria-label="Link to this section">#</a></h3>
+<p>When a condition flips to false, the component under it is removed from the tree. Everything React was keeping for it goes away.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">NoteEditor</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>text<span class="tok-punct">,</span> setText<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;textarea</span>
+      <span class="tok-attr">rows</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">3</span><span class="tok-punct">}</span>
+      <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>text<span class="tok-punct">}</span>
+      <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setText</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Type something, then hide and show this editor.&quot;</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">NotesPanel</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>showEditor<span class="tok-punct">,</span> setShowEditor<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setShowEditor</span><span class="tok-punct">(</span><span class="tok-punct">(</span>v<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">!</span>v<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>showEditor <span class="tok-punct">?</span> <span class="tok-string">'Hide'</span> <span class="tok-punct">:</span> <span class="tok-string">'Show'</span><span class="tok-punct">}</span> editor
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>showEditor <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;NoteEditor</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+function NoteEditor() {
+  const [text, setText] = useState('');
+  return (
+    &lt;textarea
+      rows={3}
+      value={text}
+      onChange={(event) =&gt; setText(event.target.value)}
+      placeholder=&quot;Type something, then hide and show this editor.&quot;
+    /&gt;
+  );
+}
+
+export default function NotesPanel() {
+  const [showEditor, setShowEditor] = useState(true);
+
+  return (
+    &lt;div&gt;
+      &lt;button type=&quot;button&quot; onClick={() =&gt; setShowEditor((v) =&gt; !v)}&gt;
+        {showEditor ? 'Hide' : 'Show'} editor
+      &lt;/button&gt;
+      {showEditor &amp;&amp; &lt;NoteEditor /&gt;}
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Type into the box, hide it, show it again: the text is gone. That is correct behavior, and often what you want — a closed dialog should not remember a half-typed message. When it is not what you want, either lift the value into the parent's state, or keep the component mounted with <code>&lt;Activity&gt;</code>.</p>
+<h3 id="key-and-conditional-branches"><code>key</code> and conditional branches<a class="heading-anchor" href="#key-and-conditional-branches" aria-label="Link to this section">#</a></h3>
+<p>React matches elements by position and type. Two different components in the same slot already reset state. Two <em>instances of the same component</em> in the same slot do not — switching <code>contactId</code> on the form below keeps the previous contact's draft, because from React's point of view it is the same form with a new prop.</p>
+<p>Add a <code>key</code> when you want the switch to be a genuine reset:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ContactForm</span><span class="tok-punct">(</span><span class="tok-punct">{</span> contactId <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>draft<span class="tok-punct">,</span> setDraft<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;input</span>
+      <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>draft<span class="tok-punct">}</span>
+      <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setDraft</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`Message for </span><span class="tok-punct">${</span>contactId<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Messenger</span><span class="tok-punct">(</span><span class="tok-punct">{</span> contactId <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;ContactForm</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>contactId<span class="tok-punct">}</span> <span class="tok-attr">contactId</span><span class="tok-punct">=</span><span class="tok-punct">{</span>contactId<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="conditional-rendering-versus">Conditional rendering versus <code>&lt;Activity mode=&quot;hidden&quot;&gt;</code><a class="heading-anchor" href="#conditional-rendering-versus" aria-label="Link to this section">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Conditional rendering</th><th><code>&lt;Activity mode=&quot;hidden&quot;&gt;</code></th></tr></thead>
+<tbody><tr><td>DOM nodes</td><td>Removed</td><td>Kept, hidden with <code>display: none</code></td></tr><tr><td>Component state</td><td>Destroyed</td><td>Preserved and restored</td></tr><tr><td>Effects</td><td>Cleaned up and gone</td><td>Cleaned up, re-created when visible again</td></tr><tr><td>Re-renders while hidden</td><td>Does not exist to re-render</td><td>Yes, at lower priority</td></tr><tr><td>Cost while hidden</td><td>None</td><td>Memory for the hidden tree</td></tr><tr><td>Available since</td><td>Always</td><td><strong>React 19.2</strong></td></tr><tr><td>Use for</td><td>Modals, routes, error states, anything that should start fresh</td><td>Tabs, back-navigation, prerendering the next screen</td></tr></tbody></table></div>
+<p>The deciding question is whether the user would be annoyed to lose what is in there. Read <a href="../performance/activity.html"><code>&lt;Activity&gt;</code></a> before reaching for it — it is a newer tool and it has its own trade-offs.</p>
+<h3 id="conditional-attributes">Conditional attributes<a class="heading-anchor" href="#conditional-attributes" aria-label="Link to this section">#</a></h3>
+<p>You do not always need to branch on elements. Often only a value changes:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Row</span><span class="tok-punct">(</span><span class="tok-punct">{</span> selected<span class="tok-punct">,</span> label <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;li</span>
+      <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span>selected <span class="tok-punct">?</span> <span class="tok-string">'row row-selected'</span> <span class="tok-punct">:</span> <span class="tok-string">'row'</span><span class="tok-punct">}</span>
+      <span class="tok-attr">aria-current</span><span class="tok-punct">=</span><span class="tok-punct">{</span>selected <span class="tok-punct">?</span> <span class="tok-string">'true'</span> <span class="tok-punct">:</span> <span class="tok-literal">undefined</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>label<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Passing <code>undefined</code> omits the attribute entirely, which is what you want for ARIA attributes where <code>&quot;false&quot;</code> means something different from absent.</p>
+<h3 id="a-helper-function-instead-of-an-inline-chain">A helper function instead of an inline chain<a class="heading-anchor" href="#a-helper-function-instead-of-an-inline-chain" aria-label="Link to this section">#</a></h3>
+<p>When you branch on one value with several cases, move the branch into a small function. The JSX stays flat and the cases line up:</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">PendingIcon</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;span</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Pending&quot;</span><span class="tok-tag">&gt;</span>⏳<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">SuccessIcon</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;span</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Success&quot;</span><span class="tok-tag">&gt;</span>✅<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">FailedIcon</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;span</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Failed&quot;</span><span class="tok-tag">&gt;</span>❌<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">JobList</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> jobs <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'nightly-report'</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-string">'pending'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+    <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'invoice-sync'</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-string">'success'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+    <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">3</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'image-resize'</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-string">'failed'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">renderIcon</span><span class="tok-punct">(</span>status<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'pending'</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;PendingIcon</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'success'</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;SuccessIcon</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;FailedIcon</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> listStyle<span class="tok-punct">:</span> <span class="tok-string">'none'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>jobs<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>job<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>job<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span><span class="tok-fn">renderIcon</span><span class="tok-punct">(</span>job<span class="tok-punct">.</span>status<span class="tok-punct">)</span><span class="tok-punct">}</span> <span class="tok-punct">{</span>job<span class="tok-punct">.</span>name<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">function PendingIcon() {
+  return &lt;span title=&quot;Pending&quot;&gt;⏳&lt;/span&gt;;
+}
+
+function SuccessIcon() {
+  return &lt;span title=&quot;Success&quot;&gt;✅&lt;/span&gt;;
+}
+
+function FailedIcon() {
+  return &lt;span title=&quot;Failed&quot;&gt;❌&lt;/span&gt;;
+}
+
+export default function JobList() {
+  const jobs = [
+    { id: 1, name: 'nightly-report', status: 'pending' },
+    { id: 2, name: 'invoice-sync', status: 'success' },
+    { id: 3, name: 'image-resize', status: 'failed' },
+  ];
+
+  function renderIcon(status) {
+    if (status === 'pending') return &lt;PendingIcon /&gt;;
+    if (status === 'success') return &lt;SuccessIcon /&gt;;
+    return &lt;FailedIcon /&gt;;
+  }
+
+  return (
+    &lt;ul style={{ listStyle: 'none', padding: 0 }}&gt;
+      {jobs.map((job) =&gt; (
+        &lt;li key={job.id}&gt;
+          {renderIcon(job.status)} {job.name}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</template></div>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Loading, empty, error and success are four states, and the order you check them in is a design decision. Check the states that block rendering first, and give the empty case its own branch rather than letting it fall through to an empty list:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ReportTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">,</span> rows<span class="tok-punct">,</span> error<span class="tok-punct">,</span> onRetry <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'loading'</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;status&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span> reports…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'error'</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;alert&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Could</span> not load reports<span class="tok-punct">:</span> <span class="tok-punct">{</span>error<span class="tok-punct">.</span>message<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>onRetry<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Try</span> again
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>rows<span class="tok-punct">.</span>length <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">No</span> reports yet<span class="tok-punct">.</span> <span class="tok-type">Reports</span> appear here after your first <span class="tok-keyword">export</span><span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>rows<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>row<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;tr</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>createdAt<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>An empty state that says what will appear there is worth more than a blank area, and it costs one branch.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong><code>{count &amp;&amp; &lt;Thing /&gt;}</code>.</strong> Renders <code>0</code>. Use <code>count &gt; 0 &amp;&amp;</code>.</p>
+<p><strong><code>{items.length ? &lt;List /&gt; : null}</code> when <code>&amp;&amp;</code> would do.</strong> Harmless, but <code>&amp;&amp;</code> says the same thing with less noise. Use the ternary when there is a real second branch.</p>
+<p><strong>Nesting ternaries three deep.</strong> Extract a variable or a component. The readability cliff is steep.</p>
+<p><strong>Calling hooks after an early return.</strong> Hooks must run in the same order every render. Put every hook above the first <code>if</code>.</p>
+<p><strong>Expecting a hidden component to keep its state.</strong> Conditional rendering unmounts. Lift the state up or use <code>&lt;Activity&gt;</code>.</p>
+<p><strong>Using <code>display: none</code> to &quot;unmount&quot;.</strong> The component keeps rendering, its timers keep firing and its subscriptions stay open.</p>
+<p><strong>Changing the tree shape when only an attribute changes.</strong> Wrapping the same child in a different parent depending on a flag remounts it, losing focus and cursor position. Change the attribute instead.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./jsx.html">JSX</a> — why <code>null</code>, <code>false</code> and <code>undefined</code> render nothing but <code>0</code> does not.</li>
+<li><a href="./rendering.html">Rendering</a> — how React decides to preserve or recreate a component when the tree changes.</li>
+<li><a href="../performance/activity.html"><code>&lt;Activity&gt;</code></a> — hiding a subtree while keeping its state and DOM.</li>
+<li><a href="./lists-and-keys.html">Lists and keys</a> — the other place <code>key</code> decides identity.</li>
+<li><a href="../data-fetching/suspense.html">Suspense</a> — declarative loading states instead of a manual <code>status === 'loading'</code> branch.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../core-concepts/rendering.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Rendering</span></a><a class="pager-link pager-next" href="../core-concepts/lists-and-keys.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Lists and keys</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#if-and-early-returns">if and early returns</a></li><li class="toc-h3"><a href="#returning-null">Returning null</a></li><li class="toc-h3"><a href="#the-ternary-operator">The ternary operator</a></li><li class="toc-h3"><a href="#logical-and-and-the-0-trap">Logical AND, and the 0 trap</a></li><li class="toc-h3"><a href="#extracting-a-variable">Extracting a variable</a></li><li class="toc-h3"><a href="#conditional-rendering-unmounts-state">Conditional rendering unmounts state</a></li><li class="toc-h3"><a href="#key-and-conditional-branches">key and conditional branches</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#conditional-rendering-versus">Conditional rendering versus &lt;Activity mode=&quot;hidden&quot;&gt;</a></li><li class="toc-h3"><a href="#conditional-attributes">Conditional attributes</a></li><li class="toc-h3"><a href="#a-helper-function-instead-of-an-inline-chain">A helper function instead of an inline chain</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>useReducer · React 19 Docs</title>
+<meta name="description" content="Manage state through a pure reducer function when several values change together.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="useReducer · React 19 Docs">
+<meta property="og:description" content="Manage state through a pure reducer function when several values change together.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html" aria-current="page"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#hooks">Hooks</a></li><li><span aria-current="page">useReducer</span></li></ol><header class="page-header"><h1 class="page-title">useReducer</h1><p class="page-description">Manage state through a pure reducer function when several values change together.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p><code>useReducer</code> moves your state transitions out of event handlers and into one pure function.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">const [state, dispatch] = useReducer(reducer, initialArg, init?)</code></pre></div>
+<ul>
+<li><code>reducer</code> — <code>(state, action) =&gt; nextState</code>. Must be <strong>pure</strong>.</li>
+<li><code>initialArg</code> — the value the initial state is built from.</li>
+<li><code>init</code> <em>(optional)</em> — if given, the initial state is <code>init(initialArg)</code> instead of <code>initialArg</code> itself.</li>
+<li>Returns the current state and a <code>dispatch</code> function. <code>dispatch(action)</code> schedules a re-render whose state is <code>reducer(currentState, action)</code>.</li>
+</ul>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">counterReducer</span><span class="tok-punct">(</span>count<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'incremented'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> count <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'decremented'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> count <span class="tok-punct">-</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'reset'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Counter</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>count<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>counterReducer<span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Count</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>count<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'decremented'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">-</span><span class="tok-number">1</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'incremented'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">+</span><span class="tok-number">1</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'reset'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Reset</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useReducer } from 'react';
+
+function counterReducer(count, action) {
+  switch (action.type) {
+    case 'incremented':
+      return count + 1;
+    case 'decremented':
+      return count - 1;
+    case 'reset':
+      return 0;
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+export default function Counter() {
+  const [count, dispatch] = useReducer(counterReducer, 0);
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'decremented' })}&gt;-1&lt;/button&gt;{' '}
+      &lt;button onClick={() =&gt; dispatch({ type: 'incremented' })}&gt;+1&lt;/button&gt;{' '}
+      &lt;button onClick={() =&gt; dispatch({ type: 'reset' })}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p><code>useState</code> scatters update logic across every handler that touches it. In a component with six pieces of state and ten handlers, the rules for how state may change exist only as the sum of those handlers — you cannot read them in one place, and you cannot test them without rendering.</p>
+<p>A reducer inverts that. Handlers describe <strong>what happened</strong> (<code>{ type: 'quantity_changed' }</code>); the reducer decides <strong>what the state becomes</strong>. The result is one function that takes a value and returns a value, which you can unit-test with no React at all.</p>
+<p>It also removes a class of bugs. Because the reducer receives the current state as an argument, a transition can never read a stale snapshot.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Several values change together.</strong> A form with <code>values</code>, <code>errors</code>, <code>touched</code> and <code>isSubmitting</code> has combinations that are invalid; a reducer lets you make them unrepresentable.</li>
+<li><strong>The next state depends on the previous state</strong> in ways more complex than <code>n + 1</code>.</li>
+<li><strong>The same transition is fired from several places.</strong> Three buttons and a keyboard shortcut dispatching <code>{ type: 'closed' }</code> share one implementation.</li>
+<li><strong>You want to test transitions.</strong> <code>expect(reducer(state, action)).toEqual(...)</code> needs no DOM.</li>
+<li><strong>You are debugging &quot;who changed this and when&quot;.</strong> A single <code>console.log</code> in the reducer logs every transition in the component.</li>
+<li><strong>You want to pass update logic deep down the tree.</strong> <code>dispatch</code> has a stable identity, so it travels through context without invalidating memoized children. See <a href="../state-management/reducers-and-context.html">reducers and context</a>.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>One independent value.</strong> <code>useState</code> is shorter and clearer for a boolean or a string.</li>
+<li><strong>Values that never change together.</strong> Grouping unrelated state into one reducer couples them for no benefit.</li>
+<li><strong>Data you do not own</strong> — server data, or a store outside React. A reducer does not make a cache.</li>
+<li><strong>Derived values.</strong> Anything computable from state or props should be computed during render, not stored in the reducer.</li>
+<li><strong>As a substitute for a state library.</strong> A reducer is local to one component unless you pair it with context; it does not give you devtools, middleware, or cross-component subscriptions. See <a href="../state-management/choosing-an-approach.html">choosing an approach</a>.</li>
+<li><strong>When you need async logic inside the transition.</strong> Reducers must be pure — do the async work in the handler, then dispatch the result.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>Compare the same feature written both ways. With <code>useState</code>:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">CheckoutStateVersion</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>step<span class="tok-punct">,</span> setStep<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isSubmitting<span class="tok-punct">,</span> setIsSubmitting<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>error<span class="tok-punct">,</span> setError<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">next</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setError</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setStep</span><span class="tok-punct">(</span><span class="tok-punct">(</span>s<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> s <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">function</span> <span class="tok-fn">submit</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setError</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setIsSubmitting</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">function</span> <span class="tok-fn">fail</span><span class="tok-punct">(</span>message<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setIsSubmitting</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setError</span><span class="tok-punct">(</span>message<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-type">Step</span> <span class="tok-punct">{</span>step<span class="tok-punct">}</span> <span class="tok-punct">{</span>isSubmitting <span class="tok-punct">?</span> <span class="tok-string">'(submitting)'</span> <span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">}</span> <span class="tok-punct">{</span>error<span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>next<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Next</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>submit<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Submit</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">fail</span><span class="tok-punct">(</span><span class="tok-string">'Card declined'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Simulate</span> failure<span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Three handlers each remember to clear <code>error</code>. Miss one and a stale error stays on screen. With a reducer, clearing is part of the transition:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> initialCheckout <span class="tok-punct">=</span> <span class="tok-punct">{</span> step<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">,</span> isSubmitting<span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">checkoutReducer</span><span class="tok-punct">(</span>state<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'advanced'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span> step<span class="tok-punct">:</span> state<span class="tok-punct">.</span>step <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'submitted'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span> isSubmitting<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'failed'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span> isSubmitting<span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> action<span class="tok-punct">.</span>message <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Checkout</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>state<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>checkoutReducer<span class="tok-punct">,</span> initialCheckout<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-type">Step</span> <span class="tok-punct">{</span>state<span class="tok-punct">.</span>step<span class="tok-punct">}</span> <span class="tok-punct">{</span>state<span class="tok-punct">.</span>isSubmitting <span class="tok-punct">?</span> <span class="tok-string">'(submitting)'</span> <span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">}</span> <span class="tok-punct">{</span>state<span class="tok-punct">.</span>error<span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'advanced'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Next</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'submitted'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Submit</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span>
+        <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'failed'</span><span class="tok-punct">,</span> message<span class="tok-punct">:</span> <span class="tok-string">'Card declined'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-type">Simulate</span> failure
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p><strong>Across re-renders.</strong> <code>state</code> is this render's snapshot, exactly like <code>useState</code>. <code>dispatch</code> does not change it — it queues an action. React runs the reducer while preparing the next render, feeding it the state that resulted from the previous queued action, so several dispatches in one handler compose correctly.</p>
+<p><strong><code>dispatch</code> has a stable identity.</strong> It is the same function object for the lifetime of the component. You can omit it from dependency arrays, pass it through context, and hand it to memoized children without breaking their memoization.</p>
+<p><strong>Bailing out.</strong> If your reducer returns the state object it received, React compares with <code>Object.is</code>, sees no change and skips the re-render. This is a useful escape hatch (<code>case 'noop': return state;</code>) and also a trap: mutating the state object and returning it means nothing renders.</p>
+<p><strong>With StrictMode.</strong> In development, React calls <strong>both your reducer and your <code>init</code> function twice</strong> and discards one result. This is a deliberate purity stress test. A pure reducer produces the same output both times and you notice nothing. An impure one — pushing into the existing array, mutating a nested object, incrementing a module-level id, calling <code>fetch</code> — produces duplicated work or corrupted state, which is precisely the bug StrictMode is trying to surface.</p>
+<p><strong>With concurrent rendering.</strong> React may prepare a render, throw it away and prepare it again at a different priority. Your reducer can therefore run more than once per dispatched action. A pure reducer is idempotent under that replay; an impure one is not.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>A reducer must not mutate its arguments, call <code>fetch</code>, read <code>Date.now()</code>, generate a random id, or write to anything outside itself. Compute those values in the event handler and put them <strong>in the action</strong>.</p>
+</div></div>
+<h3 id="passing-an-init-function">Passing an <code>init</code> function<a class="heading-anchor" href="#passing-an-init-function" aria-label="Link to this section">#</a></h3>
+<p>The third argument separates &quot;the input the state is built from&quot; from &quot;the state itself&quot;. It also gives you a reset path: call the same <code>init</code> from a reducer case.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">createInitialState</span><span class="tok-punct">(</span>username<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">{</span>
+    username<span class="tok-punct">,</span>
+    draft<span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">,</span>
+    messages<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">`Welcome back, </span><span class="tok-punct">${</span>username<span class="tok-punct">}</span><span class="tok-string">.`</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+  <span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">chatReducer</span><span class="tok-punct">(</span>state<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'typed'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span> draft<span class="tok-punct">:</span> action<span class="tok-punct">.</span>text <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'sent'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span>state<span class="tok-punct">.</span>draft<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> state<span class="tok-punct">;</span> <span class="tok-comment">// bail out, no re-render</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span>
+        <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span>
+        draft<span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">,</span>
+        messages<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">.</span>messages<span class="tok-punct">,</span> state<span class="tok-punct">.</span>draft<span class="tok-punct">]</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'cleared'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-fn">createInitialState</span><span class="tok-punct">(</span>state<span class="tok-punct">.</span>username<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Chat</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>state<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>chatReducer<span class="tok-punct">,</span> <span class="tok-string">'ada'</span><span class="tok-punct">,</span> createInitialState<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>state<span class="tok-punct">.</span>messages<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>message<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>index<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>message<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>state<span class="tok-punct">.</span>draft<span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Message&quot;</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'typed'</span><span class="tok-punct">,</span> text<span class="tok-punct">:</span> e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'sent'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Send</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'cleared'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Clear</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useReducer } from 'react';
+
+function createInitialState(username) {
+  return {
+    username,
+    draft: '',
+    messages: [`Welcome back, ${username}.`],
+  };
+}
+
+function chatReducer(state, action) {
+  switch (action.type) {
+    case 'typed':
+      return { ...state, draft: action.text };
+    case 'sent':
+      if (state.draft.trim() === '') return state; // bail out, no re-render
+      return {
+        ...state,
+        draft: '',
+        messages: [...state.messages, state.draft],
+      };
+    case 'cleared':
+      return createInitialState(state.username);
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+export default function Chat() {
+  const [state, dispatch] = useReducer(chatReducer, 'ada', createInitialState);
+
+  return (
+    &lt;div&gt;
+      &lt;ul&gt;
+        {state.messages.map((message, index) =&gt; (
+          &lt;li key={index}&gt;{message}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;input
+        value={state.draft}
+        placeholder=&quot;Message&quot;
+        onChange={(e) =&gt; dispatch({ type: 'typed', text: e.target.value })}
+      /&gt;{' '}
+      &lt;button onClick={() =&gt; dispatch({ type: 'sent' })}&gt;Send&lt;/button&gt;{' '}
+      &lt;button onClick={() =&gt; dispatch({ type: 'cleared' })}&gt;Clear&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p><code>createInitialState</code> runs on mount (twice in development under StrictMode, which is safe because it is pure) rather than on every render.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="async-work-belongs-in-the-handler">Async work belongs in the handler<a class="heading-anchor" href="#async-work-belongs-in-the-handler" aria-label="Link to this section">#</a></h3>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> initialState <span class="tok-punct">=</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'idle'</span><span class="tok-punct">,</span> order<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">orderReducer</span><span class="tok-punct">(</span>state<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'submit_started'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'pending'</span><span class="tok-punct">,</span> order<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'submit_succeeded'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'success'</span><span class="tok-punct">,</span> order<span class="tok-punct">:</span> action<span class="tok-punct">.</span>order<span class="tok-punct">,</span> error<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'submit_failed'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'error'</span><span class="tok-punct">,</span> order<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span> error<span class="tok-punct">:</span> action<span class="tok-punct">.</span>message <span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">OrderButton</span><span class="tok-punct">(</span><span class="tok-punct">{</span> cartId <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>state<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>orderReducer<span class="tok-punct">,</span> initialState<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">async</span> <span class="tok-keyword">function</span> <span class="tok-fn">placeOrder</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'submit_started'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">try</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">const</span> response <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/orders/</span><span class="tok-punct">${</span>cartId<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span> <span class="tok-punct">{</span> method<span class="tok-punct">:</span> <span class="tok-string">'POST'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>response<span class="tok-punct">.</span>ok<span class="tok-punct">)</span> <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Request failed: </span><span class="tok-punct">${</span>response<span class="tok-punct">.</span>status<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'submit_succeeded'</span><span class="tok-punct">,</span> order<span class="tok-punct">:</span> <span class="tok-keyword">await</span> response<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span> <span class="tok-keyword">catch</span> <span class="tok-punct">(</span>error<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'submit_failed'</span><span class="tok-punct">,</span> message<span class="tok-punct">:</span> <span class="tok-type">String</span><span class="tok-punct">(</span>error<span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>placeOrder<span class="tok-punct">}</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>state<span class="tok-punct">.</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'pending'</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>state<span class="tok-punct">.</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'pending'</span> <span class="tok-punct">?</span> <span class="tok-string">'Placing order...'</span> <span class="tok-punct">:</span> <span class="tok-string">'Place order'</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The reducer stays pure and synchronous; the network lives in the handler. The <code>status</code> field makes the impossible states — success <em>and</em> an error message — unrepresentable.</p>
+<h3 id="typing-a-reducer-with-a-discriminated-union">Typing a reducer with a discriminated union<a class="heading-anchor" href="#typing-a-reducer-with-a-discriminated-union" aria-label="Link to this section">#</a></h3>
+<p>TypeScript makes reducers considerably better: the <code>action.type</code> discriminant narrows each <code>case</code> to exactly the fields that action carries, and a <code>never</code> check makes forgetting a case a compile error.</p>
+<div class="code-block" data-lang="tsx"><div class="code-head"><span class="code-lang">tsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-tsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">type</span> <span class="tok-type">Task</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span><span class="tok-punct">;</span> text<span class="tok-punct">:</span> <span class="tok-type">string</span><span class="tok-punct">;</span> done<span class="tok-punct">:</span> <span class="tok-type">boolean</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">type</span> <span class="tok-type">TaskAction</span> <span class="tok-punct">=</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'added'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span><span class="tok-punct">;</span> text<span class="tok-punct">:</span> <span class="tok-type">string</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'toggled'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">|</span> <span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'deleted'</span><span class="tok-punct">;</span> id<span class="tok-punct">:</span> <span class="tok-type">number</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">tasksReducer</span><span class="tok-punct">(</span>tasks<span class="tok-punct">:</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">,</span> action<span class="tok-punct">:</span> <span class="tok-type">TaskAction</span><span class="tok-punct">)</span><span class="tok-punct">:</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'added'</span><span class="tok-punct">:</span>
+      <span class="tok-comment">// action.text is available here; action.done is a compile error.</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>tasks<span class="tok-punct">,</span> <span class="tok-punct">{</span> id<span class="tok-punct">:</span> action<span class="tok-punct">.</span>id<span class="tok-punct">,</span> text<span class="tok-punct">:</span> action<span class="tok-punct">.</span>text<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'toggled'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+        task<span class="tok-punct">.</span>id <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>task<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done <span class="tok-punct">}</span> <span class="tok-punct">:</span> task
+      <span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'deleted'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> task<span class="tok-punct">.</span>id <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+      <span class="tok-comment">// Add a new action type without a case here and this line fails to compile.</span>
+      <span class="tok-keyword">const</span> unhandled<span class="tok-punct">:</span> <span class="tok-type">never</span> <span class="tok-punct">=</span> action<span class="tok-punct">;</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unhandled action: </span><span class="tok-punct">${</span><span class="tok-type">JSON</span><span class="tok-punct">.</span><span class="tok-fn">stringify</span><span class="tok-punct">(</span>unhandled<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">TypedTaskApp</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tasks<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>tasksReducer<span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-punct">]</span> <span class="tok-keyword">as</span> <span class="tok-type">Task</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>id<span class="tok-punct">}</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'toggled'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> task<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>task<span class="tok-punct">.</span>done <span class="tok-punct">?</span> <span class="tok-string">'[x]'</span> <span class="tok-punct">:</span> <span class="tok-string">'[ ]'</span><span class="tok-punct">}</span> <span class="tok-punct">{</span>task<span class="tok-punct">.</span>text<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<div class="callout callout-tip" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Tip</p><div class="callout-body"><p>Name actions after what happened in the interface — <code>added</code>, <code>toggled</code>, <code>reordered</code> — not after what the reducer should do (<code>setTasks</code>). Actions are a log of events; if they read like setter calls you have moved the update logic back into the handlers.</p>
+</div></div>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>A task list combining everything: one reducer, immutable updates, a bail-out, a derived count computed during render, and <code>dispatch</code> handed to a child.</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useReducer</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> initialTasks <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> text<span class="tok-punct">:</span> <span class="tok-string">'Read the Rules of Hooks'</span><span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">true</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> text<span class="tok-punct">:</span> <span class="tok-string">'Delete an unnecessary Effect'</span><span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">tasksReducer</span><span class="tok-punct">(</span>tasks<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'added'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span>text<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> tasks<span class="tok-punct">;</span> <span class="tok-comment">// no change, no re-render</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>tasks<span class="tok-punct">,</span> <span class="tok-punct">{</span> id<span class="tok-punct">:</span> action<span class="tok-punct">.</span>id<span class="tok-punct">,</span> text<span class="tok-punct">:</span> action<span class="tok-punct">.</span>text<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-literal">false</span> <span class="tok-punct">}</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'toggled'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+        task<span class="tok-punct">.</span>id <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>task<span class="tok-punct">,</span> done<span class="tok-punct">:</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done <span class="tok-punct">}</span> <span class="tok-punct">:</span> task
+      <span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'deleted'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> task<span class="tok-punct">.</span>id <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> action<span class="tok-punct">.</span>id<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">TaskRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> task<span class="tok-punct">,</span> dispatch <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span>
+          <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>done<span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'toggled'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> task<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;span</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> textDecoration<span class="tok-punct">:</span> task<span class="tok-punct">.</span>done <span class="tok-punct">?</span> <span class="tok-string">'line-through'</span> <span class="tok-punct">:</span> <span class="tok-string">'none'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>task<span class="tok-punct">.</span>text<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'deleted'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> task<span class="tok-punct">.</span>id <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Delete</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">TaskApp</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tasks<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>tasksReducer<span class="tok-punct">,</span> initialTasks<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>draft<span class="tok-punct">,</span> setDraft<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// Derived during render. Never stored.</span>
+  <span class="tok-keyword">const</span> remaining <span class="tok-punct">=</span> tasks<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">!</span>task<span class="tok-punct">.</span>done<span class="tok-punct">)</span><span class="tok-punct">.</span>length<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">add</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-comment">// The id is computed in the handler, not in the reducer: reducers are pure.</span>
+    <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'added'</span><span class="tok-punct">,</span> id<span class="tok-punct">:</span> <span class="tok-type">Date</span><span class="tok-punct">.</span><span class="tok-fn">now</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">,</span> text<span class="tok-punct">:</span> draft <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setDraft</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>draft<span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;New task&quot;</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setDraft</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>add<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Add</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> listStyle<span class="tok-punct">:</span> <span class="tok-string">'none'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>tasks<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>task<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;TaskRow</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">.</span>id<span class="tok-punct">}</span> <span class="tok-attr">task</span><span class="tok-punct">=</span><span class="tok-punct">{</span>task<span class="tok-punct">}</span> <span class="tok-attr">dispatch</span><span class="tok-punct">=</span><span class="tok-punct">{</span>dispatch<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>remaining<span class="tok-punct">}</span> remaining<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useReducer, useState } from 'react';
+
+const initialTasks = [
+  { id: 1, text: 'Read the Rules of Hooks', done: true },
+  { id: 2, text: 'Delete an unnecessary Effect', done: false },
+];
+
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added':
+      if (action.text.trim() === '') return tasks; // no change, no re-render
+      return [...tasks, { id: action.id, text: action.text, done: false }];
+    case 'toggled':
+      return tasks.map((task) =&gt;
+        task.id === action.id ? { ...task, done: !task.done } : task
+      );
+    case 'deleted':
+      return tasks.filter((task) =&gt; task.id !== action.id);
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+function TaskRow({ task, dispatch }) {
+  return (
+    &lt;li&gt;
+      &lt;label&gt;
+        &lt;input
+          type=&quot;checkbox&quot;
+          checked={task.done}
+          onChange={() =&gt; dispatch({ type: 'toggled', id: task.id })}
+        /&gt;{' '}
+        &lt;span style={{ textDecoration: task.done ? 'line-through' : 'none' }}&gt;
+          {task.text}
+        &lt;/span&gt;
+      &lt;/label&gt;{' '}
+      &lt;button onClick={() =&gt; dispatch({ type: 'deleted', id: task.id })}&gt;
+        Delete
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+}
+
+export default function TaskApp() {
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+  const [draft, setDraft] = useState('');
+
+  // Derived during render. Never stored.
+  const remaining = tasks.filter((task) =&gt; !task.done).length;
+
+  function add() {
+    // The id is computed in the handler, not in the reducer: reducers are pure.
+    dispatch({ type: 'added', id: Date.now(), text: draft });
+    setDraft('');
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={draft}
+        placeholder=&quot;New task&quot;
+        onChange={(e) =&gt; setDraft(e.target.value)}
+      /&gt;{' '}
+      &lt;button onClick={add}&gt;Add&lt;/button&gt;
+      &lt;ul style={{ listStyle: 'none', padding: 0 }}&gt;
+        {tasks.map((task) =&gt; (
+          &lt;TaskRow key={task.id} task={task} dispatch={dispatch} /&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;p&gt;{remaining} remaining&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p><code>TaskRow</code> receives <code>dispatch</code>, whose identity never changes, so wrapping it in <a href="../performance/memoization.html"><code>memo</code></a> would actually work — unlike a fresh arrow function created on every render.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Mutating state in the reducer.</strong> <code>tasks.push(newTask); return tasks;</code> returns the same reference, React bails out, and nothing renders. Return a new array.</p>
+<p><strong>Doing side effects inside the reducer.</strong> <code>fetch</code>, <code>localStorage</code>, <code>Date.now()</code>, <code>Math.random()</code>, logging to an analytics endpoint. All of it breaks under StrictMode's double invocation and under concurrent replay. Compute in the handler, pass the result in the action.</p>
+<p><strong>Generating ids inside the reducer.</strong> <code>id: nextId++</code> produces gaps or duplicates when the reducer runs twice. Put the id in the action.</p>
+<p><strong>Forgetting the <code>default</code> case.</strong> A typo in an action type silently returns <code>undefined</code> and wipes your state. Throw instead — you will find the typo in seconds.</p>
+<p><strong>Calling the initializer instead of passing it.</strong> <code>useReducer(reducer, createInitialState(user))</code> runs on every render; <code>useReducer(reducer, user, createInitialState)</code> runs once.</p>
+<p><strong>Actions named like setters.</strong> <code>{ type: 'setStep', value: 3 }</code> puts the logic back in the handler and leaves the reducer as a dumb assignment. Name the event.</p>
+<p><strong>Reaching for a reducer too early.</strong> One boolean does not need one. Start with <code>useState</code> and convert when the handlers begin repeating each other.</p>
+<p><strong>Expecting <code>dispatch</code> to return the new state.</strong> It returns nothing. Read the new state on the next render.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./use-state.html">useState</a> — the simpler default, and the comparison table for choosing.</li>
+<li><a href="../state-management/reducers-and-context.html">Reducers and context</a> — sharing one reducer across a subtree.</li>
+<li><a href="./rules-of-hooks.html">Rules of Hooks</a> — why <code>dispatch</code> must not be called during render.</li>
+<li><a href="../typescript/typing-hooks.html">Typing hooks</a> — more on discriminated unions and inference.</li>
+<li><a href="../ecosystem/redux.html">Redux</a> — the same idea scaled to an application store.</li>
+<li><a href="../core-concepts/strict-mode.html">StrictMode</a> — why your reducer runs twice in development.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../hooks/use-state.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">useState</span></a><a class="pager-link pager-next" href="../hooks/use-effect.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">useEffect</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#passing-an-init-function">Passing an init function</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#async-work-belongs-in-the-handler">Async work belongs in the handler</a></li><li class="toc-h3"><a href="#typing-a-reducer-with-a-discriminated-union">Typing a reducer with a discriminated union</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

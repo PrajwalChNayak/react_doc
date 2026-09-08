@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profiling · React 19 Docs</title>
+<meta name="description" content="Find what is actually slow with the React DevTools Profiler, the Profiler component, and Performance Tracks in Chrome DevTools.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Profiling · React 19 Docs">
+<meta property="og:description" content="Find what is actually slow with the React DevTools Profiler, the Profiler component, and Performance Tracks in Chrome DevTools.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html" aria-current="page"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#performance">Performance</a></li><li><span aria-current="page">Profiling</span></li></ol><header class="page-header"><h1 class="page-title">Profiling</h1><p class="page-description">Find what is actually slow with the React DevTools Profiler, the Profiler component, and Performance Tracks in Chrome DevTools.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>You have four instruments, and they answer different questions:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Instrument</th><th>Answers</th><th>Where</th></tr></thead>
+<tbody><tr><td>React DevTools Profiler</td><td>Which components rendered, how long each took, and why</td><td>Browser extension</td></tr><tr><td><code>&lt;Profiler&gt;</code></td><td>What one subtree costs, as a number you can log or assert on</td><td>In your code</td></tr><tr><td><strong>Performance Tracks</strong> (19.2)</td><td>How React's work interleaves with the browser's — priorities, effects, network</td><td>Chrome DevTools Performance panel</td></tr><tr><td><code>performance.mark</code> / <code>PerformanceObserver</code></td><td>Timings for arbitrary spans, and real-user Web Vitals</td><td>Browser API</td></tr></tbody></table></div>
+<p>Start with the DevTools Profiler when something feels slow, and move to Performance Tracks when you need to see React's work in the context of everything else on the main thread.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>Profile production builds. Development React runs extra checks, keeps component stacks, and — under StrictMode — double-invokes render functions and Effects. Development timings are inflated, and inflated unevenly, so the ranking between two components can differ from production.</p>
+</div></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>The relationship between the code you wrote and the time the browser spent is not something you can read off the source. A component that looks expensive may render in 0.2 ms. A component that looks trivial may be re-rendering 400 times a second because of a store subscription three levels up.</p>
+<p>Every profiler exists to answer one question: <em>where did the time go?</em> Answering that with intuition is how teams end up memoizing components that were never on the critical path.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Something feels slow and you do not yet know which of the <a href="./overview.html#the-three-problems-people-conflate">three problems</a> you have.</li>
+<li>Before and after any performance change, to prove it did something.</li>
+<li>When adopting the <a href="./react-compiler.html">React Compiler</a>, to confirm that render counts and durations actually dropped.</li>
+<li>On a regression: a page that was fast last release and is not now.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Do not profile as a habit on code nobody has complained about. Profiling costs time and produces numbers that invite changes with no user-visible payoff. Ship the feature.</p>
+<p>Do not profile to decide whether a component &quot;renders too much&quot; in the abstract. Render counts are only interesting when they translate into milliseconds on a frame the user is waiting for.</p>
+<p>Do not draw conclusions from a development build. The numbers include work that does not exist in production.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p><code>&lt;Profiler&gt;</code> puts a measurement in your code, so you can log it, send it to analytics, or assert on it in a test.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-type">Profiler</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">onRenderProductList</span><span class="tok-punct">(</span>
+  id<span class="tok-punct">,</span>
+  phase<span class="tok-punct">,</span>
+  actualDuration<span class="tok-punct">,</span>
+  baseDuration<span class="tok-punct">,</span>
+  startTime<span class="tok-punct">,</span>
+  commitTime<span class="tok-punct">,</span>
+<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  console<span class="tok-punct">.</span><span class="tok-fn">log</span><span class="tok-punct">(</span>id<span class="tok-punct">,</span> phase<span class="tok-punct">,</span> actualDuration<span class="tok-punct">,</span> baseDuration<span class="tok-punct">,</span> startTime<span class="tok-punct">,</span> commitTime<span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ProductPage</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;Profiler</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;product-list&quot;</span> <span class="tok-attr">onRender</span><span class="tok-punct">=</span><span class="tok-punct">{</span>onRenderProductList<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/Profiler</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><code>&lt;Profiler&gt;</code> takes two props: <code>id</code>, a string naming the part of the UI you are measuring, and <code>onRender</code>, called after every commit in that subtree. The callback receives six arguments, in this order:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Argument</th><th>Meaning</th></tr></thead>
+<tbody><tr><td><code>id</code></td><td>The <code>id</code> prop of the <code>&lt;Profiler&gt;</code> that committed</td></tr><tr><td><code>phase</code></td><td><code>&quot;mount&quot;</code>, <code>&quot;update&quot;</code> or <code>&quot;nested-update&quot;</code></td></tr><tr><td><code>actualDuration</code></td><td>Milliseconds spent rendering this subtree for this update</td></tr><tr><td><code>baseDuration</code></td><td>Estimated milliseconds to render the whole subtree with no memoization</td></tr><tr><td><code>startTime</code></td><td>Timestamp for when React began rendering this update</td></tr><tr><td><code>commitTime</code></td><td>Timestamp for when React committed it — shared across profilers in one commit</td></tr></tbody></table></div>
+<p>The pair that matters is <code>actualDuration</code> versus <code>baseDuration</code>. <code>baseDuration</code> is the worst case: no caching, everything re-rendered. If <code>actualDuration</code> stays close to <code>baseDuration</code> on updates, your memoization — hand-written or compiled — is not doing anything.</p>
+<p><code>&quot;nested-update&quot;</code> means the commit was caused by a state update inside an Effect or layout Effect during a previous commit. A stream of them is a sign of a render loop.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="the-react-devtools-profiler">The React DevTools Profiler<a class="heading-anchor" href="#the-react-devtools-profiler" aria-label="Link to this section">#</a></h3>
+<p>Install React Developer Tools, open the <strong>Profiler</strong> tab, press record, interact, and stop.</p>
+<p><strong>The commit bar chart</strong> across the top shows every commit in the session, sized by duration. The tall bars are your problem. Click one to inspect it.</p>
+<p><strong>The flamegraph</strong> shows the component tree for that commit. Width is time spent in that component and its descendants. Gray components did not re-render. Wide bars near the root usually mean a parent is re-rendering the world; wide bars at a leaf mean that leaf is expensive on its own.</p>
+<p><strong>The ranked chart</strong> sorts the same commit's components by their own render time, descendants excluded. This is the view that answers &quot;what is the single most expensive component here&quot;, and it is usually where you should start.</p>
+<p><strong>Why did this render?</strong> Turn on the &quot;Record why each component rendered while profiling&quot; setting before recording. Each component then reports the cause: props changed (and which ones), state changed, hooks changed, or the parent rendered. This is the most useful feature in the panel, because it turns &quot;this re-renders a lot&quot; into &quot;this re-renders because <code>options</code> is a new object every time&quot;.</p>
+<div class="callout callout-tip" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Tip</p><div class="callout-body"><p>The Components tab has a &quot;Highlight updates when components render&quot; setting. It is a fast, imprecise smell test — flashing outlines around a component during unrelated interactions tell you where to point the Profiler.</p>
+</div></div>
+<h3 id="performance-tracks-in-chrome-devtools">Performance Tracks in Chrome DevTools<a class="heading-anchor" href="#performance-tracks-in-chrome-devtools" aria-label="Link to this section">#</a></h3>
+<p>React 19.2 adds <strong>Performance Tracks</strong>: React's own entries on the Chrome DevTools Performance panel timeline, alongside network requests, JavaScript execution and the event loop. This is the view the DevTools Profiler cannot give you, because it shows React's work <em>in context</em> — next to the layout, the garbage collection and the fetch that were competing with it.</p>
+<h4 id="the-scheduler-track">The Scheduler track<a class="heading-anchor" href="#the-scheduler-track" aria-label="Link to this section">#</a></h4>
+<p>Shows React's work organized by priority, across four subtracks:</p>
+<ul>
+<li><strong>Blocking</strong> — synchronous updates, usually from user interactions.</li>
+<li><strong>Transition</strong> — non-blocking background work started with <code>startTransition</code>.</li>
+<li><strong>Suspense</strong> — work related to Suspense boundaries.</li>
+<li><strong>Idle</strong> — lowest priority work, run when nothing else is pending.</li>
+</ul>
+<p>Each render pass is broken into phases: <strong>Update</strong>, <strong>Render</strong>, <strong>Commit</strong> and <strong>Remaining Effects</strong>.</p>
+<p>This track answers a question the component profiler cannot: <em>is this work blocking?</em> An expensive render on the Transition track is not hurting INP. The same render on the Blocking track is. If you wrapped an update in <code>startTransition</code> and it still appears under Blocking, the transition is not doing what you think.</p>
+<h4 id="the-components-track">The Components track<a class="heading-anchor" href="#the-components-track" aria-label="Link to this section">#</a></h4>
+<p>A flamegraph of components over time, showing:</p>
+<ul>
+<li>Render durations for each component and all of its descendants.</li>
+<li>Effect durations, in an aligned color scheme.</li>
+<li>Lifecycle events: <strong>Mount</strong>, <strong>Unmount</strong>, <strong>Reconnect</strong> and <strong>Disconnect</strong>.</li>
+<li>Changed props, in development builds, when you click a component entry.</li>
+</ul>
+<p>The Effects rows are the part you cannot get elsewhere. A component that renders in 2 ms but spends 40 ms in its Effects is invisible in the DevTools Profiler's render timings and obvious here.</p>
+<h4 id="the-server-track">The Server track<a class="heading-anchor" href="#the-server-track" aria-label="Link to this section">#</a></h4>
+<p>Development builds only. It contains <strong>Server Requests</strong> — every Promise in Server Components, including <code>fetch</code>, with rejected Promises shown in red — and <strong>Server Components</strong>, a flamegraph of Server Component durations and awaited Promises. Use it to find the one sequential <code>await</code> that is serializing your whole page.</p>
+<h4 id="availability">Availability<a class="heading-anchor" href="#availability" aria-label="Link to this section">#</a></h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Build</th><th>What you get</th></tr></thead>
+<tbody><tr><td>Development</td><td>All tracks, enabled by default</td></tr><tr><td>Profiling</td><td>Scheduler only by default. The Components track shows components wrapped in <code>&lt;Profiler&gt;</code>, or all components if the React Developer Tools extension is installed</td></tr><tr><td>Production</td><td>Disabled by default</td></tr></tbody></table></div>
+<p>To use a profiling build, alias <code>react-dom/client</code> to <code>react-dom/profiling</code> at build time through your bundler's alias configuration. That gives you production optimization levels with the instrumentation still attached, which is the closest you can get to profiling what your users experience.</p>
+<p>The tracks appear automatically in Performance panel traces in browsers that support the DevTools performance extensibility API.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="measure-a-specific-span-with-the-user-timing-api">Measure a specific span with the User Timing API<a class="heading-anchor" href="#measure-a-specific-span-with-the-user-timing-api" aria-label="Link to this section">#</a></h3>
+<p><code>performance.mark</code> and <code>performance.measure</code> put your own labeled spans on the same timeline as the React tracks, so you can see which part of an interaction was React and which was yours.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">importOrders</span><span class="tok-punct">(</span>rows<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  performance<span class="tok-punct">.</span><span class="tok-fn">mark</span><span class="tok-punct">(</span><span class="tok-string">'import-orders:start'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> normalized <span class="tok-punct">=</span> rows<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>row<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+    id<span class="tok-punct">:</span> row<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+    total<span class="tok-punct">:</span> <span class="tok-type">Number</span><span class="tok-punct">(</span>row<span class="tok-punct">.</span>total<span class="tok-punct">)</span><span class="tok-punct">,</span>
+    placedAt<span class="tok-punct">:</span> <span class="tok-keyword">new</span> <span class="tok-type">Date</span><span class="tok-punct">(</span>row<span class="tok-punct">.</span>placed_at<span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  performance<span class="tok-punct">.</span><span class="tok-fn">mark</span><span class="tok-punct">(</span><span class="tok-string">'import-orders:end'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  performance<span class="tok-punct">.</span><span class="tok-fn">measure</span><span class="tok-punct">(</span>
+    <span class="tok-string">'import-orders'</span><span class="tok-punct">,</span>
+    <span class="tok-string">'import-orders:start'</span><span class="tok-punct">,</span>
+    <span class="tok-string">'import-orders:end'</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> normalized<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The resulting <code>import-orders</code> entry appears in the Performance panel's Timings track, lined up against the Scheduler and Components tracks.</p>
+<h3 id="collect-web-vitals-from-real-users">Collect Web Vitals from real users<a class="heading-anchor" href="#collect-web-vitals-from-real-users" aria-label="Link to this section">#</a></h3>
+<p>Your laptop is not the device your users have. Field data is the only honest measure of LCP, INP and CLS.</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-keyword">const</span> observer <span class="tok-punct">=</span> <span class="tok-keyword">new</span> <span class="tok-type">PerformanceObserver</span><span class="tok-punct">(</span><span class="tok-punct">(</span>list<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">for</span> <span class="tok-punct">(</span><span class="tok-keyword">const</span> entry <span class="tok-keyword">of</span> list<span class="tok-punct">.</span><span class="tok-fn">getEntries</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    navigator<span class="tok-punct">.</span><span class="tok-fn">sendBeacon</span><span class="tok-punct">(</span>
+      <span class="tok-string">'/api/metrics'</span><span class="tok-punct">,</span>
+      <span class="tok-type">JSON</span><span class="tok-punct">.</span><span class="tok-fn">stringify</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+        name<span class="tok-punct">:</span> entry<span class="tok-punct">.</span>entryType<span class="tok-punct">,</span>
+        value<span class="tok-punct">:</span> entry<span class="tok-punct">.</span>startTime<span class="tok-punct">,</span>
+        url<span class="tok-punct">:</span> location<span class="tok-punct">.</span>pathname<span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+observer<span class="tok-punct">.</span><span class="tok-fn">observe</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+  <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'largest-contentful-paint'</span><span class="tok-punct">,</span>
+  buffered<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span></code></pre></div>
+<p>For production use the <code>web-vitals</code> library rather than hand-rolling this — the correct definitions of INP and CLS involve buffering, session windows and page-lifecycle handling that are unpleasant to get right by hand.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>The <code>first-input</code> entry type measures First Input Delay, which stopped being a Core Web Vital in March 2024. Collect <strong>INP</strong> instead: it covers the whole path from interaction to the next painted frame, which is where React render work actually shows up.</p>
+</div></div>
+<h3 id="catch-regressions-in-ci">Catch regressions in CI<a class="heading-anchor" href="#catch-regressions-in-ci" aria-label="Link to this section">#</a></h3>
+<p><code>&lt;Profiler&gt;</code> works in tests. Render a representative tree, record <code>actualDuration</code>, and fail the build if it moves beyond a threshold. Keep the threshold loose — CI machines are noisy — and treat it as a tripwire for a tenfold regression, not a benchmark.</p>
+<h3 id="find-leaks-with-heap-snapshots">Find leaks with heap snapshots<a class="heading-anchor" href="#find-leaks-with-heap-snapshots" aria-label="Link to this section">#</a></h3>
+<p>If memory grows across navigations, take a heap snapshot in the Memory panel, navigate away and back several times, snapshot again, and compare retained objects. Growing counts of detached DOM nodes or component instances almost always mean an Effect that subscribes without cleaning up. See <a href="../hooks/use-effect.html">useEffect</a>.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>An in-app measurement panel: aggregate <code>actualDuration</code> per commit and show it on demand. Note that the callback writes to a ref, not to state — calling a state setter inside <code>onRender</code> schedules another commit, which calls <code>onRender</code> again.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-type">Profiler</span><span class="tok-punct">,</span> <span class="tok-fn">useRef</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">CITIES</span> <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">300</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+  id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+  name<span class="tok-punct">:</span> <span class="tok-string">`City </span><span class="tok-punct">${</span>index<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span>
+  population<span class="tok-punct">:</span> <span class="tok-number">40000</span> <span class="tok-punct">+</span> index <span class="tok-punct">*</span> <span class="tok-number">137</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">CityTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> minPopulation <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> rows <span class="tok-punct">=</span> <span class="tok-type">CITIES</span><span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>city<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> city<span class="tok-punct">.</span>population <span class="tok-punct">&gt;</span><span class="tok-punct">=</span> minPopulation<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> maxHeight<span class="tok-punct">:</span> <span class="tok-number">120</span><span class="tok-punct">,</span> overflow<span class="tok-punct">:</span> <span class="tok-string">'auto'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>rows<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>city<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+            <span class="tok-tag">&lt;tr</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>city<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>city<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>city<span class="tok-punct">.</span>population<span class="tok-punct">.</span><span class="tok-fn">toLocaleString</span><span class="tok-punct">(</span><span class="tok-string">'en-US'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ProfiledCityTable</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> stats <span class="tok-punct">=</span> <span class="tok-fn">useRef</span><span class="tok-punct">(</span><span class="tok-punct">{</span> commits<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">,</span> totalActual<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">,</span> totalBase<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>minPopulation<span class="tok-punct">,</span> setMinPopulation<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">40000</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>snapshot<span class="tok-punct">,</span> setSnapshot<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleRender</span><span class="tok-punct">(</span>id<span class="tok-punct">,</span> phase<span class="tok-punct">,</span> actualDuration<span class="tok-punct">,</span> baseDuration<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> current <span class="tok-punct">=</span> stats<span class="tok-punct">.</span>current<span class="tok-punct">;</span>
+    current<span class="tok-punct">.</span>commits <span class="tok-punct">+</span><span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+    current<span class="tok-punct">.</span>totalActual <span class="tok-punct">+</span><span class="tok-punct">=</span> actualDuration<span class="tok-punct">;</span>
+    current<span class="tok-punct">.</span>totalBase <span class="tok-punct">+</span><span class="tok-punct">=</span> baseDuration<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Minimum</span> population<span class="tok-punct">:</span> <span class="tok-punct">{</span>minPopulation<span class="tok-punct">.</span><span class="tok-fn">toLocaleString</span><span class="tok-punct">(</span><span class="tok-string">'en-US'</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;range&quot;</span>
+          <span class="tok-attr">min</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">40000</span><span class="tok-punct">}</span>
+          <span class="tok-attr">max</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">80000</span><span class="tok-punct">}</span>
+          <span class="tok-attr">step</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">2000</span><span class="tok-punct">}</span>
+          <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>minPopulation<span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setMinPopulation</span><span class="tok-punct">(</span><span class="tok-type">Number</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setSnapshot</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>stats<span class="tok-punct">.</span>current <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Read</span> measurements
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>snapshot <span class="tok-punct">?</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>snapshot<span class="tok-punct">.</span>commits<span class="tok-punct">}</span> commits · actual<span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+          <span class="tok-punct">{</span>snapshot<span class="tok-punct">.</span>totalActual<span class="tok-punct">.</span><span class="tok-fn">toFixed</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">}</span> ms · base<span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+          <span class="tok-punct">{</span>snapshot<span class="tok-punct">.</span>totalBase<span class="tok-punct">.</span><span class="tok-fn">toFixed</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">}</span> ms
+        <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;Profiler</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;city-table&quot;</span> <span class="tok-attr">onRender</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleRender<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;CityTable</span> <span class="tok-attr">minPopulation</span><span class="tok-punct">=</span><span class="tok-punct">{</span>minPopulation<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/Profiler</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { Profiler, useRef, useState } from 'react';
+
+const CITIES = Array.from({ length: 300 }, (_, index) =&gt; ({
+  id: index,
+  name: `City ${index}`,
+  population: 40000 + index * 137,
+}));
+
+function CityTable({ minPopulation }) {
+  const rows = CITIES.filter((city) =&gt; city.population &gt;= minPopulation);
+  return (
+    &lt;div style={{ maxHeight: 120, overflow: 'auto' }}&gt;
+      &lt;table&gt;
+        &lt;tbody&gt;
+          {rows.map((city) =&gt; (
+            &lt;tr key={city.id}&gt;
+              &lt;td&gt;{city.name}&lt;/td&gt;
+              &lt;td&gt;{city.population.toLocaleString('en-US')}&lt;/td&gt;
+            &lt;/tr&gt;
+          ))}
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default function ProfiledCityTable() {
+  const stats = useRef({ commits: 0, totalActual: 0, totalBase: 0 });
+  const [minPopulation, setMinPopulation] = useState(40000);
+  const [snapshot, setSnapshot] = useState(null);
+
+  function handleRender(id, phase, actualDuration, baseDuration) {
+    const current = stats.current;
+    current.commits += 1;
+    current.totalActual += actualDuration;
+    current.totalBase += baseDuration;
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;label&gt;
+        Minimum population: {minPopulation.toLocaleString('en-US')}
+        &lt;input
+          type=&quot;range&quot;
+          min={40000}
+          max={80000}
+          step={2000}
+          value={minPopulation}
+          onChange={(event) =&gt; setMinPopulation(Number(event.target.value))}
+        /&gt;
+      &lt;/label&gt;
+      &lt;p&gt;
+        &lt;button onClick={() =&gt; setSnapshot({ ...stats.current })}&gt;
+          Read measurements
+        &lt;/button&gt;
+      &lt;/p&gt;
+      {snapshot ? (
+        &lt;p&gt;
+          {snapshot.commits} commits · actual{' '}
+          {snapshot.totalActual.toFixed(1)} ms · base{' '}
+          {snapshot.totalBase.toFixed(1)} ms
+        &lt;/p&gt;
+      ) : null}
+      &lt;Profiler id=&quot;city-table&quot; onRender={handleRender}&gt;
+        &lt;CityTable minPopulation={minPopulation} /&gt;
+      &lt;/Profiler&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Drag the slider, then read the measurements. <code>actualDuration</code> tracking <code>baseDuration</code> closely is the expected result here — there is no memoization in this tree, so every commit does the full amount of work.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Profiling a development build and acting on the numbers.</strong> They include work that does not exist in production, including StrictMode's deliberate double invocation.</p>
+<p><strong>Calling a state setter inside <code>onRender</code>.</strong> It schedules another commit, which calls <code>onRender</code> again. Accumulate into a ref and read it on demand.</p>
+<p><strong>Leaving <code>&lt;Profiler&gt;</code> in hot paths in production.</strong> It is cheap but not free. Wrap the sections you are actively investigating, not every component.</p>
+<p><strong>Reading <code>actualDuration</code> in isolation.</strong> Compare it against <code>baseDuration</code>, and compare both against a recording from before your change.</p>
+<p><strong>Optimizing the widest bar in the flamegraph.</strong> Width includes descendants. The ranked chart, which excludes them, tells you which component is actually expensive.</p>
+<p><strong>Ignoring the Effects rows on the Components track.</strong> Slow Effects — layout reads, synchronous storage writes, heavy subscription setup — block the commit and are invisible in render-time-only views.</p>
+<p><strong>Chasing render counts.</strong> Sixty cheap renders can cost less than one expensive one. Milliseconds are the unit, not counts.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./overview.html">Performance overview</a> — turning a measurement into a decision.</li>
+<li><a href="./memoization.html">Memoization</a> — what to do when the profile says a subtree re-renders needlessly.</li>
+<li><a href="./react-compiler.html">React Compiler</a> — verifying that automatic memoization changed the numbers.</li>
+<li><a href="./lists-and-virtualization.html">Lists and virtualization</a> — what to do when the profile says one component is expensive on its own.</li>
+<li><a href="../hooks/use-effect.html">useEffect</a> — where slow Effects and leaked subscriptions come from.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../performance/activity.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Activity</span></a><a class="pager-link pager-next" href="../performance/lists-and-virtualization.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Lists and virtualization</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#the-react-devtools-profiler">The React DevTools Profiler</a></li><li class="toc-h3"><a href="#performance-tracks-in-chrome-devtools">Performance Tracks in Chrome DevTools</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#measure-a-specific-span-with-the-user-timing-api">Measure a specific span with the User Timing API</a></li><li class="toc-h3"><a href="#collect-web-vitals-from-real-users">Collect Web Vitals from real users</a></li><li class="toc-h3"><a href="#catch-regressions-in-ci">Catch regressions in CI</a></li><li class="toc-h3"><a href="#find-leaks-with-heap-snapshots">Find leaks with heap snapshots</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

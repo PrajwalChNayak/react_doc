@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>useContext · React 19 Docs</title>
+<meta name="description" content="Read a value provided higher up the tree without passing it through props.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="useContext · React 19 Docs">
+<meta property="og:description" content="Read a value provided higher up the tree without passing it through props.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html" aria-current="page"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#hooks">Hooks</a></li><li><span aria-current="page">useContext</span></li></ol><header class="page-header"><h1 class="page-title">useContext</h1><p class="page-description">Read a value provided higher up the tree without passing it through props.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p><code>useContext</code> reads the value of the nearest matching provider above the component in the tree.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">const value = useContext(SomeContext)</code></pre></div>
+<ul>
+<li><code>SomeContext</code> — a context created with <code>createContext(defaultValue)</code>.</li>
+<li>Returns the <code>value</code> of the closest <code>&lt;SomeContext&gt;</code> above this component. If there is no provider above it, you get the <code>defaultValue</code> passed to <code>createContext</code>.</li>
+</ul>
+<p>In React 19 the context object <strong>is</strong> the provider component:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ThemeContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ThemedButton</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> theme <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">ThemeContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;button</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`btn btn--</span><span class="tok-punct">${</span>theme<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Save</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">App</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ThemeContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;dark&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ThemedButton</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/ThemeContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<div class="callout callout-deprecated" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Deprecated</p><div class="callout-body"><p>Before React 19 you rendered <code>&lt;ThemeContext.Provider value={...}&gt;</code>. That still works in 19, but it is deprecated: render <code>&lt;ThemeContext&gt;</code> directly instead. A codemod handles the migration — <code>npx codemod@latest react/19/migration-recipe</code>.</p>
+</div></div>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><span class="code-badge code-badge-legacy">legacy</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-comment">// React 18 and earlier, and deprecated in React 19. Do not write new code like this.</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ThemeContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ThemedButton</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> theme <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">ThemeContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;button</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`btn btn--</span><span class="tok-punct">${</span>theme<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Save</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">App</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ThemeContext.Provider</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;dark&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ThemedButton</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/ThemeContext.Provider</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>Props flow down one level at a time. When a value is needed by something ten levels deep — the current theme, the signed-in user, the interface language, a router — every component in between has to accept and forward a prop it does not use. That is prop drilling, and it makes intermediate components harder to reuse and harder to change.</p>
+<p>Context is a way to say &quot;this value is available to everything in this subtree&quot;. The provider marks the boundary; any descendant reads it directly, no matter how deep.</p>
+<p>The trade is explicitness. A component reading context has a dependency you cannot see at its call site. That is why context suits values that are genuinely ambient — and suits ordinary application data much less well.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Themes and appearance</strong>: light or dark, density, brand.</li>
+<li><strong>The authenticated user</strong> and permissions.</li>
+<li><strong>Locale and formatting</strong> preferences.</li>
+<li><strong>A router's current location</strong>, which is what every routing library uses context for.</li>
+<li><strong>A design system's implicit configuration</strong> — the current form's <code>id</code> prefix, a disabled state shared by a group of inputs.</li>
+<li><strong>A reducer's <code>dispatch</code></strong>, which is stable and therefore free to share widely. See <a href="../state-management/reducers-and-context.html">reducers and context</a>.</li>
+</ul>
+<p>The shared trait: the value is read by many components, changes rarely, and is genuinely about &quot;where in the tree am I&quot;.</p>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>As a general state manager.</strong> Context is a transport mechanism, not a store. It has no selectors, so every consumer re-renders on every change, and no way to subscribe to part of a value. For frequently changing application state, read <a href="../state-management/choosing-an-approach.html">choosing an approach</a>.</li>
+<li><strong>For values that change many times a second</strong> — cursor position, scroll offset, an animation frame, a text input's value. Every consumer re-renders on each change.</li>
+<li><strong>To avoid passing two props.</strong> Prop drilling through one or two levels is cheaper and clearer than a context.</li>
+<li><strong>For server data.</strong> A cache belongs in a data library. See <a href="../data-fetching/overview.html">data fetching</a>.</li>
+<li><strong>When composition solves it.</strong> Passing <code>children</code> or an element as a prop often removes the intermediate props entirely, with no context at all. See <a href="../patterns/composition.html">composition</a>.</li>
+<li><strong>For an external store.</strong> If the source of truth lives outside React, use <a href="./use-sync-external-store.html"><code>useSyncExternalStore</code></a>; it lets components subscribe to precisely what they read.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ThemeContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">Toolbar</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// Any depth, no props threaded through.</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ThemedButton</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Save&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ThemedButton</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Cancel&quot;</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ThemedButton</span><span class="tok-punct">(</span><span class="tok-punct">{</span> label <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> theme <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">ThemeContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;button</span>
+      <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+        background<span class="tok-punct">:</span> theme <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'dark'</span> <span class="tok-punct">?</span> <span class="tok-string">'#222'</span> <span class="tok-punct">:</span> <span class="tok-string">'#eee'</span><span class="tok-punct">,</span>
+        color<span class="tok-punct">:</span> theme <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'dark'</span> <span class="tok-punct">?</span> <span class="tok-string">'#fff'</span> <span class="tok-punct">:</span> <span class="tok-string">'#111'</span><span class="tok-punct">,</span>
+        border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #888'</span><span class="tok-punct">,</span>
+        marginRight<span class="tok-punct">:</span> <span class="tok-number">8</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>label<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">App</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>theme<span class="tok-punct">,</span> setTheme<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ThemeContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>theme<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;Toolbar</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setTheme</span><span class="tok-punct">(</span><span class="tok-punct">(</span>t<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>t <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'light'</span> <span class="tok-punct">?</span> <span class="tok-string">'dark'</span> <span class="tok-punct">:</span> <span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Switch</span> to <span class="tok-punct">{</span>theme <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'light'</span> <span class="tok-punct">?</span> <span class="tok-string">'dark'</span> <span class="tok-punct">:</span> <span class="tok-string">'light'</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/ThemeContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { createContext, useContext, useState } from 'react';
+
+const ThemeContext = createContext('light');
+
+function Toolbar() {
+  // Any depth, no props threaded through.
+  return (
+    &lt;div&gt;
+      &lt;ThemedButton label=&quot;Save&quot; /&gt;
+      &lt;ThemedButton label=&quot;Cancel&quot; /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function ThemedButton({ label }) {
+  const theme = useContext(ThemeContext);
+  return (
+    &lt;button
+      style={{
+        background: theme === 'dark' ? '#222' : '#eee',
+        color: theme === 'dark' ? '#fff' : '#111',
+        border: '1px solid #888',
+        marginRight: 8,
+      }}
+    &gt;
+      {label}
+    &lt;/button&gt;
+  );
+}
+
+export default function App() {
+  const [theme, setTheme] = useState('light');
+  return (
+    &lt;ThemeContext value={theme}&gt;
+      &lt;Toolbar /&gt;
+      &lt;p&gt;
+        &lt;button onClick={() =&gt; setTheme((t) =&gt; (t === 'light' ? 'dark' : 'light'))}&gt;
+          Switch to {theme === 'light' ? 'dark' : 'light'}
+        &lt;/button&gt;
+      &lt;/p&gt;
+    &lt;/ThemeContext&gt;
+  );
+}</template></div>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p><strong>Lookup is by identity, upward.</strong> React walks up from the reading component until it finds a provider for that exact context object. Not by name — by reference. If your bundler produces two copies of the module that calls <code>createContext</code> (a symlinked package, a duplicated dependency), providing and reading will use different objects and the lookup silently falls through to the default value.</p>
+<p><strong>The default value is used only when there is no provider above.</strong> It is not a fallback for <code>undefined</code>: if a provider passes <code>undefined</code>, consumers get <code>undefined</code>.</p>
+<p><strong>A provider does not affect the component that renders it.</strong> <code>useContext</code> in the same component that renders <code>&lt;SomeContext&gt;</code> reads whatever is <em>above</em> that component, not the value it provides.</p>
+<p><strong>Across re-renders.</strong> When a provider re-renders with a <code>value</code> that differs under <code>Object.is</code>, React re-renders every descendant that reads that context — starting from the provider, and <strong>regardless of <code>memo</code></strong>. Memoizing a component in between does not stop context updates from reaching consumers below it. That is deliberate: consumers must always see a fresh value.</p>
+<p><strong>With StrictMode.</strong> Nothing specific to context. The double render in development will, however, make an unstable provider value more visible in the profiler.</p>
+<p><strong>With concurrent rendering.</strong> Context values are read during render, from the same tree React is currently rendering, so consumers cannot see a value from a different point in time. This is why context does not suffer the tearing problems that a hand-rolled subscription can — and why external stores need <a href="./use-sync-external-store.html"><code>useSyncExternalStore</code></a> rather than a plain listener.</p>
+<h3 id="reading-context-conditionally-with-use">Reading context conditionally with <code>use()</code><a class="heading-anchor" href="#reading-context-conditionally-with-use" aria-label="Link to this section">#</a></h3>
+<p><code>useContext</code> obeys the <a href="./rules-of-hooks.html">Rules of Hooks</a>: top level only. Since React 19.0, <code>use()</code> can read a context inside a condition or a loop.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> use <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">ThemeContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Divider</span><span class="tok-punct">(</span><span class="tok-punct">{</span> decorated <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>decorated<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> theme <span class="tok-punct">=</span> <span class="tok-fn">use</span><span class="tok-punct">(</span><span class="tok-type">ThemeContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-comment">// allowed: use() is not a hook</span>
+    <span class="tok-keyword">return</span> <span class="tok-tag">&lt;hr</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-string">`rule rule--</span><span class="tok-punct">${</span>theme<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;hr</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>See <a href="./use.html">use</a> for its full rules.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="the-object-literal-trap">The object literal trap<a class="heading-anchor" href="#the-object-literal-trap" aria-label="Link to this section">#</a></h3>
+<p>This is the most common context performance bug.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">SessionContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-punct">{</span> userName<span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">,</span> signOut<span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span><span class="tok-punct">}</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">SessionProviderSlow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>userName<span class="tok-punct">,</span> setUserName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'ada'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// A brand-new object on every render of this component, so every consumer</span>
+  <span class="tok-comment">// re-renders even when userName has not changed.</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;SessionContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> userName<span class="tok-punct">,</span> signOut<span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setUserName</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/SessionContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><code>{ userName, signOut }</code> is a fresh object each render. <code>Object.is</code> says it changed, so every consumer in the subtree re-renders — including on renders caused by something unrelated in the parent.</p>
+<p>Two fixes, in order of preference.</p>
+<p><strong>Provide values that do not need memoizing.</strong> A string, a number, or a stable <code>dispatch</code> never has this problem. Splitting one object context into two contexts is often the whole fix.</p>
+<p><strong>Memoize the value</strong> when it must be an object:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useMemo</span><span class="tok-punct">,</span> <span class="tok-fn">useCallback</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">SessionContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-punct">{</span> userName<span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">,</span> signOut<span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span><span class="tok-punct">}</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">SessionProvider</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>userName<span class="tok-punct">,</span> setUserName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'ada'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> signOut <span class="tok-punct">=</span> <span class="tok-fn">useCallback</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setUserName</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> value <span class="tok-punct">=</span> <span class="tok-fn">useMemo</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span> userName<span class="tok-punct">,</span> signOut <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>userName<span class="tok-punct">,</span> signOut<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;SessionContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>value<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>children<span class="tok-punct">}</span><span class="tok-tag">&lt;/SessionContext</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p>The <a href="../performance/react-compiler.html">React Compiler</a> memoizes provider values like this one automatically. On a compiled codebase you can write the object literal and let the compiler handle it — but check that the compiler is actually enabled for that file before relying on it.</p>
+</div></div>
+<h3 id="split-state-from-dispatch">Split state from dispatch<a class="heading-anchor" href="#split-state-from-dispatch" aria-label="Link to this section">#</a></h3>
+<p>If the value is &quot;some state plus a way to change it&quot;, two contexts are better than one. Components that only dispatch never re-render when the state changes.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useReducer</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> initialCart <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">'Keyboard'</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">CartContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span>initialCart<span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-comment">// A default that complains is better than one that silently does nothing.</span>
+<span class="tok-keyword">const</span> <span class="tok-type">CartDispatchContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-punct">(</span>action<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+  console<span class="tok-punct">.</span><span class="tok-fn">warn</span><span class="tok-punct">(</span><span class="tok-string">'Cart dispatch called with no provider above:'</span><span class="tok-punct">,</span> action<span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">cartReducer</span><span class="tok-punct">(</span>items<span class="tok-punct">,</span> action<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">switch</span> <span class="tok-punct">(</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'added'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>items<span class="tok-punct">,</span> action<span class="tok-punct">.</span>name<span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-string">'cleared'</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">default</span><span class="tok-punct">:</span>
+      <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Unknown action: </span><span class="tok-punct">${</span>action<span class="tok-punct">.</span><span class="tok-keyword">type</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">AddButton</span><span class="tok-punct">(</span><span class="tok-punct">{</span> name <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// Reads only dispatch, which never changes: this never re-renders</span>
+  <span class="tok-comment">// because of a cart update.</span>
+  <span class="tok-keyword">const</span> dispatch <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">CartDispatchContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'added'</span><span class="tok-punct">,</span> name <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Add</span> <span class="tok-punct">{</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">CartSummary</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> items <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">CartContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>items<span class="tok-punct">.</span>length<span class="tok-punct">}</span> <span class="tok-fn">item</span><span class="tok-punct">(</span>s<span class="tok-punct">)</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>items<span class="tok-punct">.</span>length <span class="tok-punct">&gt;</span> <span class="tok-number">0</span> <span class="tok-punct">?</span> items<span class="tok-punct">.</span><span class="tok-fn">join</span><span class="tok-punct">(</span><span class="tok-string">', '</span><span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-string">'none'</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Store</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>items<span class="tok-punct">,</span> dispatch<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useReducer</span><span class="tok-punct">(</span>cartReducer<span class="tok-punct">,</span> initialCart<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;CartContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>items<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;CartDispatchContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>dispatch<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;AddButton</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;Keyboard&quot;</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;AddButton</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;Monitor&quot;</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">dispatch</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">type</span><span class="tok-punct">:</span> <span class="tok-string">'cleared'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Clear</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;CartSummary</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/CartDispatchContext</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/CartContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { createContext, useContext, useReducer } from 'react';
+
+const initialCart = ['Keyboard'];
+
+const CartContext = createContext(initialCart);
+// A default that complains is better than one that silently does nothing.
+const CartDispatchContext = createContext((action) =&gt; {
+  console.warn('Cart dispatch called with no provider above:', action);
+});
+
+function cartReducer(items, action) {
+  switch (action.type) {
+    case 'added':
+      return [...items, action.name];
+    case 'cleared':
+      return [];
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+function AddButton({ name }) {
+  // Reads only dispatch, which never changes: this never re-renders
+  // because of a cart update.
+  const dispatch = useContext(CartDispatchContext);
+  return &lt;button onClick={() =&gt; dispatch({ type: 'added', name })}&gt;Add {name}&lt;/button&gt;;
+}
+
+function CartSummary() {
+  const items = useContext(CartContext);
+  return (
+    &lt;p&gt;
+      {items.length} item(s): {items.length &gt; 0 ? items.join(', ') : 'none'}
+    &lt;/p&gt;
+  );
+}
+
+export default function Store() {
+  const [items, dispatch] = useReducer(cartReducer, initialCart);
+  return (
+    &lt;CartContext value={items}&gt;
+      &lt;CartDispatchContext value={dispatch}&gt;
+        &lt;AddButton name=&quot;Keyboard&quot; /&gt;{' '}
+        &lt;AddButton name=&quot;Monitor&quot; /&gt;{' '}
+        &lt;button onClick={() =&gt; dispatch({ type: 'cleared' })}&gt;Clear&lt;/button&gt;
+        &lt;CartSummary /&gt;
+      &lt;/CartDispatchContext&gt;
+    &lt;/CartContext&gt;
+  );
+}</template></div>
+<h3 id="wrap-the-context-in-a-custom-hook">Wrap the context in a custom hook<a class="heading-anchor" href="#wrap-the-context-in-a-custom-hook" aria-label="Link to this section">#</a></h3>
+<p>Export a hook, not the context object. It gives you one place for the &quot;you forgot the provider&quot; error, and it lets you change the implementation later without touching consumers.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">AuthContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span>
+  <span class="tok-comment">/** @type {{ userName: string, signOut: () =&gt; void } | null} */</span> <span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span>
+<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">useAuth</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> auth <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">AuthContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>auth <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useAuth must be called inside &lt;AuthProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> auth<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">AuthProvider</span><span class="tok-punct">(</span><span class="tok-punct">{</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>userName<span class="tok-punct">,</span> setUserName<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'ada'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> value <span class="tok-punct">=</span> <span class="tok-punct">{</span> userName<span class="tok-punct">,</span> signOut<span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setUserName</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;AuthContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>value<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>children<span class="tok-punct">}</span><span class="tok-tag">&lt;/AuthContext</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>A <code>null</code> default plus this check turns &quot;the value is mysteriously empty&quot; into a clear error naming the missing provider.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Keep contexts small and single-purpose. One context per concern — <code>ThemeContext</code>, <code>AuthContext</code>, <code>LocaleContext</code> — re-renders far less than one <code>AppStateContext</code> holding all three.</p>
+</div></div>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Providers nest, and the nearest one wins. That is what makes context useful for scoped overrides rather than only for globals.</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">DensityContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-string">'comfortable'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">Row</span><span class="tok-punct">(</span><span class="tok-punct">{</span> label <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> density <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">DensityContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span>
+      <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+        padding<span class="tok-punct">:</span> density <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'compact'</span> <span class="tok-punct">?</span> <span class="tok-string">'2px 6px'</span> <span class="tok-punct">:</span> <span class="tok-string">'10px 6px'</span><span class="tok-punct">,</span>
+        borderBottom<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ccc'</span><span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>label<span class="tok-punct">}</span> <span class="tok-tag">&lt;small</span><span class="tok-tag">&gt;</span><span class="tok-punct">(</span><span class="tok-punct">{</span>density<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-tag">&lt;/small</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">Panel</span><span class="tok-punct">(</span><span class="tok-punct">{</span> title<span class="tok-punct">,</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #999'</span><span class="tok-punct">,</span> marginBottom<span class="tok-punct">:</span> <span class="tok-number">12</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h3</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> margin<span class="tok-punct">:</span> <span class="tok-number">4</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Settings</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>density<span class="tok-punct">,</span> setDensity<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'comfortable'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;DensityContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>density<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span>
+        <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+          <span class="tok-fn">setDensity</span><span class="tok-punct">(</span><span class="tok-punct">(</span>d<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>d <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'compact'</span> <span class="tok-punct">?</span> <span class="tok-string">'comfortable'</span> <span class="tok-punct">:</span> <span class="tok-string">'compact'</span><span class="tok-punct">)</span><span class="tok-punct">)</span>
+        <span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-type">Toggle</span> page <span class="tok-fn">density</span> <span class="tok-punct">(</span>now <span class="tok-punct">{</span>density<span class="tok-punct">}</span><span class="tok-punct">)</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;Panel</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Follows the page&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;Row</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Notifications&quot;</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-tag">&lt;Row</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Privacy&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/Panel</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* A nested provider overrides the value for its subtree only. */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;DensityContext</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;compact&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;Panel</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Always compact&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;Row</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Advanced&quot;</span> <span class="tok-tag">/&gt;</span>
+          <span class="tok-tag">&lt;Row</span> <span class="tok-attr">label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Danger zone&quot;</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-tag">&lt;/Panel</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/DensityContext</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/DensityContext</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { createContext, useContext, useState } from 'react';
+
+const DensityContext = createContext('comfortable');
+
+function Row({ label }) {
+  const density = useContext(DensityContext);
+  return (
+    &lt;div
+      style={{
+        padding: density === 'compact' ? '2px 6px' : '10px 6px',
+        borderBottom: '1px solid #ccc',
+      }}
+    &gt;
+      {label} &lt;small&gt;({density})&lt;/small&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Panel({ title, children }) {
+  return (
+    &lt;section style={{ border: '1px solid #999', marginBottom: 12 }}&gt;
+      &lt;h3 style={{ margin: 4 }}&gt;{title}&lt;/h3&gt;
+      {children}
+    &lt;/section&gt;
+  );
+}
+
+export default function Settings() {
+  const [density, setDensity] = useState('comfortable');
+
+  return (
+    &lt;DensityContext value={density}&gt;
+      &lt;button
+        onClick={() =&gt;
+          setDensity((d) =&gt; (d === 'compact' ? 'comfortable' : 'compact'))
+        }
+      &gt;
+        Toggle page density (now {density})
+      &lt;/button&gt;
+
+      &lt;Panel title=&quot;Follows the page&quot;&gt;
+        &lt;Row label=&quot;Notifications&quot; /&gt;
+        &lt;Row label=&quot;Privacy&quot; /&gt;
+      &lt;/Panel&gt;
+
+      {/* A nested provider overrides the value for its subtree only. */}
+      &lt;DensityContext value=&quot;compact&quot;&gt;
+        &lt;Panel title=&quot;Always compact&quot;&gt;
+          &lt;Row label=&quot;Advanced&quot; /&gt;
+          &lt;Row label=&quot;Danger zone&quot; /&gt;
+        &lt;/Panel&gt;
+      &lt;/DensityContext&gt;
+    &lt;/DensityContext&gt;
+  );
+}</template></div>
+<p>Nothing between <code>Settings</code> and <code>Row</code> knows that density exists. Each <code>Row</code> reads the closest provider above itself.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Rendering a provider and expecting to read it in the same component.</strong> The lookup starts above the component that calls <code>useContext</code>. Move the read into a child.</p>
+<p><strong>A fresh object as the value on every render.</strong> Every consumer re-renders, forever. Memoize the value, split the context, or rely on the compiler.</p>
+<p><strong>Assuming <code>memo</code> blocks context updates.</strong> It does not. A memoized component still re-renders when a context it reads changes.</p>
+<p><strong>Using the default value as a fallback for a missing provider.</strong> It works, but it hides configuration bugs. Prefer <code>null</code> plus a custom hook that throws.</p>
+<p><strong>One giant <code>AppContext</code>.</strong> Any change re-renders every consumer of every field in it.</p>
+<p><strong>Treating context as a state manager.</strong> No selectors, no partial subscriptions, no devtools. When the value changes often, you need <a href="../state-management/external-stores.html">an external store</a>.</p>
+<p><strong>Putting a rapidly changing value in context.</strong> A controlled input's value or a mouse position will re-render the entire subtree on every event.</p>
+<p><strong>Reading context in a condition with <code>useContext</code>.</strong> That breaks the Rules of Hooks. Use <code>use()</code> if the read must be conditional.</p>
+<p><strong>Two copies of the context module.</strong> Duplicated packages or symlinked workspaces produce two distinct context objects, and the read silently falls back to the default.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../state-management/context.html">Context</a> — designing providers for an application.</li>
+<li><a href="../state-management/reducers-and-context.html">Reducers and context</a> — sharing a reducer's state and dispatch.</li>
+<li><a href="./use.html">use</a> — reading context conditionally, since React 19.0.</li>
+<li><a href="./use-sync-external-store.html">useSyncExternalStore</a> — subscribing to a store outside React.</li>
+<li><a href="../state-management/choosing-an-approach.html">Choosing an approach</a> — where context stops being enough.</li>
+<li><a href="../patterns/composition.html">Composition</a> — the pattern that removes many contexts entirely.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../hooks/use-effect-event.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">useEffectEvent</span></a><a class="pager-link pager-next" href="../hooks/use-ref.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">useRef</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#reading-context-conditionally-with-use">Reading context conditionally with use()</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#the-object-literal-trap">The object literal trap</a></li><li class="toc-h3"><a href="#split-state-from-dispatch">Split state from dispatch</a></li><li class="toc-h3"><a href="#wrap-the-context-in-a-custom-hook">Wrap the context in a custom hook</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

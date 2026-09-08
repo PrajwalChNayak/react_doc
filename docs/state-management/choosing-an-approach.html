@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Choosing an approach · React 19 Docs</title>
+<meta name="description" content="A ladder from local state to server-state libraries, and the one distinction that decides most of it.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Choosing an approach · React 19 Docs">
+<meta property="og:description" content="A ladder from local state to server-state libraries, and the one distinction that decides most of it.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html" aria-current="page"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#state-management">State Management</a></li><li><span aria-current="page">Choosing an approach</span></li></ol><header class="page-header"><h1 class="page-title">Choosing an approach</h1><p class="page-description">A ladder from local state to server-state libraries, and the one distinction that decides most of it.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>Most state-management arguments are arguments about the wrong question. The useful question is not &quot;Redux or Zustand?&quot; — it is &quot;what kind of thing is this value, and who needs it?&quot;</p>
+<p>There is a ladder. Climb it one rung at a time, and stop at the first rung that works.</p>
+<ol>
+<li><strong>Derive it.</strong> If the value can be computed from other values, do not store it at all.</li>
+<li><strong>Local state.</strong> <code>useState</code> in the component that owns it.</li>
+<li><strong>Lift it.</strong> Move it to the closest common ancestor and pass props down.</li>
+<li><strong>Compose.</strong> Pass elements as props to delete the prop drilling that lifting created.</li>
+<li><strong>Reducer.</strong> When the transitions get complicated, put them in one pure function.</li>
+<li><strong>Context.</strong> For values that are wide and change rarely: theme, locale, session, feature flags.</li>
+<li><strong>External store.</strong> For frequently-changing shared state that many components read <em>selectively</em>.</li>
+<li><strong>A server-state library.</strong> For anything whose source of truth is a server.</li>
+</ol>
+<p>Rung 8 is not the last resort. For most applications it is the <em>first</em> thing you should reach for, because most of what people call &quot;global state&quot; is a cache.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>Two mistakes cost teams the most time, and they pull in opposite directions.</p>
+<p>The first is starting too high: a global store on day one, every value in it, every component subscribed. The store becomes a dumping ground, nothing is colocated, and deleting a feature never deletes its state.</p>
+<p>The second is staying too low for too long: fifteen <code>useState</code> calls threaded through six layers, three Effects keeping copies in sync, and a bug where the header shows a different cart total than the checkout page.</p>
+<p>The ladder exists so you can name where you are and what would justify the next step. Every rung has a specific trigger; if you cannot name the trigger, do not climb.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Sort state by two axes before choosing anything: <strong>who needs it</strong> (one component, one subtree, the whole app) and <strong>how often it changes</strong> (once, on interaction, on every frame). Context is fine for wide-and-slow and terrible for wide-and-fast.</p>
+</div></div>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Each rung, with the trigger that justifies it:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Rung</th><th>Use when</th><th>Cost</th></tr></thead>
+<tbody><tr><td>Derive</td><td>The value is a function of other state or props</td><td>None</td></tr><tr><td><code>useState</code></td><td>One component reads and writes it</td><td>None</td></tr><tr><td>Lift up</td><td>Two or more components need the same value</td><td>Props to thread</td></tr><tr><td>Compose</td><td>Lifting produced intermediate components that only forward props</td><td>A little indirection in layout</td></tr><tr><td><code>useReducer</code></td><td>Transitions are complex or must stay consistent together</td><td>A reducer to keep pure</td></tr><tr><td>Context</td><td>The value is needed across a subtree and changes rarely</td><td>Every consumer re-renders on change</td></tr><tr><td>External store</td><td>Many components read one changing value, each needing a slice</td><td>A dependency, and a subscription model</td></tr><tr><td>Server-state library</td><td>The value's source of truth is a server</td><td>A dependency, and a cache to configure</td></tr></tbody></table></div>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p><strong>Do not put server data in a client store.</strong> This is the single most common architectural mistake in React applications, and it deserves its own section below.</p>
+<p><strong>Do not use context for values that change at interaction speed.</strong> There is no selector; every consumer re-renders. A text input's value, a drag position, or a scroll offset in a widely-consumed context will make the whole tree render at input speed.</p>
+<p><strong>Do not add a store to avoid two props.</strong> Try <a href="../patterns/composition.html">composition</a> first.</p>
+<p><strong>Do not keep state that the URL should hold.</strong> The current page, an open tab, a search query, a filter, a sort order and pagination all belong in the URL. Then the back button works, links are shareable, and a refresh does not lose the view. Your router already gives you this for free — see <a href="../ecosystem/routing.html">Routing</a>.</p>
+<p><strong>Do not keep in state what the DOM already knows.</strong> Focus, scroll position and uncontrolled input values can be read from the DOM with a ref when you need them.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>Rung one, which people skip. Everything visible below is computed during render. There is exactly as much state as there is user input.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">TEAM</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Ada Lovelace'</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">'Engineering'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Grace Hopper'</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">'Engineering'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">3</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Katherine Johnson'</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">'Research'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">TeamFilter</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// The only real state: what the user typed and what they picked.</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>role<span class="tok-punct">,</span> setRole<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'All'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// Everything below is derived. No useState, no useEffect, no useMemo needed.</span>
+  <span class="tok-keyword">const</span> visible <span class="tok-punct">=</span> <span class="tok-type">TEAM</span><span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>
+    <span class="tok-punct">(</span>person<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+      <span class="tok-punct">(</span>role <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'All'</span> <span class="tok-punct">|</span><span class="tok-punct">|</span> person<span class="tok-punct">.</span>role <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> role<span class="tok-punct">)</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span>
+      person<span class="tok-punct">.</span>name<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>query<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> isEmpty <span class="tok-punct">=</span> visible<span class="tok-punct">.</span>length <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> summary <span class="tok-punct">=</span> <span class="tok-string">`</span><span class="tok-punct">${</span>visible<span class="tok-punct">.</span>length<span class="tok-punct">}</span><span class="tok-string"> of </span><span class="tok-punct">${</span><span class="tok-type">TEAM</span><span class="tok-punct">.</span>length<span class="tok-punct">}</span><span class="tok-string"> people`</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search by name&quot;</span>
+        <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search by name&quot;</span>
+      <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;select</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>role<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setRole</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span><span class="tok-tag">&gt;</span><span class="tok-type">All</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span><span class="tok-tag">&gt;</span><span class="tok-type">Engineering</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span><span class="tok-tag">&gt;</span><span class="tok-type">Research</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>summary<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>isEmpty <span class="tok-punct">?</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Nobody</span> matches that filter<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>visible<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>person<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+            <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>person<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+              <span class="tok-punct">{</span>person<span class="tok-punct">.</span>name<span class="tok-punct">}</span> — <span class="tok-punct">{</span>person<span class="tok-punct">.</span>role<span class="tok-punct">}</span>
+            <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+const TEAM = [
+  { id: 1, name: 'Ada Lovelace', role: 'Engineering' },
+  { id: 2, name: 'Grace Hopper', role: 'Engineering' },
+  { id: 3, name: 'Katherine Johnson', role: 'Research' },
+];
+
+export default function TeamFilter() {
+  // The only real state: what the user typed and what they picked.
+  const [query, setQuery] = useState('');
+  const [role, setRole] = useState('All');
+
+  // Everything below is derived. No useState, no useEffect, no useMemo needed.
+  const visible = TEAM.filter(
+    (person) =&gt;
+      (role === 'All' || person.role === role) &amp;&amp;
+      person.name.toLowerCase().includes(query.trim().toLowerCase()),
+  );
+  const isEmpty = visible.length === 0;
+  const summary = `${visible.length} of ${TEAM.length} people`;
+
+  return (
+    &lt;section&gt;
+      &lt;input
+        value={query}
+        onChange={(event) =&gt; setQuery(event.target.value)}
+        placeholder=&quot;Search by name&quot;
+        aria-label=&quot;Search by name&quot;
+      /&gt;{' '}
+      &lt;select value={role} onChange={(event) =&gt; setRole(event.target.value)}&gt;
+        &lt;option&gt;All&lt;/option&gt;
+        &lt;option&gt;Engineering&lt;/option&gt;
+        &lt;option&gt;Research&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;p&gt;{summary}&lt;/p&gt;
+      {isEmpty ? (
+        &lt;p&gt;Nobody matches that filter.&lt;/p&gt;
+      ) : (
+        &lt;ul&gt;
+          {visible.map((person) =&gt; (
+            &lt;li key={person.id}&gt;
+              {person.name} — {person.role}
+            &lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/section&gt;
+  );
+}</template></div>
+<p>The version of this component that stores <code>visible</code>, <code>isEmpty</code> and <code>summary</code> in state needs three more <code>useState</code> calls and an Effect to keep them current — and will render one frame with stale values every time. Deriving is not an optimization; it removes a class of bug.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="the-decision-list">The decision list<a class="heading-anchor" href="#the-decision-list" aria-label="Link to this section">#</a></h3>
+<p>Walk it top to bottom and stop at the first &quot;yes&quot;.</p>
+<ol>
+<li><strong>Can I compute it from something I already have?</strong> Compute it. Do not store it.</li>
+<li><strong>Does the server own it?</strong> Use a server-state library. Stop reading the rest of this list.</li>
+<li><strong>Should it survive a refresh or be shareable as a link?</strong> Put it in the URL.</li>
+<li><strong>Does only one component use it?</strong> <code>useState</code>, right there.</li>
+<li><strong>Do a few nearby components use it?</strong> Lift it to their closest common ancestor.</li>
+<li><strong>Did lifting create components that forward props they never read?</strong> Pass elements as props instead.</li>
+<li><strong>Are the transitions hard to keep consistent?</strong> Move them into a <code>useReducer</code>.</li>
+<li><strong>Is it needed across a whole subtree, and does it change rarely?</strong> Context — with the value and the dispatch in separate contexts.</li>
+<li><strong>Do many components read it, each needing a different slice, and does it change often?</strong> An external store with selectors.</li>
+<li><strong>Are you now writing selectors, middleware and a devtools bridge by hand?</strong> Adopt a real store instead of finishing yours.</li>
+</ol>
+<h3 id="server-state-is-not-client-state">Server state is not client state<a class="heading-anchor" href="#server-state-is-not-client-state" aria-label="Link to this section">#</a></h3>
+<p>Client state is created by the user, in the browser, and is authoritative there: which modal is open, what is typed, which row is selected, the theme.</p>
+<p>Server state is a <strong>copy</strong>. The truth lives in a database that other people are changing while your user looks at a stale snapshot. That difference generates requirements that no client store has:</p>
+<ul>
+<li>Caching, and a key by which to cache.</li>
+<li>Deduplication when six components request the same resource at once.</li>
+<li>Staleness and revalidation: refetch on focus, on reconnect, on an interval.</li>
+<li>Invalidation after a mutation.</li>
+<li>Request cancellation when the user navigates away.</li>
+<li>Retries with backoff.</li>
+<li>Pagination and infinite scroll cursors.</li>
+<li>Optimistic updates with rollback on failure.</li>
+</ul>
+<p>Putting a fetch response into Redux, Zustand or context gives you exactly none of that. You will implement it yourself, one incident at a time, and end up with a worse version of a library that already exists.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Use a dedicated server-state library — TanStack Query, SWR, or RTK Query if you are already on Redux Toolkit — and let it own everything that came from the network. Then look at what is left. In most applications it is a theme, a session, a couple of modals and some form drafts, and that fits comfortably in <code>useState</code> plus one or two contexts.</p>
+<p>The &quot;we need Redux for global state&quot; conversation is usually a symptom of caching server data by hand.</p>
+</div></div>
+<p>These are third-party packages, not part of React. See <a href="../ecosystem/data-libraries.html">Data libraries</a> and <a href="../data-fetching/overview.html">Data fetching</a>. If you use a framework with Server Components, much of this moves to the server and never becomes client state at all — see <a href="../server-react/server-components.html">Server Components</a>.</p>
+<h3 id="context-vs-external-store">Context vs external store<a class="heading-anchor" href="#context-vs-external-store" aria-label="Link to this section">#</a></h3>
+<p>Once state is genuinely client-side, wide and changing, this is the real choice:</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Context</th><th>External store</th></tr></thead>
+<tbody><tr><td>Re-render granularity</td><td>Every consumer, on every value identity change</td><td>Only components whose selected slice changed</td></tr><tr><td>Selectors</td><td>None</td><td>Core feature, often with a custom equality option</td></tr><tr><td>Devtools</td><td>React DevTools shows the value; no history</td><td>Time travel, action logs, state diffs</td></tr><tr><td>Server rendering</td><td>Works out of the box</td><td>Works, but the store must be created per request</td></tr><tr><td>Bundle cost</td><td>Zero — built into React</td><td>~1–15 kB depending on the library</td></tr><tr><td>Read outside React</td><td>No</td><td>Yes — event handlers, workers, non-React code</td></tr><tr><td>Learning curve</td><td>Low</td><td>Low to high, depending on the library</td></tr><tr><td>Best for</td><td>Theme, locale, session, compound components</td><td>Carts, editors, collaborative cursors, large tables</td></tr></tbody></table></div>
+<p>Context is not a slower store. It is a different tool: a way to pass a value down a tree. When the value it passes is a <em>store object</em>, the two combine perfectly — context handles scoping and dependency injection, the store handles subscription and selection.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="split-state-by-change-frequency-not-by-feature">Split state by change frequency, not by feature<a class="heading-anchor" href="#split-state-by-change-frequency-not-by-feature" aria-label="Link to this section">#</a></h3>
+<p>A &quot;user settings&quot; context holding both the theme (changes twice a year) and the current draft message (changes per keystroke) will re-render every settings consumer on every keystroke. Group by how often a value changes.</p>
+<h3 id="colocate-then-promote">Colocate, then promote<a class="heading-anchor" href="#colocate-then-promote" aria-label="Link to this section">#</a></h3>
+<p>Start every piece of state in the component that uses it. Promote it only when a second component needs it. Codebases that begin at the top of the ladder never find their way back down; codebases that begin at the bottom climb exactly as far as they must.</p>
+<h3 id="keep-the-store-out-of-the-render-path-where-you-can">Keep the store out of the render path where you can<a class="heading-anchor" href="#keep-the-store-out-of-the-render-path-where-you-can" aria-label="Link to this section">#</a></h3>
+<p>Values that change every frame — pointer position, scroll offset, animation progress — do not need to be state at all. Hold them in a ref and write to the DOM directly. State is for things the UI's <em>structure</em> depends on.</p>
+<h3 id="one-store-or-several">One store, or several?<a class="heading-anchor" href="#one-store-or-several" aria-label="Link to this section">#</a></h3>
+<p>Several small stores scoped to features beat one application store, for the same reason several contexts beat one: independent change means independent re-renders, and a deleted feature takes its store with it. Redux is the exception by design — a single store is the point, and its selector layer makes it work.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>A realistic mid-size application, with each kind of state assigned to the tool that fits it. Nothing here is global by default.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> createContext<span class="tok-punct">,</span> <span class="tok-fn">useContext</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useQuery</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'@tanstack/react-query'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useSearchParams</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react-router'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// 1. Session: wide, changes rarely -&gt; context.</span>
+<span class="tok-keyword">const</span> <span class="tok-type">SessionContext</span> <span class="tok-punct">=</span> <span class="tok-fn">createContext</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">useSession</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> session <span class="tok-punct">=</span> <span class="tok-fn">useContext</span><span class="tok-punct">(</span><span class="tok-type">SessionContext</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>session <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">'useSession must be used inside &lt;SessionProvider&gt;'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> session<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">InvoicesPage</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> session <span class="tok-punct">=</span> <span class="tok-fn">useSession</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// 2. Filters and pagination: shareable and refresh-safe -&gt; the URL.</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>searchParams<span class="tok-punct">,</span> setSearchParams<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useSearchParams</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> status <span class="tok-punct">=</span> searchParams<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span><span class="tok-string">'status'</span><span class="tok-punct">)</span> <span class="tok-punct">?</span><span class="tok-punct">?</span> <span class="tok-string">'open'</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// 3. Server data: cached, revalidated, deduplicated -&gt; a query library.</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">{</span> data<span class="tok-punct">:</span> invoices <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">,</span> isPending <span class="tok-punct">}</span> <span class="tok-punct">=</span> <span class="tok-fn">useQuery</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+    queryKey<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">'invoices'</span><span class="tok-punct">,</span> session<span class="tok-punct">.</span>orgId<span class="tok-punct">,</span> status<span class="tok-punct">]</span><span class="tok-punct">,</span>
+    queryFn<span class="tok-punct">:</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/invoices?status=</span><span class="tok-punct">${</span>status<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span><span class="tok-punct">(</span>r<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> r<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// 4. Ephemeral UI state: one component -&gt; useState.</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>expandedId<span class="tok-punct">,</span> setExpandedId<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// 5. Derived: computed, never stored.</span>
+  <span class="tok-keyword">const</span> overdue <span class="tok-punct">=</span> invoices<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>invoice<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> invoice<span class="tok-punct">.</span>dueInDays <span class="tok-punct">&lt;</span> <span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">.</span>length<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>isPending<span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span> invoices…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>invoices<span class="tok-punct">.</span>length<span class="tok-punct">}</span> invoices<span class="tok-punct">,</span> <span class="tok-punct">{</span>overdue<span class="tok-punct">}</span> overdue
+      <span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;select</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>status<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setSearchParams</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">:</span> event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;open&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Open</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;paid&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Paid</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>invoices<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>invoice<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>invoice<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;button</span>
+              <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+                <span class="tok-fn">setExpandedId</span><span class="tok-punct">(</span><span class="tok-punct">(</span>current<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+                  current <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> invoice<span class="tok-punct">.</span>id <span class="tok-punct">?</span> <span class="tok-literal">null</span> <span class="tok-punct">:</span> invoice<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+                <span class="tok-punct">)</span>
+              <span class="tok-punct">}</span>
+            <span class="tok-tag">&gt;</span>
+              <span class="tok-punct">{</span>invoice<span class="tok-punct">.</span>reference<span class="tok-punct">}</span>
+            <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+            <span class="tok-punct">{</span>expandedId <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> invoice<span class="tok-punct">.</span>id <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>invoice<span class="tok-punct">.</span>notes<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Depends on a routing and data-fetching library plus a live API.</p></div>
+<p>Count what is <em>not</em> there: no global store, no <code>useEffect</code> fetching, no loading booleans in a reducer, no cached invoice list that another screen has to invalidate. Five kinds of state, five different homes, and the only one that needed a library is the one that came from a server.</p>
+<p>The rung this application has not reached is the external store. It would earn its place the day something like a live-updating cart or a collaborative editor appears — many components, one fast-moving value, each reader needing a different slice.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Caching server data in a client store.</strong> The most expensive mistake on this page. You inherit invalidation, deduplication, retries and staleness, and you will implement them badly. Use a query library.</p>
+<p><strong>Choosing a library before knowing the shape of the problem.</strong> &quot;We use Redux&quot; is an answer to a question nobody asked. Sort the state first, then pick tools for each category.</p>
+<p><strong>One context for the whole application.</strong> Every consumer subscribes to every field. Split by change frequency.</p>
+<p><strong>Storing derived values.</strong> Totals, filtered lists and validity flags are computations. Storing them creates a second source of truth and a synchronization Effect.</p>
+<p><strong>Keeping view configuration out of the URL.</strong> Filters and pagination in component state break the back button, break refresh, and make bug reports unreproducible.</p>
+<p><strong>Syncing two states with an Effect.</strong> An Effect whose only job is to call <code>setB</code> when <code>A</code> changes runs after a render that already showed the stale value. Compute it during render, or lift to one source of truth.</p>
+<p><strong>Reaching for context to avoid two props.</strong> Try composition. It costs nothing and adds no indirection.</p>
+<p><strong>Optimizing before profiling.</strong> Do not restructure your state for performance you have not measured. See <a href="../performance/profiling.html">Profiling</a>, and note that the <a href="../performance/react-compiler.html">React Compiler</a> removes much of the manual memoization that used to justify these rewrites.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./lifting-state-up.html">Lifting state up</a> — rungs two through four, in detail.</li>
+<li><a href="./context.html">Context</a> — rung six, and the re-render model that limits it.</li>
+<li><a href="./reducers-and-context.html">Reducers and context</a> — rungs five and six combined.</li>
+<li><a href="./external-stores.html">External stores</a> — rung seven, and a survey of the libraries.</li>
+<li><a href="../data-fetching/overview.html">Data fetching overview</a> — rung eight, where most &quot;state&quot; problems actually live.</li>
+<li><a href="../ecosystem/data-libraries.html">Data libraries</a> — TanStack Query, SWR and RTK Query compared.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../state-management/external-stores.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">External stores</span></a><a class="pager-link pager-next" href="../data-fetching/overview.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Data fetching overview</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#the-decision-list">The decision list</a></li><li class="toc-h3"><a href="#server-state-is-not-client-state">Server state is not client state</a></li><li class="toc-h3"><a href="#context-vs-external-store">Context vs external store</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#split-state-by-change-frequency-not-by-feature">Split state by change frequency, not by feature</a></li><li class="toc-h3"><a href="#colocate-then-promote">Colocate, then promote</a></li><li class="toc-h3"><a href="#keep-the-store-out-of-the-render-path-where-you-can">Keep the store out of the render path where you can</a></li><li class="toc-h3"><a href="#one-store-or-several">One store, or several?</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

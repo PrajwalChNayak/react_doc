@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controlled and uncontrolled inputs · React 19 Docs</title>
+<meta name="description" content="Choosing between React state and the DOM as the source of truth for form fields.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Controlled and uncontrolled inputs · React 19 Docs">
+<meta property="og:description" content="Choosing between React state and the DOM as the source of truth for form fields.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html" aria-current="page"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#patterns">Patterns</a></li><li><span aria-current="page">Controlled and uncontrolled inputs</span></li></ol><header class="page-header"><h1 class="page-title">Controlled and uncontrolled inputs</h1><p class="page-description">Choosing between React state and the DOM as the source of truth for form fields.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>Every form field in a React app has one of two owners.</p>
+<p>A <strong>controlled</strong> input takes its value from React state and reports every change back:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">SearchField</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;input</span>
+      <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+      <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>An <strong>uncontrolled</strong> input keeps its value in the DOM, exactly as plain HTML does. You give it a starting value and read it when you need it:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">SearchForm</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleSubmit</span><span class="tok-punct">(</span>formData<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    console<span class="tok-punct">.</span><span class="tok-fn">log</span><span class="tok-punct">(</span>formData<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span><span class="tok-string">'query'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span> <span class="tok-attr">action</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleSubmit<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;query&quot;</span> <span class="tok-attr">defaultValue</span><span class="tok-punct">=</span><span class="tok-string">&quot;&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;submit&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Search</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Both are correct React. The choice is about who needs to know the value, and when.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>React renders from state. If state does not contain the field's value, React cannot render anything derived from it — a live character count, a filtered list, a disabled button, a formatted phone number.</p>
+<p>Controlled inputs exist to close that loop: state renders the input, the input updates state, and the two can never disagree.</p>
+<p>Uncontrolled inputs exist because that loop is not free. Every keystroke becomes a state update and a re-render. For a 30-field settings page where nothing is derived from the values until submit, all of that work produces the same pixels the browser would have painted for free.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Reach for <strong>controlled</strong> when something renders from the value on every change:</p>
+<ul>
+<li>Live search, filtering, or previews.</li>
+<li>A character counter or a strength meter.</li>
+<li>Validation feedback shown while typing.</li>
+<li>Formatting or masking as the user types.</li>
+<li>A field whose value depends on another field.</li>
+<li>A value that must be set programmatically — &quot;reset filters&quot;, &quot;use my billing address&quot;.</li>
+</ul>
+<p>Reach for <strong>uncontrolled</strong> when the value is only needed at submit time:</p>
+<ul>
+<li>Long forms whose fields are independent.</li>
+<li>Anything you already submit through <code>&lt;form action&gt;</code> and <code>FormData</code>.</li>
+<li>File inputs, which cannot be controlled.</li>
+<li>Wrapping a non-React widget that manages its own field.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Do not control a field so you can read its value in the submit handler. That is what <code>FormData</code> is for, and it costs zero renders.</p>
+<p>Do not control a field because you might need the value later. Adding <code>value</code> and <code>onChange</code> to a 30-field form to support one derived label is how forms become slow. Control the one field that needs it.</p>
+<p>Do not use uncontrolled inputs when the value must be reset or synchronized from outside the form. Setting a DOM value behind React's back means reaching for a ref and imperative writes, and you will fight the framework.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>The comparison, side by side:</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Controlled</th><th>Uncontrolled</th></tr></thead>
+<tbody><tr><td>Source of truth</td><td>React state</td><td>The DOM node</td></tr><tr><td>Written as</td><td><code>value</code> + <code>onChange</code></td><td><code>defaultValue</code> / <code>defaultChecked</code></td></tr><tr><td>Re-render cost</td><td>One render per keystroke, per field</td><td>None until submit</td></tr><tr><td>Read the value</td><td>Any time, from state</td><td>On submit via <code>FormData</code>, or via a ref</td></tr><tr><td>Validation timing</td><td>Any keystroke, trivially</td><td>On submit, or on <code>blur</code> with a ref</td></tr><tr><td>Resetting</td><td>Set state</td><td><code>form.reset()</code>, or automatic after a successful action</td></tr><tr><td>Setting from outside</td><td>Set state</td><td>Imperative write through a ref</td></tr><tr><td>Form libraries</td><td>React Hook Form supports it, but favors uncontrolled</td><td>React Hook Form's default and fastest mode</td></tr><tr><td>File inputs</td><td>Not possible — always read-only</td><td>The only option</td></tr><tr><td>Server rendering</td><td>Value must be in state on both sides</td><td>Works with plain HTML semantics</td></tr></tbody></table></div>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">MAX</span> <span class="tok-punct">=</span> <span class="tok-number">140</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">StatusComposer</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>status<span class="tok-punct">,</span> setStatus<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> remaining <span class="tok-punct">=</span> <span class="tok-type">MAX</span> <span class="tok-punct">-</span> status<span class="tok-punct">.</span>length<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'grid'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">8</span><span class="tok-punct">,</span> maxWidth<span class="tok-punct">:</span> <span class="tok-number">420</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span> <span class="tok-attr">htmlFor</span><span class="tok-punct">=</span><span class="tok-string">&quot;status&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">What</span> are you working on<span class="tok-punct">?</span><span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;textarea</span>
+        <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;status&quot;</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>status<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setStatus</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">rows</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">3</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;p</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> margin<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">,</span> color<span class="tok-punct">:</span> remaining <span class="tok-punct">&lt;</span> <span class="tok-number">0</span> <span class="tok-punct">?</span> <span class="tok-string">'#b91c1c'</span> <span class="tok-punct">:</span> <span class="tok-string">'#52525b'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>remaining<span class="tok-punct">}</span> characters left
+      <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;button&quot;</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>status<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">''</span> <span class="tok-punct">|</span><span class="tok-punct">|</span> remaining <span class="tok-punct">&lt;</span> <span class="tok-number">0</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Post</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+const MAX = 140;
+
+export default function StatusComposer() {
+  const [status, setStatus] = useState('');
+  const remaining = MAX - status.length;
+
+  return (
+    &lt;div style={{ display: 'grid', gap: 8, maxWidth: 420 }}&gt;
+      &lt;label htmlFor=&quot;status&quot;&gt;What are you working on?&lt;/label&gt;
+      &lt;textarea
+        id=&quot;status&quot;
+        value={status}
+        onChange={(event) =&gt; setStatus(event.target.value)}
+        rows={3}
+      /&gt;
+      &lt;p style={{ margin: 0, color: remaining &lt; 0 ? '#b91c1c' : '#52525b' }}&gt;
+        {remaining} characters left
+      &lt;/p&gt;
+      &lt;button type=&quot;button&quot; disabled={status.trim() === '' || remaining &lt; 0}&gt;
+        Post
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>The counter and the disabled button are the justification. Remove them and this field has no reason to be controlled.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p><code>onChange</code> in React is not the DOM <code>change</code> event. React maps it onto <code>input</code>, so it fires on every keystroke rather than on blur. That is why controlled inputs feel immediate, and why they re-render so often.</p>
+<p>Passing <code>value</code> tells React the DOM must match state after every render. If a keystroke does not produce a state update, React puts the old value back, and the field appears frozen.</p>
+<h3 id="the-warnings-react-gives-you">The warnings React gives you<a class="heading-anchor" href="#the-warnings-react-gives-you" aria-label="Link to this section">#</a></h3>
+<p><strong><code>value</code> without <code>onChange</code>.</strong> React warns that you provided a <code>value</code> with no handler. Either add <code>onChange</code>, or say you meant it with <code>readOnly</code>:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ApiKeyField</span><span class="tok-punct">(</span><span class="tok-punct">{</span> apiKey <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;input</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>apiKey<span class="tok-punct">}</span> <span class="tok-attr">readOnly</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><strong>Switching controlled to uncontrolled.</strong> This is almost always <code>undefined</code> leaking in from data that has not arrived:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ProfileForm</span><span class="tok-punct">(</span><span class="tok-punct">{</span> user <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// user.nickname is undefined until the fetch resolves.</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;input</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>user<span class="tok-punct">.</span>nickname<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span><span class="tok-punct">}</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>React sees <code>undefined</code> and treats the input as uncontrolled; when the data arrives it becomes controlled and React warns that a component is changing an uncontrolled input to be controlled.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p><code>null</code> and <code>undefined</code> both make an input uncontrolled. Default to a string: <code>value={user.nickname ?? ''}</code>. Do the same for numbers — <code>value={count ?? 0}</code> — and remember an empty number input reads as <code>''</code>, not <code>0</code>.</p>
+</div></div>
+<p><strong>The reverse switch</strong> happens when you set state back to <code>undefined</code>, usually from a spread over a partial object. Initialize every controlled field in your initial state, even to <code>''</code>.</p>
+<h3 id="defaults">Defaults<a class="heading-anchor" href="#defaults" aria-label="Link to this section">#</a></h3>
+<p><code>defaultValue</code> and <code>defaultChecked</code> set the initial DOM value and are then ignored. Changing them later does nothing, because after mount the DOM owns the value.</p>
+<p>If you need an uncontrolled field to pick up a new default — say, after the user switches which record they are editing — change the <code>key</code> on the field or the form. A new key mounts a new DOM node, which reads the new default.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">AddressForm</span><span class="tok-punct">(</span><span class="tok-punct">{</span> address <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>address<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;street&quot;</span> <span class="tok-attr">defaultValue</span><span class="tok-punct">=</span><span class="tok-punct">{</span>address<span class="tok-punct">.</span>street<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;city&quot;</span> <span class="tok-attr">defaultValue</span><span class="tok-punct">=</span><span class="tok-punct">{</span>address<span class="tok-punct">.</span>city<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="each-element-type">Each element type<a class="heading-anchor" href="#each-element-type" aria-label="Link to this section">#</a></h3>
+<p>React normalizes the awkward parts of HTML forms. All of these use <code>value</code> or <code>checked</code> on the element itself.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">ShippingOptions</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>country<span class="tok-punct">,</span> setCountry<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'NL'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>speed<span class="tok-punct">,</span> setSpeed<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'standard'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>giftWrap<span class="tok-punct">,</span> setGiftWrap<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>notes<span class="tok-punct">,</span> setNotes<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;fieldset</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span><span class="tok-comment">/* select: value on the select, never `selected` on an option */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;select</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>country<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setCountry</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;NL&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Netherlands</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;DE&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Germany</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* radio group: one state value, shared name, checked derived */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;radio&quot;</span>
+          <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;speed&quot;</span>
+          <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;standard&quot;</span>
+          <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>speed <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'standard'</span><span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setSpeed</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+        <span class="tok-type">Standard</span>
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;radio&quot;</span>
+          <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;speed&quot;</span>
+          <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;express&quot;</span>
+          <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>speed <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'express'</span><span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setSpeed</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+        <span class="tok-type">Express</span>
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* checkbox: `checked`, and read event.target.checked */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span>
+          <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>giftWrap<span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setGiftWrap</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>checked<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+        <span class="tok-type">Gift</span> wrap
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span><span class="tok-comment">/* textarea: `value`, not children */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;textarea</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>notes<span class="tok-punct">}</span> <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setNotes</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/fieldset</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Three differences from plain HTML worth memorizing: <code>&lt;select value&gt;</code> replaces <code>&lt;option selected&gt;</code>, <code>&lt;textarea value&gt;</code> replaces its children, and checkboxes use <code>checked</code> with <code>event.target.checked</code>.</p>
+<p>For a multi-select, <code>value</code> is an array and you read the selected options from the event target.</p>
+<h3 id="file-inputs-are-always-uncontrolled">File inputs are always uncontrolled<a class="heading-anchor" href="#file-inputs-are-always-uncontrolled" aria-label="Link to this section">#</a></h3>
+<p>The browser will not let JavaScript set a file input's value — that would let a page upload arbitrary files from the user's disk. So <code>value</code> is off the table.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">AttachmentPicker</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>names<span class="tok-punct">,</span> setNames<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'grid'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;file&quot;</span>
+        <span class="tok-attr">multiple</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">const</span> files <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>files <span class="tok-punct">?</span><span class="tok-punct">?</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+          <span class="tok-fn">setNames</span><span class="tok-punct">(</span>files<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>file<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> file<span class="tok-punct">.</span>name<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>names<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+export default function AttachmentPicker() {
+  const [names, setNames] = useState([]);
+
+  return (
+    &lt;div style={{ display: 'grid', gap: 8 }}&gt;
+      &lt;input
+        type=&quot;file&quot;
+        multiple
+        onChange={(event) =&gt; {
+          const files = Array.from(event.target.files ?? []);
+          setNames(files.map((file) =&gt; file.name));
+        }}
+      /&gt;
+      &lt;ul&gt;
+        {names.map((name) =&gt; &lt;li key={name}&gt;{name}&lt;/li&gt;)}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Read <code>event.target.files</code> for immediate feedback, and read the field from <code>FormData</code> at submit time. To clear the field, reset the form or remount the input with a new <code>key</code>.</p>
+<h3 id="uncontrolled-plus-formdata">Uncontrolled plus FormData<a class="heading-anchor" href="#uncontrolled-plus-formdata" aria-label="Link to this section">#</a></h3>
+<p>This is the pattern that Actions push you toward, and it is underrated. Give every field a <code>name</code>, read the whole form at once, and let the DOM hold the values in between.</p>
+<div class="example" id="ex-2"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-2-t0" aria-controls="ex-2-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-2-t1" aria-controls="ex-2-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-2-p0" aria-labelledby="ex-2-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-2-p1" aria-labelledby="ex-2-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">InviteForm</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>summary<span class="tok-punct">,</span> setSummary<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleSubmit</span><span class="tok-punct">(</span>formData<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setSummary</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+      email<span class="tok-punct">:</span> <span class="tok-type">String</span><span class="tok-punct">(</span>formData<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span><span class="tok-string">'email'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      role<span class="tok-punct">:</span> <span class="tok-type">String</span><span class="tok-punct">(</span>formData<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span><span class="tok-string">'role'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      notify<span class="tok-punct">:</span> formData<span class="tok-punct">.</span><span class="tok-keyword">get</span><span class="tok-punct">(</span><span class="tok-string">'notify'</span><span class="tok-punct">)</span> <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'on'</span><span class="tok-punct">,</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'grid'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">,</span> maxWidth<span class="tok-punct">:</span> <span class="tok-number">420</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;form</span> <span class="tok-attr">action</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleSubmit<span class="tok-punct">}</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'grid'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;label</span> <span class="tok-attr">htmlFor</span><span class="tok-punct">=</span><span class="tok-string">&quot;email&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Email</span><span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;email&quot;</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;email&quot;</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;email&quot;</span> <span class="tok-attr">required</span> <span class="tok-tag">/&gt;</span>
+
+        <span class="tok-tag">&lt;label</span> <span class="tok-attr">htmlFor</span><span class="tok-punct">=</span><span class="tok-string">&quot;role&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Role</span><span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;select</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;role&quot;</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;role&quot;</span> <span class="tok-attr">defaultValue</span><span class="tok-punct">=</span><span class="tok-string">&quot;editor&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;viewer&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Viewer</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-string">&quot;editor&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Editor</span><span class="tok-tag">&lt;/option</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/select</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;notify&quot;</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span> <span class="tok-attr">defaultChecked</span> <span class="tok-tag">/&gt;</span> <span class="tok-type">Send</span> an email
+        <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;submit&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Send</span> invite<span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-punct">{</span>summary <span class="tok-punct">?</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;pre</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> background<span class="tok-punct">:</span> <span class="tok-string">'#f4f4f5'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">,</span> borderRadius<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span><span class="tok-type">JSON</span><span class="tok-punct">.</span><span class="tok-fn">stringify</span><span class="tok-punct">(</span>summary<span class="tok-punct">,</span> <span class="tok-literal">null</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/pre</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+export default function InviteForm() {
+  const [summary, setSummary] = useState(null);
+
+  function handleSubmit(formData) {
+    setSummary({
+      email: String(formData.get('email')),
+      role: String(formData.get('role')),
+      notify: formData.get('notify') === 'on',
+    });
+  }
+
+  return (
+    &lt;div style={{ display: 'grid', gap: 12, maxWidth: 420 }}&gt;
+      &lt;form action={handleSubmit} style={{ display: 'grid', gap: 8 }}&gt;
+        &lt;label htmlFor=&quot;email&quot;&gt;Email&lt;/label&gt;
+        &lt;input id=&quot;email&quot; name=&quot;email&quot; type=&quot;email&quot; required /&gt;
+
+        &lt;label htmlFor=&quot;role&quot;&gt;Role&lt;/label&gt;
+        &lt;select id=&quot;role&quot; name=&quot;role&quot; defaultValue=&quot;editor&quot;&gt;
+          &lt;option value=&quot;viewer&quot;&gt;Viewer&lt;/option&gt;
+          &lt;option value=&quot;editor&quot;&gt;Editor&lt;/option&gt;
+        &lt;/select&gt;
+
+        &lt;label&gt;
+          &lt;input name=&quot;notify&quot; type=&quot;checkbox&quot; defaultChecked /&gt; Send an email
+        &lt;/label&gt;
+
+        &lt;button type=&quot;submit&quot;&gt;Send invite&lt;/button&gt;
+      &lt;/form&gt;
+
+      {summary ? (
+        &lt;pre style={{ background: '#f4f4f5', padding: 12, borderRadius: 8 }}&gt;
+          {JSON.stringify(summary, null, 2)}
+        &lt;/pre&gt;
+      ) : null}
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Not one keystroke re-renders. The form also clears itself after a successful action — React resets uncontrolled fields when a <code>&lt;form action&gt;</code> function completes without throwing. See <a href="./forms-and-actions.html">forms and actions</a> for the full behavior.</p>
+<p>An unchecked checkbox is simply <strong>absent</strong> from <code>FormData</code>, which is why the code above compares against <code>'on'</code> rather than reading a boolean.</p>
+<h3 id="keeping-a-controlled-input-fast">Keeping a controlled input fast<a class="heading-anchor" href="#keeping-a-controlled-input-fast" aria-label="Link to this section">#</a></h3>
+<p>When something expensive renders from a controlled value, keep the input responsive by deferring the expensive part rather than debouncing the input.</p>
+<div class="example" id="ex-3"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-3-t0" aria-controls="ex-3-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-3-t1" aria-controls="ex-3-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-3-p0" aria-labelledby="ex-3-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-3-p1" aria-labelledby="ex-3-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">,</span> <span class="tok-fn">useMemo</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">CITIES</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-string">'Amsterdam'</span><span class="tok-punct">,</span> <span class="tok-string">'Antwerp'</span><span class="tok-punct">,</span> <span class="tok-string">'Athens'</span><span class="tok-punct">,</span> <span class="tok-string">'Barcelona'</span><span class="tok-punct">,</span> <span class="tok-string">'Belgrade'</span><span class="tok-punct">,</span> <span class="tok-string">'Berlin'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Bratislava'</span><span class="tok-punct">,</span> <span class="tok-string">'Bristol'</span><span class="tok-punct">,</span> <span class="tok-string">'Brussels'</span><span class="tok-punct">,</span> <span class="tok-string">'Bucharest'</span><span class="tok-punct">,</span> <span class="tok-string">'Budapest'</span><span class="tok-punct">,</span> <span class="tok-string">'Copenhagen'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Dublin'</span><span class="tok-punct">,</span> <span class="tok-string">'Edinburgh'</span><span class="tok-punct">,</span> <span class="tok-string">'Florence'</span><span class="tok-punct">,</span> <span class="tok-string">'Frankfurt'</span><span class="tok-punct">,</span> <span class="tok-string">'Geneva'</span><span class="tok-punct">,</span> <span class="tok-string">'Hamburg'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Helsinki'</span><span class="tok-punct">,</span> <span class="tok-string">'Istanbul'</span><span class="tok-punct">,</span> <span class="tok-string">'Krakow'</span><span class="tok-punct">,</span> <span class="tok-string">'Lisbon'</span><span class="tok-punct">,</span> <span class="tok-string">'Ljubljana'</span><span class="tok-punct">,</span> <span class="tok-string">'London'</span><span class="tok-punct">,</span> <span class="tok-string">'Lyon'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Madrid'</span><span class="tok-punct">,</span> <span class="tok-string">'Malmo'</span><span class="tok-punct">,</span> <span class="tok-string">'Milan'</span><span class="tok-punct">,</span> <span class="tok-string">'Munich'</span><span class="tok-punct">,</span> <span class="tok-string">'Naples'</span><span class="tok-punct">,</span> <span class="tok-string">'Nice'</span><span class="tok-punct">,</span> <span class="tok-string">'Oslo'</span><span class="tok-punct">,</span> <span class="tok-string">'Paris'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Porto'</span><span class="tok-punct">,</span> <span class="tok-string">'Prague'</span><span class="tok-punct">,</span> <span class="tok-string">'Reykjavik'</span><span class="tok-punct">,</span> <span class="tok-string">'Riga'</span><span class="tok-punct">,</span> <span class="tok-string">'Rome'</span><span class="tok-punct">,</span> <span class="tok-string">'Rotterdam'</span><span class="tok-punct">,</span> <span class="tok-string">'Seville'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Sofia'</span><span class="tok-punct">,</span> <span class="tok-string">'Stockholm'</span><span class="tok-punct">,</span> <span class="tok-string">'Tallinn'</span><span class="tok-punct">,</span> <span class="tok-string">'Turin'</span><span class="tok-punct">,</span> <span class="tok-string">'Valencia'</span><span class="tok-punct">,</span> <span class="tok-string">'Vienna'</span><span class="tok-punct">,</span> <span class="tok-string">'Vilnius'</span><span class="tok-punct">,</span>
+  <span class="tok-string">'Warsaw'</span><span class="tok-punct">,</span> <span class="tok-string">'Zagreb'</span><span class="tok-punct">,</span> <span class="tok-string">'Zurich'</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">CityFilter</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> deferredQuery <span class="tok-punct">=</span> <span class="tok-fn">useDeferredValue</span><span class="tok-punct">(</span>query<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> matches <span class="tok-punct">=</span> <span class="tok-fn">useMemo</span><span class="tok-punct">(</span>
+    <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-type">CITIES</span><span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>city<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> city<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>deferredQuery<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-punct">[</span>deferredQuery<span class="tok-punct">]</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> stale <span class="tok-punct">=</span> query <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> deferredQuery<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'grid'</span><span class="tok-punct">,</span> gap<span class="tok-punct">:</span> <span class="tok-number">8</span><span class="tok-punct">,</span> maxWidth<span class="tok-punct">:</span> <span class="tok-number">360</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Filter cities&quot;</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ul</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> opacity<span class="tok-punct">:</span> stale <span class="tok-punct">?</span> <span class="tok-number">0.6</span> <span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> transition<span class="tok-punct">:</span> <span class="tok-string">'opacity 120ms'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>matches<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>city<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>city<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>city<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useDeferredValue, useMemo, useState } from 'react';
+
+const CITIES = [
+  'Amsterdam', 'Antwerp', 'Athens', 'Barcelona', 'Belgrade', 'Berlin',
+  'Bratislava', 'Bristol', 'Brussels', 'Bucharest', 'Budapest', 'Copenhagen',
+  'Dublin', 'Edinburgh', 'Florence', 'Frankfurt', 'Geneva', 'Hamburg',
+  'Helsinki', 'Istanbul', 'Krakow', 'Lisbon', 'Ljubljana', 'London', 'Lyon',
+  'Madrid', 'Malmo', 'Milan', 'Munich', 'Naples', 'Nice', 'Oslo', 'Paris',
+  'Porto', 'Prague', 'Reykjavik', 'Riga', 'Rome', 'Rotterdam', 'Seville',
+  'Sofia', 'Stockholm', 'Tallinn', 'Turin', 'Valencia', 'Vienna', 'Vilnius',
+  'Warsaw', 'Zagreb', 'Zurich',
+];
+
+export default function CityFilter() {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+
+  const matches = useMemo(
+    () =&gt; CITIES.filter((city) =&gt; city.toLowerCase().includes(deferredQuery.toLowerCase())),
+    [deferredQuery],
+  );
+
+  const stale = query !== deferredQuery;
+
+  return (
+    &lt;div style={{ display: 'grid', gap: 8, maxWidth: 360 }}&gt;
+      &lt;input
+        value={query}
+        onChange={(event) =&gt; setQuery(event.target.value)}
+        placeholder=&quot;Filter cities&quot;
+      /&gt;
+      &lt;ul style={{ opacity: stale ? 0.6 : 1, transition: 'opacity 120ms' }}&gt;
+        {matches.map((city) =&gt; &lt;li key={city}&gt;{city}&lt;/li&gt;)}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>The input stays controlled and updates instantly; the list renders from the deferred value at a lower priority. Unlike a debounce, nothing is delayed by a fixed timer and no timeout leaks if the component unmounts mid-type.</p>
+<p>Debouncing is still the right tool for <strong>network requests</strong> — deferring changes priority, not how often you call an API.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong><code>value={user.name}</code> with no fallback.</strong> One <code>undefined</code> and React silently switches the input to uncontrolled, then warns when the data lands. Use <code>?? ''</code>.</p>
+<p><strong>Controlling every field out of habit.</strong> Thirty controlled fields means thirty re-renders per keystroke of the parent that owns them. Control what you derive from.</p>
+<p><strong><code>onChange={handleChange}</code> that reads <code>event.target.value</code> asynchronously.</strong> Read the value synchronously into a variable before any <code>await</code>.</p>
+<p><strong>Using <code>selected</code> on <code>&lt;option&gt;</code> or children on <code>&lt;textarea&gt;</code>.</strong> React warns and ignores them. <code>value</code> on the parent is the only supported form.</p>
+<p><strong>Trying to control a file input.</strong> It is read-only by browser policy. Use a ref or <code>FormData</code>, and remount with a <code>key</code> to clear.</p>
+<p><strong>Changing <code>defaultValue</code> and expecting the field to update.</strong> It is read once at mount. Change the <code>key</code> instead.</p>
+<p><strong>Debouncing state updates to make typing smooth.</strong> That makes the input itself lag. Update state immediately and defer the expensive consumer with <a href="../hooks/use-deferred-value.html"><code>useDeferredValue</code></a>.</p>
+<p><strong>Storing derived values in state.</strong> A <code>fullName</code> state kept in sync with <code>firstName</code> and <code>lastName</code> will drift. Compute it during render.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./forms-and-actions.html">Forms and actions</a> — <code>&lt;form action&gt;</code>, <code>FormData</code>, and the React 19 hooks built on them.</li>
+<li><a href="../hooks/use-state.html">useState</a> — what backs every controlled input.</li>
+<li><a href="../hooks/use-deferred-value.html">useDeferredValue</a> — keeping typing responsive when rendering from the value is expensive.</li>
+<li><a href="../accessibility/forms-accessibility.html">Forms accessibility</a> — labels, error association, and required-field semantics.</li>
+<li><a href="../ecosystem/forms.html">Form libraries</a> — React Hook Form, and where schema validation fits.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../patterns/portals.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Portals</span></a><a class="pager-link pager-next" href="../patterns/forms-and-actions.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Forms and Actions</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#the-warnings-react-gives-you">The warnings React gives you</a></li><li class="toc-h3"><a href="#defaults">Defaults</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#each-element-type">Each element type</a></li><li class="toc-h3"><a href="#file-inputs-are-always-uncontrolled">File inputs are always uncontrolled</a></li><li class="toc-h3"><a href="#uncontrolled-plus-formdata">Uncontrolled plus FormData</a></li><li class="toc-h3"><a href="#keeping-a-controlled-input-fast">Keeping a controlled input fast</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

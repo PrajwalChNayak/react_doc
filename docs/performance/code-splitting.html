@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code splitting · React 19 Docs</title>
+<meta name="description" content="Ship less JavaScript on first load with lazy() and Suspense, without making the app feel slower.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Code splitting · React 19 Docs">
+<meta property="og:description" content="Ship less JavaScript on first load with lazy() and Suspense, without making the app feel slower.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html" aria-current="page"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#performance">Performance</a></li><li><span aria-current="page">Code splitting</span></li></ol><header class="page-header"><h1 class="page-title">Code splitting</h1><p class="page-description">Ship less JavaScript on first load with lazy() and Suspense, without making the app feel slower.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>Code splitting breaks your bundle into chunks the browser downloads on demand. The user pays for the settings page when they open the settings page, not on first load.</p>
+<p>React's part of this is two APIs:</p>
+<ul>
+<li><code>lazy(load)</code> turns a dynamic <code>import()</code> into a component. React does not call <code>load</code> until something first tries to render that component.</li>
+<li><code>&lt;Suspense fallback={...}&gt;</code> displays something while the chunk is in flight.</li>
+</ul>
+<p>Everything else — how chunks are named, how they are split, whether they are preloaded — belongs to your bundler.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Split at route boundaries first. It is the highest ratio of bytes saved to complexity added, and it matches how users actually navigate.</p>
+</div></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>JavaScript is the most expensive kind of byte. An image that arrives late shows a placeholder; JavaScript that arrives late blocks interaction, because it must be downloaded, parsed, compiled and executed before the page responds.</p>
+<p>A single-bundle app makes every user pay for every feature. The admin dashboard, the rich text editor, the charting library and the PDF exporter all download before the login screen paints. That is an LCP problem you cannot memoize your way out of.</p>
+<p>Splitting inverts the default: pay for what you render.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<p><strong>Routes.</strong> The obvious and largest win. Users land on one route and often never visit the others.</p>
+<p><strong>Heavy, conditionally rendered components.</strong> A modal with a date-range picker, a WYSIWYG editor, a charting library, a map, a video player. These are large dependencies gated behind an interaction.</p>
+<p><strong>Rarely used branches.</strong> An admin panel behind a role check. An export flow three clicks deep. A debug overlay.</p>
+<p><strong>Large third-party dependencies with a single entry point.</strong> If one screen pulls in a 300 KB library, that library should live in that screen's chunk.</p>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p><strong>Small components.</strong> A chunk has overhead: an extra request, a Suspense boundary, and a possible loading flash. Splitting a 3 KB component makes the app slower and more complicated.</p>
+<p><strong>Anything above the fold on the initial route.</strong> Splitting content the user sees immediately converts one download into two sequential downloads. That is strictly worse.</p>
+<p><strong>Components rendered on nearly every page.</strong> The shared header does not need its own chunk. It needs to be in the main one.</p>
+<p><strong>As a substitute for removing the dependency.</strong> If you pull in a 200 KB date library to format one timestamp, splitting the chunk hides the problem. <code>Intl.DateTimeFormat</code> is built into the browser and costs nothing.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p><code>lazy</code> is declared at module scope; <code>&lt;Suspense&gt;</code> sits above the place the lazy component renders.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy<span class="tok-punct">,</span> <span class="tok-type">Suspense</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">RevenueReport</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> rows <span class="tok-punct">=</span> <span class="tok-type">Array</span><span class="tok-punct">.</span><span class="tok-keyword">from</span><span class="tok-punct">(</span><span class="tok-punct">{</span> length<span class="tok-punct">:</span> <span class="tok-number">6</span> <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>_<span class="tok-punct">,</span> index<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+    id<span class="tok-punct">:</span> index<span class="tok-punct">,</span>
+    month<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">'Jan'</span><span class="tok-punct">,</span> <span class="tok-string">'Feb'</span><span class="tok-punct">,</span> <span class="tok-string">'Mar'</span><span class="tok-punct">,</span> <span class="tok-string">'Apr'</span><span class="tok-punct">,</span> <span class="tok-string">'May'</span><span class="tok-punct">,</span> <span class="tok-string">'Jun'</span><span class="tok-punct">]</span><span class="tok-punct">[</span>index<span class="tok-punct">]</span><span class="tok-punct">,</span>
+    revenue<span class="tok-punct">:</span> <span class="tok-number">12000</span> <span class="tok-punct">+</span> index <span class="tok-punct">*</span> <span class="tok-number">1450</span><span class="tok-punct">,</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>rows<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>row<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;tr</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>month<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>$<span class="tok-punct">{</span>row<span class="tok-punct">.</span>revenue<span class="tok-punct">.</span><span class="tok-fn">toLocaleString</span><span class="tok-punct">(</span><span class="tok-string">'en-US'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// Stands in for lazy(() =&gt; import('./RevenueReport.jsx')) so the preview can</span>
+<span class="tok-comment">// run without a bundler. The 700 ms delay imitates a chunk download.</span>
+<span class="tok-keyword">const</span> delay <span class="tok-punct">=</span> <span class="tok-punct">(</span>ms<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">new</span> <span class="tok-type">Promise</span><span class="tok-punct">(</span><span class="tok-punct">(</span>resolve<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span>resolve<span class="tok-punct">,</span> ms<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">LazyRevenueReport</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-keyword">async</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">await</span> <span class="tok-fn">delay</span><span class="tok-punct">(</span><span class="tok-number">700</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-keyword">default</span><span class="tok-punct">:</span> <span class="tok-type">RevenueReport</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ReportsPage</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>showReport<span class="tok-punct">,</span> setShowReport<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setShowReport</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">}</span> <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>showReport<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-type">Open</span> revenue report
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> minHeight<span class="tok-punct">:</span> <span class="tok-number">160</span><span class="tok-punct">,</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">12</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>showReport <span class="tok-punct">?</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;Suspense</span> <span class="tok-attr">fallback</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span> report…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;LazyRevenueReport</span> <span class="tok-tag">/&gt;</span>
+          <span class="tok-tag">&lt;/Suspense</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">The</span> report chunk has not been requested yet<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { lazy, Suspense, useState } from 'react';
+
+function RevenueReport() {
+  const rows = Array.from({ length: 6 }, (_, index) =&gt; ({
+    id: index,
+    month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][index],
+    revenue: 12000 + index * 1450,
+  }));
+
+  return (
+    &lt;table&gt;
+      &lt;tbody&gt;
+        {rows.map((row) =&gt; (
+          &lt;tr key={row.id}&gt;
+            &lt;td&gt;{row.month}&lt;/td&gt;
+            &lt;td&gt;${row.revenue.toLocaleString('en-US')}&lt;/td&gt;
+          &lt;/tr&gt;
+        ))}
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  );
+}
+
+// Stands in for lazy(() =&gt; import('./RevenueReport.jsx')) so the preview can
+// run without a bundler. The 700 ms delay imitates a chunk download.
+const delay = (ms) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, ms));
+
+const LazyRevenueReport = lazy(async () =&gt; {
+  await delay(700);
+  return { default: RevenueReport };
+});
+
+export default function ReportsPage() {
+  const [showReport, setShowReport] = useState(false);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setShowReport(true)} disabled={showReport}&gt;
+        Open revenue report
+      &lt;/button&gt;
+      &lt;div style={{ minHeight: 160, marginTop: 12 }}&gt;
+        {showReport ? (
+          &lt;Suspense fallback={&lt;p&gt;Loading report…&lt;/p&gt;}&gt;
+            &lt;LazyRevenueReport /&gt;
+          &lt;/Suspense&gt;
+        ) : (
+          &lt;p&gt;The report chunk has not been requested yet.&lt;/p&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>The real version replaces the hand-made promise with a dynamic import:</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">RevenueReport</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./RevenueReport.jsx'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> A dynamic import needs a bundler, so this cannot run in the sandboxed preview.</p></div>
+<p>Note the reserved <code>minHeight</code> in the live version. A fallback that is much smaller than the content it replaces produces a layout shift when the real content arrives, which is a CLS regression you introduced while fixing an LCP problem.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="the-lazy-call-must-be-at-module-scope">The <code>lazy</code> call must be at module scope<a class="heading-anchor" href="#the-lazy-call-must-be-at-module-scope" aria-label="Link to this section">#</a></h3>
+<p>React uses the component identity returned by <code>lazy</code> as the cache key for the loaded module. Create it during render and you get a new component type on every render, which means React unmounts the old tree and mounts a fresh one — losing all of its state.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Editor</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-comment">// 🔴 Bad: This will cause all state to be reset on re-renders</span>
+  <span class="tok-keyword">const</span> <span class="tok-type">MarkdownPreview</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./MarkdownPreview.js'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;MarkdownPreview</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// ✅ Good: Declare lazy components outside of your components</span>
+<span class="tok-keyword">const</span> <span class="tok-type">MarkdownPreview</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./MarkdownPreview.js'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">Editor</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;MarkdownPreview</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>The same rule applies to a <code>lazy</code> created inside a custom hook or a <code>useMemo</code> that can be invalidated.</p>
+<h3 id="suspense-boundaries-decide-what-the-user-sees">Suspense boundaries decide what the user sees<a class="heading-anchor" href="#suspense-boundaries-decide-what-the-user-sees" aria-label="Link to this section">#</a></h3>
+<p>The nearest <code>&lt;Suspense&gt;</code> above the lazy component provides the fallback. Where you put that boundary is a design decision:</p>
+<ul>
+<li>A boundary around the whole route means the entire page is replaced by a spinner.</li>
+<li>A boundary around the lazy panel only means the rest of the page stays on screen and the panel shows a placeholder.</li>
+</ul>
+<p>Prefer the tighter boundary. Replacing a working page with a spinner is a downgrade the user can feel.</p>
+<h3 id="errors-need-a-boundary-too">Errors need a boundary too<a class="heading-anchor" href="#errors-need-a-boundary-too" aria-label="Link to this section">#</a></h3>
+<p>A chunk request can fail — a deploy invalidated the file, the network dropped. React surfaces that as a render error, so wrap lazy routes in an <a href="../patterns/error-boundaries.html">error boundary</a> that offers a retry rather than showing a blank screen.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="route-level-splitting">Route-level splitting<a class="heading-anchor" href="#route-level-splitting" aria-label="Link to this section">#</a></h3>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy<span class="tok-punct">,</span> <span class="tok-type">Suspense</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-type">Route</span><span class="tok-punct">,</span> <span class="tok-type">Routes</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react-router'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">Dashboard</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./routes/Dashboard.jsx'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-keyword">const</span> <span class="tok-type">Settings</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./routes/Settings.jsx'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-keyword">const</span> <span class="tok-type">AdminPanel</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./routes/AdminPanel.jsx'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">AppRoutes</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;Suspense</span> <span class="tok-attr">fallback</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;Routes</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;Route</span> <span class="tok-attr">path</span><span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span> <span class="tok-attr">element</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;Dashboard</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-tag">&lt;Route</span> <span class="tok-attr">path</span><span class="tok-punct">=</span><span class="tok-string">&quot;/settings&quot;</span> <span class="tok-attr">element</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;Settings</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-tag">&lt;Route</span> <span class="tok-attr">path</span><span class="tok-punct">=</span><span class="tok-string">&quot;/admin&quot;</span> <span class="tok-attr">element</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;AdminPanel</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/Routes</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/Suspense</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Depends on a router and a bundler.</p></div>
+<h3 id="wrap-the-navigation-in-a-transition">Wrap the navigation in a transition<a class="heading-anchor" href="#wrap-the-navigation-in-a-transition" aria-label="Link to this section">#</a></h3>
+<p>Without a transition, navigating replaces the current page with the fallback the instant you click. With <code>startTransition</code>, React keeps the old page on screen while the new chunk loads, and you can show a subtle pending indicator instead.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">NavLink</span><span class="tok-punct">(</span><span class="tok-punct">{</span> href<span class="tok-punct">,</span> children<span class="tok-punct">,</span> onNavigate <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">function</span> <span class="tok-fn">handleClick</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    event<span class="tok-punct">.</span><span class="tok-fn">preventDefault</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">onNavigate</span><span class="tok-punct">(</span>href<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-punct">{</span>href<span class="tok-punct">}</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span>handleClick<span class="tok-punct">}</span> <span class="tok-attr">aria-busy</span><span class="tok-punct">=</span><span class="tok-punct">{</span>isPending<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Depends on a router and a bundler.</p></div>
+<p>See <a href="../hooks/use-transition.html">useTransition</a> for the full behavior of <code>isPending</code>.</p>
+<h3 id="preload-on-intent">Preload on intent<a class="heading-anchor" href="#preload-on-intent" aria-label="Link to this section">#</a></h3>
+<p>The latency you cannot remove, you can hide. Start the download when the user hovers or focuses the link — typically 100–300 ms before the click.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy<span class="tok-punct">,</span> <span class="tok-type">Suspense</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// One module-scope function, called by both the preloader and `lazy`.</span>
+<span class="tok-keyword">const</span> loadChartPanel <span class="tok-punct">=</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-keyword">import</span><span class="tok-punct">(</span><span class="tok-string">'./ChartPanel.jsx'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-keyword">const</span> <span class="tok-type">ChartPanel</span> <span class="tok-punct">=</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span>loadChartPanel<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-type">AnalyticsSection</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>showChart<span class="tok-punct">,</span> setShowChart<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span>
+        <span class="tok-attr">onMouseEnter</span><span class="tok-punct">=</span><span class="tok-punct">{</span>loadChartPanel<span class="tok-punct">}</span>
+        <span class="tok-attr">onFocus</span><span class="tok-punct">=</span><span class="tok-punct">{</span>loadChartPanel<span class="tok-punct">}</span>
+        <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setShowChart</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-type">Show</span> chart
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;Suspense</span> <span class="tok-attr">fallback</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> height<span class="tok-punct">:</span> <span class="tok-number">240</span> <span class="tok-punct">}</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>showChart <span class="tok-punct">?</span> <span class="tok-tag">&lt;ChartPanel</span> <span class="tok-tag">/&gt;</span> <span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/Suspense</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Depends on a bundler for the dynamic import.</p></div>
+<p>Dynamic imports are cached by the module system, so calling <code>loadChartPanel</code> twice downloads once. Hovering a link the user never clicks costs one wasted request; measure before preloading dozens of them.</p>
+<div class="callout callout-tip" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Tip</p><div class="callout-body"><p>For assets rather than modules — fonts, hero images, the CSS a route needs — React 19 provides <code>preload()</code>, <code>preinit()</code>, <code>preconnect()</code> and <code>prefetchDNS()</code> from <code>react-dom</code>. They express the same intent to the browser at a lower level.</p>
+</div></div>
+<h3 id="separate-code-that-changes-rarely">Separate code that changes rarely<a class="heading-anchor" href="#separate-code-that-changes-rarely" aria-label="Link to this section">#</a></h3>
+<p>Most bundlers let you group vendor code into its own chunk. Code that changes rarely (framework, large libraries) belongs apart from code that changes on every deploy, so a release does not invalidate everything in the user's cache.</p>
+<h3 id="measure-and-set-a-budget">Measure and set a budget<a class="heading-anchor" href="#measure-and-set-a-budget" aria-label="Link to this section">#</a></h3>
+<p>Splitting without measuring produces a hundred tiny chunks and a slower app.</p>
+<p><strong>Analyze the bundle.</strong> Every major bundler has an analyzer that shows what is in each chunk and how large it is, sorted by size. Run it before you split so you know which dependency is the problem. The answer is usually one or two libraries, not a long tail.</p>
+<p><strong>Set a budget and enforce it in CI.</strong> A concrete ceiling — for example, 200 KB of compressed JavaScript on the critical path — turns bundle size into something a pull request can fail on. Tools like <code>size-limit</code> do this.</p>
+<div class="code-block" data-lang="json"><div class="code-head"><span class="code-lang">json</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-json"><span class="tok-punct">{</span>
+  <span class="tok-attr">&quot;size-limit&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-punct">{</span>
+      <span class="tok-attr">&quot;path&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;dist/assets/index-*.js&quot;</span><span class="tok-punct">,</span>
+      <span class="tok-attr">&quot;limit&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;200 KB&quot;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">]</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p><strong>Watch the request waterfall, not only the total.</strong> Five sequential chunk requests, each waiting on the previous one, can be slower than one larger download. Splitting has a depth limit.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Combining a transition with a tight boundary so the outgoing content stays visible while the incoming chunk arrives.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> lazy<span class="tok-punct">,</span> <span class="tok-type">Suspense</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span><span class="tok-punct">,</span> <span class="tok-fn">useTransition</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">makeTabModule</span><span class="tok-punct">(</span>label<span class="tok-punct">,</span> body<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">function</span> <span class="tok-type">TabBody</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+      <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h4</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>label<span class="tok-punct">}</span><span class="tok-tag">&lt;/h4</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>body<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+    <span class="tok-keyword">new</span> <span class="tok-type">Promise</span><span class="tok-punct">(</span><span class="tok-punct">(</span>resolve<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+      <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">resolve</span><span class="tok-punct">(</span><span class="tok-punct">{</span> <span class="tok-keyword">default</span><span class="tok-punct">:</span> <span class="tok-type">TabBody</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">,</span> <span class="tok-number">600</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">TABS</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  usage<span class="tok-punct">:</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-fn">makeTabModule</span><span class="tok-punct">(</span><span class="tok-string">'Usage'</span><span class="tok-punct">,</span> <span class="tok-string">'Requests, seats and overage this month.'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  billing<span class="tok-punct">:</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-fn">makeTabModule</span><span class="tok-punct">(</span><span class="tok-string">'Billing'</span><span class="tok-punct">,</span> <span class="tok-string">'Invoices, payment method and tax ID.'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  audit<span class="tok-punct">:</span> <span class="tok-fn">lazy</span><span class="tok-punct">(</span><span class="tok-fn">makeTabModule</span><span class="tok-punct">(</span><span class="tok-string">'Audit'</span><span class="tok-punct">,</span> <span class="tok-string">'Every administrative action, timestamped.'</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">AccountTabs</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>tab<span class="tok-punct">,</span> setTab<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'usage'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isPending<span class="tok-punct">,</span> startTransition<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useTransition</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-type">ActiveTab</span> <span class="tok-punct">=</span> <span class="tok-type">TABS</span><span class="tok-punct">[</span>tab<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span><span class="tok-type">Object</span><span class="tok-punct">.</span><span class="tok-fn">keys</span><span class="tok-punct">(</span><span class="tok-type">TABS</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;button</span>
+          <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name<span class="tok-punct">}</span>
+          <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">startTransition</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setTab</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+          <span class="tok-attr">disabled</span><span class="tok-punct">=</span><span class="tok-punct">{</span>name <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> tab<span class="tok-punct">}</span>
+        <span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>name<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> minHeight<span class="tok-punct">:</span> <span class="tok-number">120</span><span class="tok-punct">,</span> opacity<span class="tok-punct">:</span> isPending <span class="tok-punct">?</span> <span class="tok-number">0.5</span> <span class="tok-punct">:</span> <span class="tok-number">1</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;Suspense</span> <span class="tok-attr">fallback</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span> tab…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;ActiveTab</span> <span class="tok-tag">/&gt;</span>
+        <span class="tok-tag">&lt;/Suspense</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { lazy, Suspense, useState, useTransition } from 'react';
+
+function makeTabModule(label, body) {
+  function TabBody() {
+    return (
+      &lt;div&gt;
+        &lt;h4&gt;{label}&lt;/h4&gt;
+        &lt;p&gt;{body}&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+  return () =&gt;
+    new Promise((resolve) =&gt;
+      setTimeout(() =&gt; resolve({ default: TabBody }), 600),
+    );
+}
+
+const TABS = {
+  usage: lazy(makeTabModule('Usage', 'Requests, seats and overage this month.')),
+  billing: lazy(makeTabModule('Billing', 'Invoices, payment method and tax ID.')),
+  audit: lazy(makeTabModule('Audit', 'Every administrative action, timestamped.')),
+};
+
+export default function AccountTabs() {
+  const [tab, setTab] = useState('usage');
+  const [isPending, startTransition] = useTransition();
+  const ActiveTab = TABS[tab];
+
+  return (
+    &lt;div&gt;
+      {Object.keys(TABS).map((name) =&gt; (
+        &lt;button
+          key={name}
+          onClick={() =&gt; startTransition(() =&gt; setTab(name))}
+          disabled={name === tab}
+        &gt;
+          {name}
+        &lt;/button&gt;
+      ))}
+      &lt;div style={{ minHeight: 120, opacity: isPending ? 0.5 : 1 }}&gt;
+        &lt;Suspense fallback={&lt;p&gt;Loading tab…&lt;/p&gt;}&gt;
+          &lt;ActiveTab /&gt;
+        &lt;/Suspense&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Switch tabs twice. The first visit to a tab shows the fallback; the second is instant, because the module is cached. During the transition the previous tab stays on screen at reduced opacity instead of being replaced.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Creating the <code>lazy</code> component during render.</strong> State resets on every parent render, and the symptom (a form that clears itself) looks nothing like the cause.</p>
+<p><strong>No Suspense boundary above the lazy component.</strong> React throws. Every lazy component needs a boundary somewhere above it.</p>
+<p><strong>One boundary at the app root.</strong> Any lazy component anywhere blanks the entire application. Put boundaries where the loading state should appear.</p>
+<p><strong>A fallback of the wrong size.</strong> A one-line spinner replacing a 600-pixel panel guarantees a layout shift. Match the fallback to the content's dimensions.</p>
+<p><strong>Splitting the first screen.</strong> Content the user sees immediately should be in the initial bundle. Splitting it adds a round trip to the critical path.</p>
+<p><strong>Forgetting the error case.</strong> Chunk loads fail in the real world, particularly across deploys. Without an error boundary the user gets a blank page and no way back.</p>
+<p><strong>Assuming splitting reduces total bytes.</strong> It does not — it redistributes them, and adds a little overhead. To reduce total bytes, remove dependencies or move work to <a href="../server-react/overview.html">the server</a>.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../data-fetching/suspense.html">Suspense</a> — the boundary that makes lazy loading possible, and how it behaves with data.</li>
+<li><a href="../hooks/use-transition.html">useTransition</a> — keeping the current screen visible while the next one loads.</li>
+<li><a href="../patterns/error-boundaries.html">Error boundaries</a> — recovering from a failed chunk request.</li>
+<li><a href="../ecosystem/routing.html">Routing</a> — where route-level splitting is wired up.</li>
+<li><a href="../ecosystem/build-tooling.html">Build tooling</a> — chunking, analysis and budgets.</li>
+<li><a href="./overview.html">Performance overview</a> — deciding whether bundle size is your bottleneck.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../performance/memoization.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Memoization</span></a><a class="pager-link pager-next" href="../performance/activity.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Activity</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#the-lazy-call-must-be-at-module-scope">The lazy call must be at module scope</a></li><li class="toc-h3"><a href="#suspense-boundaries-decide-what-the-user-sees">Suspense boundaries decide what the user sees</a></li><li class="toc-h3"><a href="#errors-need-a-boundary-too">Errors need a boundary too</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#route-level-splitting">Route-level splitting</a></li><li class="toc-h3"><a href="#wrap-the-navigation-in-a-transition">Wrap the navigation in a transition</a></li><li class="toc-h3"><a href="#preload-on-intent">Preload on intent</a></li><li class="toc-h3"><a href="#separate-code-that-changes-rarely">Separate code that changes rarely</a></li><li class="toc-h3"><a href="#measure-and-set-a-budget">Measure and set a budget</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Styling · React 19 Docs</title>
+<meta name="description" content="CSS Modules, Tailwind, CSS-in-JS and the style prop, with an honest account of what to pick and why.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Styling · React 19 Docs">
+<meta property="og:description" content="CSS Modules, Tailwind, CSS-in-JS and the style prop, with an honest account of what to pick and why.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html" aria-current="page"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#ecosystem">Ecosystem</a></li><li><span aria-current="page">Styling</span></li></ol><header class="page-header"><h1 class="page-title">Styling</h1><p class="page-description">CSS Modules, Tailwind, CSS-in-JS and the style prop, with an honest account of what to pick and why.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>React has no styling system. It gives you two props — <code>className</code> and <code>style</code> — and the browser does the rest. Every named approach below is a third-party project or a plain web platform feature, not part of React.</p>
+<p>There are five real options, and they are not equally good:</p>
+<ol>
+<li><strong>Plain CSS and CSS Modules</strong> — the platform, with scoping.</li>
+<li><strong>Tailwind</strong> — utility classes generated at build time.</li>
+<li><strong>Runtime CSS-in-JS</strong> — styled-components, Emotion. In decline, for reasons worth understanding.</li>
+<li><strong>Zero-runtime CSS-in-JS</strong> — vanilla-extract, Linaria, StyleX. The same authoring experience, compiled to a static <code>.css</code> file.</li>
+<li><strong>The <code>style</code> prop</strong> — for values you cannot know until runtime.</li>
+</ol>
+<p>The recommendation, stated up front: <strong>use CSS Modules or Tailwind, put your design tokens in CSS custom properties, and reach for the <code>style</code> prop only for genuinely dynamic values.</strong> If you want typed styles co-located with components, use a zero-runtime library rather than a runtime one.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>CSS has one global namespace. In a codebase with four hundred components, a selector written for a card in one feature will eventually restyle a card in another, and nobody will notice for six weeks.</p>
+<p>Every option on this page is an answer to that one problem, and they differ in where they solve it:</p>
+<ul>
+<li><strong>CSS Modules</strong> rewrite class names at build time so <code>.title</code> becomes <code>Invoice_title__a3f9</code>.</li>
+<li><strong>Tailwind</strong> avoids inventing names at all — you compose from a fixed vocabulary of utilities.</li>
+<li><strong>CSS-in-JS</strong> ties the style to the component object itself, so an unused component takes its CSS with it when you delete it.</li>
+</ul>
+<p>The second problem is <strong>dynamic</strong> styling: a progress bar whose width is 63%, a chart series colored by data. No static class can express that, which is what the <code>style</code> prop is for.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Situation</th><th>Reach for</th></tr></thead>
+<tbody><tr><td>A component's own layout and appearance</td><td>CSS Modules, or Tailwind utilities</td></tr><tr><td>A design system with tokens shared across apps</td><td>CSS custom properties, defined once</td></tr><tr><td>A value computed at runtime (width, transform, color from data)</td><td>The <code>style</code> prop</td></tr><tr><td>Themes, including dark mode</td><td>CSS custom properties plus a <code>data-theme</code> attribute</td></tr><tr><td>A third-party widget you must restyle from outside</td><td>Plain CSS with a scoped ancestor selector</td></tr><tr><td>Styles that must ship from a Server Component</td><td>Anything that compiles to a static <code>.css</code> file</td></tr></tbody></table></div>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p><strong>Do not use the <code>style</code> prop for static styles.</strong> React sets them on every element instance instead of once in a stylesheet, they cannot use media queries, pseudo-classes or <code>:hover</code>, and they beat every class in specificity — which is exactly the fight you do not want later.</p>
+<p><strong>Do not adopt runtime CSS-in-JS in a new application</strong>, especially one using Server Components. See below.</p>
+<p><strong>Do not build a theme with a React context that passes color strings into <code>style</code> props.</strong> Every consumer re-renders on a theme change, and none of it works before hydration. CSS custom properties change the whole document with one attribute flip and no React render at all.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>CSS Modules: a normal CSS file whose class names the bundler makes unique. No runtime, no dependency, supported out of the box by Vite, Next.js and Parcel.</p>
+<div class="code-block" data-lang="css"><div class="code-head"><span class="code-lang">css</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-css"><span class="tok-comment">/* InvoiceCard.module.css */</span>
+.card <span class="tok-punct">{</span>
+  <span class="tok-attr">display</span><span class="tok-punct">:</span> grid<span class="tok-punct">;</span>
+  <span class="tok-attr">gap</span><span class="tok-punct">:</span> 0.5rem<span class="tok-punct">;</span>
+  <span class="tok-attr">padding</span><span class="tok-punct">:</span> 1rem<span class="tok-punct">;</span>
+  <span class="tok-attr">border</span><span class="tok-punct">:</span> 1px solid var<span class="tok-punct">(</span><span class="tok-attr">--color-border</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-attr">background</span><span class="tok-punct">:</span> var<span class="tok-punct">(</span><span class="tok-attr">--color-surface</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+.reference <span class="tok-punct">{</span> <span class="tok-attr">font-weight</span><span class="tok-punct">:</span> 600<span class="tok-punct">;</span> <span class="tok-attr">color</span><span class="tok-punct">:</span> var<span class="tok-punct">(</span><span class="tok-attr">--color-text</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+.overdue <span class="tok-punct">{</span> <span class="tok-attr">color</span><span class="tok-punct">:</span> var<span class="tok-punct">(</span><span class="tok-attr">--color-danger</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> styles <span class="tok-keyword">from</span> <span class="tok-string">'./InvoiceCard.module.css'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">InvoiceCard</span><span class="tok-punct">(</span><span class="tok-punct">{</span> invoice <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> isOverdue <span class="tok-punct">=</span> invoice<span class="tok-punct">.</span>dueInDays <span class="tok-punct">&lt;</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;article</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span>styles<span class="tok-punct">.</span>card<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;span</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span>styles<span class="tok-punct">.</span>reference<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>invoice<span class="tok-punct">.</span>reference<span class="tok-punct">}</span><span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;span</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-punct">{</span>isOverdue <span class="tok-punct">?</span> styles<span class="tok-punct">.</span>overdue <span class="tok-punct">:</span> <span class="tok-literal">undefined</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>isOverdue <span class="tok-punct">?</span> <span class="tok-string">`</span><span class="tok-punct">${</span><span class="tok-punct">-</span>invoice<span class="tok-punct">.</span>dueInDays<span class="tok-punct">}</span><span class="tok-string"> days overdue`</span> <span class="tok-punct">:</span> <span class="tok-string">'On time'</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span><span class="tok-comment">/* Genuinely dynamic: this number is not knowable at build time. */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;div</span>
+        <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;progressbar&quot;</span>
+        <span class="tok-attr">aria-valuenow</span><span class="tok-punct">=</span><span class="tok-punct">{</span>invoice<span class="tok-punct">.</span>percentPaid<span class="tok-punct">}</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> width<span class="tok-punct">:</span> <span class="tok-string">`</span><span class="tok-punct">${</span>invoice<span class="tok-punct">.</span>percentPaid<span class="tok-punct">}</span><span class="tok-string">%`</span><span class="tok-punct">,</span> height<span class="tok-punct">:</span> <span class="tok-number">4</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Requires a bundler to compile the CSS Module into scoped class names.</p></div>
+<p>Note the split. Everything expressible as a rule lives in the stylesheet; <code>width</code> lives in the <code>style</code> prop because it comes from data. That is the line to hold.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="the-style-prop-has-react-specific-rules">The <code>style</code> prop has React-specific rules<a class="heading-anchor" href="#the-style-prop-has-react-specific-rules" aria-label="Link to this section">#</a></h3>
+<p>It takes an object, not a string, and React normalizes it in three ways that catch people out:</p>
+<ul>
+<li><strong>camelCase property names.</strong> <code>backgroundColor</code>, not <code>background-color</code>.</li>
+<li><strong>Numbers get <code>px</code> appended</strong> — <code>width: 100</code> becomes <code>width: 100px</code> — <em>unless</em> the property is one React knows is unitless. <code>opacity</code>, <code>zIndex</code>, <code>lineHeight</code>, <code>fontWeight</code>, <code>order</code>, <code>flexGrow</code>, <code>zoom</code> and the SVG opacity properties are on that list, so <code>lineHeight: 1.5</code> stays <code>1.5</code>.</li>
+<li><strong>Vendor prefixes keep their capitalization</strong>, except <code>ms</code>: <code>WebkitTransform</code> and <code>MozAppearance</code> are capitalized, <code>msFlexGrow</code> is not.</li>
+</ul>
+<p>React's own guidance is to use <code>style</code> &quot;only for dynamic styles where you don't know the style values ahead of time&quot; and <code>className</code> otherwise.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ScoreMeter</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>score<span class="tok-punct">,</span> setScore<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">64</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;label</span> <span class="tok-attr">htmlFor</span><span class="tok-punct">=</span><span class="tok-string">&quot;score&quot;</span><span class="tok-tag">&gt;</span><span class="tok-type">Score</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>score<span class="tok-punct">}</span><span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;score&quot;</span>
+        <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;range&quot;</span>
+        <span class="tok-attr">min</span><span class="tok-punct">=</span><span class="tok-string">&quot;0&quot;</span>
+        <span class="tok-attr">max</span><span class="tok-punct">=</span><span class="tok-string">&quot;100&quot;</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>score<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setScore</span><span class="tok-punct">(</span><span class="tok-type">Number</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;div</span>
+        <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;progressbar&quot;</span>
+        <span class="tok-attr">aria-valuenow</span><span class="tok-punct">=</span><span class="tok-punct">{</span>score<span class="tok-punct">}</span>
+        <span class="tok-attr">aria-valuemin</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">0</span><span class="tok-punct">}</span>
+        <span class="tok-attr">aria-valuemax</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">100</span><span class="tok-punct">}</span>
+        <span class="tok-comment">// height and marginTop are numbers: React appends &quot;px&quot;.</span>
+        <span class="tok-comment">// width is a string: passed through untouched.</span>
+        <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> height<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">,</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">,</span> width<span class="tok-punct">:</span> <span class="tok-string">'100%'</span><span class="tok-punct">,</span> background<span class="tok-punct">:</span> <span class="tok-string">'#e2e8f0'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;div</span>
+          <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span>
+            width<span class="tok-punct">:</span> <span class="tok-string">`</span><span class="tok-punct">${</span>score<span class="tok-punct">}</span><span class="tok-string">%`</span><span class="tok-punct">,</span>
+            height<span class="tok-punct">:</span> <span class="tok-string">'100%'</span><span class="tok-punct">,</span>
+            background<span class="tok-punct">:</span> score <span class="tok-punct">&lt;</span> <span class="tok-number">40</span> <span class="tok-punct">?</span> <span class="tok-string">'#dc2626'</span> <span class="tok-punct">:</span> <span class="tok-string">'#0f766e'</span><span class="tok-punct">,</span>
+            transition<span class="tok-punct">:</span> <span class="tok-string">'width 120ms linear'</span><span class="tok-punct">,</span>
+            opacity<span class="tok-punct">:</span> <span class="tok-number">0.9</span><span class="tok-punct">,</span> <span class="tok-comment">// Unitless: stays 0.9, not &quot;0.9px&quot;.</span>
+          <span class="tok-punct">}</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+export default function ScoreMeter() {
+  const [score, setScore] = useState(64);
+
+  return (
+    &lt;section&gt;
+      &lt;label htmlFor=&quot;score&quot;&gt;Score: {score}&lt;/label&gt;{' '}
+      &lt;input
+        id=&quot;score&quot;
+        type=&quot;range&quot;
+        min=&quot;0&quot;
+        max=&quot;100&quot;
+        value={score}
+        onChange={(event) =&gt; setScore(Number(event.target.value))}
+      /&gt;
+      &lt;div
+        role=&quot;progressbar&quot;
+        aria-valuenow={score}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        // height and marginTop are numbers: React appends &quot;px&quot;.
+        // width is a string: passed through untouched.
+        style={{ height: 12, marginTop: 12, width: '100%', background: '#e2e8f0' }}
+      &gt;
+        &lt;div
+          style={{
+            width: `${score}%`,
+            height: '100%',
+            background: score &lt; 40 ? '#dc2626' : '#0f766e',
+            transition: 'width 120ms linear',
+            opacity: 0.9, // Unitless: stays 0.9, not &quot;0.9px&quot;.
+          }}
+        /&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</template></div>
+<h3 id="why-runtime-css-in-js-is-in-decline">Why runtime CSS-in-JS is in decline<a class="heading-anchor" href="#why-runtime-css-in-js-is-in-decline" aria-label="Link to this section">#</a></h3>
+<p>styled-components and Emotion generate CSS <strong>while the component renders</strong>. The mechanism is the problem:</p>
+<ol>
+<li><code>styled.div</code> returns a React component.</li>
+<li>When it renders, it serializes its props into a CSS string, hashes it into a class name, and inserts the rule into a <code>&lt;style&gt;</code> element.</li>
+<li>Insertion happens through React hooks and a React context holding the stylesheet registry.</li>
+</ol>
+<p>Steps 2 and 3 need hooks, context and a JavaScript runtime in the browser. <strong>Server Components have none of those.</strong> They run once on the server, never re-render, cannot call hooks, and ship no JavaScript. So every component built with <code>styled</code> must be marked <code>&quot;use client&quot;</code> — and because the directive applies to everything imported below it, one styled button can drag an entire page's worth of components across the client boundary. See <a href="../server-react/directives.html">Directives</a>.</p>
+<p>The second cost is per-render work. Serializing props to CSS, hashing, and inserting rules is real time on every render of every styled element, and it lands hardest on the long lists where you least want it. It also splits the critical path: the browser cannot start parsing your CSS until the JavaScript that produces it has downloaded and run.</p>
+<div class="callout callout-warning" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Warning</p><div class="callout-body"><p>None of this means styled-components is broken or that you must rewrite a working application. It means the <em>architecture</em> has a ceiling: it cannot participate in Server Components, and it makes styles depend on your JS bundle. For a new application in 2026, choose something that compiles to a <code>.css</code> file.</p>
+</div></div>
+<h3 id="zero-runtime-alternatives">Zero-runtime alternatives<a class="heading-anchor" href="#zero-runtime-alternatives" aria-label="Link to this section">#</a></h3>
+<p>These keep the authoring experience — styles in TypeScript, co-located with the component, typed and refactorable — and delete the runtime by extracting CSS at build time. The output is a static <code>.css</code> file and plain class name strings, so Server Components work.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Library</th><th>Package</th><th>Idea</th></tr></thead>
+<tbody><tr><td>vanilla-extract</td><td><code>@vanilla-extract/css</code></td><td>Write styles in <code>.css.ts</code> files; <code>style()</code> returns a class name</td></tr><tr><td>Linaria</td><td><code>@linaria/core</code></td><td>Tagged templates that look like styled-components, extracted at build</td></tr><tr><td>StyleX</td><td><code>@stylexjs/stylex</code></td><td>Atomic style objects merged deterministically, from Meta</td></tr></tbody></table></div>
+<p>The trade-off is that a compile-time system cannot depend on runtime values, so truly dynamic styling still goes through CSS custom properties or the <code>style</code> prop. That is the same discipline plain CSS asks for.</p>
+<h3 id="stylesheets-rendered-from-components">Stylesheets rendered from components<a class="heading-anchor" href="#stylesheets-rendered-from-components" aria-label="Link to this section">#</a></h3>
+<p>React 19 lets a component render <code>&lt;link rel=&quot;stylesheet&quot;&gt;</code> and have React hoist it into <code>&lt;head&gt;</code>, deduplicate it, and order it — as long as you give it a <code>precedence</code>.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">DataGrid</span><span class="tok-punct">(</span><span class="tok-punct">{</span> rows <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-punct">&lt;</span><span class="tok-punct">&gt;</span>
+      <span class="tok-punct">{</span><span class="tok-comment">/* React moves this to &lt;head&gt;, even though it is rendered deep in the
+          tree. Two components rendering the same href produce one &lt;link&gt;. */</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;stylesheet&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/styles/data-grid.css&quot;</span> <span class="tok-attr">precedence</span><span class="tok-punct">=</span><span class="tok-string">&quot;default&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>rows<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>row<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+            <span class="tok-tag">&lt;tr</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>row<span class="tok-punct">.</span>label<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+    <span class="tok-punct">&lt;</span><span class="tok-punct">/</span><span class="tok-punct">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Hoisting into &lt;head&gt; is a document-level effect; a sandboxed preview cannot show it.</p></div>
+<p>Three behaviors matter:</p>
+<ul>
+<li><strong>Hoisting.</strong> The <code>&lt;link&gt;</code> goes into <code>&lt;head&gt;</code> regardless of where it was rendered. <code>precedence</code> is what opts you into this — without it React leaves the element where it is.</li>
+<li><strong>Deduplication.</strong> Ten components rendering the same <code>href</code> produce one <code>&lt;link&gt;</code>.</li>
+<li><strong>Ordering.</strong> React ranks stylesheets by <code>precedence</code>, treating values it sees first as lower and later ones as higher. That is what makes the cascade predictable when the load order is not.</li>
+</ul>
+<p>The component <strong>suspends while the stylesheet loads</strong>, so a lazily-loaded feature cannot flash unstyled before its CSS arrives.</p>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p>New in <strong>19.0</strong>. Before React 19 this needed a framework's own <code>&lt;Head&gt;</code> component or a library like <code>react-helmet</code>. See <a href="../patterns/document-metadata.html">Document metadata</a>, and use <code>preinit()</code> to start a stylesheet downloading before the component that needs it renders.</p>
+</div></div>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="tailwind">Tailwind<a class="heading-anchor" href="#tailwind" aria-label="Link to this section">#</a></h3>
+<p>Tailwind v4 changed its setup story. There is no PostCSS chain to assemble and no required <code>tailwind.config.js</code>: you add a bundler plugin and one <code>@import</code> in your CSS.</p>
+<div class="code-block" data-lang="bash"><div class="code-head"><span class="code-lang">bash</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-bash"><span class="tok-fn">npm</span> install tailwindcss @tailwindcss/vite</code></pre></div>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-comment">// vite.config.js</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> defineConfig <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'vite'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> react <span class="tok-keyword">from</span> <span class="tok-string">'@vitejs/plugin-react'</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> tailwindcss <span class="tok-keyword">from</span> <span class="tok-string">'@tailwindcss/vite'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-fn">defineConfig</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+  plugins<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-fn">react</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">,</span> <span class="tok-fn">tailwindcss</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+<span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span></code></pre></div>
+<div class="code-block" data-lang="css"><div class="code-head"><span class="code-lang">css</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-css"><span class="tok-comment">/* app.css */</span>
+<span class="tok-keyword">@import</span> <span class="tok-string">&quot;tailwindcss&quot;</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">/* Design tokens live in CSS now. @theme both defines a custom property
+   and generates the matching utilities (bg-brand-500, text-brand-500, …). */</span>
+<span class="tok-keyword">@theme</span> <span class="tok-punct">{</span>
+  <span class="tok-attr">--color-brand-500</span>: oklch<span class="tok-punct">(</span>0.62 0.15 250<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-attr">--font-display</span>: <span class="tok-string">&quot;Inter Variable&quot;</span><span class="tok-punct">,</span> system-ui<span class="tok-punct">,</span> sans-serif<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Tailwind's real advantage in React is not brevity — it is that you stop naming things. Most <code>className=&quot;wrapper&quot;</code> / <code>className=&quot;inner&quot;</code> churn is naming work with no payoff. The cost is unreadable class strings on complex elements; extract a component, not a <code>@apply</code> rule, when that happens.</p>
+<h3 id="css-custom-properties-as-the-theming-layer">CSS custom properties as the theming layer<a class="heading-anchor" href="#css-custom-properties-as-the-theming-layer" aria-label="Link to this section">#</a></h3>
+<p>Custom properties are the only theming mechanism that works everywhere: in CSS Modules, in Tailwind's <code>@theme</code>, in vanilla-extract, in the <code>style</code> prop, in third-party components you do not control, and before React has hydrated.</p>
+<div class="code-block" data-lang="css"><div class="code-head"><span class="code-lang">css</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-css"><span class="tok-comment">/* tokens.css */</span>
+:root <span class="tok-punct">{</span>
+  <span class="tok-attr">--color-surface</span>: #ffffff<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-text</span>: #0f172a<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-border</span>: #e2e8f0<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* 1. Follow the OS by default. */</span>
+<span class="tok-keyword">@media</span> <span class="tok-punct">(</span><span class="tok-attr">prefers-color-scheme</span><span class="tok-punct">:</span> dark<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  :root <span class="tok-punct">{</span>
+    <span class="tok-attr">--color-surface</span>: #0f172a<span class="tok-punct">;</span>
+    <span class="tok-attr">--color-text</span>: #e2e8f0<span class="tok-punct">;</span>
+    <span class="tok-attr">--color-border</span>: #1e293b<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* 2. Let an explicit user choice win, in both directions. */</span>
+:root[data-theme=<span class="tok-string">'dark'</span>] <span class="tok-punct">{</span>
+  <span class="tok-attr">--color-surface</span>: #0f172a<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-text</span>: #e2e8f0<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-border</span>: #1e293b<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+:root[data-theme=<span class="tok-string">'light'</span>] <span class="tok-punct">{</span>
+  <span class="tok-attr">--color-surface</span>: #ffffff<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-text</span>: #0f172a<span class="tok-punct">;</span>
+  <span class="tok-attr">--color-border</span>: #e2e8f0<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Three states, not two: <code>light</code>, <code>dark</code>, and <em>unset</em>, which means &quot;follow the system&quot;. A toggle that only flips between light and dark takes away the user's ability to say &quot;whatever my OS says&quot;. Give them all three.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Set the theme attribute on <code>document.documentElement</code>, not on a React-rendered wrapper. It has to be applied before first paint — a <code>&lt;script&gt;</code> in <code>&lt;head&gt;</code> that reads the stored preference — or the page flashes the wrong theme while your bundle downloads. React state cannot win that race.</p>
+</div></div>
+<h3 id="a-theme-toggle-end-to-end">A theme toggle, end to end<a class="heading-anchor" href="#a-theme-toggle-end-to-end" aria-label="Link to this section">#</a></h3>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// In a real app this lives in a stylesheet, not a string.</span>
+<span class="tok-keyword">const</span> tokens <span class="tok-punct">=</span> <span class="tok-string">`
+  .theme-demo {
+    --surface: #ffffff; --text: #0f172a; --border: #cbd5e1; --accent: #0f766e;
+  }
+  .theme-demo[data-theme='dark'] {
+    --surface: #0f172a; --text: #e2e8f0; --border: #334155; --accent: #5eead4;
+  }
+  .theme-demo .panel {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+  }
+  .theme-demo .panel strong { color: var(--accent); }
+`</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ThemeToggle</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>theme<span class="tok-punct">,</span> setTheme<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-string">&quot;theme-demo&quot;</span> <span class="tok-attr">data-theme</span><span class="tok-punct">=</span><span class="tok-punct">{</span>theme<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;style</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>tokens<span class="tok-punct">}</span><span class="tok-tag">&lt;/style</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">className</span><span class="tok-punct">=</span><span class="tok-string">&quot;panel&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Not</span> one color here <span class="tok-keyword">is</span> <span class="tok-keyword">set</span> <span class="tok-keyword">from</span> <span class="tok-type">JavaScript</span><span class="tok-punct">.</span> <span class="tok-type">Flipping</span> one attribute
+          restyles every descendant<span class="tok-punct">,</span> including <span class="tok-tag">&lt;strong</span><span class="tok-tag">&gt;</span>accented text<span class="tok-tag">&lt;/strong</span><span class="tok-tag">&gt;</span><span class="tok-punct">.</span>
+        <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setTheme</span><span class="tok-punct">(</span>theme <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'light'</span> <span class="tok-punct">?</span> <span class="tok-string">'dark'</span> <span class="tok-punct">:</span> <span class="tok-string">'light'</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-type">Switch</span> to <span class="tok-punct">{</span>theme <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'light'</span> <span class="tok-punct">?</span> <span class="tok-string">'dark'</span> <span class="tok-punct">:</span> <span class="tok-string">'light'</span><span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+// In a real app this lives in a stylesheet, not a string.
+const tokens = `
+  .theme-demo {
+    --surface: #ffffff; --text: #0f172a; --border: #cbd5e1; --accent: #0f766e;
+  }
+  .theme-demo[data-theme='dark'] {
+    --surface: #0f172a; --text: #e2e8f0; --border: #334155; --accent: #5eead4;
+  }
+  .theme-demo .panel {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+  }
+  .theme-demo .panel strong { color: var(--accent); }
+`;
+
+export default function ThemeToggle() {
+  const [theme, setTheme] = useState('light');
+
+  return (
+    &lt;div className=&quot;theme-demo&quot; data-theme={theme}&gt;
+      &lt;style&gt;{tokens}&lt;/style&gt;
+      &lt;div className=&quot;panel&quot;&gt;
+        &lt;p&gt;
+          Not one color here is set from JavaScript. Flipping one attribute
+          restyles every descendant, including &lt;strong&gt;accented text&lt;/strong&gt;.
+        &lt;/p&gt;
+        &lt;button onClick={() =&gt; setTheme(theme === 'light' ? 'dark' : 'light')}&gt;
+          Switch to {theme === 'light' ? 'dark' : 'light'}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<h3 id="conditional-class-names">Conditional class names<a class="heading-anchor" href="#conditional-class-names" aria-label="Link to this section">#</a></h3>
+<p>You do not need a library for this — <code>clsx</code> and <code>classnames</code> are twenty lines each. What matters is never building class strings with <code>+</code> or a template literal, which silently produces <code>&quot;card undefined&quot;</code> when a value is falsy. Collect the candidates in an array, then <code>.filter(Boolean).join(' ')</code>.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<h3 id="comparison">Comparison<a class="heading-anchor" href="#comparison" aria-label="Link to this section">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Plain CSS / Modules</th><th>Tailwind</th><th>Runtime CSS-in-JS</th><th>Zero-runtime CSS-in-JS</th><th><code>style</code> prop</th></tr></thead>
+<tbody><tr><td>Runtime cost</td><td>None</td><td>None</td><td>Serialize + hash + inject on every render</td><td>None</td><td>Per-element, per-render object</td></tr><tr><td>Server Components</td><td>Works</td><td>Works</td><td>No — requires <code>&quot;use client&quot;</code></td><td>Works</td><td>Works</td></tr><tr><td>Dynamic theming</td><td>CSS custom properties</td><td>CSS custom properties via <code>@theme</code></td><td>Props into a JS theme object</td><td>CSS custom properties</td><td>Direct, but no media or pseudo selectors</td></tr><tr><td>Type safety</td><td>None on class names</td><td>Editor plugin only</td><td>Types on props, not on CSS</td><td>Full — styles are typed values</td><td><code>CSSProperties</code></td></tr><tr><td>Dead code removal</td><td>Manual</td><td>Automatic — unused utilities are never generated</td><td>Automatic — deleting the component deletes the CSS</td><td>Automatic</td><td>N/A</td></tr><tr><td>Media queries and <code>:hover</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td><strong>No</strong></td></tr><tr><td>Learning curve</td><td>Lowest</td><td>Medium — a vocabulary to learn</td><td>Low to write, high to debug</td><td>Medium</td><td>Lowest</td></tr><tr><td>Best for</td><td>Almost everything</td><td>Application UI built fast by a team</td><td>Existing apps already on it</td><td>Design systems that want typed tokens</td><td>Runtime values only</td></tr></tbody></table></div>
+<h3 id="opinion-with-reasons">Opinion, with reasons<a class="heading-anchor" href="#opinion-with-reasons" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><strong>Default to CSS Modules.</strong> Zero runtime, zero dependency, scoping solved, devtools show real CSS, and it behaves identically in a Server Component, a Client Component and a test.</li>
+<li><strong>Choose Tailwind when a team ships a lot of UI.</strong> Its value is consistency by construction: nobody invents a new spacing value at 11pm. Accept noisy markup and factor components when it gets bad.</li>
+<li><strong>Choose a zero-runtime library when styles must be typed and shared</strong>, such as a design system published as a package.</li>
+<li><strong>Choose runtime CSS-in-JS only for an app already built on it.</strong> Migrating a large one is rarely the best use of a quarter; starting a new one there is a decision you will revisit.</li>
+<li><strong>Do not mix four of these in one codebase.</strong> The failure mode is not performance — it is that nobody can predict which rule wins.</li>
+</ul>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Using the <code>style</code> prop for static styles.</strong> No pseudo-classes, no media queries, highest specificity, repeated on every element. Use a class.</p>
+<p><strong>Writing <code>style={{ fontSize: '16' }}</code> or <code>{{ 'background-color': red }}</code>.</strong> A unitless string is invalid CSS and is dropped silently; a hyphenated key does nothing. Pass the number <code>16</code> and let React add <code>px</code>, and write <code>backgroundColor</code>.</p>
+<p><strong>Building class strings with <code>+</code> and template literals.</strong> <code>`card ${cls}`</code> where <code>cls</code> is <code>undefined</code> renders <code>class=&quot;card undefined&quot;</code>. Filter falsy values.</p>
+<p><strong>Theming through React context.</strong> Every consumer re-renders, nothing applies before hydration, and third-party components never get the values. Use custom properties.</p>
+<p><strong>Flashing the wrong theme on load.</strong> If the theme attribute is set by a React effect, the first paint uses the default. Set it in an inline script in <code>&lt;head&gt;</code>.</p>
+<p><strong>A two-state dark mode toggle.</strong> Light and dark with no &quot;system&quot; option means you have overridden the user's OS preference forever.</p>
+<p><strong>Rendering <code>&lt;link rel=&quot;stylesheet&quot;&gt;</code> without <code>precedence</code>.</strong> React leaves it where it is instead of hoisting, deduplicating and ordering it.</p>
+<p><strong>Reaching for CSS-in-JS to get dynamic styles.</strong> A static class plus one <code>style</code> prop for the value that actually varies does the same job with no runtime and no client boundary.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../patterns/document-metadata.html">Document metadata</a> — the same React 19 hoisting behavior for <code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code> and <code>&lt;link&gt;</code>.</li>
+<li><a href="../server-react/server-components.html">Server Components</a> — why a styling choice is now an architecture choice.</li>
+<li><a href="../server-react/directives.html">Directives</a> — how <code>&quot;use client&quot;</code> spreads, and why a styled button can pull a page across the boundary.</li>
+<li><a href="./build-tooling.html">Build tooling</a> — where the CSS plugins are configured.</li>
+<li><a href="../accessibility/semantics.html">Semantics</a> — styling a <code>&lt;div&gt;</code> to look like a button is not the same as using a button.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../ecosystem/routing.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Routing</span></a><a class="pager-link pager-next" href="../ecosystem/forms.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Forms</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#the-style-prop-has-react-specific-rules">The style prop has React-specific rules</a></li><li class="toc-h3"><a href="#why-runtime-css-in-js-is-in-decline">Why runtime CSS-in-JS is in decline</a></li><li class="toc-h3"><a href="#zero-runtime-alternatives">Zero-runtime alternatives</a></li><li class="toc-h3"><a href="#stylesheets-rendered-from-components">Stylesheets rendered from components</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#tailwind">Tailwind</a></li><li class="toc-h3"><a href="#css-custom-properties-as-the-theming-layer">CSS custom properties as the theming layer</a></li><li class="toc-h3"><a href="#a-theme-toggle-end-to-end">A theme toggle, end to end</a></li><li class="toc-h3"><a href="#conditional-class-names">Conditional class names</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h3"><a href="#comparison">Comparison</a></li><li class="toc-h3"><a href="#opinion-with-reasons">Opinion, with reasons</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thinking in React · React 19 Docs</title>
+<meta name="description" content="The five steps from a design and some data to a working React component tree.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Thinking in React · React 19 Docs">
+<meta property="og:description" content="The five steps from a design and some data to a working React component tree.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html" aria-current="page"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#getting-started">Getting Started</a></li><li><span aria-current="page">Thinking in React</span></li></ol><header class="page-header"><h1 class="page-title">Thinking in React</h1><p class="page-description">The five steps from a design and some data to a working React component tree.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>React changes how you build a UI, not only how you write it. Given a mockup and a JSON payload, there is a repeatable process that gets you to a component tree without guesswork:</p>
+<ol>
+<li>Break the UI into a component hierarchy.</li>
+<li>Build a static version in React.</li>
+<li>Find the minimal but complete representation of UI state.</li>
+<li>Identify where each piece of state should live.</li>
+<li>Add inverse data flow.</li>
+</ol>
+<p>This page runs one example all the way through: a filterable product table for a coffee equipment store.</p>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>The hard parts of a React app are not syntax. They are <em>what counts as state</em> and <em>who owns it</em>. Get those wrong and you end up with values that disagree with each other, Effects synchronizing state into other state, and bugs that appear only on the third interaction. The five steps force both decisions to the surface early, while they are still cheap to change.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>The design: a search box, an &quot;only show products in stock&quot; checkbox, and a table of products grouped by category, with out-of-stock names in red.</p>
+<p>The data your API returns:</p>
+<div class="code-block" data-lang="json"><div class="code-head"><span class="code-lang">json</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-json"><span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> <span class="tok-attr">&quot;category&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Grinders&quot;</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;price&quot;</span><span class="tok-punct">:</span> <span class="tok-number">149</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;stocked&quot;</span><span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Encore ESP&quot;</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> <span class="tok-attr">&quot;category&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Grinders&quot;</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;price&quot;</span><span class="tok-punct">:</span> <span class="tok-number">89</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;stocked&quot;</span><span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Timemore C3&quot;</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> <span class="tok-attr">&quot;category&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Grinders&quot;</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;price&quot;</span><span class="tok-punct">:</span> <span class="tok-number">299</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;stocked&quot;</span><span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Ode Gen 2&quot;</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> <span class="tok-attr">&quot;category&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Brewers&quot;</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;price&quot;</span><span class="tok-punct">:</span> <span class="tok-number">32</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;stocked&quot;</span><span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Hario V60&quot;</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> <span class="tok-attr">&quot;category&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Brewers&quot;</span><span class="tok-punct">,</span>  <span class="tok-attr">&quot;price&quot;</span><span class="tok-punct">:</span> <span class="tok-number">349</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;stocked&quot;</span><span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> <span class="tok-attr">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Moccamaster&quot;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">]</span></code></pre></div>
+<p>Note that <code>category</code> is a field on each product, not a nested structure. The grouping in the design is a rendering concern, and spotting that before you start saves you from reshaping the data.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<h3 id="step-1-break-the-ui-into-a-component-hierarchy">Step 1 — Break the UI into a component hierarchy<a class="heading-anchor" href="#step-1-break-the-ui-into-a-component-hierarchy" aria-label="Link to this section">#</a></h3>
+<p>Draw boxes around every piece of the mockup and name them, using the principle you would apply to functions: a component should do one thing, and if it grows past that, split it. A useful tie-breaker is the shape of the data — if your JSON is modeled well, its structure usually maps onto your component structure, because both describe the same domain.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">FilterableProductTable
+├── SearchBar                 (text input + checkbox)
+└── ProductTable
+    ├── ProductCategoryRow     (a category heading row)
+    └── ProductRow             (one product)</code></pre></div>
+<p>Five components arranged by containment: what appears inside what in the mockup becomes what renders what in the tree.</p>
+<h3 id="step-2-build-a-static-version">Step 2 — Build a static version<a class="heading-anchor" href="#step-2-build-a-static-version" aria-label="Link to this section">#</a></h3>
+<p>Build the whole thing with <strong>no state at all</strong>. Pass data in as props and render it. Do not add an event handler, an input value, or a <code>useState</code> call yet.</p>
+<p>Static and interactive pull in opposite directions: static is a lot of typing and no thinking, interactive is a lot of thinking and little typing. Doing both at once means doing the hard part while distracted by the boring part.</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">function</span> <span class="tok-type">ProductCategoryRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> category <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">colSpan</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">2</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>category<span class="tok-punct">}</span><span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> product <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> color<span class="tok-punct">:</span> product<span class="tok-punct">.</span>stocked <span class="tok-punct">?</span> <span class="tok-string">'inherit'</span> <span class="tok-punct">:</span> <span class="tok-string">'crimson'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>product<span class="tok-punct">.</span>name<span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>$<span class="tok-punct">{</span>product<span class="tok-punct">.</span>price<span class="tok-punct">.</span><span class="tok-fn">toFixed</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> rows <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">let</span> lastCategory <span class="tok-punct">=</span> <span class="tok-literal">null</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">for</span> <span class="tok-punct">(</span><span class="tok-keyword">const</span> product <span class="tok-keyword">of</span> products<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>product<span class="tok-punct">.</span>category <span class="tok-punct">!</span><span class="tok-punct">=</span><span class="tok-punct">=</span> lastCategory<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      rows<span class="tok-punct">.</span><span class="tok-fn">push</span><span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;ProductCategoryRow</span> <span class="tok-attr">category</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>category<span class="tok-punct">}</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>category<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">,</span>
+      <span class="tok-punct">)</span><span class="tok-punct">;</span>
+      lastCategory <span class="tok-punct">=</span> product<span class="tok-punct">.</span>category<span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+    rows<span class="tok-punct">.</span><span class="tok-fn">push</span><span class="tok-punct">(</span><span class="tok-tag">&lt;ProductRow</span> <span class="tok-attr">product</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">}</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>name<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>rows<span class="tok-punct">}</span><span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">SearchBar</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;text&quot;</span> <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search products...&quot;</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span> <span class="tok-tag">/&gt;</span> <span class="tok-type">Only</span> show products <span class="tok-keyword">in</span> stock
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">FilterableProductTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;SearchBar</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ProductTable</span> <span class="tok-attr">products</span><span class="tok-punct">=</span><span class="tok-punct">{</span>products<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Data flows strictly downward. <code>FilterableProductTable</code> receives <code>products</code> and hands them to <code>ProductTable</code>, which hands one product to each <code>ProductRow</code>. Nothing flows back up yet.</p>
+<h3 id="step-3-find-the-minimal-complete-representation-of-ui-state">Step 3 — Find the minimal complete representation of UI state<a class="heading-anchor" href="#step-3-find-the-minimal-complete-representation-of-ui-state" aria-label="Link to this section">#</a></h3>
+<p>List every value the UI works with, then ask three questions about each:</p>
+<ul>
+<li><strong>Does it stay the same over time?</strong> Then it is not state.</li>
+<li><strong>Is it passed in from a parent via props?</strong> Then it is not state.</li>
+<li><strong>Can you compute it from existing state or props?</strong> Then it is <strong>definitely not</strong> state.</li>
+</ul>
+<p>Applied to this UI:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Candidate</th><th>State?</th><th>Why</th></tr></thead>
+<tbody><tr><td>The list of products</td><td>No</td><td>Passed in as a prop.</td></tr><tr><td>The search text</td><td><strong>Yes</strong></td><td>Changes over time, comes from nowhere else.</td></tr><tr><td>The &quot;in stock only&quot; checkbox</td><td><strong>Yes</strong></td><td>Same.</td></tr><tr><td>The filtered list of products</td><td>No</td><td>Computed from products + search text + checkbox.</td></tr><tr><td>The list of categories</td><td>No</td><td>Derived from the products.</td></tr></tbody></table></div>
+<p>Two pieces of state — minimal because nothing can be removed, complete because everything on screen can be produced from these two plus the props.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p><strong>Derive, do not mirror.</strong> It is tempting to keep <code>filteredProducts</code> in state and update it whenever the search text changes, usually with an Effect. Do not. Two sources of truth can disagree, and one of them will, on the code path you did not think about. Compute the filtered list during render instead.</p>
+</div></div>
+<h3 id="step-4-identify-where-the-state-should-live">Step 4 — Identify where the state should live<a class="heading-anchor" href="#step-4-identify-where-the-state-should-live" aria-label="Link to this section">#</a></h3>
+<p>For each piece of state, find the components that read it or write it, then find their <strong>lowest common ancestor</strong> — the nearest component above all of them. Put the state there, or higher if a component above the LCA has a better claim.</p>
+<p>Walk it for <code>searchText</code>. <code>ProductTable</code> reads it to filter rows; <code>SearchBar</code> reads it for the input's value and writes it on every keystroke; their nearest common ancestor is <code>FilterableProductTable</code>. The same reasoning puts <code>inStockOnly</code> in the same place, so the parent declares both and passes them down:</p>
+<div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">SearchBar</span><span class="tok-punct">(</span><span class="tok-punct">{</span> filterText<span class="tok-punct">,</span> inStockOnly <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;text&quot;</span> <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;label</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span> <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span> <span class="tok-type">In</span> stock only
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products<span class="tok-punct">,</span> filterText<span class="tok-punct">,</span> inStockOnly <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> visible <span class="tok-punct">=</span> products<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>
+    <span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+      <span class="tok-punct">(</span><span class="tok-punct">!</span>inStockOnly <span class="tok-punct">|</span><span class="tok-punct">|</span> product<span class="tok-punct">.</span>stocked<span class="tok-punct">)</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span>
+      product<span class="tok-punct">.</span>name<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>filterText<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>visible<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>p<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>p<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>p<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">FilterableProductTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>filterText<span class="tok-punct">,</span> setFilterText<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>inStockOnly<span class="tok-punct">,</span> setInStockOnly<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;SearchBar</span> <span class="tok-attr">filterText</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span> <span class="tok-attr">inStockOnly</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ProductTable</span>
+        <span class="tok-attr">products</span><span class="tok-punct">=</span><span class="tok-punct">{</span>products<span class="tok-punct">}</span>
+        <span class="tok-attr">filterText</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span>
+        <span class="tok-attr">inStockOnly</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div>
+<p>Type in the box now and nothing happens: React warns that you supplied <code>value</code> without <code>onChange</code>. That is the next step.</p>
+<h3 id="step-5-add-inverse-data-flow">Step 5 — Add inverse data flow<a class="heading-anchor" href="#step-5-add-inverse-data-flow" aria-label="Link to this section">#</a></h3>
+<p><code>SearchBar</code> needs to change state that lives in <code>FilterableProductTable</code>. Props only travel downward, so the parent passes <strong>functions</strong> down and the child calls them. Two changes to <code>SearchBar</code>:</p>
+<div class="code-block" data-lang="diff"><div class="code-head"><span class="code-lang">diff</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-diff"><span class="tok-diff-del">- function SearchBar({ filterText, inStockOnly }) {</span>
+<span class="tok-diff-add">+ function SearchBar({ filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange }) {</span>
+<span class="tok-diff-del">-   &lt;input type=&quot;text&quot; value={filterText} /&gt;</span>
+<span class="tok-diff-add">+   &lt;input</span>
+<span class="tok-diff-add">+     type=&quot;text&quot;</span>
+<span class="tok-diff-add">+     value={filterText}</span>
+<span class="tok-diff-add">+     onChange={(event) =&gt; onFilterTextChange(event.target.value)}</span>
+<span class="tok-diff-add">+   /&gt;</span></code></pre></div>
+<p>and the parent hands down <code>onFilterTextChange={setFilterText}</code> and <code>onInStockOnlyChange={setInStockOnly}</code>. The complete version is in <a href="#advanced-example">Advanced example</a> below.</p>
+<p>The child does not know or care that those props are state setters — it reports an event, and the owner of the state decides what it means. Swap in a setter that also logs to analytics and the child is unchanged. This is the shape of every controlled input in React: value down, change up. See <a href="../patterns/controlled-inputs.html">Controlled inputs</a>.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<p><strong>State or derived?</strong> Default to derived. Convert to state only when the value has to survive something — a user's edit that a recomputation would overwrite, or a value that arrives asynchronously. An Effect whose only job is to set state from other state means you made this call wrong.</p>
+<p><strong>Where does it live?</strong> The lowest common ancestor should be your default, with two amendments. If pushing state down makes a component reusable, push it down. And if the LCA sits many levels above the consumers, so that you are threading props through components that never read them, that is when <a href="../state-management/context.html">Context</a> or an <a href="../state-management/external-stores.html">external store</a> earns its cost — not before.</p>
+<p><strong>When does a reducer beat <code>useState</code>?</strong> When several values change together in response to the same events, or when the update logic has branches worth naming. Two independent values, as here, do not need one. See <a href="../hooks/use-reducer.html">useReducer</a>.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>The finished version, self-contained and running:</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-type">Fragment</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">PRODUCTS</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> category<span class="tok-punct">:</span> <span class="tok-string">'Grinders'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">149</span><span class="tok-punct">,</span> stocked<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Encore ESP'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> category<span class="tok-punct">:</span> <span class="tok-string">'Grinders'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">89</span><span class="tok-punct">,</span> stocked<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Timemore C3'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> category<span class="tok-punct">:</span> <span class="tok-string">'Grinders'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">299</span><span class="tok-punct">,</span> stocked<span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Ode Gen 2'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> category<span class="tok-punct">:</span> <span class="tok-string">'Brewers'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">32</span><span class="tok-punct">,</span> stocked<span class="tok-punct">:</span> <span class="tok-literal">true</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Hario V60'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> category<span class="tok-punct">:</span> <span class="tok-string">'Brewers'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">349</span><span class="tok-punct">,</span> stocked<span class="tok-punct">:</span> <span class="tok-literal">false</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Moccamaster'</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">SearchBar</span><span class="tok-punct">(</span><span class="tok-punct">{</span> filterText<span class="tok-punct">,</span> inStockOnly<span class="tok-punct">,</span> onFilterTextChange<span class="tok-punct">,</span> onInStockOnlyChange <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;form</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> marginBottom<span class="tok-punct">:</span> <span class="tok-number">12</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;text&quot;</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search products...&quot;</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">onFilterTextChange</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;label</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> display<span class="tok-punct">:</span> <span class="tok-string">'block'</span><span class="tok-punct">,</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;input</span>
+          <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;checkbox&quot;</span>
+          <span class="tok-attr">checked</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span>
+          <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">onInStockOnlyChange</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>checked<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-tag">/&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+        <span class="tok-type">Only</span> show products <span class="tok-keyword">in</span> stock
+      <span class="tok-tag">&lt;/label</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/form</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductRow</span><span class="tok-punct">(</span><span class="tok-punct">{</span> product <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> color <span class="tok-punct">=</span> product<span class="tok-punct">.</span>stocked <span class="tok-punct">?</span> <span class="tok-string">'inherit'</span> <span class="tok-punct">:</span> <span class="tok-string">'crimson'</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> color <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> textAlign<span class="tok-punct">:</span> <span class="tok-string">'right'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>$<span class="tok-punct">{</span>product<span class="tok-punct">.</span>price<span class="tok-punct">.</span><span class="tok-fn">toFixed</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductTable</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products<span class="tok-punct">,</span> filterText<span class="tok-punct">,</span> inStockOnly <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> query <span class="tok-punct">=</span> filterText<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> visible <span class="tok-punct">=</span> products<span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span>
+    <span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+      <span class="tok-punct">(</span><span class="tok-punct">!</span>inStockOnly <span class="tok-punct">|</span><span class="tok-punct">|</span> product<span class="tok-punct">.</span>stocked<span class="tok-punct">)</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span>
+      product<span class="tok-punct">.</span>name<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>query<span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> categories <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-keyword">new</span> <span class="tok-type">Set</span><span class="tok-punct">(</span>visible<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> product<span class="tok-punct">.</span>category<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>visible<span class="tok-punct">.</span>length <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">No</span> products match that search<span class="tok-punct">.</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;table</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> width<span class="tok-punct">:</span> <span class="tok-number">320</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>categories<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>category<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;Fragment</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>category<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;th</span> <span class="tok-attr">colSpan</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-number">2</span><span class="tok-punct">}</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> textAlign<span class="tok-punct">:</span> <span class="tok-string">'left'</span><span class="tok-punct">,</span> paddingTop<span class="tok-punct">:</span> <span class="tok-number">10</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+                <span class="tok-punct">{</span>category<span class="tok-punct">}</span>
+              <span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+            <span class="tok-punct">{</span>visible
+              <span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> product<span class="tok-punct">.</span>category <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> category<span class="tok-punct">)</span>
+              <span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+                <span class="tok-tag">&lt;ProductRow</span> <span class="tok-attr">product</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">}</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>name<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+              <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+          <span class="tok-tag">&lt;/Fragment</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">FilterableProductTable</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>filterText<span class="tok-punct">,</span> setFilterText<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>inStockOnly<span class="tok-punct">,</span> setInStockOnly<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> fontFamily<span class="tok-punct">:</span> <span class="tok-string">'system-ui'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;SearchBar</span>
+        <span class="tok-attr">filterText</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span>
+        <span class="tok-attr">inStockOnly</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span>
+        <span class="tok-attr">onFilterTextChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>setFilterText<span class="tok-punct">}</span>
+        <span class="tok-attr">onInStockOnlyChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>setInStockOnly<span class="tok-punct">}</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ProductTable</span> <span class="tok-attr">products</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-type">PRODUCTS</span><span class="tok-punct">}</span> <span class="tok-attr">filterText</span><span class="tok-punct">=</span><span class="tok-punct">{</span>filterText<span class="tok-punct">}</span> <span class="tok-attr">inStockOnly</span><span class="tok-punct">=</span><span class="tok-punct">{</span>inStockOnly<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { Fragment, useState } from 'react';
+
+const PRODUCTS = [
+  { category: 'Grinders', price: 149, stocked: true, name: 'Encore ESP' },
+  { category: 'Grinders', price: 89, stocked: true, name: 'Timemore C3' },
+  { category: 'Grinders', price: 299, stocked: false, name: 'Ode Gen 2' },
+  { category: 'Brewers', price: 32, stocked: true, name: 'Hario V60' },
+  { category: 'Brewers', price: 349, stocked: false, name: 'Moccamaster' },
+];
+
+function SearchBar({ filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange }) {
+  return (
+    &lt;form style={{ marginBottom: 12 }}&gt;
+      &lt;input
+        type=&quot;text&quot;
+        value={filterText}
+        placeholder=&quot;Search products...&quot;
+        onChange={(e) =&gt; onFilterTextChange(e.target.value)}
+      /&gt;
+      &lt;label style={{ display: 'block', marginTop: 8 }}&gt;
+        &lt;input
+          type=&quot;checkbox&quot;
+          checked={inStockOnly}
+          onChange={(event) =&gt; onInStockOnlyChange(event.target.checked)}
+        /&gt;{' '}
+        Only show products in stock
+      &lt;/label&gt;
+    &lt;/form&gt;
+  );
+}
+
+function ProductRow({ product }) {
+  const color = product.stocked ? 'inherit' : 'crimson';
+  return (
+    &lt;tr&gt;
+      &lt;td style={{ color }}&gt;{product.name}&lt;/td&gt;
+      &lt;td style={{ textAlign: 'right' }}&gt;${product.price.toFixed(2)}&lt;/td&gt;
+    &lt;/tr&gt;
+  );
+}
+
+function ProductTable({ products, filterText, inStockOnly }) {
+  const query = filterText.trim().toLowerCase();
+
+  const visible = products.filter(
+    (product) =&gt;
+      (!inStockOnly || product.stocked) &amp;&amp;
+      product.name.toLowerCase().includes(query),
+  );
+
+  const categories = [...new Set(visible.map((product) =&gt; product.category))];
+
+  if (visible.length === 0) return &lt;p&gt;No products match that search.&lt;/p&gt;;
+
+  return (
+    &lt;table style={{ width: 320 }}&gt;
+      &lt;tbody&gt;
+        {categories.map((category) =&gt; (
+          &lt;Fragment key={category}&gt;
+            &lt;tr&gt;
+              &lt;th colSpan={2} style={{ textAlign: 'left', paddingTop: 10 }}&gt;
+                {category}
+              &lt;/th&gt;
+            &lt;/tr&gt;
+            {visible
+              .filter((product) =&gt; product.category === category)
+              .map((product) =&gt; (
+                &lt;ProductRow product={product} key={product.name} /&gt;
+              ))}
+          &lt;/Fragment&gt;
+        ))}
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  );
+}
+
+export default function FilterableProductTable() {
+  const [filterText, setFilterText] = useState('');
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  return (
+    &lt;div style={{ fontFamily: 'system-ui' }}&gt;
+      &lt;SearchBar
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly}
+      /&gt;
+      &lt;ProductTable products={PRODUCTS} filterText={filterText} inStockOnly={inStockOnly} /&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Everything on screen comes from two pieces of state — a string and a boolean — plus a constant array. <code>visible</code> and <code>categories</code> are recomputed on every render and cannot go stale. No Effects appear anywhere, because nothing here is synchronizing with a system outside React.</p>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Skipping the static version.</strong> Wiring state while still deciding what the markup is produces components that are hard to name and harder to split.</li>
+<li><strong>Putting derived values in state.</strong> A filtered list, a total, a &quot;has results&quot; flag, a formatted price — compute them during render.</li>
+<li><strong>Using an Effect to keep state in sync with props.</strong> If a value changes when a prop changes, it is derived. Effects synchronize with systems outside React, not with React itself.</li>
+<li><strong>Hoisting all state to the top component.</strong> State that one subtree reads belongs in that subtree; a single top-level state object re-renders everything.</li>
+<li><strong>Reaching for Context or a store before props hurt.</strong> Two levels of prop drilling is not a problem. Six is.</li>
+<li><strong>Using the array index as a <code>key</code></strong> in a list that filters or reorders.</li>
+<li><strong>Controlled inputs without <code>onChange</code></strong> produce a field that will not accept typing.</li>
+</ul>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./your-first-component.html">Your first component</a> — the mechanics this page assumes.</li>
+<li><a href="../state-management/lifting-state-up.html">Lifting state up</a> — the LCA rule in detail.</li>
+<li><a href="../patterns/controlled-inputs.html">Controlled inputs</a> — value down, change up.</li>
+<li><a href="../core-concepts/state.html">State</a> — what state is and how it behaves across renders.</li>
+<li><a href="../state-management/choosing-an-approach.html">Choosing an approach</a> — local state, context, or a store.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../getting-started/your-first-component.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Your first component</span></a><a class="pager-link pager-next" href="../getting-started/learning-path.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Learning path</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#step-1-break-the-ui-into-a-component-hierarchy">Step 1 — Break the UI into a component hierarchy</a></li><li class="toc-h3"><a href="#step-2-build-a-static-version">Step 2 — Build a static version</a></li><li class="toc-h3"><a href="#step-3-find-the-minimal-complete-representation-of-ui-state">Step 3 — Find the minimal complete representation of UI state</a></li><li class="toc-h3"><a href="#step-4-identify-where-the-state-should-live">Step 4 — Identify where the state should live</a></li><li class="toc-h3"><a href="#step-5-add-inverse-data-flow">Step 5 — Add inverse data flow</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

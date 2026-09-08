@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lifting state up · React 19 Docs</title>
+<meta name="description" content="Move shared state to the closest common ancestor and pass it down as props.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Lifting state up · React 19 Docs">
+<meta property="og:description" content="Move shared state to the closest common ancestor and pass it down as props.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html" aria-current="page"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#state-management">State Management</a></li><li><span aria-current="page">Lifting state up</span></li></ol><header class="page-header"><h1 class="page-title">Lifting state up</h1><p class="page-description">Move shared state to the closest common ancestor and pass it down as props.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>When two components need the same piece of state, that state does not belong to either of them. It belongs to their closest common ancestor. You move the <code>useState</code> call up to that ancestor, pass the value down as a prop, and pass a callback down so children can request a change.</p>
+<p>This is the default answer to &quot;how do I share state in React&quot;, and it is the answer far more often than people expect. Context, reducers and external stores all exist to solve problems that lifting state up cannot solve — not to replace it.</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">        ProductBrowser        &lt;- state lives here
+        /      |      \
+  SearchBox  Count  ProductList   &lt;- read it as props</code></pre></div>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p>React data flow is one-directional: a parent renders a child and hands it props. A child cannot reach sideways to a sibling, and it cannot reach up to a parent. So the only place two siblings can agree on a value is above both of them.</p>
+<p>The alternative — each sibling keeping its own copy — produces two sources of truth that drift apart. You then write synchronization code (usually an Effect) to keep them equal, and that code is a bug factory. Lifting removes the second copy instead of synchronizing it.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>One piece of information, one owner. If you find yourself copying state from props into state, or writing an Effect whose only job is to keep two states equal, you have a lifting problem, not an Effect problem.</p>
+</div></div>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Two or more components read the same value.</li>
+<li>One component changes a value that another component displays.</li>
+<li>A parent needs to coordinate its children (a tab strip that closes other panels, a form that disables submit until every field is valid).</li>
+<li>You want a single source of truth you can log, test, or serialize.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<p>Keep state local when only one component uses it. Lifting state that nobody else needs makes the parent re-render on every keystroke in a child, and turns a self-contained component into one that cannot be moved without also moving its state.</p>
+<p>Do not lift past the closest common ancestor. If the state is shared by two list items, it belongs on the list — not on the page, and not on the app root. Every level you lift above the necessary one is a level of extra re-rendering and a level of extra prop plumbing.</p>
+<p>And do not lift server data. A response from an API is a cache, not component state; see <a href="./choosing-an-approach.html">Choosing an approach</a>.</p>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>Three components need the search query: the input owns the text, the counter reports how many rows survived the filter, and the list renders them. The state goes on their common parent.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-type">PRODUCTS</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Mechanical keyboard'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">129</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Ultrawide monitor'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">549</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">3</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'Desk mat'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">29</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span> id<span class="tok-punct">:</span> <span class="tok-number">4</span><span class="tok-punct">,</span> name<span class="tok-punct">:</span> <span class="tok-string">'USB-C hub'</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">79</span> <span class="tok-punct">}</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">SearchBox</span><span class="tok-punct">(</span><span class="tok-punct">{</span> query<span class="tok-punct">,</span> onQueryChange <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;input</span>
+      <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+      <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">onQueryChange</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Filter products&quot;</span>
+      <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Filter products&quot;</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ResultCount</span><span class="tok-punct">(</span><span class="tok-punct">{</span> shown<span class="tok-punct">,</span> total <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-type">Showing</span> <span class="tok-punct">{</span>shown<span class="tok-punct">}</span> <span class="tok-keyword">of</span> <span class="tok-punct">{</span>total<span class="tok-punct">}</span> products
+    <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ProductList</span><span class="tok-punct">(</span><span class="tok-punct">{</span> products <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>products<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span><span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>product<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+          <span class="tok-punct">{</span>product<span class="tok-punct">.</span>name<span class="tok-punct">}</span> — $<span class="tok-punct">{</span>product<span class="tok-punct">.</span>price<span class="tok-punct">}</span>
+        <span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ProductBrowser</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> visible <span class="tok-punct">=</span> <span class="tok-type">PRODUCTS</span><span class="tok-punct">.</span><span class="tok-fn">filter</span><span class="tok-punct">(</span><span class="tok-punct">(</span>product<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+    product<span class="tok-punct">.</span>name<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">includes</span><span class="tok-punct">(</span>query<span class="tok-punct">.</span><span class="tok-fn">toLowerCase</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;SearchBox</span> <span class="tok-attr">query</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span> <span class="tok-attr">onQueryChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>setQuery<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ResultCount</span> <span class="tok-attr">shown</span><span class="tok-punct">=</span><span class="tok-punct">{</span>visible<span class="tok-punct">.</span>length<span class="tok-punct">}</span> <span class="tok-attr">total</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-type">PRODUCTS</span><span class="tok-punct">.</span>length<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;ProductList</span> <span class="tok-attr">products</span><span class="tok-punct">=</span><span class="tok-punct">{</span>visible<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+const PRODUCTS = [
+  { id: 1, name: 'Mechanical keyboard', price: 129 },
+  { id: 2, name: 'Ultrawide monitor', price: 549 },
+  { id: 3, name: 'Desk mat', price: 29 },
+  { id: 4, name: 'USB-C hub', price: 79 },
+];
+
+function SearchBox({ query, onQueryChange }) {
+  return (
+    &lt;input
+      value={query}
+      onChange={(event) =&gt; onQueryChange(event.target.value)}
+      placeholder=&quot;Filter products&quot;
+      aria-label=&quot;Filter products&quot;
+    /&gt;
+  );
+}
+
+function ResultCount({ shown, total }) {
+  return (
+    &lt;p&gt;
+      Showing {shown} of {total} products
+    &lt;/p&gt;
+  );
+}
+
+function ProductList({ products }) {
+  return (
+    &lt;ul&gt;
+      {products.map((product) =&gt; (
+        &lt;li key={product.id}&gt;
+          {product.name} — ${product.price}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+export default function ProductBrowser() {
+  const [query, setQuery] = useState('');
+
+  const visible = PRODUCTS.filter((product) =&gt;
+    product.name.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  return (
+    &lt;section&gt;
+      &lt;SearchBox query={query} onQueryChange={setQuery} /&gt;
+      &lt;ResultCount shown={visible.length} total={PRODUCTS.length} /&gt;
+      &lt;ProductList products={visible} /&gt;
+    &lt;/section&gt;
+  );
+}</template></div>
+<p>Note what is <em>not</em> state. <code>visible</code> is derived from <code>query</code> and <code>PRODUCTS</code>, so it is computed during render. Storing it in a second <code>useState</code> would create a value that can disagree with the query.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p>Lifting changes three things at once:</p>
+<ol>
+<li><strong>Ownership.</strong> The ancestor holds the <code>useState</code>. It is the only place the value can change.</li>
+<li><strong>Reading.</strong> Children receive the value as a prop. They are now pure functions of their props — the same props always produce the same output.</li>
+<li><strong>Writing.</strong> Children receive a function. They do not know what happens when they call it; they only announce that something happened.</li>
+</ol>
+<p>The naming matters. A child prop called <code>onQueryChange</code> describes an event. A child prop called <code>setQuery</code> leaks the parent's implementation. Prefer the event name: it lets the parent later validate, debounce, or ignore the change without renaming anything.</p>
+<p>When state changes, the owning ancestor re-renders, and React re-renders its subtree. That is the cost, and it is usually irrelevant — React re-rendering a few dozen components is cheap. Reach for memoization only after profiling; see <a href="../performance/memoization.html">Memoization</a> and <a href="../performance/react-compiler.html">React Compiler</a>.</p>
+<h3 id="controlled-and-uncontrolled-at-component-scale">Controlled and uncontrolled, at component scale<a class="heading-anchor" href="#controlled-and-uncontrolled-at-component-scale" aria-label="Link to this section">#</a></h3>
+<p>&quot;Controlled&quot; and &quot;uncontrolled&quot; are usually taught about <code>&lt;input&gt;</code>, but they describe any component:</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>Uncontrolled</th><th>Controlled</th></tr></thead>
+<tbody><tr><td>Where state lives</td><td>Inside the component</td><td>In the parent</td></tr><tr><td>Parent can read it</td><td>No</td><td>Yes</td></tr><tr><td>Parent can set it</td><td>No (only reset via <code>key</code>)</td><td>Yes</td></tr><tr><td>Reuse</td><td>Drop it in anywhere</td><td>Parent must wire it up</td></tr></tbody></table></div>
+<p>An uncontrolled <code>&lt;Accordion&gt;</code> tracks its own open panel. A controlled one takes <code>openPanel</code> and <code>onOpenPanelChange</code>. Start uncontrolled; convert to controlled the moment something outside needs to read or set that value. Many library components support both, defaulting to uncontrolled when the controlling prop is <code>undefined</code>. See <a href="../patterns/controlled-inputs.html">Controlled inputs</a> for the form-specific version of this idea.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="lift-the-minimum">Lift the minimum<a class="heading-anchor" href="#lift-the-minimum" aria-label="Link to this section">#</a></h3>
+<p>Lift the single value that must be shared, not the whole child state object. If a dialog owns <code>isOpen</code>, <code>draftTitle</code> and <code>hasUnsavedChanges</code>, and only <code>isOpen</code> is shared, lift only <code>isOpen</code>.</p>
+<h3 id="two-setters-one-source-of-truth">Two setters, one source of truth<a class="heading-anchor" href="#two-setters-one-source-of-truth" aria-label="Link to this section">#</a></h3>
+<p>When siblings edit different representations of one value (Celsius and Fahrenheit, a slider and a number box), store one canonical value plus which input the user last touched, and compute the other. Storing both fields independently guarantees they will disagree.</p>
+<h3 id="prop-drilling-is-not-automatically-a-problem">Prop drilling is not automatically a problem<a class="heading-anchor" href="#prop-drilling-is-not-automatically-a-problem" aria-label="Link to this section">#</a></h3>
+<p>Passing a prop through two or three components is normal React. It is explicit, it is greppable, it type-checks, and every consumer is visible in the tree. Reaching for context to avoid two intermediate props trades a small annoyance for an implicit dependency and a re-render model you now have to reason about.</p>
+<p>Drilling becomes a real problem when:</p>
+<ul>
+<li>The chain is five or more levels deep.</li>
+<li>Intermediate components take props they never read and only forward.</li>
+<li>Adding one field to the value means editing eight files.</li>
+<li>The same prop is threaded to many unrelated subtrees.</li>
+</ul>
+<p>Before treating that as a context problem, try composition — it removes most drilling without adding any indirection.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Composition means passing rendered elements as props (usually <code>children</code>) instead of passing data down for a descendant to render. The intermediate components stop knowing about the data entirely, because they never touch it.</p>
+<p>In the example below <code>DashboardShell</code> and <code>Panel</code> are pure layout. They forward nothing, because the elements that need <code>user</code> are created up in <code>Dashboard</code>, where <code>user</code> already is.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">Panel</span><span class="tok-punct">(</span><span class="tok-punct">{</span> title<span class="tok-punct">,</span> children <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> border<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ccc'</span><span class="tok-punct">,</span> padding<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">,</span> marginTop<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h3</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> margin<span class="tok-punct">:</span> <span class="tok-string">'0 0 8px'</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">{</span>children<span class="tok-punct">}</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">DashboardShell</span><span class="tok-punct">(</span><span class="tok-punct">{</span> header<span class="tok-punct">,</span> main <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;header</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">{</span> borderBottom<span class="tok-punct">:</span> <span class="tok-string">'1px solid #ccc'</span><span class="tok-punct">,</span> paddingBottom<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">}</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>header<span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;main</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>main<span class="tok-punct">}</span><span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">Greeting</span><span class="tok-punct">(</span><span class="tok-punct">{</span> user <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;strong</span><span class="tok-tag">&gt;</span><span class="tok-type">Signed</span> <span class="tok-keyword">in</span> <span class="tok-keyword">as</span> <span class="tok-punct">{</span>user<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/strong</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">PlanSummary</span><span class="tok-punct">(</span><span class="tok-punct">{</span> user <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Plan</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>user<span class="tok-punct">.</span>plan<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">Dashboard</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>user<span class="tok-punct">,</span> setUser<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-string">'Ada Lovelace'</span><span class="tok-punct">,</span> plan<span class="tok-punct">:</span> <span class="tok-string">'Team'</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;DashboardShell</span>
+      <span class="tok-attr">header</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-tag">&lt;Greeting</span> <span class="tok-attr">user</span><span class="tok-punct">=</span><span class="tok-punct">{</span>user<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-punct">}</span>
+      <span class="tok-attr">main</span><span class="tok-punct">=</span><span class="tok-punct">{</span>
+        <span class="tok-tag">&lt;Panel</span> <span class="tok-attr">title</span><span class="tok-punct">=</span><span class="tok-string">&quot;Billing&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;PlanSummary</span> <span class="tok-attr">user</span><span class="tok-punct">=</span><span class="tok-punct">{</span>user<span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span>
+          <span class="tok-tag">&lt;button</span>
+            <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span>
+              <span class="tok-fn">setUser</span><span class="tok-punct">(</span><span class="tok-punct">(</span>current<span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span><span class="tok-punct">{</span>
+                <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>current<span class="tok-punct">,</span>
+                plan<span class="tok-punct">:</span> current<span class="tok-punct">.</span>plan <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'Team'</span> <span class="tok-punct">?</span> <span class="tok-string">'Enterprise'</span> <span class="tok-punct">:</span> <span class="tok-string">'Team'</span><span class="tok-punct">,</span>
+              <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">)</span>
+            <span class="tok-punct">}</span>
+          <span class="tok-tag">&gt;</span>
+            <span class="tok-type">Switch</span> plan
+          <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/Panel</span><span class="tok-tag">&gt;</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-tag">/&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useState } from 'react';
+
+function Panel({ title, children }) {
+  return (
+    &lt;section style={{ border: '1px solid #ccc', padding: 12, marginTop: 8 }}&gt;
+      &lt;h3 style={{ margin: '0 0 8px' }}&gt;{title}&lt;/h3&gt;
+      {children}
+    &lt;/section&gt;
+  );
+}
+
+function DashboardShell({ header, main }) {
+  return (
+    &lt;div&gt;
+      &lt;header style={{ borderBottom: '1px solid #ccc', paddingBottom: 8 }}&gt;
+        {header}
+      &lt;/header&gt;
+      &lt;main&gt;{main}&lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Greeting({ user }) {
+  return &lt;strong&gt;Signed in as {user.name}&lt;/strong&gt;;
+}
+
+function PlanSummary({ user }) {
+  return &lt;p&gt;Plan: {user.plan}&lt;/p&gt;;
+}
+
+export default function Dashboard() {
+  const [user, setUser] = useState({ name: 'Ada Lovelace', plan: 'Team' });
+
+  return (
+    &lt;DashboardShell
+      header={&lt;Greeting user={user} /&gt;}
+      main={
+        &lt;Panel title=&quot;Billing&quot;&gt;
+          &lt;PlanSummary user={user} /&gt;
+          &lt;button
+            onClick={() =&gt;
+              setUser((current) =&gt; ({
+                ...current,
+                plan: current.plan === 'Team' ? 'Enterprise' : 'Team',
+              }))
+            }
+          &gt;
+            Switch plan
+          &lt;/button&gt;
+        &lt;/Panel&gt;
+      }
+    /&gt;
+  );
+}</template></div>
+<p><code>DashboardShell</code> never mentions <code>user</code>. If you later add <code>user.avatarUrl</code>, you edit <code>Greeting</code> and <code>Dashboard</code> — nothing in between. That is the property context is usually bought for, at a fraction of the cost.</p>
+<p>Composition also fixes the re-render story for free: <code>DashboardShell</code> and <code>Panel</code> receive the same element props unless <code>Dashboard</code> re-renders, and they have no subscription to anything. See <a href="../patterns/composition.html">Composition</a>.</p>
+<div class="callout callout-tip" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Tip</p><div class="callout-body"><p>The rule of thumb: exhaust lifting, then composition, then reach for <a href="./context.html">Context</a>. Most teams skip step two and land in a codebase with fourteen providers.</p>
+</div></div>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>Copying props into state.</strong> <code>const [name, setName] = useState(props.name)</code> captures the prop once and then ignores it. The component now has two sources of truth. Either render <code>props.name</code> directly, or — if you genuinely want a resettable draft — reset it by changing the component's <code>key</code>.</p>
+<p><strong>Syncing two states with an Effect.</strong> An Effect that reads state A and calls <code>setB</code> runs after the render that already painted the stale value, causing a visible flash and an extra render pass. Compute B during render instead.</p>
+<p><strong>Storing derived values.</strong> <code>filteredProducts</code>, <code>total</code>, <code>isFormValid</code> and <code>fullName</code> are computations, not state. Anything you can calculate from existing state or props should be calculated.</p>
+<p><strong>Lifting to the root out of habit.</strong> State at the app root re-renders the app. Put it on the closest common ancestor and no higher.</p>
+<p><strong>Passing <code>setState</code> where an event handler belongs.</strong> Exporting the raw setter lets children set any value, including invalid ones. A named callback lets the parent keep its invariants.</p>
+<p><strong>Treating drilling as an emergency.</strong> Two levels of props is not technical debt. Rewriting them as context adds an invisible dependency, a provider you can forget to render, and a re-render model to reason about — for a problem you did not have.</p>
+<p><strong>Forgetting <code>key</code> on lifted lists.</strong> When the shared state is &quot;which row is selected&quot;, store a stable id, not an array index. Indices change when the list is reordered or filtered, and the selection silently follows the wrong row.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="./context.html">Context</a> — when the value is genuinely app-wide and drilling has stopped scaling.</li>
+<li><a href="../patterns/composition.html">Composition</a> — pass elements as props to delete most prop drilling without indirection.</li>
+<li><a href="../patterns/controlled-inputs.html">Controlled inputs</a> — lifting state up, applied to form fields.</li>
+<li><a href="../hooks/use-state.html">useState</a> — the hook that holds the lifted value.</li>
+<li><a href="./choosing-an-approach.html">Choosing an approach</a> — the full ladder from local state to a server-state library.</li>
+<li><a href="../core-concepts/state.html">State</a> — what qualifies as state in the first place.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../hooks/custom-hooks.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">Custom hooks</span></a><a class="pager-link pager-next" href="../state-management/context.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Context</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#controlled-and-uncontrolled-at-component-scale">Controlled and uncontrolled, at component scale</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#lift-the-minimum">Lift the minimum</a></li><li class="toc-h3"><a href="#two-setters-one-source-of-truth">Two setters, one source of truth</a></li><li class="toc-h3"><a href="#prop-drilling-is-not-automatically-a-problem">Prop drilling is not automatically a problem</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

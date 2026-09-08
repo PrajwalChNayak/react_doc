@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" data-base="./" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>React 19 Documentation</title>
+<meta name="description" content="A practical, opinionated reference for React 19 — hooks, Server Components, Actions, performance and migration.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="React 19 Documentation">
+<meta property="og:description" content="A practical, opinionated reference for React 19 — hooks, Server Components, Actions, performance and migration.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body class="is-home">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="./index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<main class="home" id="main" tabindex="-1"><div class="home-hero"><span class="home-eyebrow">React 19.2.8 · current stable</span><h1 class="home-title">React, documented for the version you are actually running.</h1><p class="home-lede">Every page is written against React 19: <code>ref</code> as a prop, <code>&lt;Context&gt;</code> as a provider, Actions, <code>use()</code>, Server Components, <code>&lt;Activity&gt;</code> and the React Compiler. Removed and deprecated APIs appear only where they belong — in migration.</p><div class="home-cta"><a class="btn btn-primary" href="./getting-started/introduction.html">Start reading</a><a class="btn btn-ghost" href="./getting-started/learning-path.html">Learning path</a><a class="btn btn-ghost" href="./reference/cheat-sheet.html">Cheat sheet</a><a class="btn btn-ghost" href="./migration/react-18-to-19.html">Upgrade from 18</a></div></div><h2 class="home-section-title">Browse by section</h2><div class="home-grid"><a class="home-card" href="./getting-started/introduction.html" id="getting-started"><h3>Getting Started</h3><p>Install React, build your first component, and learn how to think in components.</p><span class="home-card-count">5 pages</span></a><a class="home-card" href="./core-concepts/jsx.html" id="core-concepts"><h3>Core Concepts</h3><p>JSX, props, state, rendering, lists and events — the model everything else builds on.</p><span class="home-card-count">9 pages</span></a><a class="home-card" href="./hooks/rules-of-hooks.html" id="hooks"><h3>Hooks</h3><p>Every built-in hook, one page each, with the rules that keep them working.</p><span class="home-card-count">21 pages</span></a><a class="home-card" href="./state-management/lifting-state-up.html" id="state-management"><h3>State Management</h3><p>Lifting state, context, reducers and external stores — and how to choose.</p><span class="home-card-count">5 pages</span></a><a class="home-card" href="./data-fetching/overview.html" id="data-fetching"><h3>Data Fetching</h3><p>Suspense, use(), caching, and the libraries that do this properly.</p><span class="home-card-count">6 pages</span></a><a class="home-card" href="./performance/overview.html" id="performance"><h3>Performance</h3><p>The React Compiler, memoization, code splitting, Activity and profiling.</p><span class="home-card-count">7 pages</span></a><a class="home-card" href="./server-react/overview.html" id="server-react"><h3>Server React</h3><p>Server Components, directives, Server Functions, SSR and streaming.</p><span class="home-card-count">7 pages</span></a><a class="home-card" href="./patterns/composition.html" id="patterns"><h3>Patterns</h3><p>Composition, error boundaries, portals, forms and refs.</p><span class="home-card-count">7 pages</span></a><a class="home-card" href="./typescript/setup.html" id="typescript"><h3>TypeScript</h3><p>Typing props, hooks, children, events and generic components.</p><span class="home-card-count">6 pages</span></a><a class="home-card" href="./accessibility/semantics.html" id="accessibility"><h3>Accessibility</h3><p>Semantics, focus management and announcements that actually work.</p><span class="home-card-count">4 pages</span></a><a class="home-card" href="./testing/setup.html" id="testing"><h3>Testing</h3><p>Testing Library, act, async behavior and user events.</p><span class="home-card-count">4 pages</span></a><a class="home-card" href="./ecosystem/routing.html" id="ecosystem"><h3>Ecosystem</h3><p>Routing, styling, forms, data libraries, tooling and Redux.</p><span class="home-card-count">6 pages</span></a><a class="home-card" href="./migration/react-18-to-19.html" id="migration"><h3>Migration</h3><p>React 18 to 19, removed and deprecated APIs, and legacy codebases.</p><span class="home-card-count">5 pages</span></a><a class="home-card" href="./reference/hooks-reference.html" id="reference"><h3>Reference</h3><p>Hooks reference, built-in components, a dense cheat sheet and troubleshooting.</p><span class="home-card-count">4 pages</span></a></div></main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="./assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "react-19-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hand-built static documentation site for React 19.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "check:examples": "node scripts/check-examples.mjs",
+    "verify": "node scripts/build.mjs && node scripts/check.mjs && node scripts/check-examples.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "//": "The site build (scripts/build.mjs) has NO dependencies and runs on a fresh clone with no install. These devDependencies exist only so scripts/check-examples.mjs can type-check every documentation example against the real React 19 packages.",
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "^5.9.0"
+  }
+}

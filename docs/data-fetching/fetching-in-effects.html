@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en" data-base="../" data-react-version="19.2.8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fetching in Effects · React 19 Docs</title>
+<meta name="description" content="How to fetch data in useEffect correctly, and what that approach can never do for you.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Fetching in Effects · React 19 Docs">
+<meta property="og:description" content="How to fetch data in useEffect correctly, and what that approach can never do for you.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235449c8'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/styles.css">
+<script>(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg></button>
+  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg></button>
+  <a class="brand" href="../index.html">
+    <span class="brand-mark" aria-hidden="true">R</span>
+    <span class="brand-name">React 19 Docs</span>
+    <span class="brand-version">v19.2.8</span>
+  </a>
+  <span class="header-spacer"></span>
+  <div class="header-actions">
+    <button class="search-trigger" type="button" aria-label="Search documentation">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg><span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg><svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg></button>
+  </div>
+</header>
+
+<div class="nav-backdrop" hidden></div>
+
+<div class="layout"><nav class="sidebar" id="sidebar" aria-label="Documentation"><div class="sidebar-inner"><div class="sidebar-head"><p class="sidebar-head-title">Documentation</p><button class="icon-btn sidebar-close" type="button" aria-label="Close navigation"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg></button></div><details class="nav-group" data-group="getting-started"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Getting Started</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../getting-started/introduction.html"><span class="nav-link-text">Introduction to React</span></a></li><li><a class="nav-link" href="../getting-started/installation.html"><span class="nav-link-text">Installation</span></a></li><li><a class="nav-link" href="../getting-started/your-first-component.html"><span class="nav-link-text">Your first component</span></a></li><li><a class="nav-link" href="../getting-started/thinking-in-react.html"><span class="nav-link-text">Thinking in React</span></a></li><li><a class="nav-link" href="../getting-started/learning-path.html"><span class="nav-link-text">Learning path</span></a></li></ul></details><details class="nav-group" data-group="core-concepts"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Core Concepts</span><span class="nav-group-count">9</span></summary><ul class="nav-list"><li><a class="nav-link" href="../core-concepts/jsx.html"><span class="nav-link-text">JSX</span></a></li><li><a class="nav-link" href="../core-concepts/components.html"><span class="nav-link-text">Components</span></a></li><li><a class="nav-link" href="../core-concepts/props.html"><span class="nav-link-text">Props</span></a></li><li><a class="nav-link" href="../core-concepts/state.html"><span class="nav-link-text">State</span></a></li><li><a class="nav-link" href="../core-concepts/rendering.html"><span class="nav-link-text">Rendering</span></a></li><li><a class="nav-link" href="../core-concepts/conditional-rendering.html"><span class="nav-link-text">Conditional rendering</span></a></li><li><a class="nav-link" href="../core-concepts/lists-and-keys.html"><span class="nav-link-text">Lists and keys</span></a></li><li><a class="nav-link" href="../core-concepts/events.html"><span class="nav-link-text">Events</span></a></li><li><a class="nav-link" href="../core-concepts/strict-mode.html"><span class="nav-link-text">Strict Mode</span></a></li></ul></details><details class="nav-group" data-group="hooks"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Hooks</span><span class="nav-group-count">21</span></summary><ul class="nav-list"><li><a class="nav-link" href="../hooks/rules-of-hooks.html"><span class="nav-link-text">Rules of Hooks</span></a></li><li><a class="nav-link" href="../hooks/use-state.html"><span class="nav-link-text">useState</span></a></li><li><a class="nav-link" href="../hooks/use-reducer.html"><span class="nav-link-text">useReducer</span></a></li><li><a class="nav-link" href="../hooks/use-effect.html"><span class="nav-link-text">useEffect</span></a></li><li><a class="nav-link" href="../hooks/use-layout-effect.html"><span class="nav-link-text">useLayoutEffect</span></a></li><li><a class="nav-link" href="../hooks/use-effect-event.html"><span class="nav-link-text">useEffectEvent</span></a></li><li><a class="nav-link" href="../hooks/use-context.html"><span class="nav-link-text">useContext</span></a></li><li><a class="nav-link" href="../hooks/use-ref.html"><span class="nav-link-text">useRef</span></a></li><li><a class="nav-link" href="../hooks/use-imperative-handle.html"><span class="nav-link-text">useImperativeHandle</span></a></li><li><a class="nav-link" href="../hooks/use-memo.html"><span class="nav-link-text">useMemo</span></a></li><li><a class="nav-link" href="../hooks/use-callback.html"><span class="nav-link-text">useCallback</span></a></li><li><a class="nav-link" href="../hooks/use-transition.html"><span class="nav-link-text">useTransition</span></a></li><li><a class="nav-link" href="../hooks/use-deferred-value.html"><span class="nav-link-text">useDeferredValue</span></a></li><li><a class="nav-link" href="../hooks/use-id.html"><span class="nav-link-text">useId</span></a></li><li><a class="nav-link" href="../hooks/use-sync-external-store.html"><span class="nav-link-text">useSyncExternalStore</span></a></li><li><a class="nav-link" href="../hooks/use-debug-value.html"><span class="nav-link-text">useDebugValue</span></a></li><li><a class="nav-link" href="../hooks/use.html"><span class="nav-link-text">use</span></a></li><li><a class="nav-link" href="../hooks/use-action-state.html"><span class="nav-link-text">useActionState</span></a></li><li><a class="nav-link" href="../hooks/use-form-status.html"><span class="nav-link-text">useFormStatus</span></a></li><li><a class="nav-link" href="../hooks/use-optimistic.html"><span class="nav-link-text">useOptimistic</span></a></li><li><a class="nav-link" href="../hooks/custom-hooks.html"><span class="nav-link-text">Custom hooks</span></a></li></ul></details><details class="nav-group" data-group="state-management"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">State Management</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../state-management/lifting-state-up.html"><span class="nav-link-text">Lifting state up</span></a></li><li><a class="nav-link" href="../state-management/context.html"><span class="nav-link-text">Context</span></a></li><li><a class="nav-link" href="../state-management/reducers-and-context.html"><span class="nav-link-text">Reducers and context</span></a></li><li><a class="nav-link" href="../state-management/external-stores.html"><span class="nav-link-text">External stores</span></a></li><li><a class="nav-link" href="../state-management/choosing-an-approach.html"><span class="nav-link-text">Choosing an approach</span></a></li></ul></details><details class="nav-group" data-group="data-fetching" open><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Data Fetching</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../data-fetching/overview.html"><span class="nav-link-text">Data fetching overview</span></a></li><li><a class="nav-link" href="../data-fetching/suspense.html"><span class="nav-link-text">Suspense</span></a></li><li><a class="nav-link" href="../data-fetching/use-with-promises.html"><span class="nav-link-text">use with promises</span></a></li><li><a class="nav-link" href="../data-fetching/fetching-in-effects.html" aria-current="page"><span class="nav-link-text">Fetching in Effects</span></a></li><li><a class="nav-link" href="../data-fetching/caching.html"><span class="nav-link-text">Caching</span></a></li><li><a class="nav-link" href="../data-fetching/libraries.html"><span class="nav-link-text">Data libraries</span></a></li></ul></details><details class="nav-group" data-group="performance"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Performance</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../performance/overview.html"><span class="nav-link-text">Performance overview</span></a></li><li><a class="nav-link" href="../performance/react-compiler.html"><span class="nav-link-text">React Compiler</span></a></li><li><a class="nav-link" href="../performance/memoization.html"><span class="nav-link-text">Memoization</span></a></li><li><a class="nav-link" href="../performance/code-splitting.html"><span class="nav-link-text">Code splitting</span></a></li><li><a class="nav-link" href="../performance/activity.html"><span class="nav-link-text">Activity</span></a></li><li><a class="nav-link" href="../performance/profiling.html"><span class="nav-link-text">Profiling</span></a></li><li><a class="nav-link" href="../performance/lists-and-virtualization.html"><span class="nav-link-text">Lists and virtualization</span></a></li></ul></details><details class="nav-group" data-group="server-react"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Server React</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../server-react/overview.html"><span class="nav-link-text">Server React</span></a></li><li><a class="nav-link" href="../server-react/server-components.html"><span class="nav-link-text">Server Components</span></a></li><li><a class="nav-link" href="../server-react/directives.html"><span class="nav-link-text">Directives</span></a></li><li><a class="nav-link" href="../server-react/server-functions.html"><span class="nav-link-text">Server Functions</span></a></li><li><a class="nav-link" href="../server-react/ssr-and-hydration.html"><span class="nav-link-text">SSR and hydration</span></a></li><li><a class="nav-link" href="../server-react/streaming.html"><span class="nav-link-text">Streaming</span></a></li><li><a class="nav-link" href="../server-react/static-generation.html"><span class="nav-link-text">Static generation</span></a></li></ul></details><details class="nav-group" data-group="patterns"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Patterns</span><span class="nav-group-count">7</span></summary><ul class="nav-list"><li><a class="nav-link" href="../patterns/composition.html"><span class="nav-link-text">Composition</span></a></li><li><a class="nav-link" href="../patterns/error-boundaries.html"><span class="nav-link-text">Error boundaries</span></a></li><li><a class="nav-link" href="../patterns/portals.html"><span class="nav-link-text">Portals</span></a></li><li><a class="nav-link" href="../patterns/controlled-inputs.html"><span class="nav-link-text">Controlled and uncontrolled inputs</span></a></li><li><a class="nav-link" href="../patterns/forms-and-actions.html"><span class="nav-link-text">Forms and Actions</span></a></li><li><a class="nav-link" href="../patterns/refs-and-dom.html"><span class="nav-link-text">Refs and the DOM</span></a></li><li><a class="nav-link" href="../patterns/document-metadata.html"><span class="nav-link-text">Document metadata</span></a></li></ul></details><details class="nav-group" data-group="typescript"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">TypeScript</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../typescript/setup.html"><span class="nav-link-text">TypeScript setup</span></a></li><li><a class="nav-link" href="../typescript/typing-props.html"><span class="nav-link-text">Typing props</span></a></li><li><a class="nav-link" href="../typescript/typing-hooks.html"><span class="nav-link-text">Typing hooks</span></a></li><li><a class="nav-link" href="../typescript/typing-children.html"><span class="nav-link-text">Typing children</span></a></li><li><a class="nav-link" href="../typescript/typing-events.html"><span class="nav-link-text">Typing events</span></a></li><li><a class="nav-link" href="../typescript/generic-components.html"><span class="nav-link-text">Generic components</span></a></li></ul></details><details class="nav-group" data-group="accessibility"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Accessibility</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../accessibility/semantics.html"><span class="nav-link-text">Semantics</span></a></li><li><a class="nav-link" href="../accessibility/focus-management.html"><span class="nav-link-text">Focus management</span></a></li><li><a class="nav-link" href="../accessibility/announcements.html"><span class="nav-link-text">Announcements</span></a></li><li><a class="nav-link" href="../accessibility/forms-accessibility.html"><span class="nav-link-text">Form accessibility</span></a></li></ul></details><details class="nav-group" data-group="testing"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Testing</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../testing/setup.html"><span class="nav-link-text">Testing setup</span></a></li><li><a class="nav-link" href="../testing/testing-library.html"><span class="nav-link-text">Testing Library</span></a></li><li><a class="nav-link" href="../testing/act-and-async.html"><span class="nav-link-text">act and async testing</span></a></li><li><a class="nav-link" href="../testing/user-events.html"><span class="nav-link-text">User events</span></a></li></ul></details><details class="nav-group" data-group="ecosystem"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Ecosystem</span><span class="nav-group-count">6</span></summary><ul class="nav-list"><li><a class="nav-link" href="../ecosystem/routing.html"><span class="nav-link-text">Routing</span></a></li><li><a class="nav-link" href="../ecosystem/styling.html"><span class="nav-link-text">Styling</span></a></li><li><a class="nav-link" href="../ecosystem/forms.html"><span class="nav-link-text">Forms</span></a></li><li><a class="nav-link" href="../ecosystem/data-libraries.html"><span class="nav-link-text">Data libraries</span></a></li><li><a class="nav-link" href="../ecosystem/build-tooling.html"><span class="nav-link-text">Build tooling</span></a></li><li><a class="nav-link" href="../ecosystem/redux.html"><span class="nav-link-text">Redux</span></a></li></ul></details><details class="nav-group" data-group="migration"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Migration</span><span class="nav-group-count">5</span></summary><ul class="nav-list"><li><a class="nav-link" href="../migration/react-18-to-19.html"><span class="nav-link-text">React 18 to 19</span></a></li><li><a class="nav-link" href="../migration/removed-apis.html"><span class="nav-link-text">Removed APIs</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/deprecated-apis.html"><span class="nav-link-text">Deprecated APIs</span><span class="nav-badge">deprecated</span></a></li><li><a class="nav-link" href="../migration/legacy-codebases.html"><span class="nav-link-text">Legacy codebases</span><span class="nav-badge">legacy</span></a></li><li><a class="nav-link" href="../migration/legacy-archive.html"><span class="nav-link-text">Legacy archive</span><span class="nav-badge">legacy</span></a></li></ul></details><details class="nav-group" data-group="reference"><summary class="nav-group-title"><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-group-name">Reference</span><span class="nav-group-count">4</span></summary><ul class="nav-list"><li><a class="nav-link" href="../reference/hooks-reference.html"><span class="nav-link-text">Hooks reference</span></a></li><li><a class="nav-link" href="../reference/built-in-components.html"><span class="nav-link-text">Built-in components and APIs</span></a></li><li><a class="nav-link" href="../reference/cheat-sheet.html"><span class="nav-link-text">React 19 cheat sheet</span></a></li><li><a class="nav-link" href="../reference/troubleshooting.html"><span class="nav-link-text">Troubleshooting</span></a></li></ul></details></div></nav><main class="main" id="main" tabindex="-1"><ol class="breadcrumbs"><li><a href="../index.html">Home</a></li><li><a href="../index.html#data-fetching">Data Fetching</a></li><li><span aria-current="page">Fetching in Effects</span></li></ol><header class="page-header"><h1 class="page-title">Fetching in Effects</h1><p class="page-description">How to fetch data in useEffect correctly, and what that approach can never do for you.</p><div class="badges"><span class="badge badge-current">Current</span></div></header><div class="prose"><h2 id="overview">Overview<a class="heading-anchor" href="#overview" aria-label="Link to this section">#</a></h2>
+<p>Fetching in an Effect is the option of last resort in <a href="./overview.html">the data-fetching hierarchy</a>. It is also the one you will inherit in every existing codebase, so it is worth writing correctly.</p>
+<p>Correctly means five things, and most hand-written versions miss at least two:</p>
+<ol>
+<li><strong>Cleanup</strong>, so a response that arrives after the inputs changed is ignored.</li>
+<li><strong>Cancellation</strong>, so an abandoned request stops consuming bandwidth.</li>
+<li><strong>Honest dependencies</strong>, so the Effect re-runs exactly when its inputs change.</li>
+<li><strong>Real loading and error state</strong>, including the error that arrives second.</li>
+<li><strong>No fetching for things that are not fetches</strong> — derived values, event responses, subscriptions.</li>
+</ol>
+<h2 id="why-it-exists">Why it exists<a class="heading-anchor" href="#why-it-exists" aria-label="Link to this section">#</a></h2>
+<p><code>useEffect</code> synchronizes a component with an external system. A server is an external system, so the fit is not absurd — but it is a poor fit, because a fetch is a one-shot request with a result, not an ongoing synchronization with a value you can read back.</p>
+<p>The mismatch shows up as everything the Effect does not handle for you: no cache, no dedupe, no revalidation, and a race condition that appears only when the network is slow enough to interleave two responses.</p>
+<p>Use it when you have no framework, no data library, and one or two places that need data. Do not use it as the foundation of a data layer.</p>
+<h2 id="when-to-use-it">When to use it<a class="heading-anchor" href="#when-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>A small app or a single widget where adding a dependency is not justified.</li>
+<li>Data that is genuinely component-local and never shared.</li>
+<li>Bridging to a non-HTTP source that has no library — a Web Worker, a native bridge, an SDK with a callback API.</li>
+<li>Maintaining code that already works this way, where a rewrite is not the task.</li>
+</ul>
+<h2 id="when-not-to-use-it">When not to use it<a class="heading-anchor" href="#when-not-to-use-it" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Deriving a value from props or state.</strong> Compute it during render. An Effect that only calls <code>setState</code> from other state is a bug in waiting.</li>
+<li><strong>Responding to an event.</strong> A search submitted by a button belongs in the handler, not in an Effect watching a state variable.</li>
+<li><strong>Subscribing to a store.</strong> Use <a href="../hooks/use-sync-external-store.html"><code>useSyncExternalStore</code></a>.</li>
+<li><strong>Anything that needs a cache.</strong> Two components needing the same record will issue two requests, forever.</li>
+<li><strong>Submitting a form.</strong> That is an <a href="../patterns/forms-and-actions.html">action</a>.</li>
+</ul>
+<h2 id="basic-example">Basic example<a class="heading-anchor" href="#basic-example" aria-label="Link to this section">#</a></h2>
+<p>Race conditions are the reason cleanup is not optional. This example uses a simulated backend whose responses arrive out of order, so you can watch the bug and the fix side by side.</p>
+<div class="example" id="ex-0"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-0-t0" aria-controls="ex-0-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-0-t1" aria-controls="ex-0-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-0-p0" aria-labelledby="ex-0-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-0-p1" aria-labelledby="ex-0-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// Deliberately uneven latency: request 2 answers before request 1.</span>
+<span class="tok-keyword">const</span> <span class="tok-type">LATENCY</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> <span class="tok-number">1</span><span class="tok-punct">:</span> <span class="tok-number">1500</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">:</span> <span class="tok-number">300</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">:</span> <span class="tok-number">700</span> <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">function</span> <span class="tok-fn">fetchArticle</span><span class="tok-punct">(</span>articleId<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-keyword">new</span> <span class="tok-type">Promise</span><span class="tok-punct">(</span>resolve <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span>
+      <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">resolve</span><span class="tok-punct">(</span><span class="tok-string">`Article </span><span class="tok-punct">${</span>articleId<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+      <span class="tok-type">LATENCY</span><span class="tok-punct">[</span>articleId<span class="tok-punct">]</span> <span class="tok-punct">?</span><span class="tok-punct">?</span> <span class="tok-number">500</span>
+    <span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">function</span> <span class="tok-type">ArticleTitle</span><span class="tok-punct">(</span><span class="tok-punct">{</span> articleId<span class="tok-punct">,</span> safe <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>title<span class="tok-punct">,</span> setTitle<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'…'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">let</span> ignore <span class="tok-punct">=</span> <span class="tok-literal">false</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setTitle</span><span class="tok-punct">(</span><span class="tok-string">'…'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-fn">fetchArticle</span><span class="tok-punct">(</span>articleId<span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>result <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span>safe <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> ignore<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span><span class="tok-punct">;</span> <span class="tok-comment">// Stale response: a newer request has already been sent.</span>
+      <span class="tok-punct">}</span>
+      <span class="tok-fn">setTitle</span><span class="tok-punct">(</span>result<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      ignore <span class="tok-punct">=</span> <span class="tok-literal">true</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>articleId<span class="tok-punct">,</span> safe<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-tag">&lt;strong</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>title<span class="tok-punct">}</span><span class="tok-tag">&lt;/strong</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">RaceDemo</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>articleId<span class="tok-punct">,</span> setArticleId<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setArticleId</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Open</span> <span class="tok-number">1</span> <span class="tok-punct">(</span>slow<span class="tok-punct">)</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setArticleId</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Open</span> <span class="tok-number">2</span> <span class="tok-punct">(</span>fast<span class="tok-punct">)</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span><span class="tok-string">' '</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setArticleId</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-type">Open</span> <span class="tok-number">3</span><span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Requested</span><span class="tok-punct">:</span> article <span class="tok-punct">{</span>articleId<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Without</span> cleanup<span class="tok-punct">:</span> <span class="tok-tag">&lt;ArticleTitle</span> <span class="tok-attr">articleId</span><span class="tok-punct">=</span><span class="tok-punct">{</span>articleId<span class="tok-punct">}</span> <span class="tok-attr">safe</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-literal">false</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">With</span> cleanup<span class="tok-punct">:</span> <span class="tok-tag">&lt;ArticleTitle</span> <span class="tok-attr">articleId</span><span class="tok-punct">=</span><span class="tok-punct">{</span>articleId<span class="tok-punct">}</span> <span class="tok-attr">safe</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-literal">true</span><span class="tok-punct">}</span> <span class="tok-tag">/&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useEffect, useState } from 'react';
+
+// Deliberately uneven latency: request 2 answers before request 1.
+const LATENCY = { 1: 1500, 2: 300, 3: 700 };
+
+function fetchArticle(articleId) {
+  return new Promise(resolve =&gt; {
+    setTimeout(
+      () =&gt; resolve(`Article ${articleId}`),
+      LATENCY[articleId] ?? 500
+    );
+  });
+}
+
+function ArticleTitle({ articleId, safe }) {
+  const [title, setTitle] = useState('…');
+
+  useEffect(() =&gt; {
+    let ignore = false;
+    setTitle('…');
+
+    fetchArticle(articleId).then(result =&gt; {
+      if (safe &amp;&amp; ignore) {
+        return; // Stale response: a newer request has already been sent.
+      }
+      setTitle(result);
+    });
+
+    return () =&gt; {
+      ignore = true;
+    };
+  }, [articleId, safe]);
+
+  return &lt;strong&gt;{title}&lt;/strong&gt;;
+}
+
+export default function RaceDemo() {
+  const [articleId, setArticleId] = useState(1);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setArticleId(1)}&gt;Open 1 (slow)&lt;/button&gt;{' '}
+      &lt;button onClick={() =&gt; setArticleId(2)}&gt;Open 2 (fast)&lt;/button&gt;{' '}
+      &lt;button onClick={() =&gt; setArticleId(3)}&gt;Open 3&lt;/button&gt;
+      &lt;p&gt;Requested: article {articleId}&lt;/p&gt;
+      &lt;p&gt;Without cleanup: &lt;ArticleTitle articleId={articleId} safe={false} /&gt;&lt;/p&gt;
+      &lt;p&gt;With cleanup: &lt;ArticleTitle articleId={articleId} safe={true} /&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Click &quot;Open 1&quot; and then &quot;Open 2&quot; quickly. The unguarded row briefly shows &quot;Article 2&quot; and then flips back to &quot;Article 1&quot; — the slow first response landed last and won. The guarded row stays on &quot;Article 2&quot;, because the cleanup function set <code>ignore</code> before the stale response arrived.</p>
+<h2 id="how-it-works">How it works<a class="heading-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+<p>React runs the Effect after the component commits. Before running it again — and when the component unmounts — React runs the cleanup function returned by the previous run. That ordering is the whole mechanism:</p>
+<div class="code-block" data-lang="text"><div class="code-head"><span class="code-lang"></span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-text">render  →  effect(id=1)
+                       ↘ cleanup(id=1)  →  effect(id=2)</code></pre></div>
+<p>Any response belonging to a run whose cleanup has already fired is stale by definition. The <code>ignore</code> flag is closed over by exactly one run, so each run knows whether it is still current.</p>
+<h3 id="ignore-flag-versus-abortcontroller"><code>ignore</code> flag versus <code>AbortController</code><a class="heading-anchor" href="#ignore-flag-versus-abortcontroller" aria-label="Link to this section">#</a></h3>
+<p>Both are correct. They solve different halves of the problem.</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th><code>ignore</code> flag</th><th><code>AbortController</code></th></tr></thead>
+<tbody><tr><td>Prevents stale state updates</td><td>Yes</td><td>Yes, via the rejection</td></tr><tr><td>Stops the network request</td><td>No</td><td>Yes</td></tr><tr><td>Works with any promise</td><td>Yes</td><td>Only with APIs that accept a signal</td></tr><tr><td>Extra error handling</td><td>None</td><td>Must ignore <code>AbortError</code></td></tr></tbody></table></div>
+<p>Use <code>AbortController</code> with <code>fetch</code>, since it frees the connection. Use an <code>ignore</code> flag for promises you cannot cancel. Using both is reasonable and costs one line.</p>
+<h3 id="strictmodes-double-mount-is-a-feature">StrictMode's double mount is a feature<a class="heading-anchor" href="#strictmodes-double-mount-is-a-feature" aria-label="Link to this section">#</a></h3>
+<p>In development, React 19's StrictMode mounts each component, unmounts it, and mounts it again. Your Effect runs, cleans up, and runs again — on purpose.</p>
+<p>That is not a bug to work around with a <code>useRef</code> guard. It is a <strong>test of your cleanup</strong>, run on every component you write. If the double mount produces duplicate rows, a flipped state, or two open sockets, then the same thing happens in production the first time the user navigates away and back quickly.</p>
+<p>Fix the cleanup, not the symptom. See <a href="../core-concepts/strict-mode.html">StrictMode</a>.</p>
+<h3 id="waterfalls">Waterfalls<a class="heading-anchor" href="#waterfalls" aria-label="Link to this section">#</a></h3>
+<p>An Effect runs after render, so a child that fetches starts its request one commit after its parent's data arrived. Three nested levels of data-fetching components is three sequential round trips. Nothing in the Effect API can fix this — only fetching higher up, or preloading, can.</p>
+<h2 id="common-patterns">Common patterns<a class="heading-anchor" href="#common-patterns" aria-label="Link to this section">#</a></h2>
+<h3 id="the-complete-shape-with-abortcontroller">The complete shape, with <code>AbortController</code><a class="heading-anchor" href="#the-complete-shape-with-abortcontroller" aria-label="Link to this section">#</a></h3>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">UserProfile</span><span class="tok-punct">(</span><span class="tok-punct">{</span> userId <span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>user<span class="tok-punct">,</span> setUser<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">null</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>status<span class="tok-punct">,</span> setStatus<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'loading'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>errorMessage<span class="tok-punct">,</span> setErrorMessage<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> controller <span class="tok-punct">=</span> <span class="tok-keyword">new</span> <span class="tok-type">AbortController</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setStatus</span><span class="tok-punct">(</span><span class="tok-string">'loading'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setErrorMessage</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">async</span> <span class="tok-keyword">function</span> <span class="tok-fn">load</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">try</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">const</span> response <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/users/</span><span class="tok-punct">${</span>userId<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span> <span class="tok-punct">{</span>
+          signal<span class="tok-punct">:</span> controller<span class="tok-punct">.</span>signal<span class="tok-punct">,</span>
+        <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>response<span class="tok-punct">.</span>ok<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Request failed with </span><span class="tok-punct">${</span>response<span class="tok-punct">.</span>status<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+        <span class="tok-keyword">const</span> body <span class="tok-punct">=</span> <span class="tok-keyword">await</span> response<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-fn">setUser</span><span class="tok-punct">(</span>body<span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-fn">setStatus</span><span class="tok-punct">(</span><span class="tok-string">'success'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span> <span class="tok-keyword">catch</span> <span class="tok-punct">(</span>loadError<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span>controller<span class="tok-punct">.</span>signal<span class="tok-punct">.</span>aborted<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">return</span><span class="tok-punct">;</span> <span class="tok-comment">// The Effect was cleaned up; this result is not wanted.</span>
+        <span class="tok-punct">}</span>
+        <span class="tok-fn">setErrorMessage</span><span class="tok-punct">(</span>
+          loadError <span class="tok-keyword">instanceof</span> <span class="tok-type">Error</span> <span class="tok-punct">?</span> loadError<span class="tok-punct">.</span>message <span class="tok-punct">:</span> <span class="tok-string">'Request failed'</span>
+        <span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-fn">setStatus</span><span class="tok-punct">(</span><span class="tok-string">'error'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-fn">load</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> controller<span class="tok-punct">.</span><span class="tok-fn">abort</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>userId<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'error'</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;alert&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>errorMessage<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">(</span>status <span class="tok-punct">=</span><span class="tok-punct">=</span><span class="tok-punct">=</span> <span class="tok-string">'loading'</span> <span class="tok-punct">|</span><span class="tok-punct">|</span> <span class="tok-punct">!</span>user<span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Loading</span> profile…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>user<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>user<span class="tok-punct">.</span>email<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Calls a real endpoint, so there is no browser preview.</p></div>
+<p>Three things to copy: the status is a single string rather than two booleans that can both be true; <code>response.ok</code> is checked, because <code>fetch</code> does not reject on a 404 or a 500; and the abort is checked before any state is set.</p>
+<div class="callout callout-note" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Note</p><div class="callout-body"><p><code>fetch</code> rejects only on network failure. A <code>500</code> resolves successfully with <code>ok === false</code>. Axios rejects on non-2xx by default, which is the main reason teams reach for it — but a three-line <code>if (!response.ok) throw</code> removes the difference.</p>
+</div></div>
+<h3 id="a-custom-hook-with-cancellation">A custom hook, with cancellation<a class="heading-anchor" href="#a-custom-hook-with-cancellation" aria-label="Link to this section">#</a></h3>
+<p>The archived version of these docs offered a <code>useFetch</code> hook with an <code>isMounted</code> flag and <code>JSON.stringify(options)</code> in the dependency array. Both parts are worth revisiting: the flag prevents the state update but not the request, and stringifying an options object on every render is a dependency smell. Take the URL and a stable <code>AbortSignal</code>-aware fetcher instead.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useCallback</span><span class="tok-punct">,</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-fn">useJson</span><span class="tok-punct">(</span>url<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>state<span class="tok-punct">,</span> setState<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+    status<span class="tok-punct">:</span> <span class="tok-string">'loading'</span><span class="tok-punct">,</span>
+    data<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span>
+    errorMessage<span class="tok-punct">:</span> <span class="tok-string">''</span><span class="tok-punct">,</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>reloadToken<span class="tok-punct">,</span> setReloadToken<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> reload <span class="tok-punct">=</span> <span class="tok-fn">useCallback</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-fn">setReloadToken</span><span class="tok-punct">(</span>token <span class="tok-keyword">=&gt;</span> token <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> controller <span class="tok-punct">=</span> <span class="tok-keyword">new</span> <span class="tok-type">AbortController</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setState</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'loading'</span><span class="tok-punct">,</span> data<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span> errorMessage<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-fn">fetch</span><span class="tok-punct">(</span>url<span class="tok-punct">,</span> <span class="tok-punct">{</span> signal<span class="tok-punct">:</span> controller<span class="tok-punct">.</span>signal <span class="tok-punct">}</span><span class="tok-punct">)</span>
+      <span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>response <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>response<span class="tok-punct">.</span>ok<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-type">Error</span><span class="tok-punct">(</span><span class="tok-string">`Request failed with </span><span class="tok-punct">${</span>response<span class="tok-punct">.</span>status<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+        <span class="tok-keyword">return</span> response<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span>
+      <span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>data <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        <span class="tok-fn">setState</span><span class="tok-punct">(</span><span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-string">'success'</span><span class="tok-punct">,</span> data<span class="tok-punct">,</span> errorMessage<span class="tok-punct">:</span> <span class="tok-string">''</span> <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span>
+      <span class="tok-punct">.</span><span class="tok-keyword">catch</span><span class="tok-punct">(</span>loadError <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span>controller<span class="tok-punct">.</span>signal<span class="tok-punct">.</span>aborted<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+        <span class="tok-fn">setState</span><span class="tok-punct">(</span><span class="tok-punct">{</span>
+          status<span class="tok-punct">:</span> <span class="tok-string">'error'</span><span class="tok-punct">,</span>
+          data<span class="tok-punct">:</span> <span class="tok-literal">null</span><span class="tok-punct">,</span>
+          errorMessage<span class="tok-punct">:</span>
+            loadError <span class="tok-keyword">instanceof</span> <span class="tok-type">Error</span> <span class="tok-punct">?</span> loadError<span class="tok-punct">.</span>message <span class="tok-punct">:</span> <span class="tok-string">'Request failed'</span><span class="tok-punct">,</span>
+        <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> controller<span class="tok-punct">.</span><span class="tok-fn">abort</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>url<span class="tok-punct">,</span> reloadToken<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">{</span> <span class="tok-punct">.</span><span class="tok-punct">.</span><span class="tok-punct">.</span>state<span class="tok-punct">,</span> reload <span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Calls a real endpoint, so there is no browser preview.</p></div>
+<p><code>url</code> is a string, so the dependency is honest without serializing anything. <code>reload</code> bumps a token rather than exposing a mutable ref, so a caller can retry without the hook growing an imperative API.</p>
+<h3 id="polling-that-actually-stops">Polling that actually stops<a class="heading-anchor" href="#polling-that-actually-stops" aria-label="Link to this section">#</a></h3>
+<p>The archived polling example set an interval and cleared it on unmount, but each tick fired an uncancelled request and wrote state without checking whether the component was still interested. Both are fixed by scheduling the next tick <em>after</em> the previous one finishes.</p>
+<div class="example" id="ex-1"><div class="example-tabs" role="tablist" aria-label="Example view"><button type="button" role="tab" class="example-tab is-active" aria-selected="true" data-view="preview" id="ex-1-t0" aria-controls="ex-1-p0">Preview</button><button type="button" role="tab" class="example-tab" aria-selected="false" tabindex="-1" data-view="code" id="ex-1-t1" aria-controls="ex-1-p1">Code</button></div><div class="example-panel" role="tabpanel" id="ex-1-p0" aria-labelledby="ex-1-t0" data-view="preview"><div class="example-preview" data-pending="true"><div class="example-placeholder"><span class="spinner" aria-hidden="true"></span>Loading preview&hellip;</div></div></div><div class="example-panel" role="tabpanel" id="ex-1-p1" aria-labelledby="ex-1-t1" data-view="code" hidden><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">let</span> tick <span class="tok-punct">=</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">// Stands in for a status endpoint so the example needs no network.</span>
+<span class="tok-keyword">function</span> <span class="tok-fn">fetchStatus</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-keyword">new</span> <span class="tok-type">Promise</span><span class="tok-punct">(</span>resolve <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    tick <span class="tok-punct">+</span><span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">resolve</span><span class="tok-punct">(</span><span class="tok-string">`healthy (poll #</span><span class="tok-punct">${</span>tick<span class="tok-punct">}</span><span class="tok-string">)`</span><span class="tok-punct">)</span><span class="tok-punct">,</span> <span class="tok-number">300</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">StatusMonitor</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>status<span class="tok-punct">,</span> setStatus<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">'starting…'</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>polling<span class="tok-punct">,</span> setPolling<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>polling<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">let</span> cancelled <span class="tok-punct">=</span> <span class="tok-literal">false</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">let</span> timeoutId<span class="tok-punct">;</span>
+
+    <span class="tok-keyword">async</span> <span class="tok-keyword">function</span> <span class="tok-fn">poll</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">const</span> next <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-fn">fetchStatus</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span>cancelled<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span>
+      <span class="tok-fn">setStatus</span><span class="tok-punct">(</span>next<span class="tok-punct">)</span><span class="tok-punct">;</span>
+      timeoutId <span class="tok-punct">=</span> <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span>poll<span class="tok-punct">,</span> <span class="tok-number">1500</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-fn">poll</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      cancelled <span class="tok-punct">=</span> <span class="tok-literal">true</span><span class="tok-punct">;</span>
+      <span class="tok-fn">clearTimeout</span><span class="tok-punct">(</span>timeoutId<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>polling<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-type">Status</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>status<span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;button</span> <span class="tok-attr">onClick</span><span class="tok-punct">=</span><span class="tok-punct">{</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setPolling</span><span class="tok-punct">(</span>p <span class="tok-keyword">=&gt;</span> <span class="tok-punct">!</span>p<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>polling <span class="tok-punct">?</span> <span class="tok-string">'Pause polling'</span> <span class="tok-punct">:</span> <span class="tok-string">'Resume polling'</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div></div><template class="example-source">import { useEffect, useState } from 'react';
+
+let tick = 0;
+
+// Stands in for a status endpoint so the example needs no network.
+function fetchStatus() {
+  return new Promise(resolve =&gt; {
+    tick += 1;
+    setTimeout(() =&gt; resolve(`healthy (poll #${tick})`), 300);
+  });
+}
+
+export default function StatusMonitor() {
+  const [status, setStatus] = useState('starting…');
+  const [polling, setPolling] = useState(true);
+
+  useEffect(() =&gt; {
+    if (!polling) {
+      return;
+    }
+
+    let cancelled = false;
+    let timeoutId;
+
+    async function poll() {
+      const next = await fetchStatus();
+      if (cancelled) {
+        return;
+      }
+      setStatus(next);
+      timeoutId = setTimeout(poll, 1500);
+    }
+
+    poll();
+
+    return () =&gt; {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, [polling]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Status: {status}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setPolling(p =&gt; !p)}&gt;
+        {polling ? 'Pause polling' : 'Resume polling'}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</template></div>
+<p>Chaining <code>setTimeout</code> rather than using <code>setInterval</code> guarantees that a slow response cannot cause requests to pile up on top of each other.</p>
+<h3 id="parallel-requests">Parallel requests<a class="heading-anchor" href="#parallel-requests" aria-label="Link to this section">#</a></h3>
+<p>Sequential <code>await</code>s inside one Effect are a waterfall you wrote yourself. When two requests do not depend on each other, start both and wait once:</p>
+<div class="code-block" data-lang="js"><div class="code-head"><span class="code-lang">js</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-js"><span class="tok-keyword">const</span> options <span class="tok-punct">=</span> <span class="tok-punct">{</span> signal<span class="tok-punct">:</span> controller<span class="tok-punct">.</span>signal <span class="tok-punct">}</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> <span class="tok-punct">[</span>service<span class="tok-punct">,</span> alerts<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-keyword">await</span> <span class="tok-type">Promise</span><span class="tok-punct">.</span><span class="tok-fn">all</span><span class="tok-punct">(</span><span class="tok-punct">[</span>
+  <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/services/</span><span class="tok-punct">${</span>serviceId<span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span> options<span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>r <span class="tok-keyword">=&gt;</span> r<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+  <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/services/</span><span class="tok-punct">${</span>serviceId<span class="tok-punct">}</span><span class="tok-string">/alerts`</span><span class="tok-punct">,</span> options<span class="tok-punct">)</span><span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>r <span class="tok-keyword">=&gt;</span> r<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">,</span>
+<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span></code></pre></div>
+<p>One <code>AbortController</code> cancels both.</p>
+<h2 id="advanced-example">Advanced example<a class="heading-anchor" href="#advanced-example" aria-label="Link to this section">#</a></h2>
+<p>Search-as-you-type is where every weakness of Effect fetching appears at once: overlapping requests, stale responses, and a request per keystroke.</p>
+<div class="static-example"><div class="code-block" data-lang="jsx"><div class="code-head"><span class="code-lang">jsx</span><button class="copy-btn" type="button" aria-label="Copy code to clipboard"><span class="copy-label">Copy</span></button></div><pre><code class="language-jsx"><span class="tok-keyword">import</span> <span class="tok-punct">{</span> <span class="tok-fn">useEffect</span><span class="tok-punct">,</span> <span class="tok-fn">useState</span> <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">'react'</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">default</span> <span class="tok-keyword">function</span> <span class="tok-type">ProjectSearch</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>query<span class="tok-punct">,</span> setQuery<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-string">''</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>results<span class="tok-punct">,</span> setResults<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">const</span> <span class="tok-punct">[</span>isSearching<span class="tok-punct">,</span> setIsSearching<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-fn">useState</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-fn">useEffect</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> trimmed <span class="tok-punct">=</span> query<span class="tok-punct">.</span><span class="tok-fn">trim</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>trimmed<span class="tok-punct">.</span>length <span class="tok-punct">&lt;</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">setResults</span><span class="tok-punct">(</span><span class="tok-punct">[</span><span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-fn">setIsSearching</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">const</span> controller <span class="tok-punct">=</span> <span class="tok-keyword">new</span> <span class="tok-type">AbortController</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-fn">setIsSearching</span><span class="tok-punct">(</span><span class="tok-literal">true</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-comment">// Debounce: only the last keystroke in a 300ms window issues a request.</span>
+    <span class="tok-keyword">const</span> timeoutId <span class="tok-punct">=</span> <span class="tok-fn">setTimeout</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">fetch</span><span class="tok-punct">(</span><span class="tok-string">`/api/projects?q=</span><span class="tok-punct">${</span><span class="tok-fn">encodeURIComponent</span><span class="tok-punct">(</span>trimmed<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-string">`</span><span class="tok-punct">,</span> <span class="tok-punct">{</span>
+        signal<span class="tok-punct">:</span> controller<span class="tok-punct">.</span>signal<span class="tok-punct">,</span>
+      <span class="tok-punct">}</span><span class="tok-punct">)</span>
+        <span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>response <span class="tok-keyword">=&gt;</span> response<span class="tok-punct">.</span><span class="tok-fn">json</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">)</span>
+        <span class="tok-punct">.</span><span class="tok-fn">then</span><span class="tok-punct">(</span>data <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+          <span class="tok-fn">setResults</span><span class="tok-punct">(</span>data<span class="tok-punct">.</span>items<span class="tok-punct">)</span><span class="tok-punct">;</span>
+          <span class="tok-fn">setIsSearching</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span><span class="tok-punct">)</span>
+        <span class="tok-punct">.</span><span class="tok-keyword">catch</span><span class="tok-punct">(</span><span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+          <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-punct">!</span>controller<span class="tok-punct">.</span>signal<span class="tok-punct">.</span>aborted<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-fn">setIsSearching</span><span class="tok-punct">(</span><span class="tok-literal">false</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+          <span class="tok-punct">}</span>
+        <span class="tok-punct">}</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-number">300</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-punct">(</span><span class="tok-punct">)</span> <span class="tok-keyword">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-fn">clearTimeout</span><span class="tok-punct">(</span>timeoutId<span class="tok-punct">)</span><span class="tok-punct">;</span>
+      controller<span class="tok-punct">.</span><span class="tok-fn">abort</span><span class="tok-punct">(</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>query<span class="tok-punct">]</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;input</span>
+        <span class="tok-attr">value</span><span class="tok-punct">=</span><span class="tok-punct">{</span>query<span class="tok-punct">}</span>
+        <span class="tok-attr">onChange</span><span class="tok-punct">=</span><span class="tok-punct">{</span>event <span class="tok-keyword">=&gt;</span> <span class="tok-fn">setQuery</span><span class="tok-punct">(</span>event<span class="tok-punct">.</span>target<span class="tok-punct">.</span>value<span class="tok-punct">)</span><span class="tok-punct">}</span>
+        <span class="tok-attr">placeholder</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search projects&quot;</span>
+        <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;Search projects&quot;</span>
+      <span class="tok-tag">/&gt;</span>
+      <span class="tok-tag">&lt;p</span> <span class="tok-attr">aria-live</span><span class="tok-punct">=</span><span class="tok-string">&quot;polite&quot;</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>isSearching <span class="tok-punct">?</span> <span class="tok-string">'Searching…'</span> <span class="tok-punct">:</span> <span class="tok-string">`</span><span class="tok-punct">${</span>results<span class="tok-punct">.</span>length<span class="tok-punct">}</span><span class="tok-string"> results`</span><span class="tok-punct">}</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">{</span>results<span class="tok-punct">.</span><span class="tok-fn">map</span><span class="tok-punct">(</span>project <span class="tok-keyword">=&gt;</span> <span class="tok-punct">(</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">key</span><span class="tok-punct">=</span><span class="tok-punct">{</span>project<span class="tok-punct">.</span>id<span class="tok-punct">}</span><span class="tok-tag">&gt;</span><span class="tok-punct">{</span>project<span class="tok-punct">.</span>name<span class="tok-punct">}</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">}</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p class="static-note"><span class="static-note-tag">Static example</span> Calls a real endpoint, so there is no browser preview.</p></div>
+<p>The cleanup clears the pending timer <em>and</em> aborts the in-flight request, so a fast typist issues one request instead of twelve.</p>
+<p>Now compare what this still does not do. It refetches the same query every time the user retypes it. It does not share results with any other component. It has no retry, no revalidation, and no way to invalidate after a mutation elsewhere in the app. Getting those requires a cache — which is the argument for <a href="./libraries.html">a data library</a>, not a longer Effect.</p>
+<div class="callout callout-best-practice" role="note"><p class="callout-title"><span class="callout-icon" aria-hidden="true"></span>Best practice</p><div class="callout-body"><p>Write the Effect correctly, and the moment you need a second component to see the same data, stop extending it and adopt a cache.</p>
+</div></div>
+<h2 id="common-mistakes">Common mistakes<a class="heading-anchor" href="#common-mistakes" aria-label="Link to this section">#</a></h2>
+<p><strong>No cleanup at all.</strong> The default outcome is a race condition that only shows up on a slow connection, which means it ships.</p>
+<p><strong>Guarding StrictMode instead of fixing cleanup.</strong> A <code>useRef(false)</code> &quot;did I already run&quot; flag hides the symptom in development and leaves the bug in production. React 19 has no way to disable the double mount, and you would not want one.</p>
+<p><strong>Not checking <code>response.ok</code>.</strong> <code>fetch</code> resolves on a 500. Without the check you render an error page's JSON as if it were data.</p>
+<p><strong>Reading properties off a <code>catch</code> variable without narrowing.</strong> The caught value is <code>unknown</code> in TypeScript and can be anything at runtime. Use <code>error instanceof Error ? error.message : 'Request failed'</code>.</p>
+<p><strong>Objects and arrays in the dependency array.</strong> A new object literal every render means the Effect runs every render. Depend on the primitives you actually use, or memoize the object.</p>
+<p><strong><code>setInterval</code> polling with an uncancelled request.</strong> A slow endpoint makes requests overlap and queue. Chain <code>setTimeout</code> after each completed response.</p>
+<p><strong>Two booleans for one state.</strong> <code>isLoading</code> and <code>isError</code> can both be true, and one day they will be. Use a single status string.</p>
+<p><strong>Fetching in a child that the parent could have fetched.</strong> Each nesting level adds a full round trip before anything renders.</p>
+<h2 id="related-topics">Related topics<a class="heading-anchor" href="#related-topics" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><a href="../hooks/use-effect.html">useEffect</a> — the dependency and cleanup rules in detail.</li>
+<li><a href="./overview.html">Data fetching overview</a> — why this page is the last resort.</li>
+<li><a href="./libraries.html">Data libraries</a> — what to adopt when one Effect becomes ten.</li>
+<li><a href="../core-concepts/strict-mode.html">StrictMode</a> — why development mounts twice.</li>
+<li><a href="../hooks/use-sync-external-store.html">useSyncExternalStore</a> — for subscriptions rather than requests.</li>
+</ul>
+</div><nav class="pager" aria-label="Page navigation"><a class="pager-link pager-prev" href="../data-fetching/use-with-promises.html" rel="prev"><span class="pager-dir">Previous</span><span class="pager-title">use with promises</span></a><a class="pager-link pager-next" href="../data-fetching/caching.html" rel="next"><span class="pager-dir">Next</span><span class="pager-title">Caching</span></a></nav></main><nav class="toc" aria-labelledby="toc-title"><p class="toc-title" id="toc-title">On this page</p><ul><li class="toc-h2"><a href="#overview">Overview</a></li><li class="toc-h2"><a href="#why-it-exists">Why it exists</a></li><li class="toc-h2"><a href="#when-to-use-it">When to use it</a></li><li class="toc-h2"><a href="#when-not-to-use-it">When not to use it</a></li><li class="toc-h2"><a href="#basic-example">Basic example</a></li><li class="toc-h2"><a href="#how-it-works">How it works</a></li><li class="toc-h3"><a href="#ignore-flag-versus-abortcontroller">ignore flag versus AbortController</a></li><li class="toc-h3"><a href="#strictmodes-double-mount-is-a-feature">StrictMode's double mount is a feature</a></li><li class="toc-h3"><a href="#waterfalls">Waterfalls</a></li><li class="toc-h2"><a href="#common-patterns">Common patterns</a></li><li class="toc-h3"><a href="#the-complete-shape-with-abortcontroller">The complete shape, with AbortController</a></li><li class="toc-h3"><a href="#a-custom-hook-with-cancellation">A custom hook, with cancellation</a></li><li class="toc-h3"><a href="#polling-that-actually-stops">Polling that actually stops</a></li><li class="toc-h3"><a href="#parallel-requests">Parallel requests</a></li><li class="toc-h2"><a href="#advanced-example">Advanced example</a></li><li class="toc-h2"><a href="#common-mistakes">Common mistakes</a></li><li class="toc-h2"><a href="#related-topics">Related topics</a></li></ul></nav></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>Documenting React 19.2.8. Built with a hand-written generator — no dependencies.</span>
+    <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" hidden role="dialog" aria-modal="true" aria-label="Search documentation">
+  <div class="search-panel">
+    <div class="search-field">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="search" placeholder="Search pages, headings and text…" autocomplete="off" spellcheck="false" aria-label="Search query" aria-controls="search-results">
+      <button class="search-close" type="button">Esc</button>
+    </div>
+    <p class="search-hint">Type to search titles, headings and page text.</p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <div class="search-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/app.js" defer></script>
+</body>
+</html>
