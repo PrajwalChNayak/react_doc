@@ -80,7 +80,12 @@
   --shadow-md: 0 4px 16px -4px rgb(20 18 12 / 0.10), 0 1px 3px rgb(20 18 12 / 0.06);
   --shadow-lg: 0 24px 48px -12px rgb(20 18 12 / 0.22), 0 2px 8px rgb(20 18 12 / 0.08);
 
-  --w-shell:   100rem;  /* the outer container every region shares */
+  --w-shell:   none;    /* outer container: `none` fills the window edge to edge */
+
+  /* Shared page gutters. Every region — header, content, home, footer — uses
+     these, so everything lines up on the same left edge. */
+  --gutter-left:  2rem;
+  --gutter-right: 1rem;
   --w-toc:     13.5rem;
   --h-header:  3.25rem;
 
@@ -245,7 +250,7 @@ a:hover { color: var(--c-accent-hover); text-decoration-color: currentColor; }
   display: flex;
   align-items: center;
   gap: var(--s-4);
-  padding: 0 var(--s-5);
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
   /* The nav sits left; actions are pushed right without a spacer element. */
   justify-content: flex-start;
   background: color-mix(in srgb, var(--c-bg) 82%, transparent);
@@ -367,7 +372,7 @@ kbd {
   column-gap: var(--s-4);
   max-width: var(--w-shell);
   margin: 0 auto;
-  padding: 0 var(--s-4);
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
   align-items: start;
 }
 
@@ -1043,7 +1048,7 @@ kbd {
 .site-footer {
   border-top: 1px solid var(--c-border);
   margin-top: var(--s-6);
-  padding: var(--s-4) var(--s-5);
+  padding: var(--s-4) var(--gutter-right) var(--s-4) var(--gutter-left);
   color: var(--c-text-faint);
   font-size: var(--fs-sm);
 }
@@ -1172,7 +1177,11 @@ kbd {
 
 /* --- Home page ------------------------------------------------------------ */
 
-.home { max-width: var(--w-shell); margin: 0 auto; padding: var(--s-6) var(--s-5) var(--s-7); }
+.home {
+  max-width: var(--w-shell);
+  margin: 0 auto;
+  padding: var(--s-6) var(--gutter-right) var(--s-7) var(--gutter-left);
+}
 .home-hero { max-width: 44rem; }
 .home-eyebrow {
   display: inline-flex;
@@ -1254,7 +1263,8 @@ kbd {
 /* --- Responsive ----------------------------------------------------------- */
 
 @media (max-width: 1100px) {
-  .layout { grid-template-columns: minmax(0, 1fr); max-width: 50rem; }
+  /* No contents list here, so the single column keeps filling the window. */
+  .layout { grid-template-columns: minmax(0, 1fr); }
   .toc { display: none; }
 }
 
@@ -1324,8 +1334,8 @@ kbd {
 }
 
 @media (max-width: 560px) {
-  .layout { padding: 0 var(--s-4); }
-  .site-header { padding: 0 var(--s-4); gap: var(--s-3); }
+  :root { --gutter-left: 1rem; --gutter-right: 1rem; }
+  .site-header { gap: var(--s-3); }
   .brand-version { display: none; }
   .pager { grid-template-columns: 1fr; }
   .pager-next { grid-column: 1; }
@@ -1337,8 +1347,8 @@ kbd {
 }
 
 @media (max-width: 380px) {
-  .site-header { padding: 0 var(--s-3); gap: var(--s-2); }
-  .layout { padding: 0 var(--s-3); }
+  :root { --gutter-left: 0.75rem; --gutter-right: 0.75rem; }
+  .site-header { gap: var(--s-2); }
   .brand-name { font-size: var(--fs-base); }
   .callout { padding: 0.6rem var(--s-3); }
   .table-wrap th, .table-wrap td { padding: 0.4rem 0.55rem; }
