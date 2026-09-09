@@ -49,6 +49,29 @@ export const GROUPS = [
 
 const GROUP_BY_SLUG = new Map(GROUPS.map((g, i) => [g.slug, { ...g, order: i }]));
 
+// Fourteen groups will not fit across a top bar, so they roll up into five
+// menus. Each one opens a panel listing its groups as columns — the whole tree
+// stays one click away without a permanent sidebar eating the viewport.
+export const SECTIONS = [
+  { slug: 'learn', title: 'Learn', groups: ['getting-started', 'core-concepts'] },
+  { slug: 'hooks', title: 'Hooks', groups: ['hooks'] },
+  {
+    slug: 'guides',
+    title: 'Guides',
+    groups: ['state-management', 'data-fetching', 'performance', 'server-react', 'patterns'],
+  },
+  {
+    slug: 'practices',
+    title: 'Practices',
+    groups: ['typescript', 'accessibility', 'testing', 'ecosystem'],
+  },
+  { slug: 'reference', title: 'Reference', groups: ['reference', 'migration'] },
+];
+
+const SECTION_OF_GROUP = new Map(
+  SECTIONS.flatMap((section) => section.groups.map((g) => [g, section.slug])),
+);
+
 /* ------------------------------------------------------------------ utils */
 
 async function walk(dir) {
@@ -123,19 +146,15 @@ export async function loadPages() {
 
 const ICONS = {
   search: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"/></svg>',
-  menu: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg>',
-  panel: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M7.75 3.5v13"/></svg>',
+  menu: '<svg class="icon-menu" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg>',
   chevron: '<svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  close: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg>',
+  close: '<svg class="icon-close" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9" stroke-linecap="round"/></svg>',
   sun: '<svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M18.4 10h-2M3.6 10h-2M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4M15.9 15.9l-1.4-1.4M5.5 5.5 4.1 4.1" stroke-linecap="round"/></svg>',
   moon: '<svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke-linejoin="round"/></svg>',
 };
 
 // Runs before first paint so a dark-theme reader never sees a white flash.
-// Both the theme and the sidebar state are applied before first paint, so a
-// dark-theme reader never sees a white flash and a collapsed sidebar never
-// flashes open and then snaps shut.
-const THEME_BOOT = `(function(){var d=document.documentElement;try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')d.setAttribute('data-theme',m);}catch(e){}try{if(localStorage.getItem('react-docs-sidebar')==='collapsed')d.setAttribute('data-sidebar','collapsed');}catch(e){}})();`;
+const THEME_BOOT = `(function(){try{var m=localStorage.getItem('react-docs-theme');if(m==='dark'||m==='light')document.documentElement.setAttribute('data-theme',m);}catch(e){}})();`;
 
 function statusBadge(status) {
   if (!status || status === 'current') return '<span class="badge badge-current">Current</span>';
@@ -144,52 +163,67 @@ function statusBadge(status) {
   return `<span class="badge">${escapeHtml(status)}</span>`;
 }
 
-// Ninety-odd links in one flat list is not a menu, it is a wall. Each group is
-// a <details>, so it collapses natively and still works with JavaScript off.
-// The group containing the current page is rendered open; the rest start shut
-// and app.js restores whatever the reader opened last.
-function renderSidebar(pages, current) {
+// One nav tree, rendered once, styled two ways: a dropdown panel per section on
+// desktop, and an inline accordion inside the slide-down panel on mobile. The
+// same buttons drive both, so there is no duplicated markup to keep in sync.
+function renderTopNav(pages, current) {
   const base = relBase(current ? current.depth : 0);
-  let html = '<div class="sidebar-inner">';
+  const currentSection = current ? SECTION_OF_GROUP.get(current.group) : null;
 
-  html +=
-    '<div class="sidebar-head">' +
-    '<p class="sidebar-head-title">Documentation</p>' +
-    `<button class="icon-btn sidebar-close" type="button" aria-label="Close navigation">${ICONS.close}</button>` +
-    '</div>';
+  let html = '<ul class="topnav-list">';
 
-  for (const group of GROUPS) {
-    const inGroup = pages.filter((p) => p.group === group.slug);
-    if (!inGroup.length) continue;
+  for (const section of SECTIONS) {
+    const groups = section.groups
+      .map((slug) => ({
+        meta: GROUP_BY_SLUG.get(slug),
+        pages: pages.filter((p) => p.group === slug),
+      }))
+      .filter((g) => g.meta && g.pages.length);
+    if (!groups.length) continue;
 
-    const isActiveGroup = Boolean(current) && current.group === group.slug;
+    const isActive = currentSection === section.slug;
+    const menuId = `menu-${section.slug}`;
+    const total = groups.reduce((n, g) => n + g.pages.length, 0);
+    // A single long group (Hooks) reads as columns; several groups read as one
+    // column each.
+    const wide = groups.length === 1 && total > 12;
 
     html +=
-      `<details class="nav-group" data-group="${group.slug}"${isActiveGroup ? ' open' : ''}>` +
-      '<summary class="nav-group-title">' +
-      ICONS.chevron +
-      `<span class="nav-group-name">${escapeHtml(group.title)}</span>` +
-      `<span class="nav-group-count">${inGroup.length}</span>` +
-      '</summary>' +
-      '<ul class="nav-list">';
+      '<li class="topnav-item">' +
+      `<button class="topnav-trigger" type="button" id="${menuId}-btn" aria-expanded="false" ` +
+      `aria-controls="${menuId}" aria-haspopup="true"${isActive ? ' data-active="true"' : ''}>` +
+      `${escapeHtml(section.title)}${ICONS.chevron}</button>` +
+      // Auto-fit cannot resolve a sensible column count inside a shrink-to-fit
+      // absolutely positioned box, so the count is decided here, where the
+      // group sizes are actually known.
+      `<div class="megamenu" id="${menuId}" role="group" aria-labelledby="${menuId}-btn" ` +
+      `style="--cols:${wide ? 3 : Math.min(groups.length, 3)}" hidden>` +
+      `<div class="megamenu-inner"${wide ? ' data-wide="true"' : ''}>`;
 
-    for (const page of inGroup) {
-      const isCurrent = current && page.url === current.url;
-      const status = page.data.status;
-      const badge =
-        status === 'legacy' ? '<span class="nav-badge">legacy</span>'
-        : status === 'deprecated' ? '<span class="nav-badge">deprecated</span>'
-        : '';
+    for (const group of groups) {
       html +=
-        `<li><a class="nav-link" href="${base}${page.url}"` +
-        `${isCurrent ? ' aria-current="page"' : ''}>` +
-        `<span class="nav-link-text">${escapeHtml(page.data.title || page.slugPath)}</span>${badge}</a></li>`;
+        '<div class="mm-group">' +
+        `<p class="mm-group-title">${escapeHtml(group.meta.title)}</p>` +
+        '<ul class="mm-list">';
+      for (const page of group.pages) {
+        const isCurrent = current && page.url === current.url;
+        const status = page.data.status;
+        const badge =
+          status === 'legacy' ? '<span class="mm-badge">legacy</span>'
+          : status === 'deprecated' ? '<span class="mm-badge">deprecated</span>'
+          : '';
+        html +=
+          `<li><a class="mm-link" href="${base}${page.url}"` +
+          `${isCurrent ? ' aria-current="page"' : ''}>` +
+          `${escapeHtml(page.data.title || page.slugPath)}${badge}</a></li>`;
+      }
+      html += '</ul></div>';
     }
 
-    html += '</ul></details>';
+    html += '</div></div></li>';
   }
 
-  return `${html}</div>`;
+  return `${html}</ul>`;
 }
 
 function renderToc(headings) {
@@ -203,7 +237,7 @@ function renderToc(headings) {
   return html;
 }
 
-function shell({ title, description, base, bodyClass, content, sidebar, page }) {
+function shell({ title, description, base, bodyClass, content, nav = '' }) {
   const fullTitle = title === SITE.name ? title : `${title} · ${SITE.title}`;
   return `<!doctype html>
 <html lang="en" data-base="${base}" data-react-version="${SITE.reactVersion}">
@@ -224,19 +258,18 @@ function shell({ title, description, base, bodyClass, content, sidebar, page }) 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
-  <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">${ICONS.menu}</button>
-  <button class="icon-btn sidebar-toggle" type="button" aria-label="Hide sidebar" aria-expanded="true" aria-controls="sidebar" title="Toggle sidebar">${ICONS.panel}</button>
   <a class="brand" href="${base}index.html">
     <span class="brand-mark" aria-hidden="true">R</span>
     <span class="brand-name">${escapeHtml(SITE.title)}</span>
     <span class="brand-version">v${SITE.reactVersion}</span>
   </a>
-  <span class="header-spacer"></span>
+  <nav class="topnav" id="topnav" aria-label="Documentation sections">${nav}</nav>
   <div class="header-actions">
     <button class="search-trigger" type="button" aria-label="Search documentation">
       ${ICONS.search}<span>Search</span><kbd>Ctrl K</kbd>
     </button>
     <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme">${ICONS.sun}${ICONS.moon}</button>
+    <button class="icon-btn menu-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="topnav">${ICONS.menu}${ICONS.close}</button>
   </div>
 </header>
 
@@ -310,7 +343,6 @@ function renderPage(page, pages, index) {
 
   const content =
     '<div class="layout">' +
-    `<nav class="sidebar" id="sidebar" aria-label="Documentation">${renderSidebar(pages, page)}</nav>` +
     `<main class="main" id="main" tabindex="-1">` +
     crumbs +
     '<header class="page-header">' +
@@ -329,7 +361,7 @@ function renderPage(page, pages, index) {
     description: page.data.description,
     base,
     content,
-    page,
+    nav: renderTopNav(pages, page),
   });
 }
 
@@ -378,6 +410,7 @@ function renderHome(pages) {
     base,
     bodyClass: 'is-home',
     content,
+    nav: renderTopNav(pages, null),
   });
 }
 

@@ -53,101 +53,146 @@
     if (currentTheme() === 'system') applyTheme('system');
   });
 
-  /* ------------------------------------------------- sidebar: desktop toggle */
+  /* ------------------------------------------------------------ navigation */
 
-  const SIDEBAR_KEY = 'react-docs-sidebar';
-  const sidebarToggle = $('.sidebar-toggle');
+  const header = $('.site-header');
+  const topnav = $('.topnav');
+  const menuBtn = $('.menu-btn');
+  const backdrop = $('.nav-backdrop');
+  const triggers = $$('.topnav-trigger');
 
-  function setSidebarCollapsed(collapsed) {
-    if (collapsed) root.setAttribute('data-sidebar', 'collapsed');
-    else root.removeAttribute('data-sidebar');
-    try { localStorage.setItem(SIDEBAR_KEY, collapsed ? 'collapsed' : 'expanded'); } catch { /* private mode */ }
-    if (sidebarToggle) {
-      sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
-      sidebarToggle.setAttribute('aria-label', collapsed ? 'Show sidebar' : 'Hide sidebar');
-    }
+  const isCompact = () => window.matchMedia('(max-width: 940px)').matches;
+
+  function panelFor(trigger) {
+    return document.getElementById(trigger.getAttribute('aria-controls'));
   }
 
-  if (sidebarToggle) {
-    // The pre-paint boot script already applied the stored state; just sync ARIA.
-    setSidebarCollapsed(root.getAttribute('data-sidebar') === 'collapsed');
-    sidebarToggle.addEventListener('click', () => {
-      setSidebarCollapsed(root.getAttribute('data-sidebar') !== 'collapsed');
-    });
+  function closeMenu(trigger, { restoreFocus = false } = {}) {
+    const panel = panelFor(trigger);
+    if (!panel) return;
+    trigger.setAttribute('aria-expanded', 'false');
+    panel.hidden = true;
+    if (restoreFocus) trigger.focus();
   }
 
-  /* -------------------------------------------------- sidebar: group memory */
-
-  // Which groups the reader has opened, so navigating between pages does not
-  // keep re-collapsing the section they are working through. The group holding
-  // the current page is always open, whatever was stored.
-  const GROUPS_KEY = 'react-docs-nav-groups';
-
-  function readOpenGroups() {
-    try {
-      const raw = localStorage.getItem(GROUPS_KEY);
-      return raw ? new Set(JSON.parse(raw)) : null;
-    } catch { return null; }
+  function closeAllMenus({ restoreFocus = false } = {}) {
+    // Only the menu that was actually open gets focus back — restoring it on
+    // every trigger would walk focus to the last one in the bar.
+    const wasOpen = triggers.find((t) => t.getAttribute('aria-expanded') === 'true');
+    triggers.forEach((t) => closeMenu(t));
+    if (restoreFocus && wasOpen) wasOpen.focus();
+    if (backdrop && !isCompact()) backdrop.hidden = true;
   }
 
-  const navGroups = $$('.nav-group');
-  if (navGroups.length) {
-    const stored = readOpenGroups();
-    if (stored) {
-      navGroups.forEach((group) => {
-        const hasCurrent = Boolean($('.nav-link[aria-current="page"]', group));
-        if (!hasCurrent) group.open = stored.has(group.dataset.group);
-      });
-    }
+  function openMenu(trigger) {
+    // On desktop only one dropdown may be open; the compact accordion allows
+    // several, because collapsing a section the reader just opened is rude.
+    if (!isCompact()) closeAllMenus();
+    const panel = panelFor(trigger);
+    if (!panel) return;
+    trigger.setAttribute('aria-expanded', 'true');
+    panel.hidden = false;
+    if (!isCompact() && backdrop) backdrop.hidden = false;
+    keepPanelOnScreen(panel);
+  }
 
-    const persist = () => {
-      const open = navGroups.filter((g) => g.open).map((g) => g.dataset.group);
-      try { localStorage.setItem(GROUPS_KEY, JSON.stringify(open)); } catch { /* private mode */ }
-    };
-    navGroups.forEach((group) => group.addEventListener('toggle', persist));
-
-    // Keep the current page in view when the sidebar is taller than the pane.
-    const active = $('.nav-link[aria-current="page"]');
-    if (active) {
-      const box = active.closest('.sidebar');
-      if (box && box.scrollHeight > box.clientHeight) {
-        const ar = active.getBoundingClientRect();
-        const br = box.getBoundingClientRect();
-        if (ar.top < br.top || ar.bottom > br.bottom) {
-          active.scrollIntoView({ block: 'center' });
-        }
+  // A wide panel opened by a right-hand trigger would otherwise run off-screen.
+  function keepPanelOnScreen(panel) {
+    if (isCompact()) return;
+    panel.style.left = '';
+    panel.style.right = '';
+    const rect = panel.getBoundingClientRect();
+    const margin = 12;
+    if (rect.right > window.innerWidth - margin) {
+      panel.style.left = 'auto';
+      panel.style.right = '-0.5rem';
+      const after = panel.getBoundingClientRect();
+      if (after.left < margin) {
+        // Still too wide for the viewport: pin it to the header instead.
+        panel.style.right = '';
+        panel.style.left = `${margin - panel.parentElement.getBoundingClientRect().left}px`;
       }
     }
   }
 
-  /* -------------------------------------------------------- mobile drawer */
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      if (open) closeMenu(trigger);
+      else openMenu(trigger);
+    });
 
-  const sidebar = $('.sidebar');
-  const menuBtn = $('.menu-btn');
-  const backdrop = $('.nav-backdrop');
+    trigger.addEventListener('keydown', (e) => {
+      const i = triggers.indexOf(trigger);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        if (isCompact()) return;
+        e.preventDefault();
+        const step = e.key === 'ArrowRight' ? 1 : -1;
+        triggers[(i + step + triggers.length) % triggers.length].focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        openMenu(trigger);
+        $('.mm-link', panelFor(trigger))?.focus();
+      } else if (e.key === 'Escape') {
+        closeMenu(trigger, { restoreFocus: true });
+      }
+    });
+  });
 
-  function setDrawer(open) {
-    if (!sidebar) return;
-    sidebar.classList.toggle('is-open', open);
-    if (backdrop) backdrop.hidden = !open;
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.topnav') || e.target.closest('.menu-btn')) return;
+    closeAllMenus();
+  });
+
+  document.addEventListener('focusin', (e) => {
+    if (isCompact()) return;
+    if (!e.target.closest('.topnav')) closeAllMenus();
+  });
+
+  /* ------------------------------------------------------- compact nav panel */
+
+  function setNavPanel(open) {
+    if (!topnav) return;
+    topnav.classList.toggle('is-open', open);
     if (menuBtn) menuBtn.setAttribute('aria-expanded', String(open));
+    if (backdrop) backdrop.hidden = !open;
     document.body.style.overflow = open ? 'hidden' : '';
     if (open) {
-      const first = $('.nav-link[aria-current="page"]', sidebar) || $('.nav-link', sidebar);
-      if (first) first.focus({ preventScroll: true });
+      // Open the section the reader is currently in, so the panel lands useful.
+      const active = $('.topnav-trigger[data-active="true"]') || triggers[0];
+      if (active) openMenu(active);
+      active?.focus({ preventScroll: true });
+    } else {
+      closeAllMenus();
     }
   }
 
-  if (menuBtn) menuBtn.addEventListener('click', () => setDrawer(!sidebar.classList.contains('is-open')));
-  $('.sidebar-close')?.addEventListener('click', () => {
-    setDrawer(false);
-    if (menuBtn) menuBtn.focus();
-  });
-  if (backdrop) backdrop.addEventListener('click', () => setDrawer(false));
-  if (sidebar) {
-    sidebar.addEventListener('click', (e) => {
-      if (e.target.closest('a') && window.innerWidth <= 860) setDrawer(false);
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => setNavPanel(!topnav.classList.contains('is-open')));
+  }
+  if (backdrop) {
+    backdrop.addEventListener('click', () => {
+      if (isCompact()) setNavPanel(false);
+      else closeAllMenus();
     });
+  }
+  // Following a link should always dismiss the panel.
+  topnav?.addEventListener('click', (e) => {
+    if (e.target.closest('a') && isCompact()) setNavPanel(false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (!isCompact() && topnav?.classList.contains('is-open')) setNavPanel(false);
+  });
+
+  /* ------------------------------------------------- header shadow on scroll */
+
+  // A hairline shadow appears only once content is underneath the bar, so the
+  // header stays flat and quiet at the top of the page.
+  if (header) {
+    const onScroll = () => header.classList.toggle('is-stuck', window.scrollY > 4);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
   /* ------------------------------------------------------------ copy code */
@@ -644,7 +689,10 @@
       return;
     }
     if (!overlay || overlay.hidden) {
-      if (e.key === 'Escape' && sidebar?.classList.contains('is-open')) setDrawer(false);
+      if (e.key === 'Escape') {
+        if (topnav?.classList.contains('is-open')) setNavPanel(false);
+        else closeAllMenus({ restoreFocus: true });
+      }
       return;
     }
     if (e.key === 'Escape') { e.preventDefault(); closeSearch(); return; }
