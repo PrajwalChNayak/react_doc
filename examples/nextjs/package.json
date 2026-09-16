@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-examples",
+  "private": true,
+  "description": "Runnable Next.js 16.3 example apps backing the Next.js documentation. One npm workspace; each app has its own package.json and README.",
+  "workspaces": [
+    "minimal",
+    "routing",
+    "caching",
+    "instant-navigations",
+    "server-actions",
+    "route-handlers-proxy",
+    "databases",
+    "auth",
+    "error-boundaries",
+    "security-pairs"
+  ],
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

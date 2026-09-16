@@ -1,0 +1,21 @@
+# Local PostgreSQL 16 for the databases example. Development only: the
+# credentials below are not secrets and must never be used in production.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: guestbook
+      POSTGRES_PASSWORD: guestbook
+      POSTGRES_DB: guestbook
+    ports:
+      - "5432:5432"
+    volumes:
+      - guestbook-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guestbook -d guestbook"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  guestbook-data:

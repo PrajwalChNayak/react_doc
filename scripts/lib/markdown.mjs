@@ -339,11 +339,19 @@ function renderCode(code, info, ctx) {
   const highlighted = highlight(code, lang);
   const langLabel = lang === 'text' ? '' : lang;
 
+  // In Next.js the file's location is part of the API (`app/[lang]/page.tsx`,
+  // `proxy.ts`), so a `file="..."` path replaces the bare language label.
+  const file = typeof flags.file === 'string' ? flags.file : '';
+
   const pre =
-    `<div class="code-block" data-lang="${escapeHtml(lang)}">` +
+    `<div class="code-block${flags.vulnerable ? ' is-vulnerable' : ''}" data-lang="${escapeHtml(lang)}">` +
     `<div class="code-head">` +
-    `<span class="code-lang">${escapeHtml(langLabel)}</span>` +
+    (file
+      ? `<span class="code-file" title="${escapeHtml(file)}">${escapeHtml(file)}</span>`
+      : `<span class="code-lang">${escapeHtml(langLabel)}</span>`) +
     (flags.legacy ? '<span class="code-badge code-badge-legacy">legacy</span>' : '') +
+    (flags.vulnerable ? '<span class="code-badge code-badge-vulnerable">Vulnerable — do not copy</span>' : '') +
+    (flags.canary ? '<span class="code-badge code-badge-canary">React Canary · 19.3</span>' : '') +
     (flags.nocheck ? '<span class="code-badge">not type-checked</span>' : '') +
     `<button class="copy-btn" type="button" aria-label="Copy code to clipboard">` +
     `<span class="copy-label">Copy</span></button>` +

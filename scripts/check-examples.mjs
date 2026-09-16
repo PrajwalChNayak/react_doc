@@ -18,7 +18,9 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
-import { loadPages } from './build.mjs';
+import { builtinModules } from 'node:module';
+
+import { loadPages, isNextGroup } from './build.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -86,15 +88,60 @@ function pad(n, width) {
   return String(n).padStart(width, '0');
 }
 
+// Next.js pages also carry plain `.ts` files (`proxy.ts`, `next.config.ts`,
+// `lib/dal.ts`, route handlers), and those are where most framework APIs live.
+const NEXT_CHECKABLE = new Set(['jsx', 'tsx', 'ts', 'js']);
+
 async function extract() {
   const { pages } = await loadPages();
   const blocks = [];
+  const nextBlocks = [];
+  // Every `file=` path on every Next.js page, including pages outside --filter:
+  // the route skeleton for `next typegen` has to describe the whole docs app, or
+  // a filtered run would reject `PageProps<'/…'>` routes declared elsewhere.
+  const nextFiles = [];
   const skipped = { legacy: 0, nocheck: [], other: 0 };
 
   let n = 0;
+  let nx = 0;
   for (const page of pages) {
+    const framework = isNextGroup(page.group);
+    if (framework) {
+      for (const block of page.codeBlocks) {
+        if (typeof block.flags.file === 'string') {
+          nextFiles.push({ file: block.flags.file, code: block.code, legacy: Boolean(block.flags.legacy) });
+        }
+      }
+    }
     if (FILTER && !page.rel.includes(FILTER)) continue;
     for (const block of page.codeBlocks) {
+      if (framework) {
+        if (!NEXT_CHECKABLE.has(block.lang)) { skipped.other += 1; continue; }
+        if (block.flags.legacy) { skipped.legacy += 1; continue; }
+        if (block.flags.nocheck) {
+          skipped.nocheck.push({
+            page: page.rel,
+            line: block.line,
+            reason: typeof block.flags.nocheck === 'string' ? block.flags.nocheck : '(no reason given)',
+          });
+          continue;
+        }
+        nx += 1;
+        // Keep the real extension: a `.ts` file must not accept JSX, and a
+        // `.js` file is checked as JavaScript.
+        nextBlocks.push({
+          name: `nx${pad(nx, 4)}.${block.lang}`,
+          lang: block.lang,
+          code: block.code,
+          page: page.rel,
+          line: block.line,
+          live: false,
+          file: typeof block.flags.file === 'string' ? block.flags.file : null,
+          canary: Boolean(block.flags.canary),
+          next: true,
+        });
+        continue;
+      }
       if (!CHECKABLE.has(block.lang)) { skipped.other += 1; continue; }
       if (block.flags.legacy) { skipped.legacy += 1; continue; }
       if (block.flags.nocheck) {
@@ -117,7 +164,7 @@ async function extract() {
       });
     }
   }
-  return { blocks, skipped, pageCount: pages.length };
+  return { blocks, nextBlocks, nextFiles, skipped, pageCount: pages.length };
 }
 
 /* ------------------------------------------------------------------ write */
@@ -131,7 +178,10 @@ const REAL_MODULES = [
   'react-dom/server.browser', 'react-dom/server.node',
 ];
 
-const IMPORT_RE = /(?:^|\n)\s*(?:import|export)[\s\S]*?from\s*['"]([^'"]+)['"]|(?:^|[^\w.])import\s*\(\s*['"]([^'"]+)['"]\s*\)|(?:^|[^\w.])require\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
+// The specifier may not contain whitespace and the clause may not cross a
+// semicolon, so a string such as `get('from')` later in a block is never read
+// as an import (it used to produce an unparseable stub declaration).
+const IMPORT_RE = /(?:^|\n)\s*(?:import|export)[^;]*?[\s}*]from\s*['"]([^'"\s]+)['"]|(?:^|[^\w.])import\s*\(\s*['"]([^'"]+)['"]\s*\)|(?:^|[^\w.])require\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
 
 /**
  * Collect every bare (non-relative) module specifier the examples import, minus
@@ -143,16 +193,17 @@ const IMPORT_RE = /(?:^|\n)\s*(?:import|export)[\s\S]*?from\s*['"]([^'"]+)['"]|(
  * precedence over node_modules resolution in TypeScript, which silently turns
  * `react` itself into `any` and makes the whole harness worthless.
  */
-function collectStubModules(blocks) {
-  const real = new Set(REAL_MODULES);
+const isReactReal = (spec) => REAL_MODULES.includes(spec) || /^react(-dom)?\//.test(spec);
+
+function collectStubModules(blocks, isReal = isReactReal, aliasIsLocal = false) {
   const found = new Map();
   for (const block of blocks) {
     for (const m of block.code.matchAll(IMPORT_RE)) {
       const spec = m[1] || m[2] || m[3];
       if (!spec || spec.startsWith('.') || spec.startsWith('/')) continue;
-      if (real.has(spec)) continue;
-      // Keep `react/...` and `react-dom/...` subpaths real too.
-      if (/^react(-dom)?\//.test(spec)) continue;
+      if (aliasIsLocal && spec.startsWith('@/')) continue;
+      // React (and, for Next.js blocks, the framework packages) stay real.
+      if (isReal(spec)) continue;
       if (!found.has(spec)) found.set(spec, new Set());
     }
     for (const imp of parseNamedImports(block.code)) {
@@ -185,6 +236,15 @@ function renderModuleStub(spec, names) {
 // hasDefault: false, star: false }. Good enough for documentation examples,
 // which never use exotic import forms.
 const IMPORT_CLAUSE_RE = /import\s+([\s\S]*?)\s+from\s*['"]([^'"]+)['"]/g;
+
+// Words that can follow a `.` in a comment but can never be an exported
+// binding; declaring one produces a stub that does not parse.
+const JS_KEYWORDS = new Set([
+  'await', 'break', 'case', 'catch', 'continue', 'debugger', 'do', 'enum', 'extends',
+  'implements', 'interface', 'package', 'private', 'protected', 'public', 'static',
+  'super', 'switch', 'throw', 'try', 'void', 'with', 'yield', 'async', 'instanceof',
+  'undefined',
+]);
 
 const DYNAMIC_IMPORT_RE = /import\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
 
@@ -219,7 +279,7 @@ function parseNamedImports(code) {
   return out;
 }
 
-function parseRelativeImports(code) {
+function parseRelativeImports(code, isLocal = (spec) => spec.startsWith('.')) {
   const out = [];
 
   // `lazy(() => import('./ChartPanel.jsx'))` — no named bindings, but the module
@@ -232,17 +292,17 @@ function parseRelativeImports(code) {
   // so over-declaring costs nothing and there is no real module to contradict.
   const allMembers = [...code.matchAll(/\.\s*([A-Za-z_$][\w$]*)/g)]
     .map((x) => x[1])
-    .filter((n) => !RESERVED_MEMBERS.has(n));
+    .filter((n) => !RESERVED_MEMBERS.has(n) && !JS_KEYWORDS.has(n));
 
   for (const m of code.matchAll(DYNAMIC_IMPORT_RE)) {
-    if (m[1].startsWith('.')) {
+    if (isLocal(m[1])) {
       out.push({ spec: m[1], named: allMembers, hasDefault: true, star: false });
     }
   }
 
   for (const m of code.matchAll(IMPORT_CLAUSE_RE)) {
     const spec = m[2];
-    if (!spec.startsWith('.')) continue;
+    if (!isLocal(spec)) continue;
     const clause = m[1].trim();
     const entry = { spec, named: [], hasDefault: false, star: false };
 
@@ -270,7 +330,10 @@ function parseRelativeImports(code) {
 // Block files live in WORK/src, so a stub path is resolved from there. That
 // keeps `../lib/db` inside the work directory instead of escaping it.
 function stubPathFor(spec) {
-  const resolved = path.posix.normalize(path.posix.join(BLOCK_DIR, spec));
+  // `@/lib/db` is the create-next-app alias for the project root.
+  const resolved = spec.startsWith('@/')
+    ? path.posix.normalize(spec.slice(2))
+    : path.posix.normalize(path.posix.join(BLOCK_DIR, spec));
   const clean = resolved;
   if (/\.jsx$/.test(clean)) return clean.replace(/\.jsx$/, '.tsx');
   if (/\.tsx$/.test(clean)) return clean;
@@ -284,11 +347,11 @@ function stubPathFor(spec) {
   return `${clean}.ts`;
 }
 
-async function writeRelativeStubs(blocks, workDir) {
+async function writeRelativeStubs(blocks, workDir, isLocal) {
   const merged = new Map();
 
   for (const block of blocks) {
-    for (const imp of parseRelativeImports(block.code)) {
+    for (const imp of parseRelativeImports(block.code, isLocal)) {
       const rel = stubPathFor(imp.spec);
       if (!rel || rel.startsWith('..')) continue;
       if (!merged.has(rel)) merged.set(rel, { named: new Set(), hasDefault: false });
@@ -316,7 +379,9 @@ async function writeRelativeStubs(blocks, workDir) {
       continue;
     }
     for (const name of info.named) {
-      lines.push(`export const ${name}: any = undefined as any;`);
+      // A value and a type of the same name, so `import { type Session }` and
+      // `import { getSession }` both resolve against the stub.
+      lines.push(`export const ${name}: any = undefined as any;`, `export type ${name} = any;`);
     }
     if (info.hasDefault) {
       lines.push('declare const _default: any;', 'export default _default;');
@@ -395,24 +460,345 @@ function parseDiagnostics(output) {
   return found;
 }
 
+/* ----------------------------------------------------------------- Next.js */
+
+// Next.js examples compile against the real framework. These specifiers
+// resolve to installed type definitions and are never stubbed, so an invented
+// export from `next/cache` or a wrong `zod` call is a compile error.
+const NEXT_REAL = [
+  /^next(\/|$)/, /^server-only$/, /^zod(\/|$)/, /^drizzle-orm(\/|$)/,
+  /^@next\/playwright$/, /^@playwright\/test$/, /^react(-dom)?(\/|$)/, /^node:/,
+];
+const NODE_BUILTINS = new Set(builtinModules);
+const isNextReal = (spec) =>
+  NEXT_REAL.some((re) => re.test(spec)) || NODE_BUILTINS.has(spec.split('/')[0]);
+const isNextLocal = (spec) => spec.startsWith('.') || spec.startsWith('@/');
+
+const ROUTE_FILE_RE = /^(?:src\/)?app\/((?:[^/]+\/)*)(page|layout|default|route)\.(tsx|ts|jsx|js)$/;
+
+/**
+ * Build the smallest App Router tree that has every route the documentation
+ * names in a `file=` path, so `next typegen` can emit the real `PageProps`,
+ * `LayoutProps`, `RouteContext` and `next/root-params` declarations.
+ *
+ * Pages from different docs pages are independent examples, so two of them may
+ * claim the same URL (`app/page.tsx` and `app/(shop)/page.tsx`). Next.js would
+ * reject that tree, so the first claim wins; both resolve to the same route
+ * type anyway.
+ */
+function routeSkeleton(nextFiles) {
+  const byKey = new Map();
+  for (const { file, legacy } of nextFiles) {
+    if (legacy) continue;
+    const m = ROUTE_FILE_RE.exec(file.replace(/\\/g, '/'));
+    if (!m) continue;
+    const [, dir, kind] = m;
+    const urlSegments = dir.split('/').filter(Boolean).filter((s) => !/^\(.*\)$/.test(s));
+    const leaf = kind === 'page' || kind === 'route';
+    const key = `${leaf ? 'leaf' : kind}:${urlSegments.join('/')}`;
+    if (!byKey.has(key)) byKey.set(key, { dir, kind, urlSegments });
+  }
+
+  // Root params are the dynamic segments above the root layout. Independent
+  // examples disagree about where the root layout is: one documents
+  // `app/layout.tsx` (so `LayoutProps<'/'>` must exist), another
+  // `app/[lang]/layout.tsx` (so `next/root-params` must export `lang`). One tree
+  // cannot have both, so the root-params types come from a second tree without
+  // the top-level layouts.
+  const entries = [...byKey.values()];
+  const dynamicRootLayout = entries.some(
+    (e) => e.kind === 'layout' && e.urlSegments.length && /^\[/.test(e.urlSegments[0]),
+  );
+  const rootLayout = (e) => e.kind === 'layout' && e.urlSegments.length === 0;
+  return {
+    entries,
+    rootParamsEntries: dynamicRootLayout && entries.some(rootLayout) ? entries.filter((e) => !rootLayout(e)) : null,
+  };
+}
+
+async function writeSkeleton(entries, dir, configSource) {
+  for (const { dir: routeDir, kind } of entries) {
+    const ext = kind === 'route' ? 'ts' : 'tsx';
+    const full = path.join(dir, 'app', ...routeDir.split('/').filter(Boolean), `${kind}.${ext}`);
+    await mkdir(path.dirname(full), { recursive: true });
+    await writeFile(full, SKELETON_SOURCE[kind], 'utf8');
+  }
+  if (!entries.some((e) => e.kind === 'page' || e.kind === 'route')) {
+    await mkdir(path.join(dir, 'app'), { recursive: true });
+    await writeFile(path.join(dir, 'app', 'page.tsx'), SKELETON_SOURCE.page, 'utf8');
+  }
+  await writeFile(path.join(dir, 'next.config.mjs'), configSource, 'utf8');
+}
+
+const SKELETON_SOURCE = {
+  page: 'export default function Page() {\n  return null;\n}\n',
+  default: 'export default function Default() {\n  return null;\n}\n',
+  layout:
+    "import type { ReactNode } from 'react';\n" +
+    'export default function Layout({ children }: { children: ReactNode }) {\n  return children;\n}\n',
+  route: 'export function GET() {\n  return new Response(null);\n}\n',
+};
+
+// Custom `cacheLife` profiles become typed overloads of `cacheLife()`, so the
+// skeleton config declares every profile a documented `next.config` defines —
+// and only those, so an undeclared profile name still fails.
+function customCacheLifeProfiles(nextFiles) {
+  const names = new Set();
+  for (const { file, code } of nextFiles) {
+    if (!/^next\.config\.(ts|mjs|js)$/.test(file)) continue;
+    const at = code.search(/\bcacheLife\s*:\s*\{/);
+    if (at === -1) continue;
+    let i = code.indexOf('{', at);
+    const start = i;
+    let depth = 0;
+    for (; i < code.length; i += 1) {
+      if (code[i] === '{') depth += 1;
+      else if (code[i] === '}' && --depth === 0) break;
+    }
+    const body = code.slice(start + 1, i);
+    for (const m of body.matchAll(/(?:^|[,{\s])(['"]?)([A-Za-z_$][\w$-]*)\1\s*:\s*\{/g)) names.add(m[2]);
+  }
+  return [...names];
+}
+
+function runNode(args, cwd) {
+  return new Promise((resolve) => {
+    const child = spawn(process.execPath, args, { cwd });
+    let out = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => { out += d; });
+    child.on('error', (e) => resolve({ code: -1, out: `${out}\n${e.message}` }));
+    child.on('close', (code) => resolve({ code, out }));
+  });
+}
+
+function nextTsconfig({ strict, noImplicitAny = strict, files }) {
+  return JSON.stringify(
+    {
+      compilerOptions: {
+        target: 'ES2022',
+        lib: ['DOM', 'DOM.Iterable', 'ESNext'],
+        module: 'ESNext',
+        moduleResolution: 'bundler',
+        jsx: 'react-jsx',
+        strict,
+        noImplicitAny,
+        noEmit: true,
+        skipLibCheck: true,
+        allowJs: true,
+        checkJs: true,
+        esModuleInterop: true,
+        resolveJsonModule: true,
+        isolatedModules: false,
+        allowArbitraryExtensions: true,
+        forceConsistentCasingInFileNames: true,
+        paths: { '@/*': ['./*'] },
+      },
+      files,
+    },
+    null,
+    2,
+  );
+}
+
+/**
+ * Prepare the Next.js work directory: route skeleton, `next typegen`, stubs,
+ * block files and tsconfigs. Returns the tsc runs to execute, or throws with
+ * the typegen output if the generated types could not be produced.
+ */
+async function prepareNext(nextBlocks, nextFiles, workDir) {
+  await mkdir(path.join(workDir, ...BLOCK_DIR.split('/')), { recursive: true });
+
+  const { entries: skeleton, rootParamsEntries } = routeSkeleton(nextFiles);
+
+  const profiles = customCacheLifeProfiles(nextFiles);
+  const cacheLife = profiles.length
+    ? `,\n  cacheLife: {\n${profiles.map((p) => `    ${JSON.stringify(p)}: { stale: 300, revalidate: 900, expire: 86400 },`).join('\n')}\n  }`
+    : '';
+  const configSource =
+    `// Generated by scripts/check-examples.mjs for next typegen.\nexport default {\n  cacheComponents: true${cacheLife}\n};\n`;
+  await writeSkeleton(skeleton, workDir, configSource);
+
+  const nextBin = path.join(NM, 'next', 'dist', 'bin', 'next');
+  const typegen = await runNode([nextBin, 'typegen'], workDir);
+  const typesDir = path.join(workDir, '.next', 'types');
+
+  if (typegen.code === 0 && rootParamsEntries) {
+    const rootDir = path.join(workDir, '..', `${path.basename(workDir)}-rootparams`);
+    await rm(rootDir, { recursive: true, force: true });
+    await writeSkeleton(rootParamsEntries, rootDir, configSource);
+    const second = await runNode([nextBin, 'typegen'], rootDir);
+    const generatedRootParams = path.join(rootDir, '.next', 'types', 'root-params.d.ts');
+    if (second.code !== 0 || !existsSync(generatedRootParams)) {
+      throw new Error(`next typegen (root params pass) failed (exit ${second.code}):\n${second.out.trim()}`);
+    }
+    await writeFile(path.join(typesDir, 'root-params.d.ts'), await readFile(generatedRootParams, 'utf8'), 'utf8');
+  }
+  const generated = ['routes.d.ts', 'root-params.d.ts', 'cache-life.d.ts'].filter((f) =>
+    existsSync(path.join(typesDir, f)),
+  );
+  if (typegen.code !== 0 || !generated.includes('routes.d.ts')) {
+    throw new Error(`next typegen failed (exit ${typegen.code}):\n${typegen.out.trim()}`);
+  }
+
+  // next-env.d.ts imports the generated files by path; list them directly
+  // instead and keep only the global Next.js references.
+  await writeFile(
+    path.join(workDir, 'next-env.harness.d.ts'),
+    '/// <reference types="next" />\n/// <reference types="next/image-types/global" />\n',
+    'utf8',
+  );
+  await writeFile(path.join(workDir, 'canary.d.ts'), '/// <reference types="react/canary" />\nexport {};\n', 'utf8');
+
+  const stubs = collectStubModules(nextBlocks, isNextReal, true);
+  await writeFile(
+    path.join(workDir, 'ambient.d.ts'),
+    AMBIENT_HEAD + stubs.map(([spec, names]) => renderModuleStub(spec, names)).join('\n') + '\n' + AMBIENT_TAIL,
+    'utf8',
+  );
+  const localStubs = await writeRelativeStubs(nextBlocks, workDir, isNextLocal);
+
+  for (const block of nextBlocks) {
+    await writeFile(path.join(workDir, ...BLOCK_DIR.split('/'), block.name), `${block.code}\n`, 'utf8');
+  }
+
+  const base = [
+    'next-env.harness.d.ts',
+    ...generated.map((f) => `.next/types/${f}`),
+    'ambient.d.ts',
+  ];
+  const STUBBED = new Set(stubs.map(([spec]) => spec));
+  const importsAStub = (block) =>
+    parseNamedImports(block.code).some((i) => isNextLocal(i.spec) || STUBBED.has(i.spec)) ||
+    [...block.code.matchAll(DYNAMIC_IMPORT_RE)].some((m) => isNextLocal(m[1]) || STUBBED.has(m[1]));
+  const rel = (b) => `${BLOCK_DIR}/${b.name}`;
+
+  const plan = [
+    { label: 'Next.js js/jsx', strict: false, pick: (b) => (b.lang === 'js' || b.lang === 'jsx') && !b.canary },
+    { label: 'Next.js ts/tsx (strict)', strict: true, pick: (b) => /^tsx?$/.test(b.lang) && !b.canary && !importsAStub(b) },
+    { label: 'Next.js ts/tsx (stubbed imports)', strict: true, noImplicitAny: false, pick: (b) => /^tsx?$/.test(b.lang) && !b.canary && importsAStub(b) },
+    { label: 'Next.js React Canary', strict: true, noImplicitAny: false, canary: true, pick: (b) => b.canary },
+  ];
+
+  const runs = [];
+  for (const [i, step] of plan.entries()) {
+    const picked = nextBlocks.filter(step.pick);
+    if (!picked.length) continue;
+    const config = `tsconfig.next${i}.json`;
+    await writeFile(
+      path.join(workDir, config),
+      nextTsconfig({
+        strict: step.strict,
+        noImplicitAny: step.noImplicitAny ?? step.strict,
+        files: [...base, ...(step.canary ? ['canary.d.ts'] : []), ...picked.map(rel)],
+      }),
+      'utf8',
+    );
+    runs.push({ label: step.label, config, count: picked.length, cwd: workDir });
+  }
+
+  // Page, layout and route-handler blocks are also checked the way `next build`
+  // checks real files: Next's generated validator asserts each module's exports
+  // against the route it lives at. That is what rejects a synchronous
+  // `{ params: { id: string } }` page signature, which compiles on its own.
+  // The type definitions are copied from the validator `next typegen` wrote;
+  // only the per-file assertions point at the documentation blocks instead.
+  const validator = await buildRouteValidator(nextBlocks, workDir);
+  if (validator) {
+    await writeFile(
+      path.join(workDir, config0(validator)),
+      nextTsconfig({ strict: true, noImplicitAny: false, files: [...base, '.next/types/harness-validator.ts'] }),
+      'utf8',
+    );
+    runs.push({
+      label: 'Next.js route exports (page/layout/route)',
+      config: config0(validator),
+      count: validator.count,
+      cwd: workDir,
+      validator,
+    });
+  }
+
+  return { runs, skeletonRoutes: skeleton.length, stubs: stubs.length, localStubs, profiles };
+}
+
+const config0 = () => 'tsconfig.nextroutes.json';
+
+const VALIDATOR_KIND = { page: ['AppPageConfig', 'AppRoutes'], layout: ['LayoutConfig', 'LayoutRoutes'], route: ['RouteHandlerConfig', 'AppRouteHandlerRoutes'] };
+
+function routeOf(dir) {
+  const segments = dir.split('/').filter(Boolean).filter((s) => !/^\(.*\)$/.test(s) && !s.startsWith('@'));
+  return `/${segments.join('/')}`;
+}
+
+async function buildRouteValidator(nextBlocks, workDir) {
+  const typesDir = path.join(workDir, '.next', 'types');
+  let generated;
+  let routes;
+  try {
+    generated = await readFile(path.join(typesDir, 'validator.ts'), 'utf8');
+    routes = await readFile(path.join(typesDir, 'routes.d.ts'), 'utf8');
+  } catch {
+    return null;
+  }
+  const header = generated.split(/\n\/\/ Validate /)[0];
+  const unions = {};
+  for (const [, kindUnion] of Object.values(VALIDATOR_KIND)) {
+    const m = new RegExp(`type ${kindUnion} = ([^\\n]*)`).exec(routes);
+    unions[kindUnion] = new Set(m ? [...m[1].matchAll(/"([^"]*)"/g)].map((x) => x[1]) : []);
+  }
+
+  const lines = header.split('\n');
+  const ranges = [];
+  for (const block of nextBlocks) {
+    if (!block.file || !/^tsx?$/.test(block.lang)) continue;
+    const m = ROUTE_FILE_RE.exec(block.file);
+    if (!m || !VALIDATOR_KIND[m[2]]) continue;
+    const [configType, unionName] = VALIDATOR_KIND[m[2]];
+    const route = routeOf(m[1]);
+    if (!unions[unionName].has(route) || !header.includes(`type ${configType}<`)) continue;
+    const start = lines.length + 1;
+    lines.push(
+      `// Validate ${block.file} (${block.page}:${block.line})`,
+      '{',
+      `  type __IsExpected<Specific extends ${configType}<${JSON.stringify(route)}>> = Specific`,
+      `  const handler = {} as typeof import("../../${BLOCK_DIR}/${block.name.replace(/\.tsx?$/, '.js')}")`,
+      '  type __Check = __IsExpected<typeof handler>',
+      '  // @ts-ignore',
+      '  type __Unused = __Check',
+      '}',
+      '',
+    );
+    ranges.push({ start, end: lines.length, name: block.name, route, kind: m[2] });
+  }
+  if (!ranges.length) return null;
+  await writeFile(path.join(typesDir, 'harness-validator.ts'), lines.join('\n'), 'utf8');
+  return {
+    count: ranges.length,
+    locate: (line) => ranges.find((r) => line >= r.start && line <= r.end),
+  };
+}
+
 /* -------------------------------------------------------------------- main */
 
 async function main() {
   requirePackages();
 
-  const [tsVersion, reactVersion, typesVersion] = await Promise.all([
+  const [tsVersion, reactVersion, typesVersion, nextVersion] = await Promise.all([
     installedVersion('typescript'),
     installedVersion('react'),
     installedVersion('@types/react'),
+    installedVersion('next'),
   ]);
 
-  const { blocks, skipped, pageCount } = await extract();
+  const { blocks: reactBlocks, nextBlocks, nextFiles, skipped, pageCount } = await extract();
+  const blocks = [...reactBlocks, ...nextBlocks];
 
-  console.log('React example type-check harness');
-  console.log(`  typescript ${tsVersion} · react ${reactVersion} · @types/react ${typesVersion}`);
+  console.log('React and Next.js example type-check harness');
+  console.log(`  typescript ${tsVersion} · react ${reactVersion} · @types/react ${typesVersion} · next ${nextVersion}`);
   console.log(`  ${pageCount} pages scanned`);
   console.log(
-    `  ${blocks.length} jsx/tsx blocks to check ` +
+    `  ${reactBlocks.length} React jsx/tsx and ${nextBlocks.length} Next.js ts/tsx/js/jsx blocks to check ` +
     `(${skipped.legacy} legacy skipped, ${skipped.nocheck.length} nocheck skipped)`,
   );
 
@@ -424,7 +810,35 @@ async function main() {
   await rm(WORK, { recursive: true, force: true });
   await mkdir(path.join(WORK, ...BLOCK_DIR.split('/')), { recursive: true });
 
-  const stubs = collectStubModules(blocks);
+  const nextRuns = [];
+  if (nextBlocks.length) {
+    if (nextVersion === 'unknown') {
+      console.error('\nNext.js blocks need `next` installed. Run `npm install` from the repository root.');
+      process.exitCode = 2;
+      return;
+    }
+    process.stdout.write('  Generating Next.js route types (next typegen)… ');
+    try {
+      const prepared = await prepareNext(nextBlocks, nextFiles, path.join(WORK, 'nextjs'));
+      nextRuns.push(...prepared.runs);
+      console.log(
+        `${prepared.skeletonRoutes} route file(s)` +
+        (prepared.profiles.length ? `, cacheLife profiles: ${prepared.profiles.join(', ')}` : ''),
+      );
+      console.log(
+        `  ${prepared.stubs} third-party module(s) and ${prepared.localStubs} local import(s) stubbed for Next.js; ` +
+        'next, zod, drizzle-orm, server-only and Playwright resolve for real',
+      );
+    } catch (e) {
+      console.log('failed');
+      console.error(`\n${e.message}`);
+      console.error('\nFAILED — the harness could not generate Next.js route types.');
+      process.exitCode = 1;
+      return;
+    }
+  }
+
+  const stubs = collectStubModules(reactBlocks);
   const ambient =
     AMBIENT_HEAD +
     stubs.map(([spec, names]) => renderModuleStub(spec, names)).join('\n') +
@@ -432,17 +846,17 @@ async function main() {
     AMBIENT_TAIL;
   await writeFile(path.join(WORK, 'ambient.d.ts'), ambient, 'utf8');
 
-  const relStubs = await writeRelativeStubs(blocks, WORK);
+  const relStubs = await writeRelativeStubs(reactBlocks, WORK);
   console.log(
     `  ${stubs.length} third-party module(s) and ${relStubs} relative import(s) stubbed; ` +
     'react/react-dom resolve for real',
   );
 
-  const jsxBlocks = blocks.filter((b) => b.lang === 'jsx');
-  const tsxBlocks = blocks.filter((b) => b.lang === 'tsx');
+  const jsxBlocks = reactBlocks.filter((b) => b.lang === 'jsx');
+  const tsxBlocks = reactBlocks.filter((b) => b.lang === 'tsx');
   const byName = new Map(blocks.map((b) => [b.name, b]));
 
-  for (const block of blocks) {
+  for (const block of reactBlocks) {
     await writeFile(
       path.join(WORK, ...BLOCK_DIR.split('/'), block.name),
       `${block.code}\n`,
@@ -494,11 +908,30 @@ async function main() {
     runs.push({ label: 'tsx (stubbed imports)', config: 'tsconfig.tsxloose.json', count: tsxLoose.length });
   }
 
+  runs.push(...nextRuns);
+
   const diagnostics = [];
   for (const run of runs) {
     process.stdout.write(`\n  Compiling ${run.count} ${run.label} block(s)… `);
-    const { code, out } = await runTsc(WORK, ['-p', run.config, '--pretty', 'false']);
-    const parsed = parseDiagnostics(out);
+    const { code, out } = await runTsc(run.cwd || WORK, ['-p', run.config, '--pretty', 'false']);
+    let parsed = parseDiagnostics(out);
+    if (run.validator) {
+      // The block files themselves were already compiled in their own run; keep
+      // only the validator's verdicts and attribute each to its block.
+      parsed = parsed
+        .filter((d) => d.file === 'harness-validator.ts')
+        .map((d) => {
+          const hit = run.validator.locate(d.line);
+          return hit && {
+            ...d,
+            file: hit.name,
+            line: 1,
+            col: 1,
+            message: `${hit.kind} exports do not match what Next.js expects for route "${hit.route}": ${d.message}`,
+          };
+        })
+        .filter(Boolean);
+    }
     diagnostics.push(...parsed);
     if (code === -1) {
       console.log('failed to start');
@@ -511,7 +944,7 @@ async function main() {
     // A non-zero exit with nothing parseable means tsc failed for a reason the
     // diagnostic regex does not cover (a bad config, a missing input file).
     // Never let that read as a pass.
-    if (!parsed.length && code !== 0) {
+    if (!parseDiagnostics(out).length && code !== 0) {
       console.error('\ntsc exited non-zero but produced no parseable diagnostics:\n');
       console.error(out.trim() || '(no output)');
       console.error('\nFAILED — the harness could not verify the examples.');
@@ -539,9 +972,13 @@ async function main() {
 
   const failures = new Map();
   const softened = new Map();
+  // A diagnostic outside every block file (a broken stub, generated types, the
+  // ambient declarations) means the harness did not verify the run. It must
+  // never read as a pass.
+  const unattributed = [];
   for (const d of diagnostics) {
     const block = byName.get(d.file);
-    if (!block) continue;
+    if (!block) { unattributed.push(d); continue; }
     const bucket = isJsInferenceLimit(block, d) ? softened : failures;
     if (!bucket.has(block.name)) bucket.set(block.name, { block, diags: [] });
     bucket.get(block.name).diags.push(d);
@@ -584,6 +1021,17 @@ async function main() {
     }
   }
 
+  if (unattributed.length) {
+    console.log(`\nDiagnostics outside any documentation block (${unattributed.length}):\n`);
+    for (const d of unattributed.slice(0, 20)) {
+      console.log(`  ${d.file}(${d.line},${d.col}): ${d.code} ${d.message}`);
+    }
+    console.log('\nFAILED — the harness produced errors it could not attribute to an example.');
+    if (KEEP) console.log(`Extracted sources kept in: ${WORK}`);
+    process.exitCode = 1;
+    return;
+  }
+
   if (failures.size) {
     console.log(`\nFailing examples (${failures.size}):\n`);
     const sorted = [...failures.values()].sort(
@@ -606,7 +1054,10 @@ async function main() {
   if (!KEEP) await rm(WORK, { recursive: true, force: true });
   else console.log(`\nExtracted sources kept in: ${WORK}`);
 
-  console.log(`\nPASSED — all ${blocks.length} examples compile against React ${reactVersion}.`);
+  console.log(
+    `\nPASSED — all ${blocks.length} examples compile ` +
+    `(${reactBlocks.length} against React ${reactVersion}, ${nextBlocks.length} against Next.js ${nextVersion}).`,
+  );
 }
 
 main().catch((e) => {

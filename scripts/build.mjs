@@ -45,7 +45,38 @@ export const GROUPS = [
   { slug: 'ecosystem', title: 'Ecosystem', blurb: 'Routing, styling, forms, data libraries, tooling and Redux.' },
   { slug: 'migration', title: 'Migration', blurb: 'React 18 to 19, removed and deprecated APIs, and legacy codebases.' },
   { slug: 'reference', title: 'Reference', blurb: 'Hooks reference, built-in components, a dense cheat sheet and troubleshooting.' },
+
+  // Next.js is a framework on top of React, so it lives in its own groups. The
+  // `nextjs-` slug prefix is what marks a page as framework-specific everywhere:
+  // badges, breadcrumbs, the stale-API checks and the type-check harness.
+  { slug: 'nextjs-getting-started', title: 'Getting Started', framework: 'nextjs', blurb: 'What Next.js adds to React, when to use it, create-next-app and project structure.' },
+  { slug: 'nextjs-routing', title: 'Routing', framework: 'nextjs', blurb: 'File conventions, dynamic segments, route groups, parallel and intercepting routes, root params.' },
+  { slug: 'nextjs-rendering', title: 'Rendering', framework: 'nextjs', blurb: 'Server and Client Components in practice, streaming, static vs dynamic, prerendering.' },
+  { slug: 'nextjs-data-caching', title: 'Data and Caching', framework: 'nextjs', blurb: 'Cache Components, "use cache", cacheLife, cacheTag and revalidation.' },
+  { slug: 'nextjs-instant-navigations', title: 'Instant Navigations', framework: 'nextjs', blurb: 'Opt-in Partial Prefetching, Instant Insights and the Navigation Inspector.' },
+  { slug: 'nextjs-mutations', title: 'Mutations', framework: 'nextjs', blurb: 'Server Actions, forms, revalidation after writes and optimistic UI.' },
+  { slug: 'nextjs-backend', title: 'Backend Features', framework: 'nextjs', blurb: 'Route Handlers, proxy.ts, runtimes, environment variables, uploads and background work.' },
+  { slug: 'nextjs-databases', title: 'Databases and ORMs', framework: 'nextjs', blurb: 'Connections, pooling, Prisma, Drizzle and migrations in a deploy pipeline.' },
+  { slug: 'nextjs-auth', title: 'Authentication and Authorization', framework: 'nextjs', blurb: 'Sessions, auth libraries, and an authoritative data access layer.' },
+  { slug: 'nextjs-errors', title: 'Errors and Loading UI', framework: 'nextjs', blurb: 'error.tsx, catchError and retry(), notFound, redirect and loading states.' },
+  { slug: 'nextjs-styling', title: 'Styling, Images, Fonts and Metadata', framework: 'nextjs', blurb: 'CSS and Tailwind, next/image, next/font, the Metadata API and Open Graph images.' },
+  { slug: 'nextjs-performance', title: 'Performance', framework: 'nextjs', blurb: 'Turbopack, bundle analysis, the React Compiler, prefetching cost and Core Web Vitals.' },
+  { slug: 'nextjs-security', title: 'Security', framework: 'nextjs', blurb: 'Exploits and fixes: Server Actions, IDOR, injection, leaks, redirects, CORS and advisories.' },
+  { slug: 'nextjs-testing', title: 'Testing', framework: 'nextjs', blurb: 'Unit tests, Server Components and Actions, Playwright and the instant() helper.' },
+  { slug: 'nextjs-deployment', title: 'Deployment', framework: 'nextjs', blurb: 'Build output, self-hosting, Docker, Adapters, CDNs and a deployment checklist.' },
+  { slug: 'nextjs-migration', title: 'Migration', framework: 'nextjs', blurb: '15 to 16, 16.2 to 16.3, Pages to App Router, middleware to proxy, the old caching model.' },
+  { slug: 'nextjs-reference', title: 'Reference', framework: 'nextjs', blurb: 'File conventions, next.config, the CLI, a cheat sheet and troubleshooting.' },
 ];
+
+export const NEXT = {
+  // The version every Next.js page is written and type-checked against.
+  version: '16.3.5',
+  minor: '16.3',
+  // Minimum safe release after the August 2026 security release.
+  minimumSafe: '16.3.3',
+};
+
+export const isNextGroup = (slug) => typeof slug === 'string' && slug.startsWith('nextjs-');
 
 const GROUP_BY_SLUG = new Map(GROUPS.map((g, i) => [g.slug, { ...g, order: i }]));
 
@@ -66,6 +97,27 @@ export const SECTIONS = [
     groups: ['typescript', 'accessibility', 'testing', 'ecosystem'],
   },
   { slug: 'reference', title: 'Reference', groups: ['reference', 'migration'] },
+  // Seventeen framework groups do not fit one panel, so the Next.js area is two
+  // menus behind a divider: building the app, then running it in production.
+  {
+    slug: 'nextjs',
+    title: 'Next.js',
+    framework: 'nextjs',
+    groups: [
+      'nextjs-getting-started', 'nextjs-routing', 'nextjs-rendering', 'nextjs-data-caching',
+      'nextjs-instant-navigations', 'nextjs-mutations', 'nextjs-errors', 'nextjs-styling',
+    ],
+  },
+  {
+    slug: 'nextjs-server',
+    title: 'Server & Ops',
+    framework: 'nextjs',
+    groups: [
+      'nextjs-backend', 'nextjs-databases', 'nextjs-auth', 'nextjs-security',
+      'nextjs-performance', 'nextjs-testing', 'nextjs-deployment', 'nextjs-migration',
+      'nextjs-reference',
+    ],
+  },
 ];
 
 const SECTION_OF_GROUP = new Map(
@@ -160,6 +212,8 @@ function statusBadge(status) {
   if (!status || status === 'current') return '<span class="badge badge-current">Current</span>';
   if (status === 'deprecated') return '<span class="badge badge-deprecated">Deprecated</span>';
   if (status === 'legacy') return '<span class="badge badge-legacy">Legacy</span>';
+  if (status === 'opt-in') return '<span class="badge badge-optin">Opt-in</span>';
+  if (status === 'experimental') return '<span class="badge badge-experimental">Experimental</span>';
   return `<span class="badge">${escapeHtml(status)}</span>`;
 }
 
@@ -171,8 +225,15 @@ function renderTopNav(pages, current) {
   const currentSection = current ? SECTION_OF_GROUP.get(current.group) : null;
 
   let html = '<ul class="topnav-list">';
+  let inFramework = false;
 
   for (const section of SECTIONS) {
+    // The framework area starts with a divider, which becomes a labelled row in
+    // the mobile panel, so React and Next.js never read as one list.
+    if (section.framework && !inFramework) {
+      inFramework = true;
+      html += `<li class="topnav-sep" role="separator" aria-label="Next.js framework documentation"><span class="topnav-sep-label">Next.js ${NEXT.minor}</span></li>`;
+    }
     const groups = section.groups
       .map((slug) => ({
         meta: GROUP_BY_SLUG.get(slug),
@@ -188,16 +249,22 @@ function renderTopNav(pages, current) {
     // column each.
     const wide = groups.length === 1 && total > 12;
 
+    const fw = section.framework === 'nextjs';
     html +=
-      '<li class="topnav-item">' +
+      `<li class="topnav-item"${fw ? ' data-framework="nextjs"' : ''}>` +
       `<button class="topnav-trigger" type="button" id="${menuId}-btn" aria-expanded="false" ` +
-      `aria-controls="${menuId}" aria-haspopup="true"${isActive ? ' data-active="true"' : ''}>` +
+      `aria-controls="${menuId}" aria-haspopup="true"${isActive ? ' data-active="true"' : ''}` +
+      `${fw && section.title !== 'Next.js' ? ` aria-label="Next.js: ${escapeHtml(section.title)}"` : ''}>` +
+      `${fw ? '<span class="fw-mark" aria-hidden="true">N</span>' : ''}` +
       `${escapeHtml(section.title)}${ICONS.chevron}</button>` +
       // Auto-fit cannot resolve a sensible column count inside a shrink-to-fit
       // absolutely positioned box, so the count is decided here, where the
       // group sizes are actually known.
       `<div class="megamenu" id="${menuId}" role="group" aria-labelledby="${menuId}-btn" ` +
       `style="--cols:${wide ? 3 : Math.min(groups.length, 3)}" hidden>` +
+      (fw
+        ? `<p class="mm-framework-note">Next.js ${NEXT.minor} · framework docs, built on the React sections</p>`
+        : '') +
       `<div class="megamenu-inner"${wide ? ' data-wide="true"' : ''}>`;
 
     for (const group of groups) {
@@ -211,6 +278,8 @@ function renderTopNav(pages, current) {
         const badge =
           status === 'legacy' ? '<span class="mm-badge">legacy</span>'
           : status === 'deprecated' ? '<span class="mm-badge">deprecated</span>'
+          : status === 'opt-in' ? '<span class="mm-badge mm-badge-optin">opt-in</span>'
+          : status === 'experimental' ? '<span class="mm-badge mm-badge-exp">experimental</span>'
           : '';
         html +=
           `<li><a class="mm-link" href="${base}${page.url}"` +
@@ -279,7 +348,7 @@ ${content}
 
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <span>Documenting React ${SITE.reactVersion}. Built with a hand-written generator — no dependencies.</span>
+    <span>Documenting React ${SITE.reactVersion} and Next.js ${NEXT.version}. Built with a hand-written generator — no dependencies.</span>
     <span><a href="https://react.dev" target="_blank" rel="noopener noreferrer">react.dev</a> is the source of truth.</span>
   </div>
 </footer>
@@ -313,14 +382,20 @@ function renderPage(page, pages, index) {
   const prev = pages[index - 1];
   const next = pages[index + 1];
 
+  const framework = isNextGroup(page.group);
+  const product = framework ? 'Next.js' : 'React';
+
   const badges = [
+    framework ? '<span class="badge badge-framework"><span class="fw-mark" aria-hidden="true">N</span>Next.js</span>' : '',
     statusBadge(page.data.status),
-    page.data.since ? `<span class="badge badge-since">React ${escapeHtml(String(page.data.since))}+</span>` : '',
+    page.data.since ? `<span class="badge badge-since">${product} ${escapeHtml(String(page.data.since))}+</span>` : '',
+    framework ? `<span class="badge badge-target">Targets Next.js ${NEXT.minor}</span>` : '',
   ].filter(Boolean).join('');
 
   const crumbs =
     '<ol class="breadcrumbs">' +
     `<li><a href="${base}index.html">Home</a></li>` +
+    (framework ? `<li><a href="${base}index.html#nextjs">Next.js</a></li>` : '') +
     (group ? `<li><a href="${base}index.html#${group.slug}">${escapeHtml(group.title)}</a></li>` : '') +
     `<li><span aria-current="page">${escapeHtml(page.data.title || page.slugPath)}</span></li>` +
     '</ol>';
@@ -372,7 +447,7 @@ function renderHome(pages) {
   const cheat = pages.find((p) => p.slugPath === 'reference/cheat-sheet');
   const migrate = pages.find((p) => p.slugPath === 'migration/react-18-to-19');
 
-  const cards = GROUPS.map((group) => {
+  const card = (group) => {
     const inGroup = pages.filter((p) => p.group === group.slug);
     if (!inGroup.length) return '';
     const first = inGroup[0];
@@ -383,7 +458,10 @@ function renderHome(pages) {
       `<span class="home-card-count">${inGroup.length} page${inGroup.length === 1 ? '' : 's'}</span>` +
       '</a>'
     );
-  }).join('');
+  };
+  const cards = GROUPS.filter((g) => !g.framework).map(card).join('');
+  const nextCards = GROUPS.filter((g) => g.framework === 'nextjs').map(card).join('');
+  const nextStart = pages.find((p) => p.slugPath === 'nextjs-getting-started/introduction');
 
   const content =
     '<main class="home" id="main" tabindex="-1">' +
@@ -402,6 +480,18 @@ function renderHome(pages) {
     '</div></div>' +
     '<h2 class="home-section-title">Browse by section</h2>' +
     `<div class="home-grid">${cards}</div>` +
+    (nextCards
+      ? '<section class="home-framework" id="nextjs" aria-labelledby="home-nextjs-title">' +
+        '<h2 class="home-section-title" id="home-nextjs-title">' +
+        '<span class="fw-mark" aria-hidden="true">N</span>Next.js ' +
+        `<span class="home-section-meta">${NEXT.version} · framework-specific</span></h2>` +
+        '<p class="home-framework-lede">What Next.js adds on top of React: routing, rendering, caching, ' +
+        'mutations, backend features and deployment. These pages link back to the React sections for every ' +
+        `underlying concept. Minimum safe version: <code>next@${NEXT.minimumSafe}</code>.` +
+        (nextStart ? ` <a href="${base}${nextStart.url}">Start with the introduction</a>.` : '') +
+        '</p>' +
+        `<div class="home-grid">${nextCards}</div></section>`
+      : '') +
     '</main>';
 
   return shell({

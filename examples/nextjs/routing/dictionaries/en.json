@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "docs": "Docs",
+    "photos": "Photos"
+  },
+  "home": {
+    "title": "Routing example",
+    "intro": "Every page here demonstrates one App Router convention."
+  },
+  "about": {
+    "title": "About",
+    "body": "This page lives in the (marketing) route group. The group name is not part of the URL."
+  },
+  "products": {
+    "title": "Products",
+    "back": "All products"
+  },
+  "photos": {
+    "title": "Photos",
+    "hint": "Click a photo to open it in a modal. Refresh to see the full page.",
+    "close": "Close"
+  }
+}

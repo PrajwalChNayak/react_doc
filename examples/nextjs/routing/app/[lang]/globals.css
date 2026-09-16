@@ -1,0 +1,33 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0 auto;
+  max-width: 48rem;
+  padding: 1rem;
+}
+nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+.swatch {
+  aspect-ratio: 3 / 2;
+  border-radius: 0.5rem;
+}
+.backdrop {
+  background: rgb(0 0 0 / 0.6);
+  display: grid;
+  inset: 0;
+  place-items: center;
+  position: fixed;
+}
+.dialog {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: min(32rem, 90vw);
+}

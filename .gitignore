@@ -2,3 +2,14 @@ node_modules/
 .examples-work/
 .DS_Store
 *.log
+
+# Next.js type-check harness and example apps
+.examples-work*/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+test-results/
+playwright-report/
+.env
+.env.local
+examples/nextjs/*/lib/generated/

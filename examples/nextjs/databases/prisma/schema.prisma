@@ -1,0 +1,22 @@
+// Prisma ORM 7: the `prisma-client` generator requires an explicit output
+// directory. The generated client is imported from there, not from
+// `@prisma/client`. The connection URL lives in prisma.config.ts.
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Prisma owns public.guestbook_entries. Drizzle owns a separate table in the
+// drizzle_demo schema, so the two migration histories never touch each other.
+model GuestbookEntry {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(80)
+  message   String   @db.VarChar(500)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("guestbook_entries")
+}

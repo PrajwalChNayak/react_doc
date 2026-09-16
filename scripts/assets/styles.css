@@ -1260,6 +1260,80 @@ kbd {
   letter-spacing: -0.02em;
 }
 
+/* --- Next.js framework area ---------------------------------------------- */
+/* Additions only. Everything reuses the existing tokens; the one new visual is
+   a small monochrome "N" mark, so framework pages and menus are recognisable
+   at a glance without a second colour scheme. */
+
+.fw-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  border-radius: 4px;
+  background: var(--c-text);
+  color: var(--c-bg);
+  font-size: 0.625rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.topnav-sep {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  margin: 0 0.35rem;
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--c-border-strong);
+  height: 1.25rem;
+  align-self: center;
+}
+/* The label only shows in the mobile panel; on the bar, the divider and the
+   marks carry the meaning. */
+.topnav-sep-label { display: none; }
+
+.topnav-item[data-framework="nextjs"] .topnav-trigger { gap: 0.35rem; }
+.topnav-item[data-framework="nextjs"] .fw-mark { width: 0.95rem; height: 0.95rem; font-size: 0.5625rem; }
+
+.mm-framework-note {
+  margin: 0 0 var(--s-3);
+  padding: 0 0.4rem var(--s-2);
+  border-bottom: 1px solid var(--c-border);
+  font-size: var(--fs-xs);
+  color: var(--c-text-faint);
+}
+
+.mm-badge-optin { background: var(--c-note-bg); color: var(--c-note); border-color: var(--c-note-bd); }
+.mm-badge-exp   { background: var(--c-warn-bg); color: var(--c-warn); border-color: var(--c-warn-bd); }
+
+.badge-framework { color: var(--c-text); background: var(--c-surface); border-color: var(--c-border-strong); }
+.badge-framework .fw-mark { width: 0.85rem; height: 0.85rem; font-size: 0.5rem; border-radius: 3px; }
+.badge-target { font-family: var(--font-mono); }
+.badge-optin        { color: var(--c-note); background: var(--c-note-bg); border-color: var(--c-note-bd); }
+.badge-experimental { color: var(--c-warn); background: var(--c-warn-bg); border-color: var(--c-warn-bd); }
+
+.code-file {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--c-code-text);
+  opacity: 0.85;
+}
+.code-badge-vulnerable { color: var(--tok-del); border-color: color-mix(in srgb, var(--tok-del) 40%, transparent); }
+.code-badge-canary     { color: var(--tok-type); border-color: color-mix(in srgb, var(--tok-type) 32%, transparent); }
+.code-block.is-vulnerable { border-color: color-mix(in srgb, var(--tok-del) 45%, var(--c-code-border)); }
+
+.home-framework { margin-top: var(--s-7); padding-top: var(--s-2); border-top: 1px solid var(--c-border); }
+.home-framework .home-section-title { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.home-section-meta { font-size: var(--fs-sm); font-weight: 500; color: var(--c-text-faint); font-family: var(--font-mono); }
+.home-framework-lede { margin: 0; max-width: 46rem; font-size: var(--fs-base); color: var(--c-text-muted); line-height: 1.6; }
+
 /* --- Responsive ----------------------------------------------------------- */
 
 @media (max-width: 1100px) {
@@ -1322,6 +1396,27 @@ kbd {
   .megamenu-inner[data-wide="true"] .mm-list { columns: 1; min-width: 0; }
   .mm-group + .mm-group { margin-top: var(--s-3); }
   .mm-link { padding: 0.4rem var(--s-3); }
+
+  /* In the panel the Next.js divider becomes a labelled section heading. */
+  .topnav-sep {
+    display: block;
+    height: auto;
+    margin: var(--s-3) 0 0;
+    padding: var(--s-3) var(--s-2) var(--s-1);
+    border-left: 0;
+    border-top: 1px solid var(--c-border-strong);
+  }
+  .topnav-sep-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text-faint);
+  }
+  .topnav-sep + .topnav-item { border-top: 0; }
+  .topnav-item[data-framework="nextjs"] .topnav-trigger { justify-content: flex-start; }
+  .topnav-item[data-framework="nextjs"] .nav-chevron { margin-left: auto; }
 }
 
 @media (max-width: 860px) {

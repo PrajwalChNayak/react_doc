@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "products": "Produits",
+    "docs": "Docs",
+    "photos": "Photos"
+  },
+  "home": {
+    "title": "Exemple de routage",
+    "intro": "Chaque page illustre une convention de l'App Router."
+  },
+  "about": {
+    "title": "À propos",
+    "body": "Cette page se trouve dans le groupe de routes (marketing). Le nom du groupe ne fait pas partie de l'URL."
+  },
+  "products": {
+    "title": "Produits",
+    "back": "Tous les produits"
+  },
+  "photos": {
+    "title": "Photos",
+    "hint": "Cliquez sur une photo pour l'ouvrir dans une fenêtre. Rechargez pour voir la page complète.",
+    "close": "Fermer"
+  }
+}

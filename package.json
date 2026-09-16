@@ -8,18 +8,27 @@
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "check:examples": "node scripts/check-examples.mjs",
+    "check:deps": "node scripts/check-deps.mjs",
+    "check:apps": "node scripts/check-apps.mjs --tests",
     "verify": "node scripts/build.mjs && node scripts/check.mjs && node scripts/check-examples.mjs",
     "serve": "node scripts/serve.mjs"
   },
   "engines": {
     "node": ">=18"
   },
-  "//": "The site build (scripts/build.mjs) has NO dependencies and runs on a fresh clone with no install. These devDependencies exist only so scripts/check-examples.mjs can type-check every documentation example against the real React 19 packages.",
+  "//": "The site build (scripts/build.mjs) has NO dependencies and runs on a fresh clone with no install. These devDependencies exist only so scripts/check-examples.mjs can type-check every documentation example against the real React 19 packages, and every Next.js example against the real next@16.3.5 (plus zod, drizzle-orm, server-only and Playwright types). node_modules/next/dist/docs is also the version-matched reference Next.js pages are written against.",
   "devDependencies": {
+    "@next/playwright": "16.3.5",
+    "@playwright/test": "1.63.0",
+    "@types/node": "20.19.43",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "typescript": "^5.9.0"
+    "server-only": "0.0.1",
+    "typescript": "^5.9.0",
+    "zod": "4.6.5"
   }
 }
