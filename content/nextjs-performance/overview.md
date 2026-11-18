@@ -66,15 +66,15 @@ time goes.
 The most common server-side problem is a waterfall: two independent requests
 awaited one after the other, so the page waits for the sum of both.
 
-```tsx file="app/store/[sku]/page.tsx"
+```tsx file="app/store/[slug]/page.tsx"
 import { getProduct, getReviews } from '@/lib/catalog';
 
-export default async function ProductPage({ params }: PageProps<'/store/[sku]'>) {
-  const { sku } = await params;
+export default async function ProductPage({ params }: PageProps<'/store/[slug]'>) {
+  const { slug } = await params;
 
   // Both requests start before either is awaited, so the page waits for the
   // slower of the two instead of their sum.
-  const [product, reviews] = await Promise.all([getProduct(sku), getReviews(sku)]);
+  const [product, reviews] = await Promise.all([getProduct(slug), getReviews(slug)]);
 
   return (
     <main>

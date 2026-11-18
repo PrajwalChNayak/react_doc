@@ -156,10 +156,10 @@ export default defineConfig({
 });
 ```
 == Next.js
-```bash
-# Next.js exposes the compiler through its own config.
-# See the reactCompiler option in the Next.js docs.
-```
+Next.js exposes the compiler through its own `reactCompiler` config option
+(stable since Next.js 16.0, off by default). See
+[React Compiler in Next.js](../nextjs-performance/react-compiler.md) for the
+setup and its build-time cost.
 :::
 
 > [!WARNING]

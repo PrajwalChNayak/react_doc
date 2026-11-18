@@ -143,7 +143,7 @@ persistent disk. On ephemeral containers, or with several pods, each copy
 diverges and is lost on restart.
 
 `"use cache"` entries are separate. They are kept in an in-memory LRU cache per
-process unless you configure `cacheHandlers`. The two options are easy to mix
+process unless you configure `cacheHandlers`. The two options are often mixed
 up:
 
 | Option | Covers |

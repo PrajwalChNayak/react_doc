@@ -142,7 +142,7 @@ then copies the source, and the runner stage copies only the output.
 
 ### What standalone output contains
 
-`.next/standalone` holds a minimal `server.js`, the traced server code, and just
+`.next/standalone` holds a minimal `server.js`, the traced server code, and only
 the parts of `node_modules` the server loads. It deliberately omits `public` and
 `.next/static`, because you might serve them from a CDN. The Dockerfile copies
 them in so the container is self-sufficient.

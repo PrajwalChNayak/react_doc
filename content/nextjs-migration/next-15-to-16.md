@@ -316,7 +316,7 @@ unmatched slot should 404. See [Parallel routes](../nextjs-routing/parallel-rout
 
 ## Step 3: Review behavior changes
 
-These do not throw errors, which is why they are easy to miss.
+These do not throw errors, which is why teams miss them.
 
 ### Turbopack is the default bundler
 

@@ -125,8 +125,8 @@ agreement.
 The JSX is not rendered by React DOM or a browser. Satori converts it to SVG, and
 Resvg rasterizes the SVG. That explains the constraints:
 
-- **Layout is flexbox.** Every element with more than one child needs
-  `display: 'flex'`. Absolute positioning works; `display: 'grid'` does not.
+- **Layout is flexbox.** Give container elements `display: 'flex'`. Absolute
+  positioning works; `display: 'grid'` does not.
 - **Only a subset of CSS is supported.** Satori's documentation lists it. Styles
   go in the `style` prop; there is no stylesheet, Tailwind or CSS Module.
 - **Fonts must be `ttf`, `otf` or `woff`.** `woff2` is not supported. `ttf` and
@@ -150,8 +150,8 @@ served as a static file.
 ### Size limits for static files
 
 A static `twitter-image` file must not exceed 5 MB, and a static `opengraph-image`
-file must not exceed 8 MB. A larger file **fails the build**, because the platforms
-reject images over those limits and the share card would silently disappear.
+file must not exceed 8 MB. A larger file **fails the build**, which is better than
+discovering in production that a platform ignored your card.
 
 ## Server and client implications
 
@@ -367,8 +367,8 @@ Promise. Write `const { slug } = await params`.
 **Using the `id` from `generateImageMetadata` as a string.** It arrives as a
 Promise. Await it.
 
-**A multi-child `<div>` without `display: 'flex'`.** The renderer requires an
-explicit flex container.
+**Containers without `display: 'flex'`.** The renderer lays out with flexbox;
+set it explicitly on every container.
 
 **Using `display: 'grid'`, `className` or Tailwind.** Only inline styles and the
 supported CSS subset work.

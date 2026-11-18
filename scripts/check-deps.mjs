@@ -96,7 +96,23 @@ function packageName(spec) {
 }
 
 const IMPORT_RE = /(?:^|\n)\s*(?:import|export)[^'"`;]*?from\s*['"]([^'"]+)['"]|(?:^|\n)\s*import\s*['"]([^'"]+)['"]|import\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
-const INSTALL_RE = /\b(?:npm\s+(?:install|i|add)|pnpm\s+(?:add|install|i)|yarn\s+add|bun\s+(?:add|install|i))\s+([^\n&|;]+)/g;
+// Separators are spaces and tabs only: a bare `npm install` line must not
+// swallow the next line's words as package names.
+const INSTALL_RE = /\b(?:npm[ \t]+(?:install|i|add)|pnpm[ \t]+(?:add|install|i)|yarn[ \t]+add|bun[ \t]+(?:add|install|i))[ \t]+([^\n&|;]+)/g;
+// Flags whose next token is a value, not a package.
+const VALUE_FLAGS = new Set(['--workspace', '-w', '--prefix', '--registry', '--tag', '--filter']);
+
+// Scopes reserved for obvious placeholders in examples ("substitute your own
+// library"). They are unregistered on npm on purpose, so copying the example
+// cannot install someone else's package.
+const PLACEHOLDER_SCOPES = ['@your-org/'];
+
+// Packages that exist only in this repository's examples workspace.
+const LOCAL_SCOPES = ['@nextjs-examples/'];
+
+// Page bodies by `content/<rel>`, so a prerelease pin can be accepted only where
+// the page itself labels it as one.
+const pageText = new Map();
 
 async function collect() {
   const uses = new Map(); // name -> { pins: Set, where: Set }
@@ -111,12 +127,16 @@ async function collect() {
   const { pages } = await loadPages();
   for (const page of pages.filter((p) => isNextGroup(p.group))) {
     const where = `content/${page.rel}`;
+    pageText.set(where, page.body);
     for (const block of page.codeBlocks) {
       if (block.flags.legacy) continue;
       for (const m of block.code.matchAll(IMPORT_RE)) note(packageName(m[1] || m[2] || m[3]), null, where);
       if (block.lang === 'bash') {
         for (const m of block.code.matchAll(INSTALL_RE)) {
-          for (const token of m[1].trim().split(/\s+/)) {
+          const tokens = m[1].trim().split(/[ \t]+/);
+          for (let t = 0; t < tokens.length; t += 1) {
+            const token = tokens[t];
+            if (VALUE_FLAGS.has(token)) { t += 1; continue; }
             if (token.startsWith('-')) continue;
             const at = token.lastIndexOf('@');
             const name = at > 0 ? token.slice(0, at) : token;
@@ -218,7 +238,17 @@ async function main() {
         continue;
       }
       if (!packument) {
-        errors.push(`${name}: does not exist on npm (named in ${where.join(', ')})`);
+        if (LOCAL_SCOPES.some((s) => name.startsWith(s))) {
+          warnings.push(`${name}: local workspace package, not on npm (expected)`);
+        } else if (PLACEHOLDER_SCOPES.some((s) => name.startsWith(s))) {
+          warnings.push(`${name}: placeholder name, intentionally unregistered on npm`);
+        } else {
+          errors.push(`${name}: does not exist on npm (named in ${where.join(', ')})`);
+        }
+        continue;
+      }
+      if (PLACEHOLDER_SCOPES.some((s) => name.startsWith(s))) {
+        errors.push(`${name}: a placeholder scope now resolves to a real npm package. Pick another placeholder.`);
         continue;
       }
       const latest = packument['dist-tags']?.latest;
@@ -232,7 +262,17 @@ async function main() {
         const meta = packument.versions[resolved];
         if (meta?.deprecated) errors.push(`${name}@${resolved} is deprecated on npm: ${meta.deprecated}`);
         if (pin && resolved.includes('-')) {
-          errors.push(`${name}@${resolved} is a prerelease; document the latest stable (named in ${where.join(', ')})`);
+          // Allowed only when there is no stable line for what the page teaches
+          // and every page that pins it says so in words (e.g. Auth.js v5).
+          const labelled = where.every((w) => {
+            const text = pageText.get(w.replace(/ \(.*\)$/, ''));
+            return text && /\b(beta|release candidate|prerelease|canary)\b/i.test(text);
+          });
+          if (labelled) {
+            warnings.push(`${name}@${resolved} is a prerelease; accepted because every page naming it labels it (${where.join(', ')})`);
+          } else {
+            errors.push(`${name}@${resolved} is a prerelease; document the latest stable (named in ${where.join(', ')})`);
+          }
         }
         // Compatibility with the framework versions this site documents.
         for (const [peer, target] of Object.entries(TARGET)) {

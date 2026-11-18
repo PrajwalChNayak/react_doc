@@ -61,7 +61,7 @@
   const backdrop = $('.nav-backdrop');
   const triggers = $$('.topnav-trigger');
 
-  const isCompact = () => window.matchMedia('(max-width: 940px)').matches;
+  const isCompact = () => window.matchMedia('(max-width: 1120px)').matches;
 
   function panelFor(trigger) {
     return document.getElementById(trigger.getAttribute('aria-controls'));

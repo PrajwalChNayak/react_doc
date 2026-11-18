@@ -27,6 +27,12 @@ end to end with **Playwright**.
 | Async Server Components, streaming, `proxy.ts`, Route Handlers, navigation | Playwright against `next build` + `next start` | What a user actually receives from the real server |
 | Instant Navigations | Playwright + `instant()` from `@next/playwright` | What is visible before dynamic data arrives |
 
+> [!NOTE]
+> **Opt-in (16.3).** Instant Navigations and the `instant()` helper apply only when
+> you enable `cacheComponents` and `partialPrefetching`. These behaviors are slated
+> to become the default in a future major version. The `@next/playwright` README
+> labels `instant()` Experimental and not yet stable.
+
 This page explains the split and the tooling. The React side of component
 testing (queries, `act`, user events) is covered in
 [Testing setup](../testing/setup.md) and is not repeated here.

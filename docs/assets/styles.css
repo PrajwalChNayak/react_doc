@@ -384,7 +384,7 @@ kbd {
 }
 .nav-backdrop[hidden] { display: none; }
 
-@media (max-width: 940px) {
+@media (max-width: 1120px) {
   .nav-backdrop { background: rgb(15 14 20 / 0.35); z-index: 65; }
 }
 
@@ -1342,8 +1342,16 @@ kbd {
   .toc { display: none; }
 }
 
-/* Below this the top bar cannot hold five menus, so it becomes a panel. */
-@media (max-width: 940px) {
+/* The Next.js area adds two menus (seven in total). Before the bar gives up,
+   the search button drops its label to buy the room back. */
+@media (max-width: 1240px) {
+  .search-trigger { min-width: 0; width: 2rem; padding: 0; justify-content: center; }
+  .search-trigger span, .search-trigger kbd { display: none; }
+}
+
+/* Below this the top bar cannot hold seven menus, so it becomes a panel.
+   Keep in sync with isCompact() in app.js. */
+@media (max-width: 1120px) {
   .menu-btn { display: grid; }
   .search-trigger { min-width: 0; width: 2rem; padding: 0; justify-content: center; }
   .search-trigger span, .search-trigger kbd { display: none; }

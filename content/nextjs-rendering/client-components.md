@@ -211,7 +211,8 @@ client. Re-export it from a module you mark:
 ```tsx file="app/ui/carousel.tsx"
 'use client';
 
-import { Carousel } from 'acme-carousel';
+// Placeholder: substitute the carousel library your app actually depends on.
+import { Carousel } from '@your-org/carousel';
 
 export default Carousel;
 ```
